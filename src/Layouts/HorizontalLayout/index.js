@@ -98,7 +98,6 @@ const HorizontalLayout = (props) => {
             item.classList.remove("active");
         });
     };
-
     return (
         <React.Fragment>
             {(menuItems || []).map((item, key) => {

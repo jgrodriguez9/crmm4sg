@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 //Dashboard
-// import DashboardCrm from "../pages/DashboardCrm";
+import Dashboard from "../pages/Dashboard";
 
 //login
 import Login from "../pages/Authentication/Login";
@@ -13,7 +13,7 @@ import Logout from "../pages/Authentication/Logout";
 
 
 const authProtectedRoutes = [
-  // { path: "/dashboard", component: <DashboardCrm /> },
+  { path: "/dashboard", component: <Dashboard /> },
 
   //User Profile
   // { path: "/profile", component: <UserProfile /> },

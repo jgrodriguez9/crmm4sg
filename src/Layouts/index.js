@@ -24,6 +24,7 @@ import {
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
+import Sidebar from './Sidebar';
 
 const Layout = (props) => {
     const [headerClass, setHeaderClass] = useState("");
@@ -129,9 +130,9 @@ const Layout = (props) => {
                     headerClass={headerClass}
                     layoutModeType={layoutModeType}
                     onChangeLayoutMode={onChangeLayoutMode} />
-                {/* <Sidebar
+                <Sidebar
                     layoutType={layoutType}
-                /> */}
+                />
                 <div className="main-content">
                     {props.children}
                     <Footer />

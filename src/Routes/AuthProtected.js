@@ -4,6 +4,7 @@ import { setAuthorization } from "../helpers/api_helper";
 import { useDispatch } from "react-redux";
 
 import { useProfile } from "../Components/Hooks/UserHooks";
+import { logoutUser } from "../slices/thunks";
 
 const AuthProtected = (props) => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const AuthProtected = (props) => {
     if (userProfile && !loading && token) {
       setAuthorization(token);
     } else if (!userProfile && loading && !token) {
-      //dispatch(logoutUser());
+      dispatch(logoutUser());
     }
   }, [token, userProfile, loading, dispatch]);
 

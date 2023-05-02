@@ -129,7 +129,6 @@ const VerticalLayout = (props) => {
             item.classList.remove("active");
         });
     };
-
     return (
         <React.Fragment>
             {/* menu Items */}

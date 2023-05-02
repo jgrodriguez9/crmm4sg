@@ -18,6 +18,12 @@ import SearchOption from '../Components/Common/SearchOption';
 // import LightDark from '../Components/Common/LightDark';
 
 import { useSelector, useDispatch } from "react-redux";
+import { changeSidebarVisibility } from '../slices/thunks';
+import LanguageDropdown from '../Components/Common/LanguageDropdown';
+import FullScreenDropdown from '../Components/Common/FullScreenDropdown';
+import LightDark from '../Components/Common/LightDark';
+import ProfileDropdown from '../Components/Common/ProfileDropdown';
+import NotificationDropdown from '../Components/Common/NotificationDropdown';
 
 const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
     const dispatch = useDispatch();
@@ -33,7 +39,7 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
 
     const toogleMenuBtn = () => {
         var windowSize = document.documentElement.clientWidth;
-        //dispatch(changeSidebarVisibility("show"));
+        dispatch(changeSidebarVisibility("show"));
 
         if (windowSize > 767)
             document.querySelector(".hamburger-icon").classList.toggle('open');
@@ -63,7 +69,6 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
             document.body.classList.contains('twocolumn-panel') ? document.body.classList.remove('twocolumn-panel') : document.body.classList.add('twocolumn-panel');
         }
     };
-
     return (
         <React.Fragment>
             <header id="page-topbar" className={headerClass}>
@@ -128,19 +133,22 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                             </Dropdown>
 
                             {/* LanguageDropdown */}
-                            {/* <LanguageDropdown /> */}
+                            <LanguageDropdown />
 
                             {/* FullScreenDropdown */}
-                            {/* <FullScreenDropdown /> */}
+                            <FullScreenDropdown />
 
                             {/* Dark/Light Mode set */}
-                            {/* <LightDark
+                            <LightDark
                                 layoutMode={layoutModeType}
                                 onChangeLayoutMode={onChangeLayoutMode}
-                            /> */}
+                            />
+
+                             {/* NotificationDropdown */}
+                             <NotificationDropdown />
 
                             {/* ProfileDropdown */}
-                            {/* <ProfileDropdown /> */}
+                            <ProfileDropdown />
                         </div>
                     </div>
                 </div>
