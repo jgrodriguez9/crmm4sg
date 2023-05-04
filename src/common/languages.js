@@ -4,7 +4,7 @@ import flagspain from "../assets/images/flags/spain.svg";
 
 const languages = {
   sp: {
-    label: "Española",
+    label: "Español",
     flag: flagspain,
   },
   en: {

@@ -7,6 +7,7 @@ import Dashboard from "../pages/Dashboard";
 //login
 import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
+import Agente from "../pages/Operation/Agent";
 
 // User Profile
 // import UserProfile from "../pages/Authentication/user-profile";
@@ -14,6 +15,9 @@ import Logout from "../pages/Authentication/Logout";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
+
+  //Agente
+  { path: "/agent", component: <Agente /> },
 
   //User Profile
   // { path: "/profile", component: <UserProfile /> },

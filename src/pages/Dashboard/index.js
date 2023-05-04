@@ -13,7 +13,7 @@ import ComingSoon from '../Utils/ComingSoon';
 
 
 const DashboardCrm = () => {
-    document.title="CRM | M4S";
+    document.title="Inicio | CRM - M4S";
     return (
         <React.Fragment>
             <div className="page-content">
