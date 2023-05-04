@@ -49,27 +49,27 @@ const Navdata = () => {
             icon: "ri-dashboard-2-line",
             link: "/dashboard",
         },
-        {
-            id: "security",
-            label: "Seguridad",
-            icon: "ri-shield-line",
-            link: "/#",
-            click: function (e) {
-                e.preventDefault();
-                setIsSecurity(!isSecurity);
-                setIscurrentState('Security');
-                updateIconSidebar(e);
-            },
-            stateVariables: isSecurity,
-            subItems: [
-                {
-                    id: "bitacora",
-                    label: "Bitácora",
-                    link: "/bitacora",
-                    parentId: "security",
-                }
-            ],
-        },
+        // {
+        //     id: "security",
+        //     label: "Seguridad",
+        //     icon: "ri-shield-line",
+        //     link: "/#",
+        //     click: function (e) {
+        //         e.preventDefault();
+        //         setIsSecurity(!isSecurity);
+        //         setIscurrentState('Security');
+        //         updateIconSidebar(e);
+        //     },
+        //     stateVariables: isSecurity,
+        //     subItems: [
+        //         {
+        //             id: "bitacora",
+        //             label: "Bitácora",
+        //             link: "/bitacora",
+        //             parentId: "security",
+        //         }
+        //     ],
+        // },
         {
             label: "pages",
             isHeader: true,
