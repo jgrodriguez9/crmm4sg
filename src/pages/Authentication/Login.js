@@ -65,7 +65,7 @@ const Login = (props) => {
         }
     }, [dispatch, errorMsg]);
 
-    document.title = "Basic SignIn | Velzon - React Admin & Dashboard Template";
+    document.title = "Iniciar sesión | CRM - M4S";
     return (
         <React.Fragment>
             <ParticlesAuth>
@@ -76,10 +76,10 @@ const Login = (props) => {
                                 <div className="text-center mt-sm-5 mb-4 text-white-50">
                                     <div>
                                         <Link to="/" className="d-inline-block auth-logo">
-                                            <img src={logoLight} alt="" height="20" />
+                                            <img src={logoLight} alt="" height="100" />
                                         </Link>
                                     </div>
-                                    <p className="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p>
+                                    
                                 </div>
                             </Col>
                         </Row>
@@ -89,8 +89,7 @@ const Login = (props) => {
                                 <Card className="mt-4">
                                     <CardBody className="p-4">
                                         <div className="text-center mt-2">
-                                            <h5 className="text-primary">Welcome Back !</h5>
-                                            <p className="text-muted">Sign in to continue to Velzon.</p>
+                                            <p className="text-muted">Iniciar sesión para continuar en CRM - M4S.</p>
                                         </div>
                                         {error && error ? (<Alert color="danger"> {error} </Alert>) : null}
                                         <div className="p-2 mt-4">
@@ -103,7 +102,7 @@ const Login = (props) => {
                                                 action="#">
 
                                                 <div className="mb-3">
-                                                    <Label htmlFor="email" className="form-label">Email</Label>
+                                                    <Label htmlFor="email" className="form-label">Usuario</Label>
                                                     <Input
                                                         name="email"
                                                         className="form-control"
@@ -122,7 +121,7 @@ const Login = (props) => {
                                                 </div>
 
                                                 <div className="mb-3">
-                                                    <Label className="form-label" htmlFor="password-input">Password</Label>
+                                                    <Label className="form-label" htmlFor="password-input">Contraseña</Label>
                                                     <div className="position-relative auth-pass-inputgroup mb-3">
                                                         <Input
                                                             name="password"
@@ -146,7 +145,7 @@ const Login = (props) => {
                                                 <div className="mt-4">
                                                     <Button color="success" disabled={error ? null : loading ? true : false} className="btn btn-success w-100" type="submit">
                                                         {loading ? <Spinner size="sm" className='me-2'> Loading... </Spinner> : null}
-                                                        Sign In
+                                                        Iniciar sesión
                                                     </Button>
                                                 </div>
                                             </Form>
