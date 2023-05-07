@@ -43,322 +43,325 @@ const handleselectCountry = (selectCountry) => {
     <Offcanvas
       direction="end"
       isOpen={show}
-      id="offcanvasExample"
+      id="filter-canvas"
       toggle={onCloseClick}
+      scrollable={true}
     >
-      <OffcanvasHeader className="bg-light" toggle={onCloseClick}>
-        Leads Fliters
-      </OffcanvasHeader>
-      <form action="" className="d-flex flex-column justify-content-end h-100">
+      <OffcanvasHeader className="bg-light" toggle={onCloseClick}>Filtros</OffcanvasHeader>
+      <form className="d-flex flex-column justify-content-end h-100">
         <OffcanvasBody>
-          <div className="mb-4">
-            <Label
-              htmlFor="datepicker-range"
-              className="form-label text-muted text-uppercase fw-semibold mb-3"
-            >
-              Date
-            </Label>
-            <Flatpickr
-              className="form-control"
-              id="datepicker-publish-input"
-              placeholder="Select a date"
-              options={{
-                altInput: true,
-                altFormat: "F j, Y",
-                mode: "multiple",
-                dateFormat: "d.m.y",
-              }}
-            />
-          </div>
-          <div className="mb-4">
-            <Label
-              htmlFor="country-select"
-              className="form-label text-muted text-uppercase fw-semibold mb-3"
-            >
-              Country
-            </Label>
-
-            <Select
-              className="mb-0"
-              value={selectCountry}
-              onChange={() => {
-                handleselectCountry();
-              }}
-              options={country}
-              id="country-select"
-            ></Select>
-          </div>
-          <div className="mb-4">
-            <Label
-              htmlFor="status-select"
-              className="form-label text-muted text-uppercase fw-semibold mb-3"
-            >
-              Status
-            </Label>
-            <Row className="g-2">
-              <Col lg={6}>
-                <div className="form-check">
+          <Row>
+            <Col xs="12" md="4">
+              <div className="mb-3">
+                <Label
+                  htmlFor="programa-select"
+                  className="form-label text-muted text-uppercase fw-semibold mb-0"
+                >
+                  Programa
+                </Label>
+                <Select
+                  className="mb-0"
+                  value={selectCountry}
+                  onChange={() => {
+                    handleselectCountry();
+                  }}
+                  options={[{value: 'Share', label: 'Share'}]}
+                  placeholder="Seleccionar opción"
+                  id="programa-select"
+                ></Select>
+              </div>
+            </Col>
+            <Col xs="12" md="4">
+              <div className="mb-3">
+                  <Label
+                    htmlFor="tipobusqueda-select"
+                    className="form-label text-muted text-uppercase fw-semibold mb-0"
+                  >
+                    Tipo búsqueda
+                  </Label>
+                  <Select
+                    className="mb-0"
+                    value={selectCountry}
+                    onChange={() => {
+                      handleselectCountry();
+                    }}
+                    options={[{value: 'Tipo búsqueda 1', label: 'Tipo búsqueda 1'}]}
+                    placeholder="Seleccionar opción"
+                    id="tipobusqueda-select"
+                  ></Select>
+                </div>
+            </Col>
+            <Col xs="12" md="8">
+              <div className="mb-3">
+                <Label
+                  htmlFor="nombre"
+                  className="form-label text-muted text-uppercase fw-semibold mb-0"
+                >
+                  Nombre
+                </Label>
+                <Input
+                    className="form-control"
+                    type="text"
+                    id="nombre"
+                />
+              </div>
+            </Col>
+            <Col xs="12" md="4">
+              <div className="mb-3">
+                <Label
+                  htmlFor="telefono"
+                  className="form-label text-muted text-uppercase fw-semibold mb-0"
+                >
+                  Teléfono
+                </Label>
+                <Input
+                    className="form-control"
+                    type="text"
+                    id="telefono"
+                />
+              </div>
+            </Col>
+            <Col xs="12" md="4">
+              <div className="mb-3">
+                <Label
+                  htmlFor="pais-select"
+                  className="form-label text-muted text-uppercase fw-semibold mb-0"
+                >
+                  País
+                </Label>
+                <Select
+                  className="mb-0"
+                  value={selectCountry}
+                  onChange={() => {
+                    handleselectCountry();
+                  }}
+                  options={country}
+                  placeholder="Seleccionar opción"
+                  id="pais-select"
+                ></Select>
+              </div>
+            </Col>
+            <Col xs="12" md="4">
+              <div className="mb-3">
+                  <Label
+                    htmlFor="estado-select"
+                    className="form-label text-muted text-uppercase fw-semibold mb-0"
+                  >
+                    Estado
+                  </Label>
+                  <Select
+                    className="mb-0"
+                    value={selectCountry}
+                    onChange={() => {
+                      handleselectCountry();
+                    }}
+                    options={[{value: 'Estado 1', label: 'Estado 1'}]}
+                    placeholder="Seleccionar opción"
+                    id="estado-select"
+                  ></Select>
+                </div>
+            </Col>
+            <Col xs="12" md="4">
+              <div className="mb-3">
+                  <Label
+                    htmlFor="etnia-select"
+                    className="form-label text-muted text-uppercase fw-semibold mb-0"
+                  >
+                    Etnia
+                  </Label>
+                  <Select
+                    className="mb-0"
+                    value={selectCountry}
+                    onChange={() => {
+                      handleselectCountry();
+                    }}
+                    options={[{value: 'Etnia 1', label: 'Etnia 1'}]}
+                    placeholder="Seleccionar opción"
+                    id="etnia-select"
+                  ></Select>
+                </div>
+            </Col>
+            <Col xs="12" md="8">
+              <div className="mb-3">
+                <Label
+                  htmlFor="fecha-range"
+                  className="form-label text-muted text-uppercase fw-semibold mb-0"
+                >Fecha
+                </Label>
+                <Flatpickr
+                  className="form-control"
+                  id="fecha-range"
+                  placeholder="Seleccionar rango de fecha"
+                  options={{
+                    mode: "range",
+                    dateFormat: "d-M-Y",
+                  }}
+                />
+              </div>              
+            </Col>
+            <Col xs="12" md="4">
+              <div className="mb-3">
+                  <Label
+                    htmlFor="consultor-select"
+                    className="form-label text-muted text-uppercase fw-semibold mb-0"
+                  >
+                    Consultor
+                  </Label>
+                  <Select
+                    className="mb-0"
+                    value={selectCountry}
+                    onChange={() => {
+                      handleselectCountry();
+                    }}
+                    options={[{value: 'Consultor 1', label: 'Consultor 1'}]}
+                    placeholder="Seleccionar opción"
+                    id="consultor-select"
+                  ></Select>
+                </div>
+            </Col>
+            <Col xs="12" md="4">
+              <div className="mb-3">
+                  <Label
+                    htmlFor="tiponota-select"
+                    className="form-label text-muted text-uppercase fw-semibold mb-0"
+                  >
+                    Tipo nota
+                  </Label>
+                  <Select
+                    className="mb-0"
+                    value={selectCountry}
+                    onChange={() => {
+                      handleselectCountry();
+                    }}
+                    options={[{value: 'Tipo nota 1', label: 'Tipo nota 1'}]}
+                    placeholder="Seleccionar opción"
+                    id="tiponota-select"
+                  ></Select>
+                </div>
+            </Col>
+            <Col xs="12" md="4">
+              <div className="mb-3">
+                <Label
+                  htmlFor="fecha-nota"
+                  className="form-label text-muted text-uppercase fw-semibold mb-0"
+                >Fecha nota
+                </Label>
+                <Flatpickr
+                  className="form-control"
+                  id="fecha-nota"
+                  placeholder="Seleccionar fecha"
+                  options={{
+                    dateFormat: "d-M-Y",
+                  }}
+                />
+              </div>              
+            </Col>
+            <Col xs="12" md="4">
+              <div className="mb-3">
+                  <Label
+                    htmlFor="segmento-select"
+                    className="form-label text-muted text-uppercase fw-semibold mb-0"
+                  >
+                    Segmento
+                  </Label>
+                  <Select
+                    className="mb-0"
+                    value={selectCountry}
+                    onChange={() => {
+                      handleselectCountry();
+                    }}
+                    options={[{value: 'Segmento 1', label: 'Segmento 1'}]}
+                    placeholder="Seleccionar opción"
+                    id="segmento-select"
+                  ></Select>
+                </div>
+            </Col>
+            <Col xs="12" md="4">
+              <div className="mb-3">
+                  <Label
+                    htmlFor="motivonota-select"
+                    className="form-label text-muted text-uppercase fw-semibold mb-0"
+                  >
+                    Motivo nota
+                  </Label>
+                  <Select
+                    className="mb-0"
+                    value={selectCountry}
+                    onChange={() => {
+                      handleselectCountry();
+                    }}
+                    options={[{value: 'Motivo nota 1', label: 'Motivo nota 1'}]}
+                    placeholder="Seleccionar opción"
+                    id="motivonota-select"
+                  ></Select>
+                </div>
+            </Col>
+            <Col xs="12" md="4">
+              <div className="mb-3">
+                <Label
+                  htmlFor="id-booking"
+                  className="form-label text-muted text-uppercase fw-semibold mb-0"
+                >
+                  ID Booking
+                </Label>
+                <Input
+                    className="form-control"
+                    type="text"
+                    id="id-booking"
+                />
+              </div>
+            </Col>
+            <Col xs="12" md="4">
+              <div className="form-check">
+                  <Label
+                    htmlFor="segmento-select"
+                    className="form-label text-muted text-uppercase fw-semibold mb-0 opacity-0 d-block"
+                  >
+                    Segmento
+                  </Label>
                   <Input
                     className="form-check-input"
                     type="checkbox"
-                    id="inlineCheckbox1"
+                    id="con-referidos"
                     defaultValue="option1"
                   />
-                  <Label className="form-check-label" htmlFor="inlineCheckbox1">
-                    New Leads
+                  <Label className="form-check-label" htmlFor="con-referidos">
+                    Con referidos
                   </Label>
                 </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox2"
-                    defaultValue="option2"
-                  />
-                  <Label className="form-check-label" htmlFor="inlineCheckbox2">
-                    Old Leads
-                  </Label>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox3"
-                    defaultValue="option3"
-                  />
-                  <Label className="form-check-label" htmlFor="inlineCheckbox3">
-                    Loss Leads
-                  </Label>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox4"
-                    defaultValue="option4"
-                  />
-                  <Label className="form-check-label" htmlFor="inlineCheckbox4">
-                    Follow Up
-                  </Label>
-                </div>
-              </Col>
-            </Row>
-          </div>
-          <div className="mb-4">
-            <Label
-              htmlFor="leadscore"
-              className="form-label text-muted text-uppercase fw-semibold mb-3"
-            >
-              Lead Score
-            </Label>
-            <Row className="g-2 align-items-center">
-              <div className="col-lg">
+            </Col>
+            <Col xs="12" md="8">
+              <div className="mb-3">
+                <Label
+                  htmlFor="contarto"
+                  className="form-label text-muted text-uppercase fw-semibold mb-0"
+                >
+                  Contrato
+                </Label>
                 <Input
-                  type="number"
-                  className="form-control"
-                  id="leadscore"
-                  placeholder="0"
+                    className="form-control"
+                    type="text"
+                    id="contarto"
                 />
               </div>
-              <div className="col-lg-auto">To</div>
-              <div className="col-lg">
-                <Input
-                  type="number"
-                  className="form-control"
-                  id="leadscore"
-                  placeholder="0"
-                />
-              </div>
-            </Row>
-          </div>
-          <div>
-            <Label
-              htmlFor="leads-tags"
-              className="form-label text-muted text-uppercase fw-semibold mb-3"
+            </Col>
+          </Row>
+          <div className="offcanvas-footer border-top py-2 text-center hstack gap-2 mb-3">
+            <button
+              type="submit"
+              className="btn btn-success "
+              onClick={onCloseClick}
             >
-              Tags
-            </Label>
-            <Row className="g-3">
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="marketing"
-                    defaultValue="marketing"
-                  />
-                  <Label className="form-check-label" htmlFor="marketing">
-                    Marketing
-                  </Label>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="management"
-                    defaultValue="management"
-                  />
-                  <Label className="form-check-label" htmlFor="management">
-                    Management
-                  </Label>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="business"
-                    defaultValue="business"
-                  />
-                  <Label className="form-check-label" htmlFor="business">
-                    Business
-                  </Label>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="investing"
-                    defaultValue="investing"
-                  />
-                  <Label className="form-check-label" htmlFor="investing">
-                    Investing
-                  </Label>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="partner"
-                    defaultValue="partner"
-                  />
-                  <Label className="form-check-label" htmlFor="partner">
-                    Partner
-                  </Label>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="lead"
-                    defaultValue="lead"
-                  />
-                  <Label className="form-check-label" htmlFor="lead">
-                    Leads
-                  </Label>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="sale"
-                    defaultValue="sale"
-                  />
-                  <Label className="form-check-label" htmlFor="sale">
-                    Sale
-                  </Label>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="owner"
-                    defaultValue="owner"
-                  />
-                  <Label className="form-check-label" htmlFor="owner">
-                    Owner
-                  </Label>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="banking"
-                    defaultValue="banking"
-                  />
-                  <Label className="form-check-label" htmlFor="banking">
-                    Banking
-                  </Label>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="banking"
-                    defaultValue="banking"
-                  />
-                  <Label className="form-check-label" htmlFor="banking">
-                    Exiting
-                  </Label>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="banking"
-                    defaultValue="banking"
-                  />
-                  <Label className="form-check-label" htmlFor="banking">
-                    Finance
-                  </Label>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-check">
-                  <Input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="banking"
-                    defaultValue="banking"
-                  />
-                  <Label className="form-check-label" htmlFor="banking">
-                    Fashion
-                  </Label>
-                </div>
-              </Col>
-            </Row>
+              Buscar
+            </button>
+            <button
+              className="btn btn-light "
+              onClick={onCloseClick}
+            >
+              Limpiar filtros
+            </button>
           </div>
         </OffcanvasBody>
-        <div className="offcanvas-footer border-top p-3 text-center hstack gap-2">
-          <button
-            className="btn btn-light w-100"
-            onClick={onCloseClick}
-          >
-            Clear Filter
-          </button>
-          <button
-            type="submit"
-            className="btn btn-success w-100"
-            onClick={onCloseClick}
-          >
-            Filters
-          </button>
-        </div>
       </form>
     </Offcanvas>
   );

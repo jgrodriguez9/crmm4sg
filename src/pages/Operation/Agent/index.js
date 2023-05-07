@@ -143,19 +143,6 @@ const Agente = () => {
             filterable: false,
           },
           {
-            Header: "Lead Score",
-            accessor: "lead_score",
-            filterable: false,
-          },
-          {
-            Header: "Tags",
-            Cell: (contact) => (
-              <>
-                {contact.row.original.tags.map((item, key) => (<span className="badge badge-soft-primary me-1" key={key}>{item}</span>))}
-              </>
-            ),
-          },
-          {
             Header: "Last Contacted",
             Cell: (contact) => (
               <>
