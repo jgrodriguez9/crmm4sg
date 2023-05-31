@@ -88,9 +88,9 @@ const Navdata = () => {
             stateVariables: isOperation,
             subItems: [
                 {
-                    id: "agente",
-                    label: "Agente",
-                    link: "/agent",
+                    id: "lead",
+                    label: "Lead",
+                    link: "/lead",
                     parentId: "operation",
                 },
             ],

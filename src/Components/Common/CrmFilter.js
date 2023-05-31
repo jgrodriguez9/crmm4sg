@@ -7,6 +7,7 @@ import {
   Input,
   Row,
   Col,
+  Button,
 } from "reactstrap";
 import Flatpickr from "react-flatpickr";
 import Select from "react-select";
@@ -49,7 +50,7 @@ const handleselectCountry = (selectCountry) => {
     >
       <OffcanvasHeader className="bg-light" toggle={onCloseClick}>Filtros</OffcanvasHeader>
       <form className="d-flex flex-column justify-content-end h-100">
-        <OffcanvasBody>
+        <OffcanvasBody  className="mb-6">
           <Row>
             <Col xs="12" md="4">
               <div className="mb-3">
@@ -346,22 +347,32 @@ const handleselectCountry = (selectCountry) => {
               </div>
             </Col>
           </Row>
-          <div className="offcanvas-footer border-top py-2 text-center hstack gap-2 mb-3">
-            <button
-              type="submit"
-              className="btn btn-success "
-              onClick={onCloseClick}
-            >
-              Buscar
-            </button>
-            <button
-              className="btn btn-light "
-              onClick={onCloseClick}
-            >
-              Limpiar filtros
-            </button>
-          </div>
         </OffcanvasBody>
+        <div className="py-3 px-3 border position-sticky bottom-0 w-100 bg-light ">
+            <div className="d-flex align-items-center">
+                <div className="pe-2">
+                    <Button
+                        color="success"
+                        type="submit"
+                        size="sm"
+                        className="fw-500"
+                        onClick={onCloseClick}
+                    >Buscar
+                    </Button>
+                </div> 
+                <div>
+                    <Button
+                        color="danger"
+                        outline
+                        type="button"
+                        size="sm"
+                        className="fw-500"
+                        onClick={onCloseClick}
+                    >Limpiar filtros
+                    </Button>
+                </div>                  
+            </div>
+        </div>
       </form>
     </Offcanvas>
   );

@@ -5,7 +5,6 @@ import { useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TableContainer from "../../../Components/Common/TableContainer";
 import Loader from "../../../Components/Common/Loader";
-import moment from "moment/moment";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -13,9 +12,12 @@ import { useEffect } from "react";
 import {
     getContacts as onGetContacts,
   } from "../../../slices/thunks";
+import DetailLead from "../../../Components/Operation/Lead/DetailLead";
+import handleValidDate from "../../../util/handleValidDate";
+import handleValidTime from "../../../util/handleValidTime";
 
-const Agente = () => {
-    document.title="Agente | CRM - M4S";
+const Lead = () => {
+    document.title="Lead | CRM - M4S";
     const dispatch = useDispatch();
     const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
         crmcontacts: state.Crm.crmcontacts,
@@ -29,6 +31,8 @@ const Agente = () => {
     const [assignTag, setAssignTag] = useState([]);
     const [modal, setModal] = useState(false);
     const [isInfoDetails, setIsInfoDetails] = useState(false);
+    //detail lead
+    const [showDetailLead, setShowDetailLead] = useState(false)
 
     useEffect(() => {
         if (crmcontacts && !crmcontacts.length) {
@@ -39,24 +43,8 @@ const Agente = () => {
     const toggleInfo = () => {
         setIsInfoDetails(!isInfoDetails);
     };
-    const handleValidDate = date => {
-        const date1 = moment(new Date(date)).format("DD MMM Y");
-        return date1;
-    };
-    const handleValidTime = (time) => {
-        const time1 = new Date(time);
-        const getHour = time1.getUTCHours();
-        const getMin = time1.getUTCMinutes();
-        const getTime = `${getHour}:${getMin}`;
-        var meridiem = "";
-        if (getHour >= 12) {
-          meridiem = "PM";
-        } else {
-          meridiem = "AM";
-        }
-        const updateTime = moment(getTime, 'hh:mm').format('hh:mm') + " " + meridiem;
-        return updateTime;
-    };
+    
+    
     const toggle = useCallback(() => {
         if (modal) {
           setModal(false);
@@ -156,17 +144,34 @@ const Agente = () => {
             Cell: (cellProps) => {
               return (
                 <ul className="list-inline hstack gap-2 mb-0">
-                  <li className="list-inline-item edit" title="Call">
+                  <li className="list-inline-item edit" title="Llamada">
                     <Link to="#" className="text-muted d-inline-block">
                       <i className="ri-phone-line fs-16"></i>
                     </Link>
                   </li>
-                  <li className="list-inline-item edit" title="Message">
+                  <li className="list-inline-item edit" title="Mensaje">
                     <Link to="#" className="text-muted d-inline-block">
                       <i className="ri-question-answer-line fs-16"></i>
                     </Link>
                   </li>
-                  <li className="list-inline-item">
+                  <li className="list-inline-item edit" title="Correo electrónico">
+                    <Link to="#" className="text-muted d-inline-block">
+                      <i className="ri-mail-send-line fs-16"></i>
+                    </Link>
+                  </li>
+                  <li className="list-inline-item edit" title="Vista previa">
+                    <Link to="#" className="text-muted d-inline-block">
+                      <i 
+                        className="ri-user-search-fill fs-16"
+                        onClick={() => { 
+                            const contactData = cellProps.row.original; 
+                            setInfo(contactData); 
+                            setShowDetailLead(true)
+                        }}
+                      ></i>
+                    </Link>
+                  </li>
+                  {/* <li className="list-inline-item">
                     <UncontrolledDropdown>
                       <DropdownToggle
                         href="#"
@@ -177,7 +182,11 @@ const Agente = () => {
                       </DropdownToggle>
                       <DropdownMenu className="dropdown-menu-end">
                         <DropdownItem className="dropdown-item" href="#"
-                          onClick={() => { const contactData = cellProps.row.original; setInfo(contactData); }}
+                          onClick={() => { 
+                                const contactData = cellProps.row.original; 
+                                setInfo(contactData); 
+                                setShowDetailLead(true)
+                            }}
                         >
                           <i className="ri-eye-fill align-bottom me-2 text-muted"></i>{" "}
                           View
@@ -192,7 +201,7 @@ const Agente = () => {
                         </DropdownItem>                        
                       </DropdownMenu>
                     </UncontrolledDropdown>
-                  </li>
+                  </li> */}
                 </ul>
               );
             },
@@ -205,7 +214,7 @@ const Agente = () => {
         <>
             <div className="page-content">
                 <Container fluid>  
-                    <BreadCrumb title="Agente" pageTitle="Inicio" />
+                    <BreadCrumb title="Lead" pageTitle="Inicio" />
                     <Row>
                         <Col lg={12}>
                             <Card>
@@ -218,7 +227,7 @@ const Agente = () => {
                                             //setModal(true);
                                             }}
                                         >
-                                            <i className="ri-add-fill me-1 align-bottom"></i> Agregar Agente
+                                            <i className="ri-add-fill me-1 align-bottom"></i> Agregar Lead
                                         </button>
                                         </div>
                                         <div className="flex-shrink-0">
@@ -233,7 +242,7 @@ const Agente = () => {
                                 </CardHeader>
                             </Card>
                         </Col>
-                        <Col xxl={9}>
+                        <Col xxl={12}>
                             <Card id="contactList">
                                 <CardBody className="pt-0">
                                 <div>
@@ -241,7 +250,7 @@ const Agente = () => {
                                     <TableContainer
                                         columns={columns}
                                         data={(crmcontacts || [])}
-                                        isGlobalFilter={true}
+                                        isGlobalFilter={false}
                                         isAddUserList={false}
                                         customPageSize={8}
                                         className="custom-header-css"
@@ -250,7 +259,7 @@ const Agente = () => {
                                         theadClass="table-light"
                                         handleContactClick={handleContactClicks}
                                         isContactsFilter={true}
-                                        SearchPlaceholder='Search for contact...'
+                                        SearchPlaceholder='Buscar...'
                                     />
                                     ) : (<Loader error={error} />)
                                     }
@@ -258,109 +267,6 @@ const Agente = () => {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col xxl={3}>
-                            <Card id="contact-view-detail">
-                                <CardBody className="text-center">
-                                <div className="position-relative d-inline-block">
-                                    <img
-                                    src={process.env.REACT_APP_API_URL + "/images/users/" + (info.image_src || "avatar-10.jpg")}
-                                    alt=""
-                                    className="avatar-lg rounded-circle img-thumbnail"
-                                    />
-                                    <span className="contact-active position-absolute rounded-circle bg-success">
-                                    <span className="visually-hidden"></span>
-                                    </span>
-                                </div>
-                                <h5 className="mt-4 mb-1">{info.name || "Tonya Noble"}</h5>
-                                <p className="text-muted">{info.company || "Nesta Technologies"}</p>
-
-                                <ul className="list-inline mb-0">
-                                    <li className="list-inline-item avatar-xs">
-                                    <Link
-                                        to="#"
-                                        className="avatar-title bg-soft-success text-success fs-15 rounded"
-                                    >
-                                        <i className="ri-phone-line"></i>
-                                    </Link>
-                                    </li>
-                                    <li className="list-inline-item avatar-xs">
-                                    <Link
-                                        to="#"
-                                        className="avatar-title bg-soft-danger text-danger fs-15 rounded"
-                                    >
-                                        <i className="ri-mail-line"></i>
-                                    </Link>
-                                    </li>
-                                    <li className="list-inline-item avatar-xs">
-                                    <Link
-                                        to="#"
-                                        className="avatar-title bg-soft-warning text-warning fs-15 rounded"
-                                    >
-                                        <i className="ri-question-answer-line"></i>
-                                    </Link>
-                                    </li>
-                                </ul>
-                                </CardBody>
-                                <CardBody>
-                                <h6 className="text-muted text-uppercase fw-semibold mb-3">
-                                    Personal Information
-                                </h6>
-                                <p className="text-muted mb-4">
-                                    Hello, I'm {info.name || "Tonya Noble"}, The most effective objective is one
-                                    that is tailored to the job you are applying for. It states
-                                    what kind of career you are seeking, and what skills and
-                                    experiences.
-                                </p>
-                                <div className="table-responsive table-card">
-                                    <Table className="table table-borderless mb-0">
-                                    <tbody>
-                                        <tr>
-                                        <td className="fw-medium">
-                                            Designation
-                                        </td>
-                                        <td>Lead Designer / Developer</td>
-                                        </tr>
-                                        <tr>
-                                        <td className="fw-medium">
-                                            Email ID
-                                        </td>
-                                        <td>{info.email || "tonyanoble@velzon.com"}</td>
-                                        </tr>
-                                        <tr>
-                                        <td className="fw-medium">
-                                            Phone No
-                                        </td>
-                                        <td>{info.phone || "414-453-5725"}</td>
-                                        </tr>
-                                        <tr>
-                                        <td className="fw-medium">
-                                            Lead Score
-                                        </td>
-                                        <td>{info.lead_score || "154"}</td>
-                                        </tr>
-                                        <tr>
-                                        <td className="fw-medium">
-                                            Tags
-                                        </td>
-                                        <td>
-                                            {(info.tags || ["Lead", "Partner"]).map((item, key) => (<span className="badge badge-soft-primary me-1" key={key}>{item}</span>))}
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                        <td className="fw-medium">
-                                            Last Contacted
-                                        </td>
-                                        <td>
-                                            {handleValidDate(info.last_contacted || "2021-04-13T18:30:00.000Z")}{" "}
-                                            <small className="text-muted">{handleValidTime(info.last_contacted || "2021-04-13T18:30:00.000Z")}</small>
-                                        </td>
-                                        </tr>
-                                    </tbody>
-                                    </Table>
-                                </div>
-                                </CardBody>
-                            </Card>
-                            </Col>
                     </Row>
                 </Container>
             </div>
@@ -368,8 +274,13 @@ const Agente = () => {
                 show={isInfoDetails}
                 onCloseClick={() => setIsInfoDetails(false)}
             />
+            <DetailLead
+                show={showDetailLead} 
+                onCloseClick={() => setShowDetailLead(false)}
+                info={info}
+            />
         </>
     );
 };
 
-export default Agente;
+export default Lead;
