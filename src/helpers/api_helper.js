@@ -1,5 +1,6 @@
 import axios from "axios";
 import { api } from "../config";
+import { decrypData } from "../util/crypto";
 
 // default
 axios.defaults.baseURL = api.API_URL;
@@ -7,7 +8,13 @@ axios.defaults.baseURL = api.API_URL;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 // content type
-const token = JSON.parse(sessionStorage.getItem("authUser")) ? JSON.parse(sessionStorage.getItem("authUser")).token : null;
+let cuurentToken = null
+let storage =  localStorage.getItem("authenticatication-crm") || null
+if(storage){
+  const descryptedData = decrypData(storage);
+  cuurentToken = JSON.parse(descryptedData).token;
+}
+const token = cuurentToken;
 if (token)
   axios.defaults.headers.common["Authorization"] = "Bearer " + token;
 
@@ -94,11 +101,12 @@ class APIClient {
   };
 }
 const getLoggedinUser = () => {
-  const user = sessionStorage.getItem("authUser");
+  const user = localStorage.getItem("authenticatication-crm");
   if (!user) {
     return null;
   } else {
-    return JSON.parse(user);
+    const descryptedData = decrypData(user)
+    return JSON.parse(descryptedData);
   }
 };
 

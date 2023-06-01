@@ -18,8 +18,13 @@ const loginSlice = createSlice({
       state.isUserLogout = false;
       state.errorMsg = true;
     },
+    proccessLogin(state) {
+      state.loading = true;
+      state.error = null
+      state.errorMsg = false;
+    },
     loginSuccess(state, action) {
-      // state.user = action.payload
+      state.user = action.payload
       state.loading = false;
       state.errorMsg = false;
     },
@@ -38,7 +43,8 @@ export const {
   apiError,
   loginSuccess,
   logoutUserSuccess,
-  reset_login_flag
+  reset_login_flag,
+  proccessLogin
 } = loginSlice.actions
 
 export default loginSlice.reducer;

@@ -36,7 +36,7 @@ const Lead = () => {
 
     useEffect(() => {
         if (crmcontacts && !crmcontacts.length) {
-          dispatch(onGetContacts());
+          //dispatch(onGetContacts());
         }
       }, [dispatch, crmcontacts]);
 

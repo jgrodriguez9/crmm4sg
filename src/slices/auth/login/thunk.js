@@ -1,48 +1,32 @@
 //Include Both Helper File with needed methods
+import { postLogin } from "../../../helpers/auth";
 import {
-  postFakeLogin,
-  postJwtLogin,
   postSocialLogin,
 } from "../../../helpers/fakebackend_helper";
+import { decrypData, encryptData } from "../../../util/crypto";
 
-import { loginSuccess, logoutUserSuccess, apiError, reset_login_flag } from './reducer';
+import { loginSuccess, logoutUserSuccess, apiError, reset_login_flag, proccessLogin } from './reducer';
 
 export const loginUser = (user, history) => async (dispatch) => {
   try {
-    let response;
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
-      response = postJwtLogin({
-        email: user.email,
-        password: user.password
-      });
 
-    } else if (process.env.REACT_APP_API_URL) {
-      response = postFakeLogin({
-        email: user.email,
-        password: user.password,
-      });
-    }
+    dispatch(proccessLogin())
+
+    const response =  postLogin({
+      loginId: user.email, 
+      password: user.password,
+      idApp: "f7b3bafa-6fce-4f11-8c1e-0581599d212a",
+      appName: "M4SG"
+    });     
 
     var data = await response;
-
-    if (data) {
-      sessionStorage.setItem("authUser", JSON.stringify(data));
-      if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
-        var finallogin = JSON.stringify(data);
-        finallogin = JSON.parse(finallogin)
-        data = finallogin.data;
-        if (finallogin.status === "success") {
-          dispatch(loginSuccess(data));
-          history('/dashboard')
-        } else {
-          dispatch(apiError(finallogin));
-        }
-      } else {
-        dispatch(loginSuccess(data));
-        history('/dashboard')
-      }
+    const result = await data.json()
+    if (result.status) {
+      const encryptedData = encryptData(JSON.stringify(result.data))
+      localStorage.setItem("authenticatication-crm", encryptedData);
+      const descryptedData = decrypData(encryptedData)
+      dispatch(loginSuccess(JSON.parse(descryptedData)));
+      history('/dashboard')
     }
   } catch (error) {
     dispatch(apiError(error));
@@ -51,7 +35,7 @@ export const loginUser = (user, history) => async (dispatch) => {
 
 export const logoutUser = () => async (dispatch) => {
   try {
-    sessionStorage.removeItem("authUser");
+    localStorage.removeItem("authenticatication-crm");
 
     if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
       
@@ -77,7 +61,7 @@ export const socialLogin = (data, history, type) => async (dispatch) => {
     const socialdata = await response;
 
     if (socialdata) {
-      sessionStorage.setItem("authUser", JSON.stringify(response));
+      localStorage.setItem("authenticatication-crm", JSON.stringify(response));
       dispatch(loginSuccess(response));
       history('/dashboard')
     }

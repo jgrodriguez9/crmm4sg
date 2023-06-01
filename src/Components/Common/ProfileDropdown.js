@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 
 //import images
 import avatar1 from "../../assets/images/users/avatar-1.jpg";
+import { decrypData } from '../../util/crypto';
 
 const ProfileDropdown = () => {
-
-    const { user } = useSelector(state => ({
-        user: state.Profile.user,
-    }));
-
     const [userName, setUserName] = useState("Admin");
 
     useEffect(() => {
-        if (sessionStorage.getItem("authUser")) {
-            const obj = JSON.parse(sessionStorage.getItem("authUser"));
-            setUserName(process.env.REACT_APP_DEFAULTAUTH === "fake" ? obj.username === undefined ? user.first_name ? user.first_name : obj.data.first_name : "Admin" || "Admin" :
-                process.env.REACT_APP_DEFAULTAUTH === "firebase" ? obj.providerData[0].email : "Admin"
-            );
+        if (localStorage.getItem("authenticatication-crm")) {
+            const decryptedData = decrypData(localStorage.getItem("authenticatication-crm"))
+            const obj = JSON.parse(decryptedData);
+            setUserName(obj.user.uniqueUsername);
         }
-    }, [userName, user]);
+    }, []);
 
     //Dropdown Toggle
     const [isProfileDropdown, setIsProfileDropdown] = useState(false);
@@ -42,8 +36,8 @@ const ProfileDropdown = () => {
                     </span>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-end">
-                    <h6 className="dropdown-header">Welcome {userName}!</h6>
-                    <DropdownItem className='p-0'>
+                    <h6 className="dropdown-header">Bienvenido {userName}!</h6>
+                    {/* <DropdownItem className='p-0'>
                         <Link to={process.env.PUBLIC_URL + "/profile"} className="dropdown-item">
                             <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
                             <span className="align-middle">Profile</span>
@@ -54,13 +48,13 @@ const ProfileDropdown = () => {
                             <i className="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span
                                 className="align-middle">Messages</span>
                         </Link>
-                    </DropdownItem>  
+                    </DropdownItem>   */}
                     <div className="dropdown-divider"></div>
                     <DropdownItem className='p-0'>
-                        <Link to={process.env.PUBLIC_URL + "/logout"} className="dropdown-item">
+                        <Link to="/logout" className="dropdown-item">
                             <i
                                 className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
-                                    className="align-middle" data-key="t-logout">Logout</span>
+                                    className="align-middle" data-key="t-logout">Cerrar sesión</span>
                         </Link>
                     </DropdownItem>
                 </DropdownMenu>
