@@ -36,7 +36,7 @@ const Lead = () => {
 
     useEffect(() => {
         if (crmcontacts && !crmcontacts.length) {
-          //dispatch(onGetContacts());
+          dispatch(onGetContacts());
         }
       }, [dispatch, crmcontacts]);
 
@@ -171,37 +171,6 @@ const Lead = () => {
                       ></i>
                     </Link>
                   </li>
-                  {/* <li className="list-inline-item">
-                    <UncontrolledDropdown>
-                      <DropdownToggle
-                        href="#"
-                        className="btn btn-soft-secondary btn-sm dropdown"
-                        tag="button"
-                      >
-                        <i className="ri-more-fill align-middle"></i>
-                      </DropdownToggle>
-                      <DropdownMenu className="dropdown-menu-end">
-                        <DropdownItem className="dropdown-item" href="#"
-                          onClick={() => { 
-                                const contactData = cellProps.row.original; 
-                                setInfo(contactData); 
-                                setShowDetailLead(true)
-                            }}
-                        >
-                          <i className="ri-eye-fill align-bottom me-2 text-muted"></i>{" "}
-                          View
-                        </DropdownItem>
-                        <DropdownItem
-                          className="dropdown-item edit-item-btn"
-                          href="#"
-                          onClick={() => { const contactData = cellProps.row.original; handleContactClick(contactData); }}
-                        >
-                          <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>{" "}
-                          Edit
-                        </DropdownItem>                        
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
-                  </li> */}
                 </ul>
               );
             },

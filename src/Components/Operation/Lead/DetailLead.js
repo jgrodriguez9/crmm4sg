@@ -9,6 +9,7 @@ import {
   Button,
 } from "reactstrap";
 import classNames from "classnames";
+import { Link } from "react-router-dom";
 
 const DetailLead = ({ show, onCloseClick, info=null }) => {   
     
@@ -72,7 +73,10 @@ const DetailLead = ({ show, onCloseClick, info=null }) => {
                         </div>
                     </div>
 
-                    <Accordion id="vista-previa-accordion" className="lefticon-accordion custom-accordionwithicon accordion-border-box">
+                    <Accordion 
+                        id="vista-previa-accordion" 
+                        className="lefticon-accordion custom-accordionwithicon accordion-border-box"
+                    >
                         <AccordionItem className="border-start-0 border-end-0  rounded-0">
                             <h2 className="accordion-header" id="headingOne">
                                 <button
@@ -241,14 +245,11 @@ const DetailLead = ({ show, onCloseClick, info=null }) => {
                         </Button>
                     </div>
                     <div>
-                        <Button
-                            color="link"
-                            type="button"
-                            size="sm"
-                            className="fw-normal"
-                            onClick={onCloseClick}
+                        <Link
+                            to={`/lead/1`}
+                            className="fw-normal btn btn-link btn-sm"
                         >Ver registro
-                        </Button>
+                        </Link>
                     </div>                    
                 </div>
             </div>

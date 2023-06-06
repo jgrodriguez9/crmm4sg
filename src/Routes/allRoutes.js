@@ -8,6 +8,7 @@ import Dashboard from "../pages/Dashboard";
 import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
 import Lead from "../pages/Operation/Lead";
+import LeadProfile from "../pages/Operation/Lead/Detail";
 
 // User Profile
 // import UserProfile from "../pages/Authentication/user-profile";
@@ -18,6 +19,7 @@ const authProtectedRoutes = [
 
   //Agente
   { path: "/lead", component: <Lead /> },
+  { path: "/lead/:id", component: <LeadProfile /> },
 
   //User Profile
   // { path: "/profile", component: <UserProfile /> },

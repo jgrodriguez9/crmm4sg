@@ -1,4 +1,5 @@
 //Include Both Helper File with needed methods
+import { authData } from "../../../common/authData";
 import { postLogin } from "../../../helpers/auth";
 import {
   postSocialLogin,
@@ -22,7 +23,9 @@ export const loginUser = (user, history) => async (dispatch) => {
     var data = await response;
     const result = await data.json()
     if (result.status) {
-      const encryptedData = encryptData(JSON.stringify(result.data))
+      //test until api is working good
+      const encryptedData = encryptData(JSON.stringify(authData))
+      //const encryptedData = encryptData(JSON.stringify(result.data))
       localStorage.setItem("authenticatication-crm", encryptedData);
       const descryptedData = decrypData(encryptedData)
       dispatch(loginSuccess(JSON.parse(descryptedData)));
