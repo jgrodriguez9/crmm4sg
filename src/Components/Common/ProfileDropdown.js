@@ -5,15 +5,17 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap
 //import images
 import avatar1 from "../../assets/images/users/avatar-1.jpg";
 import { decrypData } from '../../util/crypto';
+import { getDataAgent } from '../../util/getDataAgent';
 
 const ProfileDropdown = () => {
-    const [userName, setUserName] = useState("Admin");
+    const [user, setUser] = useState(null)
 
     useEffect(() => {
         if (localStorage.getItem("authenticatication-crm")) {
             const decryptedData = decrypData(localStorage.getItem("authenticatication-crm"))
+            console.log(decryptedData)
             const obj = JSON.parse(decryptedData);
-            setUserName(obj.user.uniqueUsername);
+            setUser(obj.user)
         }
     }, []);
 
@@ -30,25 +32,30 @@ const ProfileDropdown = () => {
                         <img className="rounded-circle header-profile-user" src={avatar1}
                             alt="Header Avatar" />
                         <span className="text-start ms-xl-2">
-                            <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{userName}</span>
-                            <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">Founder</span>
+                            <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{user?.username}</span>
                         </span>
                     </span>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-end">
-                    <h6 className="dropdown-header">Bienvenido {userName}!</h6>
-                    {/* <DropdownItem className='p-0'>
-                        <Link to={process.env.PUBLIC_URL + "/profile"} className="dropdown-item">
-                            <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
-                            <span className="align-middle">Profile</span>
-                        </Link>
+                    <h6 className="dropdown-header">Bienvenido {user?.firstName}!</h6>
+                    <DropdownItem className='p-0'>
+                        <div className="dropdown-item">
+                            <i className="mdi mdi-email text-muted fs-16 align-middle me-1"></i>
+                            <span className="align-middle">{user?.email}</span>
+                        </div>
                     </DropdownItem>
                     <DropdownItem className='p-0'>
-                        <Link to={process.env.PUBLIC_URL + "/apps-chat"} className="dropdown-item">
-                            <i className="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span
-                                className="align-middle">Messages</span>
-                        </Link>
-                    </DropdownItem>   */}
+                        <div className="dropdown-item">
+                            <i className="mdi mdi-google-translate text-muted fs-16 align-middle me-1"></i>
+                            <span className="align-middle">{getDataAgent(user, 'lang')}</span>
+                        </div>
+                    </DropdownItem>
+                    <DropdownItem className='p-0'>
+                        <div className="dropdown-item">
+                            <i className="mdi mdi-security text-muted fs-16 align-middle me-1"></i>
+                            <span className="align-middle">{getDataAgent(user, 'role')}</span>
+                        </div>
+                    </DropdownItem>
                     <div className="dropdown-divider"></div>
                     <DropdownItem className='p-0'>
                         <Link to="/logout" className="dropdown-item">

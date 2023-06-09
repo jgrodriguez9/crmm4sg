@@ -3,7 +3,7 @@ import { Col, Container,Row } from 'reactstrap'
 import ParticlesAuth from "../../../pages/AuthenticationInner/ParticlesAuth";
 
 //import images
-import comingsoon from '../../../assets/images/comingsoon.png';
+import comingsoon from '../../../assets/images/comingsoon.png'
 
 const ComingSoon = () => {
 

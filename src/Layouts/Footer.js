@@ -12,7 +12,7 @@ const Footer = () => {
                         </Col>
                         <Col sm={6}>
                             <div className="text-sm-end d-none d-sm-block">
-                                Diseñado & Dearrollado por SoftByte
+                                Diseñado & Dearrollado por Byte Solutions
                             </div>
                         </Col>
                     </Row>

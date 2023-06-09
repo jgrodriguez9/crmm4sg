@@ -25,7 +25,7 @@ const ParticlesAuth = ({ children }) => {
                         <div className="row">
                             <div className="col-lg-12">
                                 <div className="text-center">
-                                    <p className="mb-0 text-muted">&copy; {new Date().getFullYear()} Desarrollado con <i className="mdi mdi-heart text-danger"></i> por SoftByte</p>
+                                    <p className="mb-0 text-muted">&copy; {new Date().getFullYear()} Desarrollado con <i className="mdi mdi-heart text-danger"></i> por Byte Solutions</p>
                                 </div>
                             </div>
                         </div>

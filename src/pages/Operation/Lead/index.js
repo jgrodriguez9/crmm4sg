@@ -190,14 +190,14 @@ const Lead = () => {
                                 <CardHeader>
                                     <div className="d-flex align-items-center flex-wrap gap-2">
                                         <div className="flex-grow-1">
-                                        <button
+                                        {/* <button
                                             className="btn btn-success add-btn"
                                             onClick={() => {
                                             //setModal(true);
                                             }}
                                         >
                                             <i className="ri-add-fill me-1 align-bottom"></i> Agregar Lead
-                                        </button>
+                                        </button> */}
                                         </div>
                                         <div className="flex-shrink-0">
                                         <div className="hstack text-nowrap gap-2">                                        

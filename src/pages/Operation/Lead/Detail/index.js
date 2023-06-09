@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Card, CardBody, CardHeader, Col, Container, Input, Label, Nav, NavItem, NavLink, Row, TabContent, TabPane } from "reactstrap";
 import avatar1 from '../../../../assets/images/users/avatar-1.jpg';
 import BreadCrumb from "../../../../Components/Common/BreadCrumb";
@@ -45,77 +45,42 @@ const LeadProfile = () => {
                                                 </Label>
                                             </div>
                                         </div>
-                                        <h5 className="fs-16 mb-1">Anna Adame</h5>
-                                        <p className="text-muted mb-0">Lead Designer / Developer</p>
+                                        <h5 className="fs-16 mb-1">Daniel Maximiliano</h5>
+                                        <p className="text-muted mb-0">Jesus Enrique</p>
+                                        <p className="text-muted mb-0">Amigo(a)</p>
+                                        <p className="text-muted mb-0">MIN, USA</p>
                                     </div>
                                 </CardBody>
                             </Card>
 
                             <Card>
                                 <CardBody>
-                                    <div className="d-flex align-items-center mb-5">
-                                        <div className="flex-grow-1">
-                                            <h5 className="card-title mb-0">Complete Your Profile</h5>
-                                        </div>
-                                        <div className="flex-shrink-0">
-                                            <Link to="#" className="badge bg-light text-primary fs-12"><i
-                                                className="ri-edit-box-line align-bottom me-1"></i> Edit</Link>
-                                        </div>
-                                    </div>
-                                    <div className="progress animated-progress custom-progress progress-label">
-                                        <div className="progress-bar bg-danger" role="progressbar" style={{ "width": "30%" }}
-                                            aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                            <div className="label">30%</div>
-                                        </div>
-                                    </div>
-                                </CardBody>
-                            </Card>
-                            <Card>
-                                <CardBody>
                                     <div className="d-flex align-items-center mb-4">
                                         <div className="flex-grow-1">
-                                            <h5 className="card-title mb-0">Portfolio</h5>
-                                        </div>
-                                        <div className="flex-shrink-0">
-                                            <Link to="#" className="badge bg-light text-primary fs-12"><i
-                                                className="ri-add-fill align-bottom me-1"></i> Add</Link>
+                                            <h5 className="card-title mb-0">Cuenta</h5>
                                         </div>
                                     </div>
-                                    <div className="mb-3 d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-dark text-light">
-                                                <i className="ri-github-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="email" className="form-control" id="gitUsername" placeholder="Username"
-                                            defaultValue="@daveadame" />
-                                    </div>
-                                    <div className="mb-3 d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-primary">
-                                                <i className="ri-global-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="text" className="form-control" id="websiteInput"
-                                            placeholder="www.example.com" defaultValue="www.velzon.com" />
-                                    </div>
-                                    <div className="mb-3 d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-success">
-                                                <i className="ri-dribbble-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="text" className="form-control" id="dribbleName" placeholder="Username"
-                                            defaultValue="@dave_adame" />
-                                    </div>
-                                    <div className="d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-danger">
-                                                <i className="ri-pinterest-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="text" className="form-control" id="pinterestName"
-                                            placeholder="Username" defaultValue="Advance Dave" />
+                                    <div className="table-card">
+                                        <table className="table mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td className="fw-medium">Contrato</td>
+                                                    <td>REF 496615</td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="fw-medium">Booking</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="fw-medium">Membresía</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="fw-medium">Certificado</td>
+                                                    <td></td>
+                                                </tr>                                                                                           
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </CardBody>
                             </Card>

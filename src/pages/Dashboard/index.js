@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row } from 'reactstrap';
+import { Col, Container, Row } from 'reactstrap';
 import BreadCrumb from '../../Components/Common/BreadCrumb';
 import BalanceOverview from './BalanceOverview';
 import ClosingDeals from './ClosingDeals';
@@ -10,6 +10,7 @@ import SalesForecast from './SalesForecast';
 import UpcomingActivities from './UpcomingActivities';
 import Widgets from './Widgets';
 import ComingSoon from '../Utils/ComingSoon';
+import kpi from '../../assets/images/kpi.png';
 
 
 const DashboardCrm = () => {
@@ -20,7 +21,8 @@ const DashboardCrm = () => {
                 <Container fluid>  
                     <BreadCrumb title="CRM" pageTitle="Dashboards" />
                     <Row>
-                        <ComingSoon />
+                        <Col><img src={kpi} className='w-100' alt='' /></Col>
+                        {/* <ComingSoon /> */}
                     </Row>
                     {/* <Row>
                         <Widgets />
