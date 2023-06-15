@@ -246,7 +246,7 @@ const DetailLead = ({ show, onCloseClick, info=null }) => {
                     </div>
                     <div>
                         <Link
-                            to={`/lead/1`}
+                            to={`/client/1`}
                             className="fw-normal btn btn-link btn-sm"
                         >Ver registro
                         </Link>

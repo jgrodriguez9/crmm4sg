@@ -31,7 +31,7 @@ const crmWidgets = [
     },
     {
         id: 3,
-        label: "Lead Coversation",
+        label: "Client Coversation",
         badge: "ri-arrow-down-circle-line text-danger",
         icon: "ri-pulse-line",
         counter: "32.89",
@@ -111,7 +111,7 @@ const dealsStatus = [
         img: avatar6,
         representativeName: "Vitoria Rodrigues",
         badgeClass: "info",
-        status: "New Lead",
+        status: "New Client",
         statusValue: "$78.9K",
     },
 ];

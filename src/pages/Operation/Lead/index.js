@@ -17,7 +17,7 @@ import handleValidDate from "../../../util/handleValidDate";
 import handleValidTime from "../../../util/handleValidTime";
 
 const Lead = () => {
-    document.title="Lead | CRM - M4S";
+    document.title="Cliente | CRM - M4S";
     const dispatch = useDispatch();
     const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
         crmcontacts: state.Crm.crmcontacts,
@@ -42,8 +42,7 @@ const Lead = () => {
 
     const toggleInfo = () => {
         setIsInfoDetails(!isInfoDetails);
-    };
-    
+    };   
     
     const toggle = useCallback(() => {
         if (modal) {

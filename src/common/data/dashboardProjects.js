@@ -24,11 +24,11 @@ const projectsWidgets = [
         id: 2,
         feaIcon: "award",
         feaIconClass: "warning",
-        label: "New Leads",
+        label: "New Clients",
         badgeClass: "success",
         icon: "ri-arrow-up-s-line",
         percentage: "3.58 %",
-        caption: "Leads this month",
+        caption: "Clients this month",
         subCounter: [{ id: 1, counter: "7522", suffix: "", separator: "," }]
     },
     {
