@@ -86,14 +86,185 @@ const ReservationFilter = ({ show, onCloseClick }) => {
                 </Col>
                 <Col xs="12" md="4">
                     <div className="mb-2">
-                        <Label htmlFor="apellido" className="form-label text-muted mb-0">Estatus</Label>
+                        <Label htmlFor="estatus" className="form-label text-muted mb-0">Estatus</Label>
                         <Select
                             className="mb-0"
                             value={null}
                             onChange={() => {}}
-                            options={[{value: 'Share', label: 'Share'}, {value: 'Share', label: 'Share'}]}
+                            options={[]}
                             placeholder="Seleccionar opción"
                             id="programa"
+                        />
+                    </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs="12" md="4">
+                    <div className="mb-2">
+                        <Label htmlFor="ingresada" className="form-label text-muted mb-0">Ingresada Desde</Label>
+                        <DatePicker 
+                            id='ingresada'
+                            onChangeDate={onChangeDateLLegada}
+                        />
+                    </div>
+                </Col>
+                <Col xs="12" md="4">
+                    <div className="mb-2">
+                        <Label htmlFor="ingresada-hasta" className="form-label text-muted mb-0">Hasta</Label>
+                        <DatePicker 
+                            id='ingresada-hasta'
+                            onChangeDate={onChangeDateLLegada}
+                        />
+                    </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs="12" md="4">
+                    <div className="mb-2">
+                        <Label htmlFor="certificado" className="form-label text-muted mb-0">No Certificado</Label>
+                        <Input className="form-control" type="text" id="certificado"  />
+                    </div>
+                </Col>
+                <Col xs="12" md="4">
+                    <div className="mb-2">
+                        <Label htmlFor="pais" className="form-label text-muted mb-0">País</Label>
+                        <Select
+                            className="mb-0"
+                            value={null}
+                            onChange={() => {}}
+                            options={[]}
+                            placeholder="Seleccionar opción"
+                            id="pais"
+                        />
+                    </div>
+                </Col>
+                <Col xs="12" md="4">
+                    <div className="mb-2">
+                        <Label htmlFor="estado" className="form-label text-muted mb-0">Estado</Label>
+                        <Select
+                            className="mb-0"
+                            value={null}
+                            onChange={() => {}}
+                            options={[]}
+                            placeholder="Seleccionar opción"
+                            id="estado"
+                        />
+                    </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs="12" md="12">
+                    <div className="mb-2">
+                        <Label htmlFor="hotel" className="form-label text-muted mb-0">Hotel</Label>
+                        <Select
+                            className="mb-0"
+                            value={null}
+                            onChange={() => {}}
+                            options={[]}
+                            placeholder="Seleccionar opción"
+                            id="hotel"
+                        />
+                    </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs="12" md="6">
+                    <div className="mb-2">
+                        <Label htmlFor="departamento" className="form-label text-muted mb-0">Departamento</Label>
+                        <Select
+                            className="mb-0"
+                            value={null}
+                            onChange={() => {}}
+                            options={[]}
+                            placeholder="Seleccionar opción"
+                            id="departamento"
+                        />
+                    </div>
+                </Col>
+                <Col xs="12" md="6">
+                    <div className="mb-2">
+                        <Label htmlFor="segmento" className="form-label text-muted mb-0">Segmento</Label>
+                        <Select
+                            className="mb-0"
+                            value={null}
+                            onChange={() => {}}
+                            options={[]}
+                            placeholder="Seleccionar opción"
+                            id="segmento"
+                        />
+                    </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs="12" md="4">
+                    <div className="mb-2">
+                        <Label htmlFor="call-center" className="form-label text-muted mb-0">Call Center</Label>
+                        <Select
+                            className="mb-0"
+                            value={null}
+                            onChange={() => {}}
+                            options={[]}
+                            placeholder="Seleccionar opción"
+                            id="call-center"
+                        />
+                    </div>
+                </Col>
+                <Col xs="12" md="4">
+                    <div className="mb-2">
+                        <Label htmlFor="campana" className="form-label text-muted mb-0">Campaña</Label>
+                        <Select
+                            className="mb-0"
+                            value={null}
+                            onChange={() => {}}
+                            options={[]}
+                            placeholder="Seleccionar opción"
+                            id="campana"
+                        />
+                    </div>
+                </Col>
+                <Col xs="12" md="4">
+                    <div className="mb-2">
+                        <Label htmlFor="programa" className="form-label text-muted mb-0">Programa</Label>
+                        <Select
+                            className="mb-0"
+                            value={null}
+                            onChange={() => {}}
+                            options={[]}
+                            placeholder="Seleccionar opción"
+                            id="programa"
+                        />
+                    </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs="12" md="4">
+                    <div className="mb-2">
+                        <Label htmlFor="consultor" className="form-label text-muted mb-0">Consultos</Label>
+                        <Select
+                            className="mb-0"
+                            value={null}
+                            onChange={() => {}}
+                            options={[]}
+                            placeholder="Seleccionar opción"
+                            id="consultor"
+                        />
+                    </div>
+                </Col>
+                <Col xs="12" md="4">
+                    <div className="mb-2">
+                        <Label htmlFor="telefono" className="form-label text-muted mb-0">Teléfono</Label>
+                        <DatePicker 
+                            id='telefono'
+                            onChangeDate={onChangeDateLLegada}
+                        />
+                    </div>
+                </Col>
+                <Col xs="12" md="4">
+                    <div className="mb-2">
+                        <Label htmlFor="correo-electronico" className="form-label text-muted mb-0">Correo electrónico</Label>
+                        <DatePicker 
+                            id='correo-electronico'
+                            onChangeDate={onChangeDateLLegada}
                         />
                     </div>
                 </Col>

@@ -2,18 +2,81 @@ import { useState } from "react";
 import { Card, CardBody, CardHeader, Col, Container, Row } from "reactstrap";
 import BreadCrumb from "../../../Components/Common/BreadCrumb";
 import ReservationFilter from "../../../Components/Operation/Reservation/ReservationFilter";
+import TableContainer from "../../../Components/Common/TableContainer";
+import Loader from "../../../Components/Common/Loader";
+import { useMemo } from "react";
+import { Link } from "react-router-dom";
 
 const Reservation = () => {
     document.title="Reservación | CRM - M4S";
     const [item, setItems] = useState({
         loading: false,
-        data: []
+        data: [],
+        isSuccess: true,
+        error: null
     });
     const [filterDialog, setFilterDialog] = useState(false)
 
     const toggleFilter = () => {
         setFilterDialog(!filterDialog);
     };
+
+    const columns = useMemo(
+        () => [
+          {
+            Header: "ID",
+            accessor: "id",
+            filterable: false,
+          },
+          {
+            Header: "Confirmation",
+            accessor: "confirmation",
+            filterable: false,
+          },
+          {
+            Header: "Nombre",
+            accessor: "nombre",
+            filterable: false,
+          },
+          {
+            Header: "Id Booking",
+            accessor: "idBooking",
+            filterable: false,
+          },
+          {
+            Header: "LLegada",
+            accessor: "llegada",
+            filterable: false,
+          },
+          {
+            Header: "Salida",
+            accessor: "salida",
+            filterable: false,
+          },
+          {
+            Header: "Action",
+            Cell: (cellProps) => {
+              return (
+                <ul className="list-inline hstack gap-2 mb-0">
+                  <li className="list-inline-item edit" title="Vista previa">
+                    <Link to="#" className="text-muted d-inline-block">
+                      <i 
+                        className="ri-user-search-fill fs-16"
+                        onClick={() => { 
+                            const itemData = cellProps.row.original; 
+                            //setInfo(contactData); 
+                            //setShowDetailLead(true)
+                        }}
+                      ></i>
+                    </Link>
+                  </li>
+                </ul>
+              );
+            },
+          },
+        ],
+        []
+    );
 
     return (
         <>
@@ -50,11 +113,11 @@ const Reservation = () => {
                         <Col xxl={12}>
                             <Card id="contactList">
                                 <CardBody className="pt-0">
-                                {/* <div>
-                                    {isContactSuccess && crmcontacts.length ? (
+                                <div>
+                                    {item.isSuccess ? (
                                     <TableContainer
                                         columns={columns}
-                                        data={(crmcontacts || [])}
+                                        data={(item.data)}
                                         isGlobalFilter={false}
                                         isAddUserList={false}
                                         customPageSize={8}
@@ -62,13 +125,12 @@ const Reservation = () => {
                                         divClass="table-responsive table-card mb-3"
                                         tableClass="align-middle table-nowrap"
                                         theadClass="table-light"
-                                        handleContactClick={handleContactClicks}
                                         isContactsFilter={true}
                                         SearchPlaceholder='Buscar...'
                                     />
-                                    ) : (<Loader error={error} />)
+                                    ) : (<Loader error={item.error} />)
                                     }
-                                </div> */}
+                                </div>
                                 </CardBody>
                             </Card>
                         </Col>
