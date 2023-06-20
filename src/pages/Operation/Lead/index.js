@@ -12,9 +12,9 @@ import { useEffect } from "react";
 import {
     getContacts as onGetContacts,
   } from "../../../slices/thunks";
-import DetailLead from "../../../Components/Operation/Lead/DetailLead";
 import handleValidDate from "../../../util/handleValidDate";
 import handleValidTime from "../../../util/handleValidTime";
+import DetailCanvas from "../../../Components/Common/DetailCanvas";
 
 const Lead = () => {
     document.title="Cliente | CRM - M4S";
@@ -24,7 +24,7 @@ const Lead = () => {
         isContactSuccess: state.Crm.isContactSuccess,
         error: state.Crm.error,
     }));
-    const [info, setInfo] = useState([]);
+    const [info, setInfo] = useState(null);
     const [contact, setContact] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [tag, setTag] = useState([]);
@@ -83,11 +83,120 @@ const Lead = () => {
         toggle();
     };
 
+    const builtInfo = (dataTable) => {
+      const header = {
+          title: {
+              label:  '',
+              value: 'Alexis Clarke'
+          },
+          img: {
+            url: process.env.REACT_APP_API_URL + "/images/users/" + (dataTable.image_src || "avatar-10.jpg")
+          },
+          body: [
+              {
+                  label:  '',
+                  value: 'Digitech Galaxy'
+              },
+          ]
+      }
+      const detailClient = {
+          id: 'detailClient',
+          title: 'Acerca de este lead',
+          collapse: false,
+          body: [
+              {
+                  label: 'Correos',
+                  value: [
+                    {
+                      text: '*******test.com',
+                      iconClasses: 'ri-mail-line text-danger',
+                      action: null,
+                    },
+                    {
+                      text: '*******test1.com',
+                      iconClasses: 'ri-mail-line text-danger',
+                      action: null,
+                    }
+                  ]
+              },
+              {
+                label: 'Teléfonos',
+                value: [
+                  {
+                    text: '*******42',
+                    iconClasses: 'ri-phone-line text-success',
+                    action: null,
+                  },
+                  {
+                    text: '*******99',
+                    iconClasses: 'ri-phone-line text-success',
+                    action: null,
+                  }
+                ]
+            },
+            {
+                label: 'Hora de contactación',
+                value: '13:00',
+                extraClassess: 'fw-semibold text-primary'
+            },
+          ]
+      }
+      const atribucionCliente = {
+          id: 'atribucionCliente',
+          title: 'Atribución de creación de este cliente',
+          collapse: true,
+          body: [
+              {
+                  label: 'Referido por',
+                  value: 'John Doe'
+              },
+              {
+                  label: 'Copropietario',
+                  value: 'Jesus Enrique'
+              },
+              {
+                  label: 'Contrato',
+                  value: 'RFCG555'
+              },
+              {
+                  label: 'Dirección',
+                  value: 'NN, MEX'
+              }
+          ]     
+      }
+      const beneficiosClient = {
+          id: 'beneficiosClient',
+          title: 'Beneficios de este cliente',
+          collapse: true,
+          body: [
+              {
+                  label: 'Booking',
+                  value: ''
+              },
+              {
+                  label: 'Membresía',
+                  value: ''
+              },
+              {
+                  label: 'Certificados',
+                  value: 'RFCG555'
+              }
+          ]
+      }
+      const data = {
+          title: 'Alexis Clarke',
+          header: header,
+          items: [detailClient, atribucionCliente, beneficiosClient],
+          goToView: `/client/1`
+      }
+      setInfo(data)
+    }
+
 
     const columns = useMemo(
         () => [
           {
-            Header: "Name",
+            Header: "Nombre",
             accessor: "name",
             filterable: false,
             Cell: (contact) => (
@@ -115,22 +224,22 @@ const Lead = () => {
             ),
           },
           {
-            Header: "Company",
+            Header: "Compañía",
             accessor: "company",
             filterable: false,
           },
           {
-            Header: "Email ID",
+            Header: "Email",
             accessor: "email",
             filterable: false,
           },
           {
-            Header: "Phone No",
+            Header: "Teléfono",
             accessor: "phone",
             filterable: false,
           },
           {
-            Header: "Last Contacted",
+            Header: "Último contacto",
             Cell: (contact) => (
               <>
                 {handleValidDate(contact.row.original.last_contacted)},{" "}
@@ -139,7 +248,7 @@ const Lead = () => {
             ),
           },
           {
-            Header: "Action",
+            id: "action",
             Cell: (cellProps) => {
               return (
                 <ul className="list-inline hstack gap-2 mb-0">
@@ -164,7 +273,7 @@ const Lead = () => {
                         className="ri-user-search-fill fs-16"
                         onClick={() => { 
                             const contactData = cellProps.row.original; 
-                            setInfo(contactData); 
+                            builtInfo(contactData); 
                             setShowDetailLead(true)
                         }}
                       ></i>
@@ -242,11 +351,15 @@ const Lead = () => {
                 show={isInfoDetails}
                 onCloseClick={() => setIsInfoDetails(false)}
             />
-            <DetailLead
+            {info &&
+            <DetailCanvas
                 show={showDetailLead} 
-                onCloseClick={() => setShowDetailLead(false)}
-                info={info}
-            />
+                onCloseClick={() => {
+                  setShowDetailLead(false)
+                  setInfo(null)
+                }}
+                data={info}
+            />}
         </>
     );
 };

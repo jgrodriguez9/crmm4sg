@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardBody, CardHeader, Col, Container, Row } from "reactstrap";
 import BreadCrumb from "../../../Components/Common/BreadCrumb";
 import ReservationFilter from "../../../Components/Operation/Reservation/ReservationFilter";
@@ -6,31 +6,180 @@ import TableContainer from "../../../Components/Common/TableContainer";
 import Loader from "../../../Components/Common/Loader";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { listReservation } from "../../../common/data/common";
+import DetailCanvas from "../../../Components/Common/DetailCanvas";
 
 const Reservation = () => {
     document.title="Reservación | CRM - M4S";
     const [item, setItems] = useState({
-        loading: false,
+        loading: true,
         data: [],
-        isSuccess: true,
+        isSuccess: false,
         error: null
     });
     const [filterDialog, setFilterDialog] = useState(false)
+    //detail canva
+    const [showDetail, setShowDetail] = useState(false)
+    const [info, setInfo] = useState(null);
 
     const toggleFilter = () => {
         setFilterDialog(!filterDialog);
     };
 
+    const builtInfo = (dataTable) => {
+        const header = {
+            title: {
+                label:  `ID: Reservación: `,
+                value: dataTable.id
+            },
+            img: null,
+            body: [
+                {
+                    label:  `ID: Booking: `,
+                    value: 607276961
+                },
+                {
+                    label:  `ID: Confirmación: `,
+                    value: 8065965
+                }
+            ]
+        }
+        const detailReservation = {
+            id: 'detailReservation',
+            title: 'Detalle de la reservación',
+            collapse: false,
+            body: [
+                {
+                    label: 'Hotel',
+                    value: 'Ocean Spa Hotel'
+                },
+                {
+                    label: 'Plan',
+                    value: 'All Inclusive Multiple'
+                },
+                {
+                    label: 'Fecha llegada',
+                    value: '29/06/2023'
+                },
+                {
+                    label: 'Fecha salida',
+                    value: '03/07/2023'
+                },
+                {
+                    label: 'Tipo de habitación',
+                    value: 'Standard King'
+                },
+                {
+                    label: 'Noches',
+                    value: 4
+                },
+                {
+                    label: 'Adultos',
+                    value: 4
+                },
+                {
+                    label: 'Juniors',
+                    value: 0
+                },
+                {
+                    label: 'Menores gratis',
+                    value: 0
+                },
+                {
+                    label: 'Menores pagan',
+                    value: 0
+                },
+                {
+                    label: 'Infantes',
+                    value: 0
+                }
+            ]
+        }
+        const detailCliente = {
+            id: 'detailCliente',
+            title: 'Detalle del titular',
+            collapse: true,
+            body: [
+                {
+                    label: 'Estado civil',
+                    value: 'Casado'
+                },
+                {
+                    label: 'Ingreso',
+                    value: '0-150000'
+                },
+                {
+                    label: 'Tarjetas',
+                    value: 1
+                },
+                {
+                    label: 'Visa',
+                    value: true
+                },
+                {
+                    label: 'Master Card',
+                    value: false
+                },
+                {
+                    label: 'Amex',
+                    value: false
+                },
+                {
+                    label: 'Otras',
+                    value: false
+                },
+                {
+                    label: 'Cual?',
+                    value: ''
+                },
+                {
+                    label: 'Estado de ánimo',
+                    value: 'Satisfecho'
+                }
+            ]     
+        }
+        const detailOperacion = {
+            id: 'detailOperacion',
+            title: 'Detalle de la operación',
+            collapse: true,
+            body: [
+                {
+                    label: 'Proveedor',
+                    value: 'Marketing 4 Sunset Group'
+                },
+                {
+                    label: 'Hooked',
+                    value: 'Hooked'
+                },
+                {
+                    label: 'Representante',
+                    value: 'MMDINAC'
+                },
+                {
+                    label: 'Precall',
+                    value: '01/05/2023 11:28:40'
+                }
+            ]
+        }
+        const data = {
+            title: `ID: Reservación: ${dataTable.id}`,
+            header: header,
+            items: [detailReservation, detailCliente, detailOperacion],
+            goToView: `/reservation/${dataTable.id}`
+        }
+        setInfo(data)
+    }
+
     const columns = useMemo(
         () => [
           {
-            Header: "ID",
+            Header: "Id Reservación",
             accessor: "id",
             filterable: false,
           },
           {
-            Header: "Confirmation",
-            accessor: "confirmation",
+            Header: "Confirmación",
+            accessor: "idConfirmation",
             filterable: false,
           },
           {
@@ -54,18 +203,18 @@ const Reservation = () => {
             filterable: false,
           },
           {
-            Header: "Action",
+            id: "action",
             Cell: (cellProps) => {
               return (
                 <ul className="list-inline hstack gap-2 mb-0">
                   <li className="list-inline-item edit" title="Vista previa">
                     <Link to="#" className="text-muted d-inline-block">
                       <i 
-                        className="ri-user-search-fill fs-16"
+                        className="ri-file-search-fill fs-16"
                         onClick={() => { 
-                            const itemData = cellProps.row.original; 
-                            //setInfo(contactData); 
-                            //setShowDetailLead(true)
+                            const itemData = cellProps.row.original;
+                            builtInfo(itemData) 
+                            setShowDetail(true)
                         }}
                       ></i>
                     </Link>
@@ -77,6 +226,18 @@ const Reservation = () => {
         ],
         []
     );
+
+    //test
+    useEffect(() => {
+        setTimeout(() => {
+            setItems(prev=>({
+                ...prev,
+                loading: false,
+                isSuccess: true,
+                data: listReservation
+            }))
+        }, 2000)
+    }, [])
 
     return (
         <>
@@ -114,7 +275,7 @@ const Reservation = () => {
                             <Card id="contactList">
                                 <CardBody className="pt-0">
                                 <div>
-                                    {item.isSuccess ? (
+                                    {item.isSuccess || !item.loading ? (
                                     <TableContainer
                                         columns={columns}
                                         data={(item.data)}
@@ -140,7 +301,16 @@ const Reservation = () => {
             <ReservationFilter
                 show={filterDialog}
                 onCloseClick={() => setFilterDialog(false)}
-            />           
+            />   
+            {info &&
+            <DetailCanvas
+                show={showDetail} 
+                onCloseClick={() => {
+                    setShowDetail(false)
+                    setInfo(null)
+                }}
+                data={info}
+            />}        
         </>
     );
 

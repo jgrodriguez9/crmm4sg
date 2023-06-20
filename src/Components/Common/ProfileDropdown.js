@@ -13,7 +13,6 @@ const ProfileDropdown = () => {
     useEffect(() => {
         if (localStorage.getItem("authenticatication-crm")) {
             const decryptedData = decrypData(localStorage.getItem("authenticatication-crm"))
-            console.log(decryptedData)
             const obj = JSON.parse(decryptedData);
             setUser(obj.user)
         }
