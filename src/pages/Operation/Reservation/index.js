@@ -5,12 +5,13 @@ import ReservationFilter from "../../../Components/Operation/Reservation/Reserva
 import TableContainer from "../../../Components/Common/TableContainer";
 import Loader from "../../../Components/Common/Loader";
 import { useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { listReservation } from "../../../common/data/common";
 import DetailCanvas from "../../../Components/Common/DetailCanvas";
 
 const Reservation = () => {
     document.title="Reservación | CRM - M4S";
+    const navigate = useNavigate();
     const [item, setItems] = useState({
         loading: true,
         data: [],
@@ -176,31 +177,49 @@ const Reservation = () => {
             Header: "Id Reservación",
             accessor: "id",
             filterable: false,
+            style: {
+                cursor: 'pointer',
+            }
           },
           {
             Header: "Confirmación",
             accessor: "idConfirmation",
             filterable: false,
+            style: {
+                cursor: 'pointer',
+            }
           },
           {
             Header: "Nombre",
             accessor: "nombre",
             filterable: false,
+            style: {
+                cursor: 'pointer'
+            }
           },
           {
             Header: "Id Booking",
             accessor: "idBooking",
             filterable: false,
+            style: {
+                cursor: 'pointer',
+            }
           },
           {
             Header: "LLegada",
             accessor: "llegada",
             filterable: false,
+            style: {
+                cursor: 'pointer',
+            }
           },
           {
             Header: "Salida",
             accessor: "salida",
             filterable: false,
+            style: {
+                cursor: 'pointer',
+            }
           },
           {
             id: "action",
@@ -226,6 +245,10 @@ const Reservation = () => {
         ],
         []
     );
+
+    const gotToPage = (row) => {
+        navigate(`/reservation/${row.id}`)
+    }
 
     //test
     useEffect(() => {
@@ -288,6 +311,7 @@ const Reservation = () => {
                                         theadClass="table-light"
                                         isContactsFilter={true}
                                         SearchPlaceholder='Buscar...'
+                                        onSelectRow={gotToPage}
                                     />
                                     ) : (<Loader error={item.error} />)
                                     }

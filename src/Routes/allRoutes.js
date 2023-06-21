@@ -10,6 +10,7 @@ import Logout from "../pages/Authentication/Logout";
 import Lead from "../pages/Operation/Lead";
 import LeadProfile from "../pages/Operation/Lead/Detail";
 import Reservation from "../pages/Operation/Reservation";
+import ReservationDetail from "../pages/Operation/Reservation/Detail";
 
 // User Profile
 // import UserProfile from "../pages/Authentication/user-profile";
@@ -24,6 +25,7 @@ const authProtectedRoutes = [
 
   //Cliente
   { path: "/reservation", component: <Reservation /> },
+  { path: "/reservation/:idReservation", component: <ReservationDetail /> },
 
   //User Profile
   // { path: "/profile", component: <UserProfile /> },

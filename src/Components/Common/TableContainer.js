@@ -139,7 +139,8 @@ const TableContainer = ({
   trClass,
   thClass,
   divClass,
-  SearchPlaceholder
+  SearchPlaceholder,
+  onSelectRow= (row) => {}
 }) => {
   const {
     getTableProps,
@@ -300,9 +301,23 @@ const TableContainer = ({
                 return (
                   <Fragment key={row.getRowProps().key}>
                     <tr>
-                      {row.cells.map((cell) => {
+                      {row.cells.map((cell, indexCell) => {
                         return (
-                          <td key={cell.id} {...cell.getCellProps()}>
+                          <td 
+                            key={cell.id} 
+                            onClick={(e) => {
+                              if(row.cells.length - 1 === indexCell){
+                                e.stopPropagation();
+                                return;
+                              }
+                              onSelectRow(row.original)}
+                            }
+                            {...cell.getCellProps([
+                              {
+                                style: cell.column.style || {},
+                              }
+                            ])}
+                          >
                             {cell.render("Cell")}
                           </td>
                         );
@@ -330,9 +345,9 @@ const TableContainer = ({
           </div>
         </Col>
         <Col className="col-md-auto d-none d-md-block">
-          Page{" "}
+          Página{" "}
           <strong>
-            {pageIndex + 1} of {pageOptions.length}
+            {pageIndex + 1} de {pageOptions.length}
           </strong>
         </Col>
         <Col className="col-md-auto">

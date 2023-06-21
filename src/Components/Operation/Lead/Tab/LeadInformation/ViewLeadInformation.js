@@ -81,7 +81,8 @@ const ViewLeadInformation = ({editMode, setEditMode}) => {
                     </div>
                 </Col>
             </Row>
-            {!editMode && <div className="d-flex justify-content-end">
+            <hr />
+            {!editMode && <div className="d-flex mt-3">
                 <Button 
                     type="button"
                     color="primary"

@@ -156,8 +156,9 @@ const FormLeadInformation = ({editMode, setEditMode}) => {
                     </div>
                 </Col>
             </Row>
+            <hr />
             {editMode && 
-            <div className="d-flex justify-content-end">
+            <div className="d-flex mt-3">
                 <Button 
                     type="submit"
                     color="primary"
