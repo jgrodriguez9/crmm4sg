@@ -109,15 +109,15 @@ const LeadProfile = () => {
                                                 type="button">
                                                 Notas
                                             </NavLink>
-                                        </NavItem>
-                                        <NavItem >
+                                        </NavItem>                                        
+                                        <NavItem>
                                             <NavLink to="#"
                                                 className={classNames({ active: activeTab === "3" })}
                                                 onClick={() => {
                                                     tabChange("3");
                                                 }}
                                                 type="button">
-                                                Referidos
+                                                SMS
                                             </NavLink>
                                         </NavItem>
                                         <NavItem>
@@ -127,34 +127,14 @@ const LeadProfile = () => {
                                                     tabChange("4");
                                                 }}
                                                 type="button">
-                                                SMS
+                                                Marketing
                                             </NavLink>
-                                        </NavItem>
+                                        </NavItem>                                       
                                         <NavItem>
                                             <NavLink to="#"
                                                 className={classNames({ active: activeTab === "5" })}
                                                 onClick={() => {
                                                     tabChange("5");
-                                                }}
-                                                type="button">
-                                                Marketing
-                                            </NavLink>
-                                        </NavItem>
-                                        <NavItem>
-                                            <NavLink to="#"
-                                                className={classNames({ active: activeTab === "6" })}
-                                                onClick={() => {
-                                                    tabChange("6");
-                                                }}
-                                                type="button">
-                                                Referidor
-                                            </NavLink>
-                                        </NavItem>
-                                        <NavItem>
-                                            <NavLink to="#"
-                                                className={classNames({ active: activeTab === "7" })}
-                                                onClick={() => {
-                                                    tabChange("7");
                                                 }}
                                                 type="button">
                                                 Whatsapp
@@ -171,8 +151,6 @@ const LeadProfile = () => {
                                         <TabPane tabId="3"><h5>En desarollo</h5></TabPane>
                                         <TabPane tabId="4"><h5>En desarollo</h5></TabPane>
                                         <TabPane tabId="5"><h5>En desarollo</h5></TabPane>
-                                        <TabPane tabId="6"><h5>En desarollo</h5></TabPane>
-                                        <TabPane tabId="7"><h5>En desarollo</h5></TabPane>
                                     </TabContent>
                                 </CardBody>
                             </Card>
