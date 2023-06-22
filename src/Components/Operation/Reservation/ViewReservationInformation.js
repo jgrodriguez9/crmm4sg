@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Col, Input, Label, Row } from "reactstrap";
+import { Button, Card, CardBody, Col, Label, Row } from "reactstrap";
 
 const ViewReservationInformation = ({editMode, setEditMode}) => {
 
@@ -103,8 +103,8 @@ const ViewReservationInformation = ({editMode, setEditMode}) => {
                         </Col>
                         <Col lg={3}>
                             <div className="mb-3">
-                                <Label className="form-label" htmlFor="estadoCivil">Ingreso</Label>
-                                <div className="form-control" id="estadoCivil">0-150000</div>
+                                <Label className="form-label" htmlFor="ingreso">Ingreso</Label>
+                                <div className="form-control" id="ingreso">0-150000</div>
                             </div>
                         </Col>
                         <Col lg={3}>
@@ -126,7 +126,7 @@ const ViewReservationInformation = ({editMode, setEditMode}) => {
                                 <Label className="form-label text-muted text-uppercase fw-semibold opacity-0 d-block">
                                     S
                                 </Label>
-                                <div className="form-check-input" type="checkbox" id="visa"/>
+                                <div className="form-check-input checked" type="checkbox" id="visa"/>
                                 <Label className="form-check-label" htmlFor="visa">
                                     Visa
                                 </Label>

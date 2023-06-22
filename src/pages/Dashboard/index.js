@@ -19,7 +19,7 @@ const DashboardCrm = () => {
         <React.Fragment>
             <div className="page-content">
                 <Container fluid>  
-                    <BreadCrumb title="CRM" pageTitle="Dashboards" />
+                    <BreadCrumb title="CRM" pageTitle="Inicio" urlPageTitle="/dashboard" />
                     <Row>
                         <Col><img src={kpi} className='w-100' alt='' /></Col>
                         {/* <ComingSoon /> */}

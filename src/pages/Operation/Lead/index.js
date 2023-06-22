@@ -5,7 +5,7 @@ import { useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TableContainer from "../../../Components/Common/TableContainer";
 import Loader from "../../../Components/Common/Loader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 //Import actions
@@ -17,8 +17,9 @@ import handleValidTime from "../../../util/handleValidTime";
 import DetailCanvas from "../../../Components/Common/DetailCanvas";
 
 const Lead = () => {
-    document.title="Cliente | CRM - M4S";
+    document.title="Cliente | CRM - M4SG";
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
         crmcontacts: state.Crm.crmcontacts,
         isContactSuccess: state.Crm.isContactSuccess,
@@ -199,6 +200,9 @@ const Lead = () => {
             Header: "Nombre",
             accessor: "name",
             filterable: false,
+            style: {
+              cursor: 'pointer',
+            },
             Cell: (contact) => (
               <>
                 <div className="d-flex align-items-center">
@@ -227,16 +231,25 @@ const Lead = () => {
             Header: "Compañía",
             accessor: "company",
             filterable: false,
+            style: {
+              cursor: 'pointer',
+            }
           },
           {
             Header: "Email",
             accessor: "email",
             filterable: false,
+            style: {
+              cursor: 'pointer',
+            }
           },
           {
             Header: "Teléfono",
             accessor: "phone",
             filterable: false,
+            style: {
+              cursor: 'pointer',
+            }
           },
           {
             Header: "Último contacto",
@@ -287,11 +300,15 @@ const Lead = () => {
         [handleContactClick]
     );
 
+    const gotToPage = (row) => {
+      navigate(`/client/1`)
+  }
+
     return (
         <>
             <div className="page-content">
                 <Container fluid>  
-                    <BreadCrumb title="Lead" pageTitle="Inicio" />
+                    <BreadCrumb title="Cliente" pageTitle="Inicio" urlPageTitle="/dashboard" />
                     <Row>
                         <Col lg={12}>
                             <Card>
@@ -337,6 +354,7 @@ const Lead = () => {
                                         handleContactClick={handleContactClicks}
                                         isContactsFilter={true}
                                         SearchPlaceholder='Buscar...'
+                                        onSelectRow={gotToPage}
                                     />
                                     ) : (<Loader error={error} />)
                                     }

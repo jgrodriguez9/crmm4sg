@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import ViewReservationInformation from "../../../../Components/Operation/Reservation/ViewReservationInformation";
+import FormReservationInformation from "../../../../Components/Operation/Reservation/FormReservationInformation";
 
 const ReservationDetail = () => {
     const { idReservation } = useParams();
@@ -101,7 +102,8 @@ const ReservationDetail = () => {
                 </Row>
                 <Row>
                 {
-                    editMode ? '':  
+                    editMode ? 
+                    <FormReservationInformation editMode={editMode} setEditMode={setEditMode}/>:  
                     <ViewReservationInformation editMode={editMode} setEditMode={setEditMode}/>
                 }
                 </Row>

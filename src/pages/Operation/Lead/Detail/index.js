@@ -23,7 +23,7 @@ const LeadProfile = () => {
         <>
             <div className="page-content">
                 <Container fluid>  
-                    <BreadCrumb title="Detalle del Lead" pageTitle="Leads" />
+                    <BreadCrumb title="Detalle del Cliente" pageTitle="Clientes" urlPageTitle="/client" />
 
                     <Row>
                         <Col xxl={3}>

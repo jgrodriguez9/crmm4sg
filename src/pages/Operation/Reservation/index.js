@@ -10,7 +10,7 @@ import { listReservation } from "../../../common/data/common";
 import DetailCanvas from "../../../Components/Common/DetailCanvas";
 
 const Reservation = () => {
-    document.title="Reservación | CRM - M4S";
+    document.title="Reservación | CRM - M4SG";
     const navigate = useNavigate();
     const [item, setItems] = useState({
         loading: true,
@@ -266,7 +266,7 @@ const Reservation = () => {
         <>
             <div className="page-content">
                 <Container fluid>  
-                    <BreadCrumb title="Reservaciones" pageTitle="Inicio" />
+                    <BreadCrumb title="Reservaciones" pageTitle="Inicio" urlPageTitle="/dashboard" />
                     <Row>
                         <Col lg={12}>
                             <Card>

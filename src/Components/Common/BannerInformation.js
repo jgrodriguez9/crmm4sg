@@ -1,5 +1,6 @@
 import { Card, CardBody, Col, Row } from "reactstrap"
 import img from "../../assets/images/companies/img-4.png";
+import { Link } from "react-router-dom";
 
 const BannerInformation = ({data}) => {
 
@@ -56,14 +57,12 @@ const BannerInformation = ({data}) => {
                             </div>
                             <div className="col-md-auto mt-md-0 mt-4">
                                 <div className="hstack gap-1 flex-wrap">
-                                    <button type="button" className="btn avatar-xs mt-n1 p-0 favourite-btn active">
-                                        <span className="avatar-title bg-transparent fs-15">
-                                            <i className="ri-star-fill"></i>
-                                        </span>
-                                    </button>
-                                    <button type="button" className="btn py-0 fs-16 text-body">
-                                        <i className="ri-flag-line"></i>
-                                    </button>
+                                    <div className="page-title-right">
+                                        <ol className="breadcrumb m-0">
+                                            <li className="breadcrumb-item"><Link to={'/reservation'}>Reservación</Link></li>
+                                            <li className="breadcrumb-item active">Detalle de la reservación</li>
+                                        </ol>
+                                    </div>
                                 </div>
                             </div>
                         </Row>
