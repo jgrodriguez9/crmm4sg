@@ -301,7 +301,7 @@ const Reservation = () => {
                                     {item.isSuccess || !item.loading ? (
                                     <TableContainer
                                         columns={columns}
-                                        data={(item.data)}
+                                        data={item.data}
                                         isGlobalFilter={false}
                                         isAddUserList={false}
                                         customPageSize={8}

@@ -33,15 +33,22 @@ const DetailCanvas = ({show, onCloseClick, data=null}) => {
                     <div className="d-flex mb-2 p-3">
                         <div className="pe-2">
                             {info.header.img && 
+                            // <div className="position-relative d-inline-block">
+                            //     <img
+                            //         src={info.header.img.url}
+                            //         alt={info.header.img.alt}
+                            //         className="avatar-lg rounded-circle img-thumbnail"
+                            //     />
+                            //     <span className="contact-active position-absolute rounded-circle bg-success">
+                            //     <span className="visually-hidden"></span>
+                            //     </span>
+                            // </div>
                             <div className="position-relative d-inline-block">
-                                <img
-                                    src={info.header.img.url}
-                                    alt={info.header.img.alt}
-                                    className="avatar-lg rounded-circle img-thumbnail"
-                                />
-                                <span className="contact-active position-absolute rounded-circle bg-success">
-                                <span className="visually-hidden"></span>
-                                </span>
+                                <div className="avatar-lg rounded-circle img-thumbnail">
+                                    <div className="avatar-title bg-soft-success text-success rounded-circle fs-1">
+                                    {info.header.img.name.charAt(0)}
+                                    </div>
+                                </div>
                             </div>}
                         </div>
                         <div>

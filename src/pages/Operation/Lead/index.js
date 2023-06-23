@@ -15,6 +15,8 @@ import {
 import handleValidDate from "../../../util/handleValidDate";
 import handleValidTime from "../../../util/handleValidTime";
 import DetailCanvas from "../../../Components/Common/DetailCanvas";
+import { listClient } from "../../../common/data/common";
+import moment from "moment";
 
 const Lead = () => {
     document.title="Cliente | CRM - M4SG";
@@ -25,6 +27,12 @@ const Lead = () => {
         isContactSuccess: state.Crm.isContactSuccess,
         error: state.Crm.error,
     }));
+    const [item, setItems] = useState({
+      loading: true,
+      data: [],
+      isSuccess: false,
+      error: null
+  });
     const [info, setInfo] = useState(null);
     const [contact, setContact] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
@@ -91,6 +99,7 @@ const Lead = () => {
               value: 'Alexis Clarke'
           },
           img: {
+            name: 'A',
             url: process.env.REACT_APP_API_URL + "/images/users/" + (dataTable.image_src || "avatar-10.jpg")
           },
           body: [
@@ -193,12 +202,11 @@ const Lead = () => {
       setInfo(data)
     }
 
-
     const columns = useMemo(
         () => [
           {
             Header: "Nombre",
-            accessor: "name",
+            accessor: "nombre",
             filterable: false,
             style: {
               cursor: 'pointer',
@@ -214,51 +222,55 @@ const Lead = () => {
                     /> :
                       <div className="flex-shrink-0 avatar-xs me-2">
                         <div className="avatar-title bg-soft-success text-success rounded-circle fs-13">
-                          {contact.row.original.name.charAt(0)}
+                          {contact.row.original.nombre.charAt(0)}
                         </div>
                       </div>
-                      // <img src={dummyImg} alt="" className="avatar-xxs rounded-circle" />
                     }
                   </div>
                   <div className="flex-grow-1 ms-2 name">
-                    {contact.row.original.name}
+                    {contact.row.original.nombre}
                   </div>
                 </div>
               </>
             ),
           },
           {
-            Header: "Compañía",
-            accessor: "company",
+            Header: "Contrato",
+            accessor: "contrato",
             filterable: false,
             style: {
               cursor: 'pointer',
             }
           },
           {
-            Header: "Email",
-            accessor: "email",
+            Header: "País",
+            accessor: "pais",
             filterable: false,
             style: {
               cursor: 'pointer',
             }
           },
           {
-            Header: "Teléfono",
-            accessor: "phone",
+            Header: "Agente",
+            accessor: "agente",
             filterable: false,
             style: {
               cursor: 'pointer',
             }
           },
           {
-            Header: "Último contacto",
-            Cell: (contact) => (
-              <>
-                {handleValidDate(contact.row.original.last_contacted)},{" "}
-                <small className="text-muted">{handleValidTime(contact.row.original.last_contacted)}</small>
-              </>
-            ),
+            Header: "Welcome call",
+            accessor: "welcomeCall",
+            filterable: false,
+            Cell: ({value}) => moment(value, "YYYY-MM-DD HH:mm:ss").format('DD/MM/YYY HH:mm')
+          },
+          {
+            Header: "Estado de ánimo",
+            accessor: "estadoAnimo",
+            filterable: false,
+            style: {
+              cursor: 'pointer',
+            }
           },
           {
             id: "action",
@@ -302,7 +314,19 @@ const Lead = () => {
 
     const gotToPage = (row) => {
       navigate(`/client/1`)
-  }
+    }
+
+    //test
+    useEffect(() => {
+      setTimeout(() => {
+          setItems(prev=>({
+              ...prev,
+              loading: false,
+              isSuccess: true,
+              data: listClient
+          }))
+      }, 2000)
+    }, [])
 
     return (
         <>
@@ -340,10 +364,10 @@ const Lead = () => {
                             <Card id="contactList">
                                 <CardBody className="pt-0">
                                 <div>
-                                    {isContactSuccess && crmcontacts.length ? (
+                                    {item.isSuccess || !item.loading ? (
                                     <TableContainer
                                         columns={columns}
-                                        data={(crmcontacts || [])}
+                                        data={item.data}
                                         isGlobalFilter={false}
                                         isAddUserList={false}
                                         customPageSize={8}

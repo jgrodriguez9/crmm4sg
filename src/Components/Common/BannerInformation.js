@@ -20,7 +20,10 @@ const BannerInformation = ({data}) => {
                                         </div>
                                     </div>
                                     <div className="col-md">
-                                        <h4 className="fw-semibold" id="ticket-title">{data?.title}</h4>
+                                        {data?.subTitle && <span className="badge bg-primary fs-12">{data?.subTitle}</span>}
+                                        <h4 className="fw-semibold" id="ticket-title">
+                                            {data?.title}
+                                        </h4>
                                         <div className="hstack gap-3 flex-wrap">
                                             {
                                                 data?.subInfo.map((it, indexSubInfo) => (

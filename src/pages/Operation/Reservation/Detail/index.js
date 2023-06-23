@@ -14,6 +14,7 @@ const ReservationDetail = () => {
     useEffect(() => {
         const bannerData = {
             title: `ID: ${idReservation} - Ocean Spa Hotel`,
+            subTitle: 'R. Monez Jose',
             subInfo: [
                 {
                     label: null,

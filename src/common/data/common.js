@@ -21,3 +21,14 @@ export const listReservation = [
 
     }
 ]
+
+export const listClient = [
+    {
+        contrato: 3321706,
+        nombre: 'R. MONEZ JOSE',
+        pais: 'Estados Unidos',
+        agente: 'Guadalupe Torres',
+        welcomeCall: '2023-09-06 14:02:01',
+        estadoAnimo: 'Satisfecho',
+    }
+]
