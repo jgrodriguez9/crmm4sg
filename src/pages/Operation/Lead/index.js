@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Row, Table, UncontrolledDropdown } from "reactstrap";
+import { Card, CardBody, CardHeader, Col, Container, Row } from "reactstrap";
 import BreadCrumb from "../../../Components/Common/BreadCrumb";
 import CrmFilter from "../../../Components/Common/CrmFilter";
 import { useState, useMemo, useCallback } from "react";
@@ -12,8 +12,6 @@ import { useEffect } from "react";
 import {
     getContacts as onGetContacts,
   } from "../../../slices/thunks";
-import handleValidDate from "../../../util/handleValidDate";
-import handleValidTime from "../../../util/handleValidTime";
 import DetailCanvas from "../../../Components/Common/DetailCanvas";
 import { listClient } from "../../../common/data/common";
 import moment from "moment";
@@ -32,7 +30,7 @@ const Lead = () => {
       data: [],
       isSuccess: false,
       error: null
-  });
+    });
     const [info, setInfo] = useState(null);
     const [contact, setContact] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
@@ -353,7 +351,6 @@ const Lead = () => {
                                             <button className="btn btn-info" onClick={toggleInfo}>
                                                 <i className="ri-filter-2-line me-1 align-bottom"></i>{" "} Filtros
                                             </button>
-
                                         </div>
                                         </div>
                                     </div>

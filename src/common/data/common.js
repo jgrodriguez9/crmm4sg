@@ -32,3 +32,18 @@ export const listClient = [
         estadoAnimo: 'Satisfecho',
     }
 ]
+
+export const listNotas = [
+    {
+        id: 3321706,
+        tipo: 'Nota de supervisor',
+        motivo: 'No contesta',
+        nota: 'Darcon Dio Ref quiere comprar',
+        fecha: '09/06/2023',
+        consultor: 'ERGARCIA',
+        //detail to show in teh small view
+        contrato: 'CLG80215',
+        followUp: '',
+        horaFUp: ''
+    }
+]

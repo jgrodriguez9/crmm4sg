@@ -5,6 +5,7 @@ import avatar1 from '../../../../assets/images/users/avatar-1.jpg';
 import BreadCrumb from "../../../../Components/Common/BreadCrumb";
 import classNames from "classnames";
 import LeadInformation from "../../../../Components/Operation/Lead/Tab/LeadInformation";
+import NotasCliente from "../../../../Components/Operation/Lead/Tab/NotasCliente";
 
 const LeadProfile = () => {
     document.title="Detalle del Lead | CRM - M4S";
@@ -97,7 +98,7 @@ const LeadProfile = () => {
                                                 onClick={() => {
                                                     tabChange("1");
                                                 }}>
-                                                Información del Lead
+                                                Información del Cliente
                                             </NavLink>
                                         </NavItem>
                                         <NavItem>
@@ -147,7 +148,9 @@ const LeadProfile = () => {
                                         <TabPane tabId="1">
                                             <LeadInformation />
                                         </TabPane>
-                                        <TabPane tabId="2"><h5>En desarollo</h5></TabPane>
+                                        <TabPane tabId="2">
+                                            <NotasCliente />
+                                        </TabPane>
                                         <TabPane tabId="3"><h5>En desarollo</h5></TabPane>
                                         <TabPane tabId="4"><h5>En desarollo</h5></TabPane>
                                         <TabPane tabId="5"><h5>En desarollo</h5></TabPane>
