@@ -1,8 +1,8 @@
 import { Col, Row } from "reactstrap"
 import { useState } from "react"
 import BasicModal from "../../../Common/BasicModal"
-import FormNotaCliente from "./NotasCliente/FormNotaCliente"
 import TableSMS from "./SMSClient/TableSMS"
+import FormSMS from "./SMSClient/FormSMS"
 
 
 const SMSClient = () => {
@@ -23,8 +23,8 @@ const SMSClient = () => {
                 open={showAddModal}
                 setOpen={setShowAddModal}
                 title="Crear SMS"
-                size="lg"
-                children={<FormNotaCliente />}
+                size="md"
+                children={<FormSMS />}
             />
         </>
     )
