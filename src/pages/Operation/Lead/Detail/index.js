@@ -7,6 +7,7 @@ import classNames from "classnames";
 import LeadInformation from "../../../../Components/Operation/Lead/Tab/LeadInformation";
 import NotasCliente from "../../../../Components/Operation/Lead/Tab/NotasCliente";
 import SMSClient from "../../../../Components/Operation/Lead/Tab/SMSClient";
+import WhatsappClient from "../../../../Components/Operation/Lead/Tab/WhatsappClient";
 
 const LeadProfile = () => {
     document.title="Detalle del Lead | CRM - M4S";
@@ -156,7 +157,9 @@ const LeadProfile = () => {
                                             <SMSClient />
                                         </TabPane>
                                         <TabPane tabId="4"><h5>En desarollo</h5></TabPane>
-                                        <TabPane tabId="5"><h5>En desarollo</h5></TabPane>
+                                        <TabPane tabId="5">
+                                            <WhatsappClient />
+                                        </TabPane>
                                     </TabContent>
                                 </CardBody>
                             </Card>
