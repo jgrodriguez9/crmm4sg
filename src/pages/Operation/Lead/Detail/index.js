@@ -8,6 +8,7 @@ import LeadInformation from "../../../../Components/Operation/Lead/Tab/LeadInfor
 import NotasCliente from "../../../../Components/Operation/Lead/Tab/NotasCliente";
 import SMSClient from "../../../../Components/Operation/Lead/Tab/SMSClient";
 import WhatsappClient from "../../../../Components/Operation/Lead/Tab/WhatsappClient";
+import MarketingMailClient from "../../../../Components/Operation/Lead/Tab/MarketingMailClient";
 
 const LeadProfile = () => {
     document.title="Detalle del Lead | CRM - M4S";
@@ -156,7 +157,9 @@ const LeadProfile = () => {
                                         <TabPane tabId="3">
                                             <SMSClient />
                                         </TabPane>
-                                        <TabPane tabId="4"><h5>En desarollo</h5></TabPane>
+                                        <TabPane tabId="4">
+                                            <MarketingMailClient />
+                                        </TabPane>
                                         <TabPane tabId="5">
                                             <WhatsappClient />
                                         </TabPane>
