@@ -3,17 +3,17 @@ import DatePicker from "../../Common/DatePicker";
 import { useState } from "react";
 import Select from "react-select";
 import { useQuery } from "react-query";
-import { getCallCenterAll } from "../../../helpers/catalogues/call_center";
+import { getCallCenterAll, getCallCenterPaginate } from "../../../helpers/catalogues/call_center";
 import SelectAsync from "../../Common/SelectAsync";
 
 const ReservationFilter = ({ show, onCloseClick }) => {
-    const {data: dataCallCenterOpt} = useQuery(['getCallCenterAll'], async () => {
-        const response = await getCallCenterAll();
-        return response
-      },
-      {
-        refetchOnWindowFocus: false,
-      })
+    // const {data: dataCallCenterOpt} = useQuery(['getCallCenterAll'], async () => {
+    //     const response = await getCallCenterAll();
+    //     return response
+    //   },
+    //   {
+    //     refetchOnWindowFocus: false,
+    //   })
     const [filter, setFilter] = useState({
         reserva: ''
     })
@@ -209,7 +209,12 @@ const ReservationFilter = ({ show, onCloseClick }) => {
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="call-center" className="form-label text-muted mb-0">Call Center</Label>
-                        <SelectAsync />
+                        <SelectAsync 
+                            fnFilter={getCallCenterPaginate}
+                            query={'?page=1&max=10'}
+                            keyCompare={'name'}
+
+                        />
                         {/* <Select
                             className="mb-0"
                             value={null}
