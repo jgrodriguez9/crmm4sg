@@ -4,6 +4,7 @@ import { useState } from "react";
 import Select from "react-select";
 import { useQuery } from "react-query";
 import { getCallCenterAll } from "../../../helpers/catalogues/call_center";
+import SelectAsync from "../../Common/SelectAsync";
 
 const ReservationFilter = ({ show, onCloseClick }) => {
     const {data: dataCallCenterOpt} = useQuery(['getCallCenterAll'], async () => {
@@ -208,14 +209,15 @@ const ReservationFilter = ({ show, onCloseClick }) => {
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="call-center" className="form-label text-muted mb-0">Call Center</Label>
-                        <Select
+                        <SelectAsync />
+                        {/* <Select
                             className="mb-0"
                             value={null}
                             onChange={() => {}}
                             options={dataCallCenterOpt?.list.map(it=>({value:it.id, label: it.name}))}
                             placeholder="Seleccionar opción"
                             id="call-center"
-                        />
+                        /> */}
                     </div>
                 </Col>
                 <Col xs="12" md="4">
