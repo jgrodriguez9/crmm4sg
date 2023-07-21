@@ -1,5 +1,7 @@
 import Select from "react-select";
 import { Button, Col, Form, Label, Row } from "reactstrap";
+import template from "../../../../../common/data/template";
+
 
 const FormMaketingMailClient = () => {
 
@@ -38,8 +40,13 @@ const FormMaketingMailClient = () => {
                         />
                     </div>
                 </Col>
-                
-                
+            </Row>
+            <Row>
+                <Col>
+                <div style={{maxHeight: '500px', overflowY: 'auto'}}>
+                            <div dangerouslySetInnerHTML={{__html: template}}></div>
+                        </div>
+                </Col>
             </Row>
             <div className="d-flex mt-5">
                 <Button 

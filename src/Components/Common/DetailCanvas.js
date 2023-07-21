@@ -1,6 +1,6 @@
 import React,{ useState } from "react";
 import classNames from "classnames"
-import { Accordion, AccordionItem, Button, Collapse, Offcanvas, OffcanvasBody, OffcanvasHeader } from "reactstrap"
+import { Accordion, AccordionItem, Collapse, Offcanvas, OffcanvasBody, OffcanvasHeader } from "reactstrap"
 import { Link } from "react-router-dom";
 
 const DetailCanvas = ({show, onCloseClick, data=null}) => {

@@ -1,6 +1,4 @@
 //Include Both Helper File with needed methods
-import { postFakeProfile, postJwtProfile } from "../../../helpers/fakebackend_helper";
-
 // action
 import { profileSuccess, profileError, resetProfileFlagChange } from "./reducer";
 
@@ -13,15 +11,10 @@ export const editProfile = (user) => async (dispatch) => {
 
         } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
 
-            response = postJwtProfile(
-                {
-                    username: user.username,
-                    idx: user.idx,
-                }
-            );
+           
 
         } else if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
-            response = postFakeProfile(user);
+            
         }
 
         const data = await response;

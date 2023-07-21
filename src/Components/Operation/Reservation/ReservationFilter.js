@@ -2,8 +2,17 @@ import { Button, Col, Input, Label, Offcanvas, OffcanvasBody, OffcanvasHeader, R
 import DatePicker from "../../Common/DatePicker";
 import { useState } from "react";
 import Select from "react-select";
+import { useQuery } from "react-query";
+import { getCallCenterAll } from "../../../helpers/catalogues/call_center";
 
 const ReservationFilter = ({ show, onCloseClick }) => {
+    const {data: dataCallCenterOpt} = useQuery(['getCallCenterAll'], async () => {
+        const response = await getCallCenterAll();
+        return response
+      },
+      {
+        refetchOnWindowFocus: false,
+      })
     const [filter, setFilter] = useState({
         reserva: ''
     })
@@ -203,7 +212,7 @@ const ReservationFilter = ({ show, onCloseClick }) => {
                             className="mb-0"
                             value={null}
                             onChange={() => {}}
-                            options={[]}
+                            options={dataCallCenterOpt?.list.map(it=>({value:it.id, label: it.name}))}
                             placeholder="Seleccionar opción"
                             id="call-center"
                         />

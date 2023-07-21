@@ -1,9 +1,6 @@
 //Include Both Helper File with needed methods
 import { authData } from "../../../common/authData";
 import { postLogin } from "../../../helpers/auth";
-import {
-  postSocialLogin,
-} from "../../../helpers/fakebackend_helper";
 import { decrypData, encryptData } from "../../../util/crypto";
 
 import { loginSuccess, logoutUserSuccess, apiError, reset_login_flag, proccessLogin } from './reducer';
@@ -44,29 +41,6 @@ export const logoutUser = () => async (dispatch) => {
       
     } else {
       dispatch(logoutUserSuccess(true));
-    }
-
-  } catch (error) {
-    dispatch(apiError(error));
-  }
-};
-
-export const socialLogin = (data, history, type) => async (dispatch) => {
-  try {
-    let response;
-
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      
-    } else {
-      response = postSocialLogin(data);
-    }
-
-    const socialdata = await response;
-
-    if (socialdata) {
-      localStorage.setItem("authenticatication-crm", JSON.stringify(response));
-      dispatch(loginSuccess(response));
-      history('/dashboard')
     }
 
   } catch (error) {

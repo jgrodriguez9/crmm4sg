@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Card, Col, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import { useSelector, useDispatch } from "react-redux";
 import { DealTypeCharts } from "./DashboardCrmCharts";
-import { getDialChartsData } from '../../slices/thunks';
 
 const DealType = () => {
     const dispatch = useDispatch();
@@ -20,11 +19,9 @@ const DealType = () => {
     const [seletedMonth, setSeletedMonth] = useState("Monthly");
     const onChangeChartPeriod = pType => {
         setSeletedMonth(pType);
-        dispatch(getDialChartsData(pType));
     };
 
     useEffect(() => {
-        dispatch(getDialChartsData("monthly"));
     }, [dispatch]);
 
     return (

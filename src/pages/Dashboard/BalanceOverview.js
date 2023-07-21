@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader, Col, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { BalanceOverviewCharts } from "./DashboardCrmCharts";
-import { getBalanceChartsData } from '../../slices/thunks';
 
 const BalanceOverview = () => {
-    const dispatch = useDispatch();
 
     const [chartData, setchartData] = useState([]);
 
@@ -20,12 +18,9 @@ const BalanceOverview = () => {
     const [seletedMonth, setSeletedMonth] = useState("Current Year");
     const onChangeChartPeriod = pType => {
         setSeletedMonth(pType);
-        dispatch(getBalanceChartsData(pType));
+        
     };
 
-    useEffect(() => {
-        dispatch(getBalanceChartsData("today"));
-    }, [dispatch]);
 
     return (
         <React.Fragment>

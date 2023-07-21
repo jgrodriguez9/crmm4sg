@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, Col, Offcanvas, OffcanvasBody, OffcanvasHeader, Row } from "reactstrap"
+import template from "../../../../../common/data/template";
 
 const DetailmarketingMailCanvas = ({show, onCloseClick, data=null}) => {
     const [info, setInfo] = useState(data);
@@ -11,7 +12,6 @@ const DetailmarketingMailCanvas = ({show, onCloseClick, data=null}) => {
             id="filter-canvas"
             toggle={onCloseClick}
             scrollable={true}
-            className="w-400"
         >
             <OffcanvasHeader className="bg-gradient bg-primary canvas-title" toggle={onCloseClick}>
                 Conversación
@@ -27,6 +27,10 @@ const DetailmarketingMailCanvas = ({show, onCloseClick, data=null}) => {
                             <div className="text-truncate fs-12 text-muted">{info.date} 12:00</div>
                         </div>
                         <h6 className="mt-4">{info.subject}</h6>
+
+                        <div style={{maxHeight: '500px', overflowY: 'auto'}}>
+                            <div dangerouslySetInnerHTML={{__html: template}}></div>
+                        </div>
                     </div>
                 }
             </OffcanvasBody>

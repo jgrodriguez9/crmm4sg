@@ -9,9 +9,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 //Import actions
-import {
-    getContacts as onGetContacts,
-  } from "../../../slices/thunks";
 import DetailCanvas from "../../../Components/Common/DetailCanvas";
 import { listClient } from "../../../common/data/common";
 import moment from "moment";
@@ -19,12 +16,7 @@ import moment from "moment";
 const Lead = () => {
     document.title="Cliente | CRM - M4SG";
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
-        crmcontacts: state.Crm.crmcontacts,
-        isContactSuccess: state.Crm.isContactSuccess,
-        error: state.Crm.error,
-    }));
+    const navigate = useNavigate();    
     const [item, setItems] = useState({
       loading: true,
       data: [],
@@ -40,12 +32,6 @@ const Lead = () => {
     const [isInfoDetails, setIsInfoDetails] = useState(false);
     //detail lead
     const [showDetailLead, setShowDetailLead] = useState(false)
-
-    useEffect(() => {
-        if (crmcontacts && !crmcontacts.length) {
-          dispatch(onGetContacts());
-        }
-      }, [dispatch, crmcontacts]);
 
     const toggleInfo = () => {
         setIsInfoDetails(!isInfoDetails);
@@ -377,7 +363,7 @@ const Lead = () => {
                                         SearchPlaceholder='Buscar...'
                                         onSelectRow={gotToPage}
                                     />
-                                    ) : (<Loader error={error} />)
+                                    ) : (<Loader />)
                                     }
                                 </div>
                                 </CardBody>
