@@ -11,6 +11,9 @@ import {
 } from "reactstrap";
 import Flatpickr from "react-flatpickr";
 import Select from "react-select";
+import SelectAsync from "./SelectAsync";
+import { getSegmentPaginate } from "../../helpers/catalogues/segment";
+import { getProgramPaginate } from "../../helpers/catalogues/program";
 
 const CrmFilter = ({ show, onCloseClick }) => {
   const [selectCountry, setselectCountry] = useState(null);
@@ -60,16 +63,14 @@ const handleselectCountry = (selectCountry) => {
                 >
                   Programa
                 </Label>
-                <Select
-                  className="mb-0"
-                  value={selectCountry}
-                  onChange={() => {
-                    handleselectCountry();
-                  }}
-                  options={[{value: 'Share', label: 'Share'}]}
-                  placeholder="Seleccionar opción"
-                  id="programa-select"
-                ></Select>
+                <SelectAsync 
+                    fnFilter={getProgramPaginate}
+                    query={'?page=1&max=10'}
+                    keyCompare={'name'}
+                    keyPropery="program"
+                    inputId="programa-select"
+                    className="mb-0"
+                />
               </div>
             </Col>
             <Col xs="12" md="4">
@@ -265,16 +266,12 @@ const handleselectCountry = (selectCountry) => {
                   >
                     Segmento
                   </Label>
-                  <Select
-                    className="mb-0"
-                    value={selectCountry}
-                    onChange={() => {
-                      handleselectCountry();
-                    }}
-                    options={[{value: 'Segmento 1', label: 'Segmento 1'}]}
-                    placeholder="Seleccionar opción"
-                    id="segmento-select"
-                  ></Select>
+                  <SelectAsync 
+                      fnFilter={getSegmentPaginate}
+                      query={'?page=1&max=10'}
+                      keyCompare={'name'}
+                      inputId="segmento-select"
+                  />
                 </div>
             </Col>
             <Col xs="12" md="4">

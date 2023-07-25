@@ -13,7 +13,9 @@ const SelectAsync = ({
     keyCompare,
     placeholder='Seleccionar opción',
     isClearable=true,
-    defaultOptions=true
+    defaultOptions=true,
+    keyPropery="name",
+    ...props
 }) => {
     const messageRef = useRef(MESSAGE.noOption);
     let timer = useRef();
@@ -27,11 +29,11 @@ const SelectAsync = ({
         timer.current = setTimeout(() => {
             fnFilter(`${query}&${keyCompare}=${keyword}`)
             .then((options) => {
-                console.log(options)
+                //console.log(options)
               if (!options.list?.length) {
                 messageRef.current = MESSAGE.noOption;
               }
-              callback(options.list.map(it=>({label: it.name, value: it.id})));
+              callback(options.list.map(it=>({label: it[keyPropery], value: it.id})));
             })
             .catch((err) => {
               messageRef.current = MESSAGE.networkError;
@@ -42,6 +44,7 @@ const SelectAsync = ({
 
     return (
         <AsyncSelect 
+            {...props}
             noOptionsMessage={({ inputValue }) =>
                 inputValue ? messageRef.current : MESSAGE.initial
             }

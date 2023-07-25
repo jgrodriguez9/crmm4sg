@@ -2,18 +2,13 @@ import { Button, Col, Input, Label, Offcanvas, OffcanvasBody, OffcanvasHeader, R
 import DatePicker from "../../Common/DatePicker";
 import { useState } from "react";
 import Select from "react-select";
-import { useQuery } from "react-query";
-import { getCallCenterAll, getCallCenterPaginate } from "../../../helpers/catalogues/call_center";
+import { getCallCenterPaginate } from "../../../helpers/catalogues/call_center";
 import SelectAsync from "../../Common/SelectAsync";
+import { getHotelPaginate } from "../../../helpers/catalogues/hotel";
+import { getProgramPaginate } from "../../../helpers/catalogues/program";
+import { getSegmentPaginate } from "../../../helpers/catalogues/segment";
 
 const ReservationFilter = ({ show, onCloseClick }) => {
-    // const {data: dataCallCenterOpt} = useQuery(['getCallCenterAll'], async () => {
-    //     const response = await getCallCenterAll();
-    //     return response
-    //   },
-    //   {
-    //     refetchOnWindowFocus: false,
-    //   })
     const [filter, setFilter] = useState({
         reserva: ''
     })
@@ -166,13 +161,11 @@ const ReservationFilter = ({ show, onCloseClick }) => {
                 <Col xs="12" md="12">
                     <div className="mb-2">
                         <Label htmlFor="hotel" className="form-label text-muted mb-0">Hotel</Label>
-                        <Select
-                            className="mb-0"
-                            value={null}
-                            onChange={() => {}}
-                            options={[]}
-                            placeholder="Seleccionar opción"
-                            id="hotel"
+                        <SelectAsync 
+                            fnFilter={getHotelPaginate}
+                            query={'?page=1&max=10'}
+                            keyCompare={'name'}
+
                         />
                     </div>
                 </Col>
@@ -194,13 +187,10 @@ const ReservationFilter = ({ show, onCloseClick }) => {
                 <Col xs="12" md="6">
                     <div className="mb-2">
                         <Label htmlFor="segmento" className="form-label text-muted mb-0">Segmento</Label>
-                        <Select
-                            className="mb-0"
-                            value={null}
-                            onChange={() => {}}
-                            options={[]}
-                            placeholder="Seleccionar opción"
-                            id="segmento"
+                        <SelectAsync 
+                            fnFilter={getSegmentPaginate}
+                            query={'?page=1&max=10'}
+                            keyCompare={'name'}
                         />
                     </div>
                 </Col>
@@ -213,16 +203,7 @@ const ReservationFilter = ({ show, onCloseClick }) => {
                             fnFilter={getCallCenterPaginate}
                             query={'?page=1&max=10'}
                             keyCompare={'name'}
-
                         />
-                        {/* <Select
-                            className="mb-0"
-                            value={null}
-                            onChange={() => {}}
-                            options={dataCallCenterOpt?.list.map(it=>({value:it.id, label: it.name}))}
-                            placeholder="Seleccionar opción"
-                            id="call-center"
-                        /> */}
                     </div>
                 </Col>
                 <Col xs="12" md="4">
@@ -241,13 +222,11 @@ const ReservationFilter = ({ show, onCloseClick }) => {
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="programa" className="form-label text-muted mb-0">Programa</Label>
-                        <Select
-                            className="mb-0"
-                            value={null}
-                            onChange={() => {}}
-                            options={[]}
-                            placeholder="Seleccionar opción"
-                            id="programa"
+                        <SelectAsync 
+                            fnFilter={getProgramPaginate}
+                            query={'?page=1&max=10'}
+                            keyCompare={'name'}
+                            keyPropery="program"
                         />
                     </div>
                 </Col>
