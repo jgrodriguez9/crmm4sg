@@ -7,6 +7,7 @@ import SelectAsync from "../../Common/SelectAsync";
 import { getHotelPaginate } from "../../../helpers/catalogues/hotel";
 import { getProgramPaginate } from "../../../helpers/catalogues/program";
 import { getSegmentPaginate } from "../../../helpers/catalogues/segment";
+import { getReservationStatusPaginate } from "../../../helpers/catalogues/reservation_status";
 
 const ReservationFilter = ({ show, onCloseClick }) => {
     const [filter, setFilter] = useState({
@@ -92,13 +93,10 @@ const ReservationFilter = ({ show, onCloseClick }) => {
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="estatus" className="form-label text-muted mb-0">Estatus</Label>
-                        <Select
-                            className="mb-0"
-                            value={null}
-                            onChange={() => {}}
-                            options={[]}
-                            placeholder="Seleccionar opción"
-                            id="programa"
+                        <SelectAsync 
+                            fnFilter={getReservationStatusPaginate}
+                            query={'?page=1&max=10'}
+                            keyCompare={'name'}
                         />
                     </div>
                 </Col>

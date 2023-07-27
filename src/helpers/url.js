@@ -16,3 +16,5 @@ export const mealPlan = '/mealPlan'
 export const segment = '/segment'
 //merchant
 export const merchant = '/merchant'
+//reservation status
+export const reservationStatus = '/reservationStatus'
