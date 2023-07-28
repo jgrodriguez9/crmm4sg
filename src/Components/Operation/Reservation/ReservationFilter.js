@@ -1,6 +1,5 @@
 import { Button, Col, Input, Label, Offcanvas, OffcanvasBody, OffcanvasHeader, Row } from "reactstrap";
 import DatePicker from "../../Common/DatePicker";
-import { useState } from "react";
 import Select from "react-select";
 import { getCallCenterPaginate } from "../../../helpers/catalogues/call_center";
 import SelectAsync from "../../Common/SelectAsync";
@@ -8,23 +7,12 @@ import { getHotelPaginate } from "../../../helpers/catalogues/hotel";
 import { getProgramPaginate } from "../../../helpers/catalogues/program";
 import { getSegmentPaginate } from "../../../helpers/catalogues/segment";
 import { getReservationStatusPaginate } from "../../../helpers/catalogues/reservation_status";
+import React from "react";
 
-const ReservationFilter = ({ show, onCloseClick }) => {
-    const [filter, setFilter] = useState({
-        reserva: ''
-    })
-    
-    const onChangeFilter = (type, value) => {
-        const copyFilter = {...filter}
-        copyFilter[type] = value
-        setFilter(copyFilter);
-    }
-    
+const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {    
     const onChangeDateLLegada = (date) => {
         console.log(date)
     }
-
-
 
     return (
         <Offcanvas
@@ -35,13 +23,18 @@ const ReservationFilter = ({ show, onCloseClick }) => {
           scrollable={true}
         >
           <OffcanvasHeader className="bg-light" toggle={onCloseClick}>Filtros</OffcanvasHeader>
-          <form className="d-flex flex-column justify-content-end h-100">
+          <div className="d-flex flex-column justify-content-end h-100">
             <OffcanvasBody  className="mb-6">
               <Row>
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="reserva" className="form-label text-muted mb-0">Reserva</Label>
-                        <Input className="form-control" type="text" id="reserva" value={filter.reserva} onChange={e=>onChangeFilter('reserva', e.target.value)} />
+                        <Input className="form-control" 
+                            type="text" 
+                            id="reserva" 
+                            value={query.id} 
+                            onChange={e=>setQuery(prev=>({...prev, id: e.target.value}))} 
+                        />
                     </div>
                 </Col>
                 <Col xs="12" md="4">
@@ -269,10 +262,10 @@ const ReservationFilter = ({ show, onCloseClick }) => {
                     <div className="pe-2">
                         <Button
                             color="success"
-                            type="submit"
+                            type="button"
                             size="sm"
                             className="fw-500"
-                            onClick={onCloseClick}
+                            onClick={buscar}
                         >Buscar
                         </Button>
                     </div> 
@@ -289,7 +282,7 @@ const ReservationFilter = ({ show, onCloseClick }) => {
                     </div>                  
                 </div>
             </div>
-          </form>
+          </div>
         </Offcanvas>
       );
 }

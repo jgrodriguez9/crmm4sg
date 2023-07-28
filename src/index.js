@@ -10,8 +10,11 @@ import {
   QueryClient,
   QueryClientProvider,
 } from 'react-query'
+import 'react-toastify/dist/ReactToastify.css';
 
 const queryClient = new QueryClient()
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -1,5 +1,5 @@
 import AsyncSelect from 'react-select/async';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 
 const MESSAGE = {
     initial: "Buscar...",

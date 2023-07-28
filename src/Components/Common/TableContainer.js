@@ -25,105 +25,10 @@ import {
   TaskListGlobalFilter,
 } from "../../Components/Common/GlobalSearchFilter";
 
-// Define a default UI for filtering
-function GlobalFilter({
-  globalFilter,
-  setGlobalFilter,
-  isCustomerFilter,
-  isOrderFilter,
-  isCompaniesFilter,
-  isCryptoOrdersFilter,
-  isInvoiceListFilter,
-  isTicketsListFilter,
-  isNFTRankingFilter,
-  isTaskListFilter,
-  isProductsFilter,
-  isLeadsFilter,
-  SearchPlaceholder
-}) {
-  const [value, setValue] = React.useState(globalFilter);
-  const onChange = useAsyncDebounce((value) => {
-    setGlobalFilter(value || undefined);
-  }, 200);
-
-  return (
-    <React.Fragment>
-      <CardBody className="border border-dashed border-end-0 border-start-0">
-        <form>
-          <Row>
-            <Col sm={5}>
-              <div className={(isProductsFilter || isCompaniesFilter || isNFTRankingFilter) ? "search-box me-2 mb-2 d-inline-block" : "search-box me-2 mb-2 d-inline-block col-12"}>
-                <input
-                  onChange={(e) => {
-                    setValue(e.target.value);
-                    onChange(e.target.value);
-                  }}
-                  id="search-bar-0"
-                  type="text"
-                  className="form-control search /"
-                  placeholder={SearchPlaceholder}
-                  value={value || ""}
-                />
-                <i className="bx bx-search-alt search-icon"></i>
-              </div>
-            </Col>
-            {isProductsFilter && (
-              <ProductsGlobalFilter />
-            )}
-            {isCustomerFilter && (
-              <CustomersGlobalFilter />
-            )}
-            {isOrderFilter && (
-              <OrderGlobalFilter />
-            )}
-            {isCompaniesFilter && (
-              <CompaniesGlobalFilter />
-            )}
-            {isLeadsFilter && (
-              <LeadsGlobalFilter />
-            )}
-            {isCryptoOrdersFilter && (
-              <CryptoOrdersGlobalFilter />
-            )}
-            {isInvoiceListFilter && (
-              <InvoiceListGlobalSearch />
-            )}
-            {isTicketsListFilter && (
-              <TicketsListGlobalFilter />
-            )}
-            {isNFTRankingFilter && (
-              <NFTRankingGlobalFilter />
-            )}
-            {isTaskListFilter && (
-              <TaskListGlobalFilter />
-            )}
-          </Row>
-        </form>
-      </CardBody>
-
-    </React.Fragment>
-  );
-}
-
 
 const TableContainer = ({
   columns,
   data,
-  isGlobalSearch,
-  isGlobalFilter,
-  isProductsFilter,
-  isCustomerFilter,
-  isOrderFilter,
-  isCompaniesFilter,
-  isLeadsFilter,
-  isCryptoOrdersFilter,
-  isInvoiceListFilter,
-  isTicketsListFilter,
-  isNFTRankingFilter,
-  isTaskListFilter,
-  handleOrderClicks,
-  handleUserClick,
-  handleCustomerClick,
   customPageSize,
   tableClass,
   theadClass,
@@ -134,7 +39,9 @@ const TableContainer = ({
   pageCount=-1,
   queryPageIndex=0,
   handlePage,
-  onSelectRow= (row) => {}
+  onSelectRow= (row) => {},
+  firstRender=true,
+  setItems
 }) => {
   
   const {
@@ -143,14 +50,6 @@ const TableContainer = ({
     headerGroups,
     page,
     prepareRow,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
@@ -163,22 +62,7 @@ const TableContainer = ({
       
     },
     usePagination
-  );
-
-
-  const onChangeInSelect = (event) => {
-    setPageSize(Number(event.target.value));
-  };
-  const onChangeInInput = (event) => {
-    const page = event.target.value ? Number(event.target.value) - 1 : 0;
-    gotoPage(page);
-  };
-
-  useEffect(() => {
-    handlePage(pageIndex)
-  },[pageIndex, pageSize])
-
-  
+  );  
 
   return (
     <Fragment>
@@ -254,44 +138,6 @@ const TableContainer = ({
           </tbody>
         </Table>
       </div>
-
-      <Row className="justify-content-md-end justify-content-center align-items-center p-2">
-        <Col className="col-md-auto">
-          <div className="d-flex gap-1">
-            <Button
-              color="primary"
-              onClick={previousPage}
-              disabled={!canPreviousPage}
-            >
-              {"<"}
-            </Button>
-          </div>
-        </Col>
-        <Col className="col-md-auto d-none d-md-block">
-          Página{" "}
-          <strong>
-            {pageIndex + 1} de {pageOptions.length}
-          </strong>
-        </Col>
-        <Col className="col-md-auto">
-          <Input
-            type="number"
-            min={1}
-            style={{ width: 70 }}
-            max={pageOptions.length}
-            defaultValue={pageIndex + 1}
-            onChange={onChangeInInput}
-          />
-        </Col>
-
-        <Col className="col-md-auto">
-          <div className="d-flex gap-1">
-            <Button color="primary" onClick={nextPage} disabled={!canNextPage}>
-              {">"}
-            </Button>
-          </div>
-        </Col>
-      </Row>
     </Fragment>
   );
 };

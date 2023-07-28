@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, CardBody, CardHeader, Col, Container, Row } from "reactstrap";
+import { Button, Card, CardBody, CardHeader, Col, Container, Input, Row } from "reactstrap";
 import BreadCrumb from "../../../Components/Common/BreadCrumb";
 import ReservationFilter from "../../../Components/Operation/Reservation/ReservationFilter";
 import TableContainer from "../../../Components/Common/TableContainer";
@@ -14,33 +14,36 @@ import { useDispatch } from "react-redux";
 import { addMessage } from "../../../slices/messages/reducer";
 import showFriendlyMessafe from "../../../util/showFriendlyMessafe";
 import moment from "moment";
+import PaginationManual from "../../../Components/Common/PaginationManual";
+import parseObjectToQueryUrl from "../../../util/parseObjectToQueryUrl";
+
+const initFilter = {
+    //reserva
+    id: ''
+}
 
 const Reservation = () => {
     document.title="Reservación | CRM - M4SG";
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [item, setItems] = useState({
-        loading: true,
-        data: [],
-        isSuccess: false,
-        error: null
-    });
-    //query filter 
-    const fecthReservation = async (q) => {
-        let qUrl = Object.keys(q).map(key=>`${key}=${query[key]}`).join("&")
-        const response = await getReservationPaginate(`?${qUrl}`);
-        return response
-    }
     const [query, setQuery] = useState({
         max: 10,
         page: 1,
+        ...initFilter
     })
+    const [queryFilter, setQueryFilter] = useState(parseObjectToQueryUrl(query))
+    //query filter 
+    const fecthReservation = async (queryFilter) => {
+        const response = await getReservationPaginate(`?${queryFilter}`);
+        return response
+    }
     //service
-    const {data: reservationData, error: errorReservationQuery, isLoading, isSuccess, isRefetching} = 
-        useQuery(['getReservationPaginate', query], () => fecthReservation(query),
+    const {data: reservationData, error: errorReservationQuery, isLoading, isSuccess} = 
+        useQuery(['getReservationPaginate', queryFilter], () => fecthReservation(queryFilter),
       {
         refetchOnWindowFocus: false,
-        keepPreviousData: true
+        keepPreviousData: true,
+        staleTime: 3 * (60 * 1000),
       }
     );
 
@@ -279,18 +282,6 @@ const Reservation = () => {
         navigate(`/reservation/${row.id}`)
     }
 
-    //test
-    useEffect(() => {
-        setTimeout(() => {
-            setItems(prev=>({
-                ...prev,
-                loading: false,
-                isSuccess: true,
-                data: listReservation
-            }))
-        }, 2000)
-    }, [])
-
     
     useEffect(() => {        
         if(errorReservationQuery?.code){
@@ -300,70 +291,62 @@ const Reservation = () => {
             }))
         }
     }, [errorReservationQuery])
-    console.log(reservationData)
 
-    const handlePage = (currentPage) => {
-        setQuery(prev=>({
-            ...prev,
-            page: currentPage+1
-        }))
+    const buscar = () => {
+        setFilterDialog(false)
+        const copyQuery = {...query, page: 1 }
+        setQueryFilter(parseObjectToQueryUrl(copyQuery))
+        setQuery(copyQuery)
     }
-    console.log(isLoading)
-    console.log(isRefetching)
+
+    const onCleanFilter = () =>{
+        const copyQuery = {max: 10, page: 1, ...initFilter}
+        setQueryFilter(parseObjectToQueryUrl(copyQuery))
+        setQuery(copyQuery)        
+    }
     return (
         <>
             <div className="page-content">
-                <Container fluid>  
-                    <BreadCrumb title="Reservaciones" pageTitle="Inicio" urlPageTitle="/dashboard" />
+                <Container fluid> 
+                    <div className="mb-2">
+                        <BreadCrumb 
+                            title="Reservaciones" 
+                            pageTitle="Inicio" 
+                            urlPageTitle="/dashboard" 
+                            filter={{
+                                allow: true,
+                                action: toggleFilter,
+                                cleanFilter: onCleanFilter
+                            }}
+                        />
+                    </div> 
+                    
                     <Row>
-                        <Col lg={12}>
-                            <Card>
-                                <CardHeader>
-                                    <div className="d-flex align-items-center flex-wrap gap-2">
-                                        <div className="flex-grow-1">
-                                        {/* <button
-                                            className="btn btn-success add-btn"
-                                            onClick={() => {
-                                            //setModal(true);
-                                            }}
-                                        >
-                                            <i className="ri-add-fill me-1 align-bottom"></i> Agregar Lead
-                                        </button> */}
-                                        </div>
-                                        <div className="flex-shrink-0">
-                                        <div className="hstack text-nowrap gap-2">                                        
-                                            <button className="btn btn-info" onClick={toggleFilter}>
-                                                <i className="ri-filter-2-line me-1 align-bottom"></i>{" "} Filtros
-                                            </button>
-
-                                        </div>
-                                        </div>
-                                    </div>
-                                </CardHeader>
-                            </Card>
-                        </Col>
                         <Col xxl={12}>
                             <Card id="contactList">
                                 <CardBody className="pt-0">
                                 <div>
                                     {(!isLoading) ? (
-                                    <TableContainer
+                                    <>
+                                        <TableContainer
                                         columns={columns}
-                                        data={isSuccess ? reservationData.data.list : []}
-                                        isGlobalFilter={false}
-                                        customPageSize={query.max}
-                                        pageCount={reservationData.data.pagination.totalPages}
-                                        className="custom-header-css"
-                                        divClass="table-responsive table-card mb-3"
-                                        tableClass="align-middle table-nowrap"
-                                        theadClass="table-light"
-                                        isContactsFilter={true}
-                                        SearchPlaceholder='Buscar...'
-                                        onSelectRow={gotToPage}
-                                        handlePage={handlePage}
-                                        queryPageIndex={query.page}
-                                    />
-                                    ) : (<Loader error={item.error} />)
+                                            data={isSuccess ? reservationData.data.list : []}
+                                            className="custom-header-css"
+                                            divClass="table-responsive table-card mb-3"
+                                            tableClass="align-middle table-nowrap"
+                                            theadClass="table-light"
+                                            SearchPlaceholder='Buscar...'
+                                            onSelectRow={gotToPage}
+                                            
+                                        />
+                                        <PaginationManual 
+                                            query={query}
+                                            setQuery={setQuery}
+                                            setQueryFilter={setQueryFilter}
+                                            totalPages={reservationData?.data?.pagination?.totalPages ?? 1}
+                                        />
+                                    </>
+                                    ) : (<Loader />)
                                     }
                                 </div>
                                 </CardBody>
@@ -375,6 +358,9 @@ const Reservation = () => {
             <ReservationFilter
                 show={filterDialog}
                 onCloseClick={() => setFilterDialog(false)}
+                query={query}
+                setQuery={setQuery}
+                buscar={buscar}
             />   
             {info &&
             <DetailCanvas
