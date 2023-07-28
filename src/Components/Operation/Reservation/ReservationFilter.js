@@ -97,6 +97,7 @@ const ReservationFilter = ({ show, onCloseClick }) => {
                             fnFilter={getReservationStatusPaginate}
                             query={'?page=1&max=10'}
                             keyCompare={'name'}
+                            keyProperty="status"
                         />
                     </div>
                 </Col>
@@ -224,7 +225,7 @@ const ReservationFilter = ({ show, onCloseClick }) => {
                             fnFilter={getProgramPaginate}
                             query={'?page=1&max=10'}
                             keyCompare={'name'}
-                            keyPropery="program"
+                            keyProperty="program"
                         />
                     </div>
                 </Col>

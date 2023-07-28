@@ -8,9 +8,16 @@ import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { listReservation } from "../../../common/data/common";
 import DetailCanvas from "../../../Components/Common/DetailCanvas";
+import { getReservationPaginate } from "../../../helpers/reservation";
+import { useQuery } from "react-query";
+import { useDispatch } from "react-redux";
+import { addMessage } from "../../../slices/messages/reducer";
+import showFriendlyMessafe from "../../../util/showFriendlyMessafe";
+import moment from "moment";
 
 const Reservation = () => {
     document.title="Reservación | CRM - M4SG";
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [item, setItems] = useState({
         loading: true,
@@ -18,6 +25,25 @@ const Reservation = () => {
         isSuccess: false,
         error: null
     });
+    //query filter 
+    const fecthReservation = async (q) => {
+        let qUrl = Object.keys(q).map(key=>`${key}=${query[key]}`).join("&")
+        const response = await getReservationPaginate(`?${qUrl}`);
+        return response
+    }
+    const [query, setQuery] = useState({
+        max: 10,
+        page: 1,
+    })
+    //service
+    const {data: reservationData, error: errorReservationQuery, isLoading, isSuccess, isRefetching} = 
+        useQuery(['getReservationPaginate', query], () => fecthReservation(query),
+      {
+        refetchOnWindowFocus: false,
+        keepPreviousData: true
+      }
+    );
+
     const [filterDialog, setFilterDialog] = useState(false)
     //detail canva
     const [showDetail, setShowDetail] = useState(false)
@@ -183,7 +209,7 @@ const Reservation = () => {
           },
           {
             Header: "Confirmación",
-            accessor: "idConfirmation",
+            accessor: "confirm",
             filterable: false,
             style: {
                 cursor: 'pointer',
@@ -191,15 +217,16 @@ const Reservation = () => {
           },
           {
             Header: "Nombre",
-            accessor: "nombre",
+            accessor: "customer.firstName",
             filterable: false,
             style: {
                 cursor: 'pointer'
-            }
+            },
+            Cell: ({row, value}) => `${value.toUpperCase()} ${row.original.customer.lastName.toUpperCase()}`
           },
           {
             Header: "Id Booking",
-            accessor: "idBooking",
+            accessor: "booking",
             filterable: false,
             style: {
                 cursor: 'pointer',
@@ -207,19 +234,21 @@ const Reservation = () => {
           },
           {
             Header: "LLegada",
-            accessor: "llegada",
+            accessor: "initialDate",
             filterable: false,
             style: {
                 cursor: 'pointer',
-            }
+            },
+            Cell: ({value}) => moment(value, "YYYY-MM-DD").format("DD/MM/YYYY")
           },
           {
             Header: "Salida",
-            accessor: "salida",
+            accessor: "finalDate",
             filterable: false,
             style: {
                 cursor: 'pointer',
-            }
+            },
+            Cell: ({value}) => moment(value, "YYYY-MM-DD").format("DD/MM/YYYY")
           },
           {
             id: "action",
@@ -262,6 +291,25 @@ const Reservation = () => {
         }, 2000)
     }, [])
 
+    
+    useEffect(() => {        
+        if(errorReservationQuery?.code){
+            dispatch(addMessage({
+                message: showFriendlyMessafe(errorReservationQuery?.code),
+                type: 'error'
+            }))
+        }
+    }, [errorReservationQuery])
+    console.log(reservationData)
+
+    const handlePage = (currentPage) => {
+        setQuery(prev=>({
+            ...prev,
+            page: currentPage+1
+        }))
+    }
+    console.log(isLoading)
+    console.log(isRefetching)
     return (
         <>
             <div className="page-content">
@@ -298,13 +346,13 @@ const Reservation = () => {
                             <Card id="contactList">
                                 <CardBody className="pt-0">
                                 <div>
-                                    {item.isSuccess || !item.loading ? (
+                                    {(!isLoading) ? (
                                     <TableContainer
                                         columns={columns}
-                                        data={item.data}
+                                        data={isSuccess ? reservationData.data.list : []}
                                         isGlobalFilter={false}
-                                        isAddUserList={false}
-                                        customPageSize={8}
+                                        customPageSize={query.max}
+                                        pageCount={reservationData.data.pagination.totalPages}
                                         className="custom-header-css"
                                         divClass="table-responsive table-card mb-3"
                                         tableClass="align-middle table-nowrap"
@@ -312,6 +360,8 @@ const Reservation = () => {
                                         isContactsFilter={true}
                                         SearchPlaceholder='Buscar...'
                                         onSelectRow={gotToPage}
+                                        handlePage={handlePage}
+                                        queryPageIndex={query.page}
                                     />
                                     ) : (<Loader error={item.error} />)
                                     }

@@ -14,12 +14,11 @@ const SelectAsync = ({
     placeholder='Seleccionar opción',
     isClearable=true,
     defaultOptions=true,
-    keyPropery="name",
+    keyProperty="name",
     ...props
 }) => {
     const messageRef = useRef(MESSAGE.noOption);
     let timer = useRef();
-    
     const loadOptionsWithDebounce = (
         keyword,
         callback
@@ -30,10 +29,10 @@ const SelectAsync = ({
             fnFilter(`${query}&${keyCompare}=${keyword}`)
             .then((options) => {
                 //console.log(options)
-              if (!options.list?.length) {
+              if (!options.data?.list?.length) {
                 messageRef.current = MESSAGE.noOption;
               }
-              callback(options.list.map(it=>({label: it[keyPropery], value: it.id})));
+              callback(options.data.list.map(it=>({label: it[keyProperty], value: it.id})));
             })
             .catch((err) => {
               messageRef.current = MESSAGE.networkError;

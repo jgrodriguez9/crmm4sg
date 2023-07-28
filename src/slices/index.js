@@ -14,6 +14,10 @@ import CrmReducer from "./crm/reducer";
 // Dashboard CRM
 import DashboardCRMReducer from "./dashboardCRM/reducer";
 
+//Messages 
+import MessageReducer from "./messages/reducer";
+import { configureStore } from "@reduxjs/toolkit";
+
 
 const rootReducer = combineReducers({
     Layout: LayoutReducer,
@@ -21,6 +25,10 @@ const rootReducer = combineReducers({
     Profile: ProfileReducer,
     Crm: CrmReducer,
     DashboardCRM: DashboardCRMReducer,
+    Messages: MessageReducer
 });
 
-export default rootReducer;
+export const store = configureStore({
+    reducer: rootReducer,
+    devTools: true
+})

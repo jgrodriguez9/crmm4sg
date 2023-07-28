@@ -1,6 +1,10 @@
 import axios from "axios";
 import { api } from "../config";
 import { decrypData } from "../util/crypto";
+import { addMessage } from "../slices/messages/reducer";
+import { store } from "../slices";
+import { ERR_NETWORK } from "../common/messages";
+const {dispatch} = store;
 
 const axiosApi = axios.create({
   baseURL:  api.API_URL,
@@ -23,26 +27,24 @@ axiosApi.defaults.headers.common["Authorization"] = "Bearer " + token;
 
 // intercepting to capture errors
 axiosApi.interceptors.response.use(
-  function (response) {
-    return response.data ? response.data : response;
-  },
-  function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    let message;
-    switch (error.status) {
-      case 500:
-        message = "Internal Server Error";
-        break;
-      case 401:
-        message = "Invalid credentials";
-        break;
-      case 404:
-        message = "Sorry! the data you are looking for could not be found";
-        break;
-      default:
-        message = error.message || error;
-    }
-    return Promise.reject(message);
+  response => response,
+  error => {
+      //console.log(error)
+      //console.log(error.code)
+      if(error.code === 'ERR_NETWORK'){
+          dispatch(addMessage({
+              type: 'error',
+              message: ERR_NETWORK
+          }))
+          return;
+      }
+      else if(error.response.status===403 || error.response.status===401){
+          //window.sessionStorage.removeItem('sunsetadmiralauth');
+          //window.location.reload();
+          return Promise.reject(error);
+      }else{
+          return Promise.reject(error);
+      }        
   }
 );
 /**

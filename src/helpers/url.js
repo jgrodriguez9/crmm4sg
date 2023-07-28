@@ -18,3 +18,9 @@ export const segment = '/segment'
 export const merchant = '/merchant'
 //reservation status
 export const reservationStatus = '/reservationStatus'
+
+//end catalogues
+
+
+//reservation
+export const reservation = '/reservation'

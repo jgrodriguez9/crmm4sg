@@ -196,42 +196,6 @@ const OrderGlobalFilter = () => {
     );
 };
 
-const ContactsGlobalFilter = () => {
-    const [sortBy, setsortBy] = useState(null);
-
-    function handlesortBy(sortBy) {
-        setsortBy(sortBy);
-    }
-
-    const sortbyname = [
-        {
-            options: [
-                { label: "Owner", value: "Owner" },
-                { label: "Company", value: "Company" },
-                { label: "Location", value: "Location" }
-            ],
-        },
-    ];
-    return (
-        <React.Fragment>
-            <div className="col-md-auto ms-auto">
-                <div className="d-flex align-items-center gap-2">
-                    <span className="text-muted">Sort by: </span>
-                    <Select
-                        className="mb-0"
-                        value={sortBy}
-                        onChange={() => {
-                            handlesortBy();
-                        }}
-                        options={sortbyname}
-                        id="choices-single-default"
-                    >
-                    </Select>
-                </div>
-            </div>
-        </React.Fragment>
-    );
-};
 
 const CompaniesGlobalFilter = () => {
     const [sortBy, setsortBy] = useState("Owner");
@@ -530,7 +494,6 @@ export {
     ProductsGlobalFilter,
     CustomersGlobalFilter,
     OrderGlobalFilter,
-    ContactsGlobalFilter,
     CompaniesGlobalFilter,
     CryptoOrdersGlobalFilter,
     InvoiceListGlobalSearch,

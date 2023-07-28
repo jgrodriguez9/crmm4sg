@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   useTable,
@@ -16,7 +16,6 @@ import {
   ProductsGlobalFilter,
   CustomersGlobalFilter,
   OrderGlobalFilter,
-  ContactsGlobalFilter,
   CompaniesGlobalFilter,
   LeadsGlobalFilter,
   CryptoOrdersGlobalFilter,
@@ -32,7 +31,6 @@ function GlobalFilter({
   setGlobalFilter,
   isCustomerFilter,
   isOrderFilter,
-  isContactsFilter,
   isCompaniesFilter,
   isCryptoOrdersFilter,
   isInvoiceListFilter,
@@ -54,7 +52,7 @@ function GlobalFilter({
         <form>
           <Row>
             <Col sm={5}>
-              <div className={(isProductsFilter || isContactsFilter || isCompaniesFilter || isNFTRankingFilter) ? "search-box me-2 mb-2 d-inline-block" : "search-box me-2 mb-2 d-inline-block col-12"}>
+              <div className={(isProductsFilter || isCompaniesFilter || isNFTRankingFilter) ? "search-box me-2 mb-2 d-inline-block" : "search-box me-2 mb-2 d-inline-block col-12"}>
                 <input
                   onChange={(e) => {
                     setValue(e.target.value);
@@ -77,9 +75,6 @@ function GlobalFilter({
             )}
             {isOrderFilter && (
               <OrderGlobalFilter />
-            )}
-            {isContactsFilter && (
-              <ContactsGlobalFilter />
             )}
             {isCompaniesFilter && (
               <CompaniesGlobalFilter />
@@ -119,7 +114,6 @@ const TableContainer = ({
   isProductsFilter,
   isCustomerFilter,
   isOrderFilter,
-  isContactsFilter,
   isCompaniesFilter,
   isLeadsFilter,
   isCryptoOrdersFilter,
@@ -127,12 +121,9 @@ const TableContainer = ({
   isTicketsListFilter,
   isNFTRankingFilter,
   isTaskListFilter,
-  isAddOptions,
-  isAddUserList,
   handleOrderClicks,
   handleUserClick,
   handleCustomerClick,
-  isAddCustList,
   customPageSize,
   tableClass,
   theadClass,
@@ -140,8 +131,12 @@ const TableContainer = ({
   thClass,
   divClass,
   SearchPlaceholder,
+  pageCount=-1,
+  queryPageIndex=0,
+  handlePage,
   onSelectRow= (row) => {}
 }) => {
+  
   const {
     getTableProps,
     getTableBodyProps,
@@ -155,34 +150,21 @@ const TableContainer = ({
     nextPage,
     previousPage,
     setPageSize,
-    state,
-    preGlobalFilteredRows,
-    setGlobalFilter,
     state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
       data,
-      defaultColumn: { Filter: DefaultColumnFilter },
+      pageCount: pageCount,
+      manualPagination: true,     
       initialState: {
-        pageIndex: 0, pageSize: customPageSize, selectedRowIds: 0, sortBy: [
-          {
-            desc: true,
-          },
-        ],
+        pageIndex: queryPageIndex, pageSize: customPageSize,
       },
+      
     },
-    useGlobalFilter,
-    useFilters,
-    useSortBy,
-    useExpanded,
-    usePagination,
-    useRowSelect
+    usePagination
   );
 
-  const generateSortingIndicator = (column) => {
-    return column.isSorted ? (column.isSortedDesc ? " " : "") : "";
-  };
 
   const onChangeInSelect = (event) => {
     setPageSize(Number(event.target.value));
@@ -192,9 +174,15 @@ const TableContainer = ({
     gotoPage(page);
   };
 
+  useEffect(() => {
+    handlePage(pageIndex)
+  },[pageIndex, pageSize])
+
+  
+
   return (
     <Fragment>
-      <Row className="mb-3">
+      {/* <Row className="mb-3">
         {isGlobalSearch && (
           <Col md={1}>
             <select
@@ -209,72 +197,8 @@ const TableContainer = ({
               ))}
             </select>
           </Col>
-        )}
-        {isGlobalFilter && (
-          <GlobalFilter
-            preGlobalFilteredRows={preGlobalFilteredRows}
-            globalFilter={state.globalFilter}
-            setGlobalFilter={setGlobalFilter}
-            isProductsFilter={isProductsFilter}
-            isCustomerFilter={isCustomerFilter}
-            isOrderFilter={isOrderFilter}
-            isContactsFilter={isContactsFilter}
-            isCompaniesFilter={isCompaniesFilter}
-            isLeadsFilter={isLeadsFilter}
-            isCryptoOrdersFilter={isCryptoOrdersFilter}
-            isInvoiceListFilter={isInvoiceListFilter}
-            isTicketsListFilter={isTicketsListFilter}
-            isNFTRankingFilter={isNFTRankingFilter}
-            isTaskListFilter={isTaskListFilter}
-            SearchPlaceholder={SearchPlaceholder}
-          />
-        )}
-        {isAddOptions && (
-          <Col sm="7">
-            <div className="text-sm-end">
-              <Button
-                type="button"
-                color="success"
-                className="btn-rounded  mb-2 me-2"
-                onClick={handleOrderClicks}
-              >
-                <i className="mdi mdi-plus me-1" />
-                Add New Order
-              </Button>
-            </div>
-          </Col>
-        )}
-        {isAddUserList && (
-          <Col sm="7">
-            <div className="text-sm-end">
-              <Button
-                type="button"
-                color="primary"
-                className="btn mb-2 me-2"
-                onClick={handleUserClick}
-              >
-                <i className="mdi mdi-plus-circle-outline me-1" />
-                Create New User
-              </Button>
-            </div>
-          </Col>
-        )}
-        {isAddCustList && (
-          <Col sm="7">
-            <div className="text-sm-end">
-              <Button
-                type="button"
-                color="success"
-                className="btn-rounded mb-2 me-2"
-                onClick={handleCustomerClick}
-              >
-                <i className="mdi mdi-plus me-1" />
-                New Customers
-              </Button>
-            </div>
-          </Col>
-        )}
-      </Row>
+        )}        
+      </Row> */}
 
 
       <div className={divClass}>
@@ -283,9 +207,8 @@ const TableContainer = ({
             {headerGroups.map((headerGroup) => (
               <tr className={trClass} key={headerGroup.id}  {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th key={column.id} className={thClass} {...column.getSortByToggleProps()}>
+                  <th key={column.id} className={thClass}>
                     {column.render("Header")}
-                    {generateSortingIndicator(column)}
                     {/* <Filter column={column} /> */}
                   </th>
                 ))}
