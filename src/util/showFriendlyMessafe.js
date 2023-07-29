@@ -1,9 +1,11 @@
-const { ERR_BAD_REQUEST } = require("../common/messages")
+const { ERR_BAD_REQUEST, ERR_BAD_RESPONSE } = require("../common/messages")
 
 const showFriendlyMessafe = (serverCode) => {
     switch(serverCode){
         case 'ERR_BAD_REQUEST':
             return ERR_BAD_REQUEST;
+        case 'ERR_BAD_RESPONSE':
+            return ERR_BAD_RESPONSE;
         default:
             return serverCode;
     }

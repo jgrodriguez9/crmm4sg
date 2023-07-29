@@ -8,8 +8,17 @@ import { getProgramPaginate } from "../../../helpers/catalogues/program";
 import { getSegmentPaginate } from "../../../helpers/catalogues/segment";
 import { getReservationStatusPaginate } from "../../../helpers/catalogues/reservation_status";
 import React from "react";
+import moment from "moment";
 
-const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {    
+const ReservationFilter = ({ 
+    show, 
+    onCloseClick, 
+    query, 
+    setQuery, 
+    buscar, 
+    dataSelect,
+    setDataSelect 
+}) => {    
     const onChangeDateLLegada = (date) => {
         console.log(date)
     }
@@ -40,7 +49,12 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="id-booking" className="form-label text-muted mb-0">Id Booking</Label>
-                        <Input className="form-control" type="text" id="id-booking" />
+                        <Input 
+                            className="form-control" 
+                            type="text" id="id-booking" 
+                            value={query.booking} 
+                            onChange={e=>setQuery(prev=>({...prev, booking: e.target.value}))} 
+                        />
                     </div>
                 </Col>
                 <Col xs="12" md="4">
@@ -56,7 +70,14 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                         <Label htmlFor="llegada" className="form-label text-muted mb-0">Llegada Desde</Label>
                         <DatePicker 
                             id='llegada'
-                            onChangeDate={onChangeDateLLegada}
+                            date={query.checkInStart ? moment(query.checkInStart, 'YYYY-MM-DD').format('DD/MM/YYYY') : ''}
+                            onChangeDate={value => {
+                                if(value.length > 0){
+                                    setQuery(prev=>({...prev, checkInStart: moment(value[0]).format('YYYY-MM-DD')}))
+                                }else{
+                                    setQuery(prev=>({...prev, checkInStart: ''}))
+                                }
+                            }}
                         />
                     </div>
                 </Col>
@@ -65,7 +86,14 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                         <Label htmlFor="salida" className="form-label text-muted mb-0">Hasta</Label>
                         <DatePicker 
                             id='salida'
-                            onChangeDate={onChangeDateLLegada}
+                            date={query.checkInEnd ? moment(query.checkInEnd, 'YYYY-MM-DD').format('DD/MM/YYYY') : ''}
+                            onChangeDate={value => {
+                                if(value.length > 0){
+                                    setQuery(prev=>({...prev, checkInEnd: moment(value[0]).format('YYYY-MM-DD')}))
+                                }else{
+                                    setQuery(prev=>({...prev, checkInEnd: ''}))
+                                }
+                            }}
                         />
                     </div>
                 </Col>
@@ -74,13 +102,19 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="nombre" className="form-label text-muted mb-0">Nombre</Label>
-                        <Input className="form-control" type="text" id="nombre" />
+                        <Input className="form-control" type="text" id="nombre" 
+                            value={query.firstName} 
+                            onChange={e=>setQuery(prev=>({...prev, firstName: e.target.value}))}
+                        />
                     </div>
                 </Col>
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="apellido" className="form-label text-muted mb-0">Apellido</Label>
-                        <Input className="form-control" type="text" id="apellido" />
+                        <Input className="form-control" type="text" id="apellido" 
+                            value={query.lastName} 
+                            onChange={e=>setQuery(prev=>({...prev, lastName: e.target.value}))} 
+                        />
                     </div>
                 </Col>
                 <Col xs="12" md="4">
@@ -91,6 +125,14 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                             query={'?page=1&max=10'}
                             keyCompare={'name'}
                             keyProperty="status"
+                            value={dataSelect.statusModel} 
+                            onChange={value=>{
+                                setQuery(prev=>({...prev, status: value?.value ?? ''}))
+                                setDataSelect(prev=>({
+                                    ...prev,
+                                    statusModel: value
+                                }))                                
+                            }}
                         />
                     </div>
                 </Col>
@@ -101,7 +143,14 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                         <Label htmlFor="ingresada" className="form-label text-muted mb-0">Ingresada Desde</Label>
                         <DatePicker 
                             id='ingresada'
-                            onChangeDate={onChangeDateLLegada}
+                            date={query.registedDateStart ? moment(query.registedDateStart, 'YYYY-MM-DD').format('DD/MM/YYYY') : ''}
+                            onChangeDate={value => {
+                                if(value.length > 0){
+                                    setQuery(prev=>({...prev, registedDateStart: moment(value[0]).format('YYYY-MM-DD')}))
+                                }else{
+                                    setQuery(prev=>({...prev, registedDateStart: ''}))
+                                }
+                            }}
                         />
                     </div>
                 </Col>
@@ -110,7 +159,14 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                         <Label htmlFor="ingresada-hasta" className="form-label text-muted mb-0">Hasta</Label>
                         <DatePicker 
                             id='ingresada-hasta'
-                            onChangeDate={onChangeDateLLegada}
+                            date={query.registedDateEnd ? moment(query.registedDateEnd, 'YYYY-MM-DD').format('DD/MM/YYYY') : ''}
+                            onChangeDate={value => {
+                                if(value.length > 0){
+                                    setQuery(prev=>({...prev, registedDateEnd: moment(value[0]).format('YYYY-MM-DD')}))
+                                }else{
+                                    setQuery(prev=>({...prev, registedDateEnd: ''}))
+                                }
+                            }}
                         />
                     </div>
                 </Col>
@@ -119,7 +175,10 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="certificado" className="form-label text-muted mb-0">No Certificado</Label>
-                        <Input className="form-control" type="text" id="certificado"  />
+                        <Input className="form-control" type="text" id="certificado"  
+                            value={query.certificate} 
+                            onChange={e=>setQuery(prev=>({...prev, certificate: e.target.value}))} 
+                        />
                     </div>
                 </Col>
                 <Col xs="12" md="4">
@@ -150,20 +209,45 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                 </Col>
               </Row>
               <Row>
-                <Col xs="12" md="12">
+                <Col xs="12" md="6">
                     <div className="mb-2">
                         <Label htmlFor="hotel" className="form-label text-muted mb-0">Hotel</Label>
                         <SelectAsync 
                             fnFilter={getHotelPaginate}
                             query={'?page=1&max=10'}
                             keyCompare={'name'}
-
+                            value={dataSelect.hotelModel} 
+                            onChange={value=>{
+                                setQuery(prev=>({...prev, hotel: value?.value ?? ''}))
+                                setDataSelect(prev=>({
+                                    ...prev,
+                                    hotelModel: value
+                                }))                                
+                            }}
+                        />
+                    </div>
+                </Col>
+                <Col xs="12" md="6">
+                    <div className="mb-2">
+                        <Label htmlFor="segmento" className="form-label text-muted mb-0">Segmento</Label>
+                        <SelectAsync 
+                            fnFilter={getSegmentPaginate}
+                            query={'?page=1&max=10'}
+                            keyCompare={'name'}
+                            value={dataSelect.segmentModel} 
+                            onChange={value=>{
+                                setQuery(prev=>({...prev, segment: value?.value ?? ''}))
+                                setDataSelect(prev=>({
+                                    ...prev,
+                                    segmentModel: value
+                                }))                                
+                            }}
                         />
                     </div>
                 </Col>
               </Row>
               <Row>
-                <Col xs="12" md="6">
+                {/* <Col xs="12" md="6">
                     <div className="mb-2">
                         <Label htmlFor="departamento" className="form-label text-muted mb-0">Departamento</Label>
                         <Select
@@ -175,17 +259,7 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                             id="departamento"
                         />
                     </div>
-                </Col>
-                <Col xs="12" md="6">
-                    <div className="mb-2">
-                        <Label htmlFor="segmento" className="form-label text-muted mb-0">Segmento</Label>
-                        <SelectAsync 
-                            fnFilter={getSegmentPaginate}
-                            query={'?page=1&max=10'}
-                            keyCompare={'name'}
-                        />
-                    </div>
-                </Col>
+                </Col> */}
               </Row>
               <Row>
                 <Col xs="12" md="4">
@@ -195,10 +269,18 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                             fnFilter={getCallCenterPaginate}
                             query={'?page=1&max=10'}
                             keyCompare={'name'}
+                            value={dataSelect.callCenterModel} 
+                            onChange={value=>{
+                                setQuery(prev=>({...prev, callCenter: value?.value ?? ''}))
+                                setDataSelect(prev=>({
+                                    ...prev,
+                                    callCenterModel: value
+                                }))                                
+                            }}
                         />
                     </div>
                 </Col>
-                <Col xs="12" md="4">
+                {/* <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="campana" className="form-label text-muted mb-0">Campaña</Label>
                         <Select
@@ -210,7 +292,7 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                             id="campana"
                         />
                     </div>
-                </Col>
+                </Col> */}
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="programa" className="form-label text-muted mb-0">Programa</Label>
@@ -219,14 +301,22 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                             query={'?page=1&max=10'}
                             keyCompare={'name'}
                             keyProperty="program"
+                            value={dataSelect.programModel} 
+                            onChange={value=>{
+                                setQuery(prev=>({...prev, program: value?.value ?? ''}))
+                                setDataSelect(prev=>({
+                                    ...prev,
+                                    programModel: value
+                                }))                                
+                            }}
                         />
                     </div>
                 </Col>
               </Row>
               <Row>
-                <Col xs="12" md="4">
+                {/* <Col xs="12" md="4">
                     <div className="mb-2">
-                        <Label htmlFor="consultor" className="form-label text-muted mb-0">Consultos</Label>
+                        <Label htmlFor="consultor" className="form-label text-muted mb-0">Consultor</Label>
                         <Select
                             className="mb-0"
                             value={null}
@@ -236,22 +326,26 @@ const ReservationFilter = ({ show, onCloseClick, query, setQuery, buscar }) => {
                             id="consultor"
                         />
                     </div>
-                </Col>
+                </Col> */}
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="telefono" className="form-label text-muted mb-0">Teléfono</Label>
-                        <DatePicker 
-                            id='telefono'
-                            onChangeDate={onChangeDateLLegada}
+                        <Input className="form-control" 
+                            type="text" 
+                            id="telefono" 
+                            value={query.movil} 
+                            onChange={e=>setQuery(prev=>({...prev, movil: e.target.value}))} 
                         />
                     </div>
                 </Col>
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="correo-electronico" className="form-label text-muted mb-0">Correo electrónico</Label>
-                        <DatePicker 
-                            id='correo-electronico'
-                            onChangeDate={onChangeDateLLegada}
+                        <Input className="form-control" 
+                            type="text" 
+                            id="correo-electronico" 
+                            value={query.email} 
+                            onChange={e=>setQuery(prev=>({...prev, email: e.target.value}))} 
                         />
                     </div>
                 </Col>

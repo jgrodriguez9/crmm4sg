@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { Button, Card, CardBody, CardHeader, Col, Container, Input, Row } from "reactstrap";
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
 import BreadCrumb from "../../../Components/Common/BreadCrumb";
 import ReservationFilter from "../../../Components/Operation/Reservation/ReservationFilter";
 import TableContainer from "../../../Components/Common/TableContainer";
 import Loader from "../../../Components/Common/Loader";
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { listReservation } from "../../../common/data/common";
 import DetailCanvas from "../../../Components/Common/DetailCanvas";
 import { getReservationPaginate } from "../../../helpers/reservation";
 import { useQuery } from "react-query";
@@ -19,7 +18,29 @@ import parseObjectToQueryUrl from "../../../util/parseObjectToQueryUrl";
 
 const initFilter = {
     //reserva
-    id: ''
+    id: '',
+    booking: '',
+    status: '',
+    certificate: '',
+    hotel: '',
+    program: '',
+    callCenter: '',
+    segment: '',
+    lastName: '',
+    firstName: '',
+    email: '',
+    movil: '',
+    checkInStart: '',
+    checkInEnd: '',
+    registedDateStart: '',
+    registedDateEnd: ''
+}
+const initFilterModel = {
+    statusModel: null,
+    hotelModel:null,
+    programModel: null,
+    callCenterModel: null,
+    segmentModel: null
 }
 
 const Reservation = () => {
@@ -33,8 +54,8 @@ const Reservation = () => {
     })
     const [queryFilter, setQueryFilter] = useState(parseObjectToQueryUrl(query))
     //query filter 
-    const fecthReservation = async (queryFilter) => {
-        const response = await getReservationPaginate(`?${queryFilter}`);
+    const fecthReservation = async (q) => {
+        const response = await getReservationPaginate(`?${q}`);
         return response
     }
     //service
@@ -47,7 +68,10 @@ const Reservation = () => {
       }
     );
 
+    console.log(queryFilter)
+
     const [filterDialog, setFilterDialog] = useState(false)
+    const [dataSelect, setDataSelect] = useState(initFilterModel)
     //detail canva
     const [showDetail, setShowDetail] = useState(false)
     const [info, setInfo] = useState(null);
@@ -302,7 +326,8 @@ const Reservation = () => {
     const onCleanFilter = () =>{
         const copyQuery = {max: 10, page: 1, ...initFilter}
         setQueryFilter(parseObjectToQueryUrl(copyQuery))
-        setQuery(copyQuery)        
+        setQuery(copyQuery)      
+        setDataSelect(initFilterModel)  
     }
     return (
         <>
@@ -361,6 +386,8 @@ const Reservation = () => {
                 query={query}
                 setQuery={setQuery}
                 buscar={buscar}
+                dataSelect={dataSelect}
+                setDataSelect={setDataSelect}
             />   
             {info &&
             <DetailCanvas
