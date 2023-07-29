@@ -17,11 +17,9 @@ const ReservationFilter = ({
     setQuery, 
     buscar, 
     dataSelect,
-    setDataSelect 
+    setDataSelect, 
+    onCleanFilter,
 }) => {    
-    const onChangeDateLLegada = (date) => {
-        console.log(date)
-    }
 
     return (
         <Offcanvas
@@ -370,7 +368,7 @@ const ReservationFilter = ({
                             type="button"
                             size="sm"
                             className="fw-500"
-                            onClick={onCloseClick}
+                            onClick={onCleanFilter}
                         >Limpiar filtros
                         </Button>
                     </div>                  

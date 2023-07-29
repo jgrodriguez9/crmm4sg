@@ -324,6 +324,7 @@ const Reservation = () => {
     }
 
     const onCleanFilter = () =>{
+        setFilterDialog(false)
         const copyQuery = {max: 10, page: 1, ...initFilter}
         setQueryFilter(parseObjectToQueryUrl(copyQuery))
         setQuery(copyQuery)      
@@ -388,6 +389,7 @@ const Reservation = () => {
                 buscar={buscar}
                 dataSelect={dataSelect}
                 setDataSelect={setDataSelect}
+                onCleanFilter={onCleanFilter}
             />   
             {info &&
             <DetailCanvas
