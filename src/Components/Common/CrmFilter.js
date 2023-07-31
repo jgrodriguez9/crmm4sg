@@ -15,7 +15,16 @@ import SelectAsync from "./SelectAsync";
 import { getSegmentPaginate } from "../../helpers/catalogues/segment";
 import { getProgramPaginate } from "../../helpers/catalogues/program";
 
-const CrmFilter = ({ show, onCloseClick }) => {
+const CrmFilter = ({ 
+    show, 
+    onCloseClick ,
+    query, 
+    setQuery, 
+    buscar, 
+    dataSelect,
+    setDataSelect, 
+    onCleanFilter,
+}) => {
   const [selectCountry, setselectCountry] = useState(null);
 
 const handleselectCountry = (selectCountry) => {

@@ -12,68 +12,73 @@ import { useEffect } from "react";
 import DetailCanvas from "../../../Components/Common/DetailCanvas";
 import { listClient } from "../../../common/data/common";
 import moment from "moment";
+import parseObjectToQueryUrl from "../../../util/parseObjectToQueryUrl";
+import { useQuery } from "react-query";
+import { getCustomerPaginate } from "../../../helpers/customer";
+import PaginationManual from "../../../Components/Common/PaginationManual";
+import { addMessage } from "../../../slices/messages/reducer";
+import showFriendlyMessafe from "../../../util/showFriendlyMessafe";
+
+const initFilter = {
+  //reserva
+  id: '',
+  callCenter: '',
+  lastName: '',
+  firstName: '',
+  email: '',
+  movil: '',
+  country: '',
+  state: ''
+}
+const initFilterModel = {
+  callCenterModel: null,
+}
 
 const Lead = () => {
     document.title="Cliente | CRM - M4SG";
     const dispatch = useDispatch();
     const navigate = useNavigate();    
-    const [item, setItems] = useState({
-      loading: true,
-      data: [],
-      isSuccess: false,
-      error: null
-    });
-    const [info, setInfo] = useState(null);
-    const [contact, setContact] = useState([]);
-    const [isEdit, setIsEdit] = useState(false);
-    const [tag, setTag] = useState([]);
-    const [assignTag, setAssignTag] = useState([]);
-    const [modal, setModal] = useState(false);
-    const [isInfoDetails, setIsInfoDetails] = useState(false);
+    const [query, setQuery] = useState({
+      max: 10,
+      page: 1,
+      ...initFilter
+    })
+    const [queryFilter, setQueryFilter] = useState(parseObjectToQueryUrl(query))
+    //query filter 
+    const fecthItems = async (q) => {
+      const response = await getCustomerPaginate(`?${q}`);
+      return response
+    }
+    //service
+    const {data: itemsData, error: errorItemsQuery, isLoading, isSuccess} = 
+        useQuery(['getCustomerPaginate', queryFilter], () => fecthItems(queryFilter),
+      {
+        refetchOnWindowFocus: false,
+        keepPreviousData: true,
+        staleTime: 3 * (60 * 1000),
+      }
+    );
+
+      useEffect(() => {        
+        if(errorItemsQuery?.code){
+            dispatch(addMessage({
+                message: showFriendlyMessafe(errorItemsQuery?.code),
+                type: 'error'
+            }))
+        }
+    }, [errorItemsQuery])
+
+    const [dataSelect, setDataSelect] = useState(initFilterModel)
+    const [info, setInfo] = useState(null);  
+    const [filterDialog, setFilterDialog] = useState(false)
     //detail lead
     const [showDetailLead, setShowDetailLead] = useState(false)
 
-    const toggleInfo = () => {
-        setIsInfoDetails(!isInfoDetails);
-    };   
-    
-    const toggle = useCallback(() => {
-        if (modal) {
-          setModal(false);
-          setContact(null);
-        } else {
-          setModal(true);
-          setTag([]);
-          setAssignTag([]);
-        }
-      }, [modal]);
-    // Update Data
-    const handleContactClick = useCallback((arg) => {
-        const contact = arg;
+    console.log(itemsData)
+  
 
-        setContact({
-        _id: contact._id,
-        // img: contact.img,
-        name: contact.name,
-        company: contact.company,
-        email: contact.email,
-        designation: contact.designation,
-        phone: contact.phone,
-        lead_score: contact.lead_score,
-        last_contacted: contact.date,
-        // time: contact.time,
-        tags: contact.tags,
-        });
-
-        setIsEdit(true);
-        toggle();
-    }, [toggle]);
-
-    // Add Data
-    const handleContactClicks = () => {
-        setContact("");
-        setIsEdit(false);
-        toggle();
+    const toggleFilter = () => {
+      setFilterDialog(!filterDialog);
     };
 
     const builtInfo = (dataTable) => {
@@ -199,58 +204,54 @@ const Lead = () => {
               <>
                 <div className="d-flex align-items-center">
                   <div className="flex-shrink-0">
-                    {contact.row.original.image_src ? <img
-                      src={process.env.REACT_APP_API_URL + "/images/users/" + contact.row.original.image_src}
-                      alt=""
-                      className="avatar-xxs rounded-circle"
-                    /> :
-                      <div className="flex-shrink-0 avatar-xs me-2">
-                        <div className="avatar-title bg-soft-success text-success rounded-circle fs-13">
-                          {contact.row.original.nombre.charAt(0)}
-                        </div>
+                    <div className="flex-shrink-0 avatar-xs me-2">
+                      <div className="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                        {contact.row.original.firstName.charAt(0)}
                       </div>
-                    }
+                    </div>
                   </div>
                   <div className="flex-grow-1 ms-2 name">
-                    {contact.row.original.nombre}
+                    {`${contact.row.original.firstName} ${contact.row.original.lastName ?? ''}`}
                   </div>
                 </div>
               </>
             ),
           },
-          {
-            Header: "Contrato",
-            accessor: "contrato",
-            filterable: false,
-            style: {
-              cursor: 'pointer',
-            }
-          },
+          // {
+          //   Header: "Contrato",
+          //   accessor: "contrato",
+          //   filterable: false,
+          //   style: {
+          //     cursor: 'pointer',
+          //   }
+          // },
           {
             Header: "País",
-            accessor: "pais",
+            accessor: "country",
             filterable: false,
             style: {
               cursor: 'pointer',
             }
           },
           {
-            Header: "Agente",
-            accessor: "agente",
+            Header: "Estado",
+            accessor: "state",
             filterable: false,
             style: {
               cursor: 'pointer',
             }
           },
+          // {
+          //   Header: "Agente",
+          //   accessor: "agente",
+          //   filterable: false,
+          //   style: {
+          //     cursor: 'pointer',
+          //   }
+          // },
           {
-            Header: "Welcome call",
-            accessor: "welcomeCall",
-            filterable: false,
-            Cell: ({value}) => moment(value, "YYYY-MM-DD HH:mm:ss").format('DD/MM/YYY HH:mm')
-          },
-          {
-            Header: "Estado de ánimo",
-            accessor: "estadoAnimo",
+            Header: "Call Center",
+            accessor: "callcenter.name",
             filterable: false,
             style: {
               cursor: 'pointer',
@@ -293,76 +294,66 @@ const Lead = () => {
             },
           },
         ],
-        [handleContactClick]
+        []
     );
 
     const gotToPage = (row) => {
       navigate(`/client/1`)
     }
 
-    //test
-    useEffect(() => {
-      setTimeout(() => {
-          setItems(prev=>({
-              ...prev,
-              loading: false,
-              isSuccess: true,
-              data: listClient
-          }))
-      }, 2000)
-    }, [])
+    const buscar = () => {
+      setFilterDialog(false)
+      const copyQuery = {...query, page: 1 }
+      setQueryFilter(parseObjectToQueryUrl(copyQuery))
+      setQuery(copyQuery)
+  }
+
+    const onCleanFilter = () =>{
+      setFilterDialog(false)
+      const copyQuery = {max: 10, page: 1, ...initFilter}
+      setQueryFilter(parseObjectToQueryUrl(copyQuery))
+      setQuery(copyQuery)      
+      setDataSelect(initFilterModel)  
+  }
 
     return (
         <>
             <div className="page-content">
                 <Container fluid>  
-                    <BreadCrumb title="Cliente" pageTitle="Inicio" urlPageTitle="/dashboard" />
+                    <BreadCrumb 
+                      title="Cliente" 
+                      pageTitle="Inicio" 
+                      urlPageTitle="/dashboard" 
+                      filter={{
+                        allow: true,
+                        action: toggleFilter,
+                        cleanFilter: onCleanFilter
+                    }}
+                    />
                     <Row>
-                        <Col lg={12}>
-                            <Card>
-                                <CardHeader>
-                                    <div className="d-flex align-items-center flex-wrap gap-2">
-                                        <div className="flex-grow-1">
-                                        {/* <button
-                                            className="btn btn-success add-btn"
-                                            onClick={() => {
-                                            //setModal(true);
-                                            }}
-                                        >
-                                            <i className="ri-add-fill me-1 align-bottom"></i> Agregar Lead
-                                        </button> */}
-                                        </div>
-                                        <div className="flex-shrink-0">
-                                        <div className="hstack text-nowrap gap-2">                                        
-                                            <button className="btn btn-info" onClick={toggleInfo}>
-                                                <i className="ri-filter-2-line me-1 align-bottom"></i>{" "} Filtros
-                                            </button>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </CardHeader>
-                            </Card>
-                        </Col>
                         <Col xxl={12}>
                             <Card id="contactList">
                                 <CardBody className="pt-0">
                                 <div>
-                                    {item.isSuccess || !item.loading ? (
-                                    <TableContainer
-                                        columns={columns}
-                                        data={item.data}
-                                        isGlobalFilter={false}
-                                        isAddUserList={false}
-                                        customPageSize={8}
-                                        className="custom-header-css"
-                                        divClass="table-responsive table-card mb-3"
-                                        tableClass="align-middle table-nowrap"
-                                        theadClass="table-light"
-                                        handleContactClick={handleContactClicks}
-                                        isContactsFilter={true}
-                                        SearchPlaceholder='Buscar...'
-                                        onSelectRow={gotToPage}
-                                    />
+                                    {(!isLoading) ? (
+                                    <>
+                                        <TableContainer
+                                            columns={columns}
+                                            data={isSuccess ? itemsData.data.list : []}
+                                            className="custom-header-css"
+                                            divClass="table-responsive table-card mb-3"
+                                            tableClass="align-middle table-nowrap"
+                                            theadClass="table-light"
+                                            onSelectRow={gotToPage}
+                                            
+                                        />
+                                        <PaginationManual 
+                                            query={query}
+                                            setQuery={setQuery}
+                                            setQueryFilter={setQueryFilter}
+                                            totalPages={itemsData?.data?.pagination?.totalPages ?? 1}
+                                        />
+                                    </>
                                     ) : (<Loader />)
                                     }
                                 </div>
@@ -373,8 +364,14 @@ const Lead = () => {
                 </Container>
             </div>
             <CrmFilter
-                show={isInfoDetails}
-                onCloseClick={() => setIsInfoDetails(false)}
+                show={filterDialog}
+                onCloseClick={() => setFilterDialog(false)}                
+                query={query}
+                setQuery={setQuery}
+                buscar={buscar}
+                dataSelect={dataSelect}
+                setDataSelect={setDataSelect}
+                onCleanFilter={onCleanFilter}
             />
             {info &&
             <DetailCanvas

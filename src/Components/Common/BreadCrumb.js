@@ -9,9 +9,9 @@ const BreadCrumb = ({ title, pageTitle, urlPageTitle='#', filter }) => {
                 <div className="page-title-box d-sm-flex align-items-center justify-content-between">
                     <div>
                         <h4 className="mb-0">{title}</h4>
-                        <span className='breadcrumb-item d-flex align-items-center'>
+                        {/* <span className='breadcrumb-item d-flex align-items-center'>
                             <i className='ri-arrow-left-s-line me-1' /><Link to={urlPageTitle}>{pageTitle}</Link>
-                        </span>
+                        </span> */}
                     </div>
                     
                     {filter?.allow &&

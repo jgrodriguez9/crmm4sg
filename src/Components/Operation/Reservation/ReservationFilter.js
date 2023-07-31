@@ -9,6 +9,7 @@ import { getSegmentPaginate } from "../../../helpers/catalogues/segment";
 import { getReservationStatusPaginate } from "../../../helpers/catalogues/reservation_status";
 import React from "react";
 import moment from "moment";
+import { getCampaingPaginate } from "../../../helpers/catalogues/campaign";
 
 const ReservationFilter = ({ 
     show, 
@@ -278,19 +279,24 @@ const ReservationFilter = ({
                         />
                     </div>
                 </Col>
-                {/* <Col xs="12" md="4">
+                <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="campana" className="form-label text-muted mb-0">Campaña</Label>
-                        <Select
-                            className="mb-0"
-                            value={null}
-                            onChange={() => {}}
-                            options={[]}
-                            placeholder="Seleccionar opción"
-                            id="campana"
+                        <SelectAsync 
+                            fnFilter={getCampaingPaginate}
+                            query={'?page=1&max=10'}
+                            keyCompare={'name'}
+                            value={dataSelect.campaingModel} 
+                            onChange={value=>{
+                                setQuery(prev=>({...prev, campaing: value?.value ?? ''}))
+                                setDataSelect(prev=>({
+                                    ...prev,
+                                    campaingModel: value
+                                }))                                
+                            }}
                         />
                     </div>
-                </Col> */}
+                </Col>
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="programa" className="form-label text-muted mb-0">Programa</Label>

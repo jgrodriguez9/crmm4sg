@@ -33,14 +33,16 @@ const initFilter = {
     checkInStart: '',
     checkInEnd: '',
     registedDateStart: '',
-    registedDateEnd: ''
+    registedDateEnd: '',
+    campaing: ''
 }
 const initFilterModel = {
     statusModel: null,
     hotelModel:null,
     programModel: null,
     callCenterModel: null,
-    segmentModel: null
+    segmentModel: null,
+    campaingModel: null
 }
 
 const Reservation = () => {
@@ -355,13 +357,12 @@ const Reservation = () => {
                                     {(!isLoading) ? (
                                     <>
                                         <TableContainer
-                                        columns={columns}
+                                            columns={columns}
                                             data={isSuccess ? reservationData.data.list : []}
                                             className="custom-header-css"
                                             divClass="table-responsive table-card mb-3"
                                             tableClass="align-middle table-nowrap"
                                             theadClass="table-light"
-                                            SearchPlaceholder='Buscar...'
                                             onSelectRow={gotToPage}
                                             
                                         />

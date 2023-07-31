@@ -10,20 +10,7 @@ import {
   usePagination,
   useRowSelect
 } from "react-table";
-import { Table, Row, Col, Button, Input, CardBody } from "reactstrap";
-import { DefaultColumnFilter } from "./filters";
-import {
-  ProductsGlobalFilter,
-  CustomersGlobalFilter,
-  OrderGlobalFilter,
-  CompaniesGlobalFilter,
-  LeadsGlobalFilter,
-  CryptoOrdersGlobalFilter,
-  InvoiceListGlobalSearch,
-  TicketsListGlobalFilter,
-  NFTRankingGlobalFilter,
-  TaskListGlobalFilter,
-} from "../../Components/Common/GlobalSearchFilter";
+import { Table } from "reactstrap";
 
 
 const TableContainer = ({
@@ -35,7 +22,6 @@ const TableContainer = ({
   trClass,
   thClass,
   divClass,
-  SearchPlaceholder,
   pageCount=-1,
   queryPageIndex=0,
   handlePage,
