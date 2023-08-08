@@ -183,26 +183,34 @@ const ReservationFilter = ({
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="pais" className="form-label text-muted mb-0">País</Label>
-                        <Select
-                            className="mb-0"
-                            value={null}
-                            onChange={() => {}}
-                            options={[]}
-                            placeholder="Seleccionar opción"
+                        <Input
+                            className="form-control"
+                            type="text"
                             id="pais"
+                            value={query.country}
+                            onChange={(e) =>
+                                setQuery((prev) => ({
+                                    ...prev,
+                                    country: e.target.value,
+                                }))
+                            }
                         />
                     </div>
                 </Col>
                 <Col xs="12" md="4">
                     <div className="mb-2">
                         <Label htmlFor="estado" className="form-label text-muted mb-0">Estado</Label>
-                        <Select
-                            className="mb-0"
-                            value={null}
-                            onChange={() => {}}
-                            options={[]}
-                            placeholder="Seleccionar opción"
+                        <Input
+                            className="form-control"
+                            type="text"
                             id="estado"
+                            value={query.state}
+                            onChange={(e) =>
+                                setQuery((prev) => ({
+                                    ...prev,
+                                    state: e.target.value,
+                                }))
+                            }
                         />
                     </div>
                 </Col>
