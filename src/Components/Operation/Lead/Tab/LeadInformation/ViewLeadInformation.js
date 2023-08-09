@@ -1,96 +1,142 @@
-import { Button, Col, Label, Row } from "reactstrap"
+import { Button, Col, Label, Row } from 'reactstrap';
 
-const ViewLeadInformation = ({editMode, setEditMode}) => {
+const ViewLeadInformation = ({ editMode, setEditMode, data }) => {
+	return (
+		<>
+			<Row>
+				<Col lg={4}>
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="nombre">
+							Nombre
+						</Label>
+						<div className="form-control">
+							{data?.firstName ?? 'No disponible'}
+						</div>
+					</div>
+				</Col>
+				<Col lg={4}>
+					<div className="mb-3">
+						<Label className="form-label">Apellido</Label>
+						<div className="form-control">
+							{data?.lastName ?? 'No disponible'}
+						</div>
+					</div>
+				</Col>
+				{/* <Col lg={4}>
+					<div className="mb-3">
+						<Label className="form-label">Copropietario</Label>
+						<div className="form-control">Jesus Enrique</div>
+					</div>
+				</Col> */}
+			</Row>
+			<Row>
+				<Col lg={8}>
+					<div className="mb-3">
+						<Label className="form-label">Dirección</Label>
+						<div className="form-control">
+							{data?.address ?? 'No disponible'}
+						</div>
+					</div>
+				</Col>
+				<Col lg={4}>
+					<div className="mb-3">
+						<Label className="form-label">Código postal</Label>
+						<div className="form-control">
+							{data?.postalCode ?? 'No disponible'}
+						</div>
+					</div>
+				</Col>
+				<Col lg={4}>
+					<div className="mb-3">
+						<Label className="form-label">País</Label>
+						<div className="form-control">
+							{data?.country ?? 'No disponible'}
+						</div>
+					</div>
+				</Col>
+				<Col lg={4}>
+					<div className="mb-3">
+						<Label className="form-label">Estado</Label>
+						<div className="form-control">
+							{data?.state ?? 'No disponible'}
+						</div>
+					</div>
+				</Col>
+				<Col lg={4}>
+					<div className="mb-3">
+						<Label className="form-label">Ciudad</Label>
+						<div className="form-control">
+							{data?.city ?? 'No disponible'}
+						</div>
+					</div>
+				</Col>
+			</Row>
+			<Row>
+				<Col lg={4}>
+					<div className="mb-3">
+						<Label className="form-label">Correo electrónico</Label>
+						<div className="form-control mb-2">
+							{data?.email ?? 'No disponible'}
+						</div>
+					</div>
+				</Col>
+				<Col lg={4}>
+					<div className="mb-3">
+						<Label className="form-label">Teléfono</Label>
+						<div className="form-control mb-2">
+							{data?.phone1 ?? 'No disponible'}
+						</div>
+						<div className="form-control">
+							{data?.phone2 ?? 'No disponible'}
+						</div>
+					</div>
+				</Col>
+				<Col lg={4}>
+					<div className="mb-3">
+						<Label className="form-label opacity-0">Teléfono</Label>
+						<div className="form-control mb-2">
+							{data?.phone3 ?? 'No disponible'}
+						</div>
+						<div className="form-control">
+							{data?.movil ?? 'No disponible'}
+						</div>
+					</div>
+				</Col>
+			</Row>
+			<Row>
+				<Col lg={4}>
+					<div className="mb-3">
+						<Label className="form-label">
+							Usuario que lo creó
+						</Label>
+						<div className="form-control">
+							{data?.userName ?? 'No disponible'}
+						</div>
+					</div>
+				</Col>
+				<Col lg={4}>
+					<div className="mb-3">
+						<Label className="form-label">Call center</Label>
+						<div className="form-control">
+							{data?.callcenter?.name ?? 'No disponible'}
+						</div>
+					</div>
+				</Col>
+			</Row>
+			{/* <hr />
+			{!editMode && (
+				<div className="d-flex mt-3">
+					<Button
+						type="button"
+						color="primary"
+						onClick={() => setEditMode(true)}
+					>
+						Editar
+					</Button>
+				</div>
+			)} */}
+		</>
+	);
+};
 
-    return (
-        <>
-            <Row>
-                <Col lg={4}>
-                    <div className="mb-3">
-                        <Label className="form-label" htmlFor="nombre">Nombre</Label>
-                        <div className="form-control">Daniel</div>
-                    </div>
-                </Col>
-                <Col lg={4}>
-                    <div className="mb-3">
-                        <Label className="form-label">Apellido</Label>
-                        <div className="form-control">Maximiliano</div>
-                    </div>
-                </Col>
-                <Col lg={4}>
-                    <div className="mb-3">
-                        <Label className="form-label">Copropietario</Label>
-                        <div className="form-control">Jesus Enrique</div>
-                    </div>
-                </Col>
-            </Row>
-            <Row>
-                <Col lg={4}>
-                    <div className="mb-3">
-                        <Label className="form-label">País</Label>
-                        <div className="form-control">United States</div>
-                    </div>
-                </Col>
-                <Col lg={4}>
-                    <div className="mb-3">
-                        <Label className="form-label">Estado</Label>
-                        <div className="form-control">N/A</div>
-                    </div>
-                </Col>
-            </Row>
-            <Row>
-                <Col lg={4}>
-                    <div className="mb-3">
-                        <Label className="form-label">Teléfono</Label>
-                        <div className="form-control mb-2">******55</div>
-                        <div className="form-control">******85</div>
-                    </div>
-                </Col>
-                <Col lg={4}>
-                    <div className="mb-3">
-                        <Label className="form-label">Correo electrónico</Label>
-                        <div className="form-control mb-2">******test.com</div>
-                        <div className="form-control">******ghu.com</div>
-                    </div>
-                </Col>
-                <Col lg={4}>
-                    <div className="mb-3">
-                        <Label className="form-label opacity-0">Correo electrónico</Label>
-                        <div className="form-control mb-2">******test.com</div>
-                        <div className="form-control">******ghu.com</div>
-                    </div>
-                </Col>
-            </Row>
-            <Row>
-                <Col lg={4}>
-                    <div className="mb-3">
-                        <Label className="form-label">Lemguange</Label>
-                        <div className="form-control">N/A</div>
-                    </div>
-                </Col>
-                <Col lg={4}>
-                    <div className="mb-3">
-                        <Label className="form-label">Etnia</Label>
-                        <div className="form-control">N/A</div>
-                    </div>
-                </Col>
-                <Col lg={4}>
-                    <div className="mb-3">
-                        <Label className="form-label">Hora de contactación</Label>
-                        <div className="form-control">13:00</div>
-                    </div>
-                </Col>
-            </Row>
-            <hr />
-            {!editMode && <div className="d-flex mt-3">
-                <Button 
-                    type="button"
-                    color="primary"
-                    onClick={() =>  setEditMode(true)}
-                >Editar</Button>
-            </div>}
-        </>
-    )
-}
-
-export default ViewLeadInformation
+export default ViewLeadInformation;

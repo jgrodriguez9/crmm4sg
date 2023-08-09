@@ -12,10 +12,11 @@ import { useEffect } from 'react';
 import DetailCanvas from '../../../Components/Common/DetailCanvas';
 import parseObjectToQueryUrl from '../../../util/parseObjectToQueryUrl';
 import { useQuery } from 'react-query';
-import { getCustomerPaginate } from '../../../helpers/customer';
 import PaginationManual from '../../../Components/Common/PaginationManual';
 import { addMessage } from '../../../slices/messages/reducer';
 import showFriendlyMessafe from '../../../util/showFriendlyMessafe';
+import { builtDetailCanvasClient } from '../../../util/detailCanvasUtils';
+import { fecthItem, fecthItems } from './Util/services';
 
 const initFilter = {
 	//id: '',
@@ -35,6 +36,7 @@ const Lead = () => {
 	document.title = 'Cliente | CRM - M4SG';
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const [idItem, setIdItem] = useState(null);
 	const [query, setQuery] = useState({
 		max: 10,
 		page: 1,
@@ -43,12 +45,7 @@ const Lead = () => {
 	const [queryFilter, setQueryFilter] = useState(
 		parseObjectToQueryUrl(query)
 	);
-	//query filter
-	const fecthItems = async (q) => {
-		const response = await getCustomerPaginate(`?${q}`);
-		return response;
-	};
-	//service
+	//query to get list clients
 	const {
 		data: itemsData,
 		error: errorItemsQuery,
@@ -73,7 +70,7 @@ const Lead = () => {
 				})
 			);
 		}
-	}, [errorItemsQuery]);
+	}, [errorItemsQuery, dispatch]);
 
 	const [dataSelect, setDataSelect] = useState(initFilterModel);
 	const [info, setInfo] = useState(null);
@@ -83,119 +80,6 @@ const Lead = () => {
 
 	const toggleFilter = () => {
 		setFilterDialog(!filterDialog);
-	};
-
-	const builtInfo = (dataTable) => {
-		const header = {
-			title: {
-				label: '',
-				value: 'Alexis Clarke',
-			},
-			img: {
-				name: 'A',
-				url:
-					process.env.REACT_APP_API_URL +
-					'/images/users/' +
-					(dataTable.image_src || 'avatar-10.jpg'),
-			},
-			body: [
-				{
-					label: '',
-					value: 'Digitech Galaxy',
-				},
-			],
-		};
-		const detailClient = {
-			id: 'detailClient',
-			title: 'Acerca de este lead',
-			collapse: false,
-			body: [
-				{
-					label: 'Correos',
-					value: [
-						{
-							text: '*******test.com',
-							iconClasses: 'ri-mail-line text-danger',
-							action: null,
-						},
-						{
-							text: '*******test1.com',
-							iconClasses: 'ri-mail-line text-danger',
-							action: null,
-						},
-					],
-				},
-				{
-					label: 'Teléfonos',
-					value: [
-						{
-							text: '*******42',
-							iconClasses: 'ri-phone-line text-success',
-							action: null,
-						},
-						{
-							text: '*******99',
-							iconClasses: 'ri-phone-line text-success',
-							action: null,
-						},
-					],
-				},
-				{
-					label: 'Hora de contactación',
-					value: '13:00',
-					extraClassess: 'fw-semibold text-primary',
-				},
-			],
-		};
-		const atribucionCliente = {
-			id: 'atribucionCliente',
-			title: 'Atribución de creación de este cliente',
-			collapse: true,
-			body: [
-				{
-					label: 'Referido por',
-					value: 'John Doe',
-				},
-				{
-					label: 'Copropietario',
-					value: 'Jesus Enrique',
-				},
-				{
-					label: 'Contrato',
-					value: 'RFCG555',
-				},
-				{
-					label: 'Dirección',
-					value: 'NN, MEX',
-				},
-			],
-		};
-		const beneficiosClient = {
-			id: 'beneficiosClient',
-			title: 'Beneficios de este cliente',
-			collapse: true,
-			body: [
-				{
-					label: 'Booking',
-					value: '',
-				},
-				{
-					label: 'Membresía',
-					value: '',
-				},
-				{
-					label: 'Certificados',
-					value: 'RFCG555',
-				},
-			],
-		};
-		const data = {
-			title: 'Alexis Clarke',
-			header: header,
-			items: [detailClient, atribucionCliente, beneficiosClient],
-			goToView: `/client/1`,
-		};
-		setInfo(data);
 	};
 
 	const columns = useMemo(
@@ -317,9 +201,10 @@ const Lead = () => {
 									<i
 										className="ri-user-search-fill fs-16"
 										onClick={() => {
-											const contactData =
-												cellProps.row.original;
-											builtInfo(contactData);
+											setIdItem(
+												cellProps.row.original.id
+											);
+											//builtInfo(cellProps.row.original);
 											setShowDetailLead(true);
 										}}
 									></i>
@@ -351,6 +236,23 @@ const Lead = () => {
 		setQuery(copyQuery);
 		setDataSelect(initFilterModel);
 	};
+
+	//service to get the client
+	const {
+		data: itemData,
+		error: errrorItem,
+		isFetching: isFetchingItem,
+	} = useQuery(['getCustomer', idItem], () => fecthItem(idItem), {
+		enabled: idItem !== null,
+		refetchOnWindowFocus: false,
+	});
+
+	useEffect(() => {
+		if (itemData && !isFetchingItem) {
+			const data = builtDetailCanvasClient(itemData.data);
+			setInfo(data);
+		}
+	}, [itemData, isFetchingItem]);
 
 	return (
 		<>
@@ -420,16 +322,15 @@ const Lead = () => {
 				setDataSelect={setDataSelect}
 				onCleanFilter={onCleanFilter}
 			/>
-			{info && (
-				<DetailCanvas
-					show={showDetailLead}
-					onCloseClick={() => {
-						setShowDetailLead(false);
-						setInfo(null);
-					}}
-					data={info}
-				/>
-			)}
+			<DetailCanvas
+				show={showDetailLead}
+				onCloseClick={() => {
+					setShowDetailLead(false);
+				}}
+				data={info}
+				error={errrorItem}
+				isLoading={isFetchingItem}
+			/>
 		</>
 	);
 };

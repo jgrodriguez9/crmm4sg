@@ -1,19 +1,25 @@
-import { useState } from "react"
-import ViewLeadInformation from "./LeadInformation/ViewLeadInformation"
-import FormLeadInformation from "./LeadInformation/FormLeadInformation"
+import { useState } from 'react';
+import ViewLeadInformation from './LeadInformation/ViewLeadInformation';
+import FormLeadInformation from './LeadInformation/FormLeadInformation';
 
-const LeadInformation = () => {
-    const [editMode, setEditMode] = useState(false)
-    return (
-        <>
-        {
-            editMode ? 
-            <FormLeadInformation editMode={editMode} setEditMode={setEditMode}/> : 
-            <ViewLeadInformation editMode={editMode} setEditMode={setEditMode}/>
-        }
-        </>
-    )
-    
-}
+const LeadInformation = ({ data }) => {
+	const [editMode, setEditMode] = useState(false);
+	return (
+		<>
+			{editMode ? (
+				<FormLeadInformation
+					editMode={editMode}
+					setEditMode={setEditMode}
+				/>
+			) : (
+				<ViewLeadInformation
+					editMode={editMode}
+					setEditMode={setEditMode}
+					data={data}
+				/>
+			)}
+		</>
+	);
+};
 
-export default LeadInformation
+export default LeadInformation;
