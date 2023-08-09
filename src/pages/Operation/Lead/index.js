@@ -55,9 +55,7 @@ const Lead = () => {
 		['getCustomerPaginate', queryFilter],
 		() => fecthItems(queryFilter),
 		{
-			refetchOnWindowFocus: false,
 			keepPreviousData: true,
-			staleTime: 3 * (60 * 1000),
 		}
 	);
 
@@ -90,6 +88,7 @@ const Lead = () => {
 				filterable: false,
 				style: {
 					cursor: 'pointer',
+					width: '30%',
 				},
 				Cell: (contact) => (
 					<>
@@ -126,6 +125,7 @@ const Lead = () => {
 				filterable: false,
 				style: {
 					cursor: 'pointer',
+					width: '15%',
 				},
 			},
 			{
@@ -134,6 +134,7 @@ const Lead = () => {
 				filterable: false,
 				style: {
 					cursor: 'pointer',
+					width: '15%',
 				},
 			},
 			// {
@@ -150,14 +151,18 @@ const Lead = () => {
 				filterable: false,
 				style: {
 					cursor: 'pointer',
+					width: '30%',
 				},
 			},
 			{
 				id: 'action',
+				style: {
+					width: '10%',
+				},
 				Cell: (cellProps) => {
 					return (
 						<ul className="list-inline hstack gap-2 mb-0">
-							<li
+							{/* <li
 								className="list-inline-item edit"
 								title="Llamada"
 							>
@@ -167,8 +172,8 @@ const Lead = () => {
 								>
 									<i className="ri-phone-line fs-16"></i>
 								</Link>
-							</li>
-							<li
+							</li> */}
+							{/* <li
 								className="list-inline-item edit"
 								title="Mensaje"
 							>
@@ -178,8 +183,8 @@ const Lead = () => {
 								>
 									<i className="ri-question-answer-line fs-16"></i>
 								</Link>
-							</li>
-							<li
+							</li> */}
+							{/* <li
 								className="list-inline-item edit"
 								title="Correo electrónico"
 							>
@@ -189,7 +194,7 @@ const Lead = () => {
 								>
 									<i className="ri-mail-send-line fs-16"></i>
 								</Link>
-							</li>
+							</li> */}
 							<li
 								className="list-inline-item edit"
 								title="Vista previa"
@@ -204,7 +209,6 @@ const Lead = () => {
 											setIdItem(
 												cellProps.row.original.id
 											);
-											//builtInfo(cellProps.row.original);
 											setShowDetailLead(true);
 										}}
 									></i>

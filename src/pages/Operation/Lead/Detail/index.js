@@ -43,7 +43,6 @@ const LeadProfile = () => {
 		isFetching: isFetchingItem,
 	} = useQuery(['getCustomer'], () => fecthItem(id), {
 		refetchOnWindowFocus: false,
-		staleTime: 3 * (60 * 1000),
 	});
 
 	return (

@@ -74,9 +74,7 @@ const Reservation = () => {
 		['getReservationPaginate', queryFilter],
 		() => fecthReservation(queryFilter),
 		{
-			refetchOnWindowFocus: false,
 			keepPreviousData: true,
-			staleTime: 3 * (60 * 1000),
 		}
 	);
 
