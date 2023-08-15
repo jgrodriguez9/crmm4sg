@@ -15,6 +15,7 @@ import showFriendlyMessafe from '../../../util/showFriendlyMessafe';
 import moment from 'moment';
 import PaginationManual from '../../../Components/Common/PaginationManual';
 import parseObjectToQueryUrl from '../../../util/parseObjectToQueryUrl';
+import { fecthReservation } from './Util/services';
 
 const initFilter = {
 	//reserva
@@ -59,11 +60,6 @@ const Reservation = () => {
 	const [queryFilter, setQueryFilter] = useState(
 		parseObjectToQueryUrl(query)
 	);
-	//query filter
-	const fecthReservation = async (q) => {
-		const response = await getReservationPaginate(`?${q}`);
-		return response;
-	};
 	//service
 	const {
 		data: reservationData,
@@ -77,8 +73,6 @@ const Reservation = () => {
 			keepPreviousData: true,
 		}
 	);
-
-	console.log(queryFilter);
 
 	const [filterDialog, setFilterDialog] = useState(false);
 	const [dataSelect, setDataSelect] = useState(initFilterModel);

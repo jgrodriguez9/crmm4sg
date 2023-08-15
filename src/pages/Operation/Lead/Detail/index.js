@@ -41,7 +41,7 @@ const LeadProfile = () => {
 		data: itemData,
 		error: errorItem,
 		isFetching: isFetchingItem,
-	} = useQuery(['getCustomer'], () => fecthItem(id), {
+	} = useQuery(['getCustomer', id], () => fecthItem(id), {
 		refetchOnWindowFocus: false,
 	});
 
