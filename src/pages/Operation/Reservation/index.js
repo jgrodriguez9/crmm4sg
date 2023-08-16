@@ -15,7 +15,8 @@ import showFriendlyMessafe from '../../../util/showFriendlyMessafe';
 import moment from 'moment';
 import PaginationManual from '../../../Components/Common/PaginationManual';
 import parseObjectToQueryUrl from '../../../util/parseObjectToQueryUrl';
-import { fecthReservation } from './Util/services';
+import { fecthReservation, fecthReservationById } from './Util/services';
+import diffDates from '../../../util/diffDates';
 
 const initFilter = {
 	//reserva
@@ -51,6 +52,7 @@ const initFilterModel = {
 const Reservation = () => {
 	document.title = 'Reservación | CRM - M4SG';
 	const dispatch = useDispatch();
+	const [idItem, setIdItem] = useState(null);
 	const navigate = useNavigate();
 	const [query, setQuery] = useState({
 		max: 10,
@@ -84,21 +86,22 @@ const Reservation = () => {
 		setFilterDialog(!filterDialog);
 	};
 
-	const builtInfo = (dataTable) => {
+	const builtDetailCanvasReservation = (item) => {
+		console.log(item);
 		const header = {
 			title: {
 				label: `ID: Reservación: `,
-				value: dataTable.id,
+				value: item.id,
 			},
 			img: null,
 			body: [
 				{
 					label: `ID: Booking: `,
-					value: 607276961,
+					value: item?.booking ?? '',
 				},
 				{
 					label: `ID: Confirmación: `,
-					value: 8065965,
+					value: item?.confirm ?? '',
 				},
 			],
 		};
@@ -109,47 +112,55 @@ const Reservation = () => {
 			body: [
 				{
 					label: 'Hotel',
-					value: 'Ocean Spa Hotel',
+					value: item?.hotel?.name ?? '',
 				},
 				{
 					label: 'Plan',
-					value: 'All Inclusive Multiple',
+					value: '-',
 				},
 				{
 					label: 'Fecha llegada',
-					value: '29/06/2023',
+					value: moment(item?.initialDate, 'YYYY-MM-DD').format(
+						'DD/MM/YYYY'
+					),
 				},
 				{
 					label: 'Fecha salida',
-					value: '03/07/2023',
+					value: moment(item?.finalDate, 'YYYY-MM-DD').format(
+						'DD/MM/YYYY'
+					),
 				},
 				{
 					label: 'Tipo de habitación',
-					value: 'Standard King',
+					value: '',
 				},
 				{
 					label: 'Noches',
-					value: 4,
+					value: diffDates(
+						item?.initialDate,
+						item?.finalDate,
+						'days'
+					),
 				},
 				{
 					label: 'Adultos',
-					value: 4,
+					value: item?.adult ?? '',
 				},
 				{
 					label: 'Juniors',
-					value: 0,
+					value: '',
 				},
 				{
 					label: 'Menores gratis',
-					value: 0,
+					value: '',
 				},
 				{
 					label: 'Menores pagan',
-					value: 0,
+					value: item?.child ?? '',
 				},
 				{
 					label: 'Infantes',
-					value: 0,
+					value: item?.infant ?? '',
 				},
 			],
 		};
@@ -160,27 +171,27 @@ const Reservation = () => {
 			body: [
 				{
 					label: 'Estado civil',
-					value: 'Casado',
+					value: item?.maritalStatus ?? '',
 				},
 				{
 					label: 'Ingreso',
-					value: '0-150000',
+					value: item?.income ?? '',
 				},
 				{
 					label: 'Tarjetas',
-					value: 1,
+					value: item?.visa + item?.amex + item?.mc,
 				},
 				{
 					label: 'Visa',
-					value: true,
+					value: item?.visa > 0,
 				},
 				{
 					label: 'Master Card',
-					value: false,
+					value: item?.mc > 0,
 				},
 				{
 					label: 'Amex',
-					value: false,
+					value: item?.amex > 0,
 				},
 				{
 					label: 'Otras',
@@ -192,7 +203,7 @@ const Reservation = () => {
 				},
 				{
 					label: 'Estado de ánimo',
-					value: 'Satisfecho',
+					value: '',
 				},
 			],
 		};
@@ -202,31 +213,52 @@ const Reservation = () => {
 			collapse: true,
 			body: [
 				{
-					label: 'Proveedor',
-					value: 'Marketing 4 Sunset Group',
+					label: 'Call center',
+					value: item?.callcenter?.name ?? '',
+				},
+				{
+					label: 'Segmento',
+					value: item?.segment?.name ?? '',
+				},
+				{
+					label: 'Programa',
+					value: item?.program?.name ?? '',
 				},
 				{
 					label: 'Hooked',
-					value: 'Hooked',
-				},
-				{
-					label: 'Representante',
-					value: 'MMDINAC',
-				},
-				{
-					label: 'Precall',
-					value: '01/05/2023 11:28:40',
+					value: item?.hooked,
 				},
 			],
 		};
-		const data = {
-			title: `ID: Reservación: ${dataTable.id}`,
+		const obj = {
+			title: `ID: Reservación: ${item.id}`,
 			header: header,
 			items: [detailReservation, detailCliente, detailOperacion],
-			goToView: `/reservation/${dataTable.id}`,
+			goToView: `/reservation/${item.id}`,
 		};
-		setInfo(data);
+		return obj;
 	};
+
+	//service to get the reservation
+	const {
+		data: itemData,
+		error: errrorItem,
+		isFetching: isFetchingItem,
+	} = useQuery(
+		['getReservation', idItem],
+		() => fecthReservationById(idItem),
+		{
+			enabled: idItem !== null,
+			refetchOnWindowFocus: false,
+		}
+	);
+
+	useEffect(() => {
+		if (itemData && !isFetchingItem) {
+			const data = builtDetailCanvasReservation(itemData.data);
+			setInfo(data);
+		}
+	}, [itemData, isFetchingItem]);
 
 	const columns = useMemo(
 		() => [
@@ -300,9 +332,9 @@ const Reservation = () => {
 									<i
 										className="ri-file-search-fill fs-16"
 										onClick={() => {
-											const itemData =
-												cellProps.row.original;
-											builtInfo(itemData);
+											setIdItem(
+												cellProps.row.original.id
+											);
 											setShowDetail(true);
 										}}
 									></i>
@@ -329,7 +361,7 @@ const Reservation = () => {
 				})
 			);
 		}
-	}, [errorReservationQuery]);
+	}, [errorReservationQuery, dispatch]);
 
 	const buscar = () => {
 		setFilterDialog(false);
@@ -416,16 +448,15 @@ const Reservation = () => {
 				setDataSelect={setDataSelect}
 				onCleanFilter={onCleanFilter}
 			/>
-			{info && (
-				<DetailCanvas
-					show={showDetail}
-					onCloseClick={() => {
-						setShowDetail(false);
-						setInfo(null);
-					}}
-					data={info}
-				/>
-			)}
+			<DetailCanvas
+				show={showDetail}
+				onCloseClick={() => {
+					setShowDetail(false);
+				}}
+				data={info}
+				error={errrorItem}
+				isLoading={isFetchingItem}
+			/>
 		</>
 	);
 };

@@ -380,7 +380,7 @@ const ViewReservationInformation = ({ editMode, setEditMode, data }) => {
 							</div>
 						</Col>
 					</Row>
-					<hr />
+					{/* <hr />
 					{!editMode && (
 						<div className="d-flex mt-3">
 							<Button
@@ -391,7 +391,7 @@ const ViewReservationInformation = ({ editMode, setEditMode, data }) => {
 								Editar
 							</Button>
 						</div>
-					)}
+					)} */}
 				</CardBody>
 			</Card>
 		</Col>

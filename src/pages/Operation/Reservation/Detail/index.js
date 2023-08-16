@@ -125,10 +125,6 @@ const ReservationDetail = () => {
 		}
 	}, [idReservation, itemData]);
 
-	console.log(itemData);
-	console.log(errorItem);
-	console.log(isFetchingItem);
-
 	return (
 		<div className="page-content">
 			<Container fluid>
