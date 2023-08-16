@@ -2,7 +2,11 @@ import moment from 'moment';
 import { Button, Card, CardBody, Col, Label, Row } from 'reactstrap';
 import diffDates from '../../../util/diffDates';
 
-const ViewReservationInformation = ({ editMode, setEditMode, data }) => {
+const ViewReservationInformation = ({
+	editMode = false,
+	setEditMode = () => {},
+	data,
+}) => {
 	return (
 		<Col xs="12" md="12">
 			<Card>

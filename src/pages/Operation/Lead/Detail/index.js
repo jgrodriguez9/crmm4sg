@@ -28,6 +28,7 @@ import { useQuery } from 'react-query';
 import { fecthItem } from '../Util/services';
 import Loader from '../../../../Components/Common/Loader';
 import showFriendlyMessafe from '../../../../util/showFriendlyMessafe';
+import ReservationClient from '../../../../Components/Operation/Lead/Tab/ReservationClient';
 
 const LeadProfile = () => {
 	document.title = 'Detalle del Lead | CRM - M4S';
@@ -169,6 +170,7 @@ const LeadProfile = () => {
 										>
 											<NavItem>
 												<NavLink
+													to="#"
 													className={classNames({
 														active:
 															activeTab === '1',
@@ -176,8 +178,24 @@ const LeadProfile = () => {
 													onClick={() => {
 														tabChange('1');
 													}}
+													type="button"
 												>
 													Información del Cliente
+												</NavLink>
+											</NavItem>
+											<NavItem>
+												<NavLink
+													to="#"
+													className={classNames({
+														active:
+															activeTab === '6',
+													})}
+													onClick={() => {
+														tabChange('6');
+													}}
+													type="button"
+												>
+													Reservaciones
 												</NavLink>
 											</NavItem>
 											<NavItem>
@@ -269,6 +287,11 @@ const LeadProfile = () => {
 											<TabPane tabId="5">
 												{activeTab === '5' && (
 													<WhatsappClient />
+												)}
+											</TabPane>
+											<TabPane tabId="6">
+												{activeTab === '6' && (
+													<ReservationClient />
 												)}
 											</TabPane>
 										</TabContent>

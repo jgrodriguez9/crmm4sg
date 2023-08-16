@@ -7,7 +7,6 @@ import Loader from '../../../Components/Common/Loader';
 import { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import DetailCanvas from '../../../Components/Common/DetailCanvas';
-import { getReservationPaginate } from '../../../helpers/reservation';
 import { useQuery } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../slices/messages/reducer';
