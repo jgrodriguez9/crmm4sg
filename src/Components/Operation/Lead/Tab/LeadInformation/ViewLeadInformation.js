@@ -10,12 +10,20 @@ const ViewLeadInformation = ({ editMode, setEditMode, data }) => {
 
 	const onHandleClickToCall = async (phoneType) => {
 		try {
-			const body = {
-				customerId: data.id,
-				//option: phoneType
-				//extension: '?'
-			};
-			const response = await clickToCall(body);
+			// const body = {
+			// 	customerId: data.id,
+			// 	//option: phoneType
+			// 	//extension: '?'
+			// };
+			//test
+			let formdata = new FormData();
+			formdata['customerId'] = 930706;
+			const response = await clickToCall(formdata, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+			console.log(response);
 		} catch (error) {
 			let message = ERROR_SERVER;
 			message = extractMeaningfulMessage(error, message);
@@ -116,7 +124,7 @@ const ViewLeadInformation = ({ editMode, setEditMode, data }) => {
 							</div>
 							{data?.phone1 && (
 								<i
-									className="ri-phone-fill"
+									className="ri-phone-fill text-primary fw-bold"
 									onClick={(e) =>
 										onHandleClickToCall('phone1')
 									}
@@ -129,7 +137,7 @@ const ViewLeadInformation = ({ editMode, setEditMode, data }) => {
 							</div>
 							{data?.phone2 && (
 								<i
-									className="ri-phone-fill"
+									className="ri-phone-fill text-primary fw-bold"
 									onClick={(e) =>
 										onHandleClickToCall('phone2')
 									}
@@ -147,7 +155,7 @@ const ViewLeadInformation = ({ editMode, setEditMode, data }) => {
 							</div>
 							{data?.phone3 && (
 								<i
-									className="ri-phone-fill"
+									className="ri-phone-fill text-primary fw-bold"
 									onClick={(e) =>
 										onHandleClickToCall('phone3')
 									}
@@ -160,7 +168,7 @@ const ViewLeadInformation = ({ editMode, setEditMode, data }) => {
 							</div>
 							{data?.movil && (
 								<i
-									className="ri-phone-fill"
+									className="ri-phone-fill text-primary fw-bold"
 									onClick={(e) =>
 										onHandleClickToCall('movil')
 									}

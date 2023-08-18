@@ -3,6 +3,7 @@ import * as url from './url';
 
 const getCustomerPaginate = (query) => get(`${url.customer}${query}`);
 const getCustomer = (id) => get(`${url.customer}/${id}`);
-const clickToCall = (data) => post(`${url.customer}/clickToCall`, data);
+const clickToCall = (data, config) =>
+	post(`${url.customer}/clickToCall`, data, config);
 
 export { getCustomerPaginate, getCustomer, clickToCall };
