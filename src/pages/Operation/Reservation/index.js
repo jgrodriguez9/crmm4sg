@@ -86,7 +86,7 @@ const Reservation = () => {
 	};
 
 	const builtDetailCanvasReservation = (item) => {
-		console.log(item);
+		//console.log(item);
 		const header = {
 			title: {
 				label: `ID: Reservación: `,
@@ -278,6 +278,14 @@ const Reservation = () => {
 				},
 			},
 			{
+				Header: 'Id Booking',
+				accessor: 'booking',
+				filterable: false,
+				style: {
+					cursor: 'pointer',
+				},
+			},
+			{
 				Header: 'Nombre',
 				accessor: 'customer.firstName',
 				filterable: false,
@@ -288,8 +296,8 @@ const Reservation = () => {
 					`${value.toUpperCase()} ${row.original.customer.lastName.toUpperCase()}`,
 			},
 			{
-				Header: 'Id Booking',
-				accessor: 'booking',
+				Header: 'Hotel',
+				accessor: 'hotel.name',
 				filterable: false,
 				style: {
 					cursor: 'pointer',
@@ -314,6 +322,22 @@ const Reservation = () => {
 				},
 				Cell: ({ value }) =>
 					moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'),
+			},
+			{
+				Header: 'Call center',
+				accessor: 'callcenter.name',
+				filterable: false,
+				style: {
+					cursor: 'pointer',
+				},
+			},
+			{
+				Header: 'Pax',
+				accessor: 'adult',
+				filterable: false,
+				style: {
+					cursor: 'pointer',
+				},
 			},
 			{
 				id: 'action',
