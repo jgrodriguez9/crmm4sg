@@ -1,6 +1,33 @@
-import { Button, Col, Label, Row } from 'reactstrap';
+import { Col, Label, Row } from 'reactstrap';
+import { clickToCall } from '../../../../../helpers/customer';
+import { useDispatch } from 'react-redux';
+import { addMessage } from '../../../../../slices/messages/reducer';
+import { ERROR_SERVER } from '../../../../constants/messages';
+import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 
 const ViewLeadInformation = ({ editMode, setEditMode, data }) => {
+	const dispatch = useDispatch();
+
+	const onHandleClickToCall = async (phoneType) => {
+		try {
+			const body = {
+				customerId: data.id,
+				//option: phoneType
+				//extension: '?'
+			};
+			const response = await clickToCall(body);
+		} catch (error) {
+			let message = ERROR_SERVER;
+			message = extractMeaningfulMessage(error, message);
+			dispatch(
+				addMessage({
+					message: message,
+					type: 'error',
+				})
+			);
+		}
+	};
+
 	return (
 		<>
 			<Row>
@@ -83,22 +110,62 @@ const ViewLeadInformation = ({ editMode, setEditMode, data }) => {
 				<Col lg={4}>
 					<div className="mb-3">
 						<Label className="form-label">Teléfono</Label>
-						<div className="form-control mb-2">
-							{data?.phone1 ?? 'No disponible'}
+						<div className="form-icon right">
+							<div className="form-control mb-2">
+								{data?.phone1 ?? 'No disponible'}
+							</div>
+							{data?.phone1 && (
+								<i
+									className="ri-phone-fill"
+									onClick={(e) =>
+										onHandleClickToCall('phone1')
+									}
+								></i>
+							)}
 						</div>
-						<div className="form-control">
-							{data?.phone2 ?? 'No disponible'}
+						<div className="form-icon right">
+							<div className="form-control">
+								{data?.phone2 ?? 'No disponible'}
+							</div>
+							{data?.phone2 && (
+								<i
+									className="ri-phone-fill"
+									onClick={(e) =>
+										onHandleClickToCall('phone2')
+									}
+								></i>
+							)}
 						</div>
 					</div>
 				</Col>
 				<Col lg={4}>
 					<div className="mb-3">
 						<Label className="form-label opacity-0">Teléfono</Label>
-						<div className="form-control mb-2">
-							{data?.phone3 ?? 'No disponible'}
+						<div className="form-icon right">
+							<div className="form-control mb-2">
+								{data?.phone3 ?? 'No disponible'}
+							</div>
+							{data?.phone3 && (
+								<i
+									className="ri-phone-fill"
+									onClick={(e) =>
+										onHandleClickToCall('phone3')
+									}
+								></i>
+							)}
 						</div>
-						<div className="form-control">
-							{data?.movil ?? 'No disponible'}
+						<div className="form-icon right">
+							<div className="form-control">
+								{data?.movil ?? 'No disponible'}
+							</div>
+							{data?.movil && (
+								<i
+									className="ri-phone-fill"
+									onClick={(e) =>
+										onHandleClickToCall('movil')
+									}
+								></i>
+							)}
 						</div>
 					</div>
 				</Col>
