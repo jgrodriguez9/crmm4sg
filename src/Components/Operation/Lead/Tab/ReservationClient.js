@@ -1,9 +1,7 @@
-import { Col, Row } from 'reactstrap';
 import { useState } from 'react';
 import TableReservation from './ReservationClient/TableReservation';
 
-const ReservationClient = () => {
-	const [showAddModal, setShowAddModal] = useState(false);
+const ReservationClient = ({ customerId }) => {
 	return (
 		<div className="mt-5">
 			{/* <Row>
@@ -15,7 +13,7 @@ const ReservationClient = () => {
                     </div>
                 </Col>
             </Row> */}
-			<TableReservation />
+			<TableReservation customerId={customerId} />
 			{/* <BasicModal 
                 open={showAddModal}
                 setOpen={setShowAddModal}

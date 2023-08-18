@@ -33,7 +33,7 @@ const ViewReservationInformation = ({
 									Id booking
 								</Label>
 								<div className="form-control" id="booking">
-									{data.booking}
+									{data?.booking ?? '-'}
 								</div>
 							</div>
 						</Col>

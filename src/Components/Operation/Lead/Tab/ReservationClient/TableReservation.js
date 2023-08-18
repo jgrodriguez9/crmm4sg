@@ -2,25 +2,56 @@ import { useMemo, useState } from 'react';
 import TableContainer from '../../../../Common/TableContainer';
 import Loader from '../../../../Common/Loader';
 import { useEffect } from 'react';
-import { listHotel } from '../../../../../common/data/common';
 import { Link } from 'react-router-dom';
 import GlobalCanvas from '../../../../Common/GlobalCanvas';
 import { useQuery } from 'react-query';
-import { fecthReservationById } from '../../../../../pages/Operation/Reservation/Util/services';
+import {
+	fecthReservation,
+	fecthReservationById,
+} from '../../../../../pages/Operation/Reservation/Util/services';
 import moment from 'moment';
 import diffDates from '../../../../../util/diffDates';
 import { Alert, Col, Container, Row } from 'reactstrap';
 import showFriendlyMessafe from '../../../../../util/showFriendlyMessafe';
 import BannerInformation from '../../../../Common/BannerInformation';
 import ViewReservationInformation from '../../../Reservation/ViewReservationInformation';
+import parseObjectToQueryUrl from '../../../../../util/parseObjectToQueryUrl';
+import PaginationManual from '../../../../Common/PaginationManual';
+import { addMessage } from '../../../../../slices/messages/reducer';
+import { useDispatch } from 'react-redux';
 
-const TableReservation = () => {
-	const [item, setItems] = useState({
-		loading: true,
-		data: [],
-		isSuccess: false,
-		error: null,
+const TableReservation = ({ customerId }) => {
+	const dispatch = useDispatch();
+	const [query, setQuery] = useState({
+		max: 10,
+		page: 1,
+		customerId: customerId,
 	});
+	const [queryFilter, setQueryFilter] = useState(
+		parseObjectToQueryUrl(query)
+	);
+	const {
+		data: reservationData,
+		error: errorReservationQuery,
+		isLoading,
+		isSuccess,
+	} = useQuery(
+		['getReservationPaginate', queryFilter],
+		() => fecthReservation(queryFilter),
+		{
+			keepPreviousData: true,
+		}
+	);
+	useEffect(() => {
+		if (errorReservationQuery?.code) {
+			dispatch(
+				addMessage({
+					message: showFriendlyMessafe(errorReservationQuery?.code),
+					type: 'error',
+				})
+			);
+		}
+	}, [errorReservationQuery, dispatch]);
 	const [idItem, setIdItem] = useState(null);
 	const [showCanvas, setShowCanvas] = useState(false);
 	const [dataView, setDataView] = useState(null);
@@ -29,7 +60,7 @@ const TableReservation = () => {
 		() => [
 			{
 				Header: 'ID. Reservación',
-				accessor: 'reservationID',
+				accessor: 'id',
 				filterable: false,
 				style: {
 					width: '10%',
@@ -53,7 +84,7 @@ const TableReservation = () => {
 			},
 			{
 				Header: 'Hotel',
-				accessor: 'hotel',
+				accessor: 'hotel.name',
 				filterable: false,
 				style: {
 					width: '35%',
@@ -66,6 +97,8 @@ const TableReservation = () => {
 				style: {
 					width: '15%',
 				},
+				Cell: ({ value }) =>
+					moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'),
 			},
 			{
 				Header: 'Fecha salida',
@@ -74,6 +107,8 @@ const TableReservation = () => {
 				style: {
 					width: '15%',
 				},
+				Cell: ({ value }) =>
+					moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'),
 			},
 			{
 				id: 'action',
@@ -95,8 +130,7 @@ const TableReservation = () => {
 										className="ri-file-search-fill fs-16"
 										onClick={() => {
 											setIdItem(
-												cellProps.row.original
-													.reservationID
+												cellProps.row.original.id
 											);
 											setShowCanvas(true);
 										}}
@@ -110,18 +144,6 @@ const TableReservation = () => {
 		],
 		[]
 	);
-
-	//test
-	useEffect(() => {
-		setTimeout(() => {
-			setItems((prev) => ({
-				...prev,
-				loading: false,
-				isSuccess: true,
-				data: listHotel,
-			}));
-		}, 2000);
-	}, []);
 
 	const {
 		data: itemData,
@@ -207,17 +229,21 @@ const TableReservation = () => {
 					{
 						label: 'Llegada',
 						icon: null,
-						value: moment(data?.initialDate, 'YYYY-MM-DD').format(
-							'DD/MM/YYYY'
-						),
+						value: data?.initialDate
+							? moment(data?.initialDate, 'YYYY-MM-DD').format(
+									'DD/MM/YYYY'
+							  )
+							: '-',
 						classes: 'text-muted',
 					},
 					{
 						label: 'Salida',
 						icon: null,
-						value: moment(data?.finalDate, 'YYYY-MM-DD').format(
-							'DD/MM/YYYY'
-						),
+						value: data?.finalDate
+							? moment(data?.finalDate, 'YYYY-MM-DD').format(
+									'DD/MM/YYYY'
+							  )
+							: '-',
 						classes: 'text-muted',
 					},
 					{
@@ -262,24 +288,28 @@ const TableReservation = () => {
 
 	return (
 		<div>
-			{item.isSuccess || !item.loading ? (
-				<TableContainer
-					columns={columns}
-					data={item.data}
-					isGlobalFilter={false}
-					isAddUserList={false}
-					customPageSize={8}
-					className="custom-header-css"
-					divClass="table-responsive table-card mb-3"
-					tableClass="align-middle table-nowrap"
-					theadClass="table-light"
-					isContactsFilter={true}
-					SearchPlaceholder="Buscar..."
-				/>
+			{!isLoading ? (
+				<>
+					<TableContainer
+						columns={columns}
+						data={isSuccess ? reservationData.data.list : []}
+						className="custom-header-css"
+						divClass="table-responsive table-card mb-3"
+						tableClass="align-middle table-nowrap"
+						theadClass="table-light"
+					/>
+					<PaginationManual
+						query={query}
+						setQuery={setQuery}
+						setQueryFilter={setQueryFilter}
+						totalPages={
+							reservationData?.data?.pagination?.totalPages ?? 1
+						}
+					/>
+				</>
 			) : (
-				<Loader error={item.error} />
+				<Loader />
 			)}
-
 			<GlobalCanvas
 				show={showCanvas}
 				onCloseClick={() => {

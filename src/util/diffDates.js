@@ -9,7 +9,7 @@ const diffDates = (initDate, endDate, type) => {
 
 		return eDate.diff(stDate, type);
 	}
-	return '';
+	return '-';
 };
 
 export default diffDates;

@@ -268,6 +268,7 @@ const Reservation = () => {
 				style: {
 					cursor: 'pointer',
 				},
+				width: '9%',
 			},
 			{
 				Header: 'Confirmación',
@@ -276,6 +277,7 @@ const Reservation = () => {
 				style: {
 					cursor: 'pointer',
 				},
+				width: '9%',
 			},
 			{
 				Header: 'Id Booking',
@@ -284,6 +286,7 @@ const Reservation = () => {
 				style: {
 					cursor: 'pointer',
 				},
+				width: '8%',
 			},
 			{
 				Header: 'Nombre',
@@ -292,6 +295,7 @@ const Reservation = () => {
 				style: {
 					cursor: 'pointer',
 				},
+				width: '12%',
 				Cell: ({ row, value }) =>
 					`${value.toUpperCase()} ${row.original.customer.lastName.toUpperCase()}`,
 			},
@@ -302,6 +306,16 @@ const Reservation = () => {
 				style: {
 					cursor: 'pointer',
 				},
+				width: '13%',
+			},
+			{
+				Header: 'Plan',
+				accessor: 'intPlan',
+				filterable: false,
+				style: {
+					cursor: 'pointer',
+				},
+				width: '13%',
 			},
 			{
 				Header: 'LLegada',
@@ -310,6 +324,7 @@ const Reservation = () => {
 				style: {
 					cursor: 'pointer',
 				},
+				width: '8%',
 				Cell: ({ value }) =>
 					moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'),
 			},
@@ -320,6 +335,7 @@ const Reservation = () => {
 				style: {
 					cursor: 'pointer',
 				},
+				width: '8%',
 				Cell: ({ value }) =>
 					moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'),
 			},
@@ -330,6 +346,7 @@ const Reservation = () => {
 				style: {
 					cursor: 'pointer',
 				},
+				width: '10%',
 			},
 			{
 				Header: 'Pax',
@@ -338,9 +355,14 @@ const Reservation = () => {
 				style: {
 					cursor: 'pointer',
 				},
+				width: '5%',
 			},
 			{
 				id: 'action',
+				style: {
+					cursor: 'pointer',
+				},
+				width: '5%',
 				Cell: (cellProps) => {
 					return (
 						<ul className="list-inline hstack gap-2 mb-0">
@@ -434,7 +456,7 @@ const Reservation = () => {
 													}
 													className="custom-header-css"
 													divClass="table-responsive table-card mb-3"
-													tableClass="align-middle table-nowrap"
+													tableClass="align-middle"
 													theadClass="table-light"
 													onSelectRow={gotToPage}
 												/>

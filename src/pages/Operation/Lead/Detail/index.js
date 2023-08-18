@@ -291,7 +291,11 @@ const LeadProfile = () => {
 											</TabPane>
 											<TabPane tabId="6">
 												{activeTab === '6' && (
-													<ReservationClient />
+													<ReservationClient
+														customerId={
+															itemData.data?.id
+														}
+													/>
 												)}
 											</TabPane>
 										</TabContent>
