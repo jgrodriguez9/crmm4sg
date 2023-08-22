@@ -19,6 +19,7 @@ import parseObjectToQueryUrl from '../../../../../util/parseObjectToQueryUrl';
 import PaginationManual from '../../../../Common/PaginationManual';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import { useDispatch } from 'react-redux';
+import TabsReservation from '../../../Reservation/TabsReservation';
 
 const TableReservation = ({ customerId }) => {
 	const dispatch = useDispatch();
@@ -279,7 +280,9 @@ const TableReservation = ({ customerId }) => {
 						/>
 					</Row>
 					<Row>
-						<ViewReservationInformation data={itemData.data} />
+						<Col>
+							<TabsReservation itemData={itemData} />
+						</Col>
 					</Row>
 				</>
 			)}

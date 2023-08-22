@@ -24,12 +24,11 @@ import showFriendlyMessafe from '../../../../util/showFriendlyMessafe';
 import diffDates from '../../../../util/diffDates';
 import moment from 'moment';
 import classNames from 'classnames';
+import TabsReservation from '../../../../Components/Operation/Reservation/TabsReservation';
 
 const ReservationDetail = () => {
 	const { idReservation } = useParams();
 	const [dataView, setDataView] = useState(null);
-	const [editMode, setEditMode] = useState(false);
-	const [activeTab, setActiveTab] = useState('1');
 
 	const {
 		data: itemData,
@@ -42,10 +41,6 @@ const ReservationDetail = () => {
 			refetchOnWindowFocus: false,
 		}
 	);
-
-	const tabChange = (tab) => {
-		if (activeTab !== tab) setActiveTab(tab);
-	};
 
 	useEffect(() => {
 		if (itemData) {
@@ -170,118 +165,7 @@ const ReservationDetail = () => {
 						</Row>
 						<Row>
 							<Col>
-								<Card>
-									<CardBody className="p-4">
-										<Nav
-											className="nav-tabs-custom rounded card-header-tabs border-bottom-0"
-											role="tablist"
-										>
-											<NavItem>
-												<NavLink
-													to="#"
-													className={classNames({
-														active:
-															activeTab === '1',
-													})}
-													onClick={() => {
-														tabChange('1');
-													}}
-													type="button"
-												>
-													<h5 className="text-primary">
-														Detalle de la
-														reservación
-													</h5>
-												</NavLink>
-											</NavItem>
-											<NavItem>
-												<NavLink
-													to="#"
-													className={classNames({
-														active:
-															activeTab === '2',
-													})}
-													onClick={() => {
-														tabChange('2');
-													}}
-													type="button"
-												>
-													<h5 className="text-primary">
-														Paxes
-													</h5>
-												</NavLink>
-											</NavItem>
-											<NavItem>
-												<NavLink
-													to="#"
-													className={classNames({
-														active:
-															activeTab === '3',
-													})}
-													onClick={() => {
-														tabChange('3');
-													}}
-													type="button"
-												>
-													<h5 className="text-primary">
-														Notas
-													</h5>
-												</NavLink>
-											</NavItem>
-											<NavItem>
-												<NavLink
-													to="#"
-													className={classNames({
-														active:
-															activeTab === '4',
-													})}
-													onClick={() => {
-														tabChange('4');
-													}}
-													type="button"
-												>
-													<h5 className="text-primary">
-														Transportación
-													</h5>
-												</NavLink>
-											</NavItem>
-										</Nav>
-										<hr />
-										<Row>
-											<Col>
-												<TabContent
-													activeTab={activeTab}
-												>
-													<TabPane tabId="1">
-														{activeTab === '1' &&
-															(editMode ? (
-																<FormReservationInformation
-																	editMode={
-																		editMode
-																	}
-																	setEditMode={
-																		setEditMode
-																	}
-																/>
-															) : (
-																<ViewReservationInformation
-																	editMode={
-																		editMode
-																	}
-																	setEditMode={
-																		setEditMode
-																	}
-																	data={
-																		itemData.data
-																	}
-																/>
-															))}
-													</TabPane>
-												</TabContent>
-											</Col>
-										</Row>
-									</CardBody>
-								</Card>
+								<TabsReservation itemData={itemData} />
 							</Col>
 						</Row>
 					</>
