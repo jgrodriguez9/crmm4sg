@@ -11,8 +11,38 @@ const builtFullAddress = (data) => {
 	return address;
 };
 
-const builtDetailCanvasClient = (data) => {
+const builtDetailCanvasClient = (data, clickToCall) => {
 	//console.log(data);
+	const arrayPhones = [];
+	if (data?.phone1) {
+		arrayPhones.push({
+			text: data?.phone1,
+			iconClasses: 'ri-phone-line text-primary',
+			action: () => clickToCall('phone1'),
+		});
+	}
+	if (data?.phone2) {
+		arrayPhones.push({
+			text: data?.phone2,
+			iconClasses: 'ri-phone-line text-primary',
+			action: () => clickToCall('phone2'),
+		});
+	}
+	if (data?.phone3) {
+		arrayPhones.push({
+			text: data?.phone3,
+			iconClasses: 'ri-phone-line text-primary',
+			action: () => clickToCall('phone3'),
+		});
+	}
+	if (data?.movil) {
+		arrayPhones.push({
+			text: data?.movil,
+			iconClasses: 'ri-phone-line text-primary',
+			action: () => clickToCall('movil'),
+		});
+	}
+
 	const header = {
 		title: {
 			label: '',
@@ -21,7 +51,13 @@ const builtDetailCanvasClient = (data) => {
 		img: {
 			name: data?.firstName ?? 'A',
 		},
-		body: [],
+		body: [
+			{
+				label: 'Contrato:',
+				value: data?.contract ?? 'No disponible',
+				extraClassess: 'fw-semibold text-primary',
+			},
+		],
 	};
 	const detailClient = {
 		id: 'detailClient',
@@ -40,34 +76,8 @@ const builtDetailCanvasClient = (data) => {
 			},
 			{
 				label: 'Teléfonos',
-				value: [
-					{
-						text: data?.phone1 ?? 'No disponible',
-						iconClasses: 'ri-phone-line text-success',
-						action: null,
-					},
-					{
-						text: data?.phone2 ?? 'No disponible',
-						iconClasses: 'ri-phone-line text-success',
-						action: null,
-					},
-					{
-						text: data?.phone3 ?? 'No disponible',
-						iconClasses: 'ri-phone-line text-success',
-						action: null,
-					},
-					{
-						text: data?.movil ?? 'No disponible',
-						iconClasses: 'ri-phone-line text-success',
-						action: null,
-					},
-				],
+				value: arrayPhones,
 			},
-			// {
-			// 	label: 'Hora de contactación',
-			// 	value: '13:00',
-			// 	extraClassess: 'fw-semibold text-primary',
-			// },
 		],
 	};
 	const acercaCliente = {

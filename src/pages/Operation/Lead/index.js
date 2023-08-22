@@ -17,6 +17,11 @@ import { addMessage } from '../../../slices/messages/reducer';
 import showFriendlyMessafe from '../../../util/showFriendlyMessafe';
 import { builtDetailCanvasClient } from '../../../util/detailCanvasUtils';
 import { fecthItem, fecthItems } from './Util/services';
+import { clickToCall } from '../../../helpers/customer';
+import { ERROR_SERVER } from '../../../Components/constants/messages';
+import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
+import { toast } from 'react-toastify';
+import ClickToCallAlert from '../../../Components/Operation/Lead/ClickToCall/ClickToCallAlert';
 
 const initFilter = {
 	//id: '',
@@ -88,7 +93,7 @@ const Lead = () => {
 				filterable: false,
 				style: {
 					cursor: 'pointer',
-					width: '30%',
+					width: '18%',
 				},
 				Cell: (contact) => (
 					<>
@@ -111,90 +116,77 @@ const Lead = () => {
 					</>
 				),
 			},
-			// {
-			//   Header: "Contrato",
-			//   accessor: "contrato",
-			//   filterable: false,
-			//   style: {
-			//     cursor: 'pointer',
-			//   }
-			// },
 			{
-				Header: 'País',
-				accessor: 'country',
+				Header: 'Id Booking',
+				accessor: 'booking',
 				filterable: false,
 				style: {
 					cursor: 'pointer',
-					width: '15%',
+					width: '10%',
 				},
 			},
-			{
-				Header: 'Estado',
-				accessor: 'state',
-				filterable: false,
-				style: {
-					cursor: 'pointer',
-					width: '15%',
-				},
-			},
-			// {
-			//   Header: "Agente",
-			//   accessor: "agente",
-			//   filterable: false,
-			//   style: {
-			//     cursor: 'pointer',
-			//   }
-			// },
 			{
 				Header: 'Call Center',
 				accessor: 'callcenter.name',
 				filterable: false,
 				style: {
 					cursor: 'pointer',
-					width: '30%',
+					width: '14%',
+				},
+			},
+			{
+				Header: 'Campaña',
+				accessor: 'campana',
+				filterable: false,
+				style: {
+					cursor: 'pointer',
+					width: '14%',
+				},
+			},
+			{
+				Header: 'Edad titular',
+				accessor: 'age',
+				filterable: false,
+				style: {
+					cursor: 'pointer',
+					width: '10%',
+				},
+			},
+			{
+				Header: 'País',
+				accessor: 'country',
+				filterable: false,
+				style: {
+					cursor: 'pointer',
+					width: '9%',
+				},
+			},
+			{
+				Header: 'Vendedor',
+				accessor: 'userName',
+				filterable: false,
+				style: {
+					cursor: 'pointer',
+					width: '9%',
+				},
+			},
+			{
+				Header: 'Estatus',
+				accessor: 'status',
+				filterable: false,
+				style: {
+					cursor: 'pointer',
+					width: '10%',
 				},
 			},
 			{
 				id: 'action',
 				style: {
-					width: '10%',
+					width: '6%',
 				},
 				Cell: (cellProps) => {
 					return (
 						<ul className="list-inline hstack gap-2 mb-0">
-							{/* <li
-								className="list-inline-item edit"
-								title="Llamada"
-							>
-								<Link
-									to="#"
-									className="text-muted d-inline-block"
-								>
-									<i className="ri-phone-line fs-16"></i>
-								</Link>
-							</li> */}
-							{/* <li
-								className="list-inline-item edit"
-								title="Mensaje"
-							>
-								<Link
-									to="#"
-									className="text-muted d-inline-block"
-								>
-									<i className="ri-question-answer-line fs-16"></i>
-								</Link>
-							</li> */}
-							{/* <li
-								className="list-inline-item edit"
-								title="Correo electrónico"
-							>
-								<Link
-									to="#"
-									className="text-muted d-inline-block"
-								>
-									<i className="ri-mail-send-line fs-16"></i>
-								</Link>
-							</li> */}
 							<li
 								className="list-inline-item edit"
 								title="Vista previa"
@@ -251,9 +243,45 @@ const Lead = () => {
 		refetchOnWindowFocus: false,
 	});
 
+	const onHandleClickToCall = async (phoneType) => {
+		toast(<ClickToCallAlert />, {
+			autoClose: false,
+			position: 'top-left',
+		});
+		try {
+			// const body = {
+			// 	customerId: data.id,
+			// 	//option: phoneType
+			// 	//extension: '?'
+			// };
+			//test
+			let formdata = new FormData();
+			formdata['customerId'] = 930706;
+			const response = await clickToCall(formdata, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+			console.log(response);
+		} catch (error) {
+			let message = ERROR_SERVER;
+			message = extractMeaningfulMessage(error, message);
+			dispatch(
+				addMessage({
+					message: message,
+					type: 'error',
+				})
+			);
+		}
+	};
+
 	useEffect(() => {
 		if (itemData && !isFetchingItem) {
-			const data = builtDetailCanvasClient(itemData.data);
+			const data = builtDetailCanvasClient(
+				itemData.data,
+				onHandleClickToCall
+			);
+			console.log(data);
 			setInfo(data);
 		}
 	}, [itemData, isFetchingItem]);

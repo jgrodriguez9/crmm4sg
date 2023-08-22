@@ -82,7 +82,7 @@ const DetailCanvas = ({
 								{info.header.body.map((it, idx) => (
 									<p
 										key={`header-${idx}`}
-										className="text-muted mb-0"
+										className={`text-muted mb-0 ${it.extraClassess}`}
 									>{`${it.label} ${it.value}`}</p>
 								))}
 							</div>
@@ -164,6 +164,9 @@ const DetailCanvas = ({
 																			<div>
 																				<i
 																					className={`fs-15 ${bValue.iconClasses}`}
+																					onClick={
+																						bValue.action
+																					}
 																					style={{
 																						cursor: 'pointer',
 																					}}

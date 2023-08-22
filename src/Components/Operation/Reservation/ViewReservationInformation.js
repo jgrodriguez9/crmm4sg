@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { Button, Card, CardBody, Col, Label, Row } from 'reactstrap';
 import diffDates from '../../../util/diffDates';
+import Flatpickr from 'react-flatpickr';
 
 const ViewReservationInformation = ({
 	editMode = false,
@@ -8,13 +9,11 @@ const ViewReservationInformation = ({
 	data,
 }) => {
 	return (
-		<Col xs="12" md="12">
-			<Card>
-				<CardBody className="p-4">
-					<h5 className="text-primary">Detalle de la reservación</h5>
-					<hr />
+		<>
+			<Row>
+				<Col xs="12" md="6">
 					<Row>
-						<Col lg={3}>
+						<Col lg={4}>
 							<div className="mb-3">
 								<Label
 									className="form-label"
@@ -27,7 +26,7 @@ const ViewReservationInformation = ({
 								</div>
 							</div>
 						</Col>
-						<Col lg={3}>
+						<Col lg={4}>
 							<div className="mb-3">
 								<Label className="form-label" htmlFor="booking">
 									Id booking
@@ -37,9 +36,7 @@ const ViewReservationInformation = ({
 								</div>
 							</div>
 						</Col>
-					</Row>
-					<Row>
-						<Col lg={3}>
+						<Col lg={4}>
 							<div className="mb-3">
 								<Label className="form-label" htmlFor="hotel">
 									Hotel
@@ -49,7 +46,7 @@ const ViewReservationInformation = ({
 								</div>
 							</div>
 						</Col>
-						<Col lg={3}>
+						<Col lg={4}>
 							<div className="mb-3">
 								<Label className="form-label" htmlFor="plan">
 									Plan
@@ -59,41 +56,23 @@ const ViewReservationInformation = ({
 								</div>
 							</div>
 						</Col>
-						<Col lg={3}>
+						<Col lg={4}>
 							<div className="mb-3">
 								<Label
 									className="form-label"
-									htmlFor="fechaLlegada"
+									htmlFor="tipoHabitacion"
 								>
-									Fecha llegada
+									Tipo de habitación
 								</Label>
-								<div className="form-control" id="fechaLlegada">
-									{moment(
-										data.initialDate,
-										'YYYY-MM-DD'
-									).format('DD/MM/YYYY')}
+								<div
+									className="form-control"
+									id="tipoHabitacion"
+								>
+									-
 								</div>
 							</div>
 						</Col>
-						<Col lg={3}>
-							<div className="mb-3">
-								<Label
-									className="form-label"
-									htmlFor="fechaSalida"
-								>
-									Fecha salida
-								</Label>
-								<div className="form-control" id="fechaSalida">
-									{moment(
-										data.finalDate,
-										'YYYY-MM-DD'
-									).format('DD/MM/YYYY')}
-								</div>
-							</div>
-						</Col>
-					</Row>
-					<Row>
-						<Col lg={1}>
+						<Col lg={4}>
 							<div className="mb-3">
 								<Label className="form-label" htmlFor="noches">
 									Noches
@@ -107,7 +86,7 @@ const ViewReservationInformation = ({
 								</div>
 							</div>
 						</Col>
-						<Col lg={1}>
+						<Col lg={2}>
 							<div className="mb-3">
 								<Label className="form-label" htmlFor="adultos">
 									Adultos
@@ -117,7 +96,7 @@ const ViewReservationInformation = ({
 								</div>
 							</div>
 						</Col>
-						<Col lg={1}>
+						<Col lg={2}>
 							<div className="mb-3">
 								<Label className="form-label" htmlFor="juniors">
 									Juniors
@@ -133,7 +112,7 @@ const ViewReservationInformation = ({
 									className="form-label"
 									htmlFor="menoresPagan"
 								>
-									Menores que pagan
+									Men. pagan
 								</Label>
 								<div className="form-control" id="menoresPagan">
 									{data?.child ?? '-'}
@@ -146,7 +125,7 @@ const ViewReservationInformation = ({
 									className="form-label"
 									htmlFor="menoresGratis"
 								>
-									Menores gratis
+									Men. gratis
 								</Label>
 								<div
 									className="form-control"
@@ -169,222 +148,230 @@ const ViewReservationInformation = ({
 								</div>
 							</div>
 						</Col>
-						<Col lg={3}>
-							<div className="mb-3">
-								<Label
-									className="form-label"
-									htmlFor="tipoHabitacion"
-								>
-									Tipo de habitación
-								</Label>
-								<div
-									className="form-control"
-									id="tipoHabitacion"
-								>
-									-
-								</div>
-							</div>
-						</Col>
 					</Row>
-					<h5 className="mt-3 text-primary">Detalle del titular</h5>
-					<hr />
+				</Col>
+				<Col xs="12" md="6">
 					<Row>
-						<Col lg={3}>
+						<Col lg={6}>
 							<div className="mb-3">
 								<Label
 									className="form-label"
-									htmlFor="estadoCivil"
+									htmlFor="fechaLlegada"
 								>
-									Estado civil
+									Fecha llegada
 								</Label>
-								<div className="form-control" id="estadoCivil">
-									{data?.maritalStatus ?? '-'}
+								<div className="form-control" id="fechaLlegada">
+									{moment(
+										data.initialDate,
+										'YYYY-MM-DD'
+									).format('DD/MM/YYYY')}
 								</div>
 							</div>
 						</Col>
-						<Col lg={3}>
-							<div className="mb-3">
-								<Label className="form-label" htmlFor="ingreso">
-									Ingreso
-								</Label>
-								<div className="form-control" id="ingreso">
-									{data?.income ?? '-'}
-								</div>
-							</div>
-						</Col>
-						<Col lg={3}>
+						<Col lg={6}>
 							<div className="mb-3">
 								<Label
 									className="form-label"
-									htmlFor="estadoAnimo"
+									htmlFor="fechaSalida"
 								>
-									Estado de ánimo
+									Fecha salida
 								</Label>
-								<div className="form-control" id="estadoAnimo">
-									-
+								<div className="form-control" id="fechaSalida">
+									{moment(
+										data.finalDate,
+										'YYYY-MM-DD'
+									).format('DD/MM/YYYY')}
 								</div>
+							</div>
+						</Col>
+						<Col lg={12}>
+							<div className="mt-3">
+								<Label className="form-label mb-0">
+									Checar disponibilidad
+								</Label>
+								<Flatpickr
+									className="form-control d-none"
+									options={{
+										inline: true,
+										dateFormat: 'Y-m-d',
+										locale: 'es',
+									}}
+								/>
 							</div>
 						</Col>
 					</Row>
-					<Row>
-						<Col lg={2}>
-							<div className="mb-3">
-								<Label
-									className="form-label"
-									htmlFor="tarjetas"
-								>
-									Tarjetas
-								</Label>
-								<div className="form-control" id="tarjetas">
-									{data?.visa + data?.amex + data?.mc}
-								</div>
-							</div>
-						</Col>
-						<Col lg={1}>
-							<div className="form-check">
-								<Label className="form-label text-muted text-uppercase fw-semibold opacity-0 d-block">
-									S
-								</Label>
-								<div
-									className={`form-check-input ${
-										data?.visa > 0 ? 'checked' : ''
-									}`}
-									type="checkbox"
-									id="visa"
-								/>
-								<Label
-									className="form-check-label"
-									htmlFor="visa"
-								>
-									Visa
-								</Label>
-							</div>
-						</Col>
-						<Col lg={1}>
-							<div className="form-check">
-								<Label className="form-label text-muted text-uppercase fw-semibold opacity-0 d-block">
-									S
-								</Label>
-								<div
-									className={`form-check-input ${
-										data?.mc > 0 ? 'checked' : ''
-									}`}
-									type="checkbox"
-									id="masterCard"
-								/>
-								<Label
-									className="form-check-label"
-									htmlFor="masterCard"
-								>
-									Master Card
-								</Label>
-							</div>
-						</Col>
-						<Col lg={1}>
-							<div className="form-check">
-								<Label className="form-label text-muted text-uppercase fw-semibold opacity-0 d-block">
-									S
-								</Label>
-								<div
-									className={`form-check-input ${
-										data?.amex > 0 ? 'checked' : ''
-									}`}
-									type="checkbox"
-									id="amex"
-								/>
-								<Label
-									className="form-check-label"
-									htmlFor="amex"
-								>
-									Amex
-								</Label>
-							</div>
-						</Col>
-						<Col lg={1}>
-							<div className="form-check">
-								<Label className="form-label text-muted text-uppercase fw-semibold opacity-0 d-block">
-									S
-								</Label>
-								<div
-									className="form-check-input"
-									type="checkbox"
-									id="otras"
-								/>
-								<Label
-									className="form-check-label"
-									htmlFor="otras"
-								>
-									Otras
-								</Label>
-							</div>
-						</Col>
-						<Col lg={3}>
-							<div className="mb-3">
-								<Label className="form-label" htmlFor="cual">
-									Cual
-								</Label>
-								<div className="form-control" id="cual">
-									-
-								</div>
-							</div>
-						</Col>
-					</Row>
-					<h5 className="mt-3 text-primary">
-						Detalle de la operación
-					</h5>
-					<hr />
-					<Row>
-						<Col lg={3}>
-							<div className="mb-3">
-								<Label
-									className="form-label"
-									htmlFor="representante"
-								>
-									Call center
-								</Label>
-								<div
-									className="form-control"
-									id="representante"
-								>
-									{data?.callcenter?.name ?? '-'}
-								</div>
-							</div>
-						</Col>
-						<Col lg={3}>
-							<div className="mb-3">
-								<Label
-									className="form-label"
-									htmlFor="proveedor"
-								>
-									Segmento
-								</Label>
-								<div className="form-control" id="proveedor">
-									{data?.segment?.name ?? '-'}
-								</div>
-							</div>
-						</Col>
-						<Col lg={3}>
-							<div className="mb-3">
-								<Label className="form-label" htmlFor="precall">
-									Programa
-								</Label>
-								<div className="form-control" id="precall">
-									{data?.program?.name ?? '-'}
-								</div>
-							</div>
-						</Col>
-						<Col lg={3}>
-							<div className="mb-3">
-								<Label className="form-label" htmlFor="hooked">
-									Hooked
-								</Label>
-								<div className="form-control" id="hooked">
-									{data?.hooked?.toString() ?? '-'}
-								</div>
-							</div>
-						</Col>
-					</Row>
-					{/* <hr />
+				</Col>
+			</Row>
+			<h5 className="mt-3 text-primary">Detalle del titular</h5>
+			<hr />
+			<Row>
+				<Col lg={3}>
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="estadoCivil">
+							Estado civil
+						</Label>
+						<div className="form-control" id="estadoCivil">
+							{data?.maritalStatus ?? '-'}
+						</div>
+					</div>
+				</Col>
+				<Col lg={3}>
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="ingreso">
+							Ingreso
+						</Label>
+						<div className="form-control" id="ingreso">
+							{data?.income ?? '-'}
+						</div>
+					</div>
+				</Col>
+				<Col lg={3}>
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="estadoAnimo">
+							Estado de ánimo
+						</Label>
+						<div className="form-control" id="estadoAnimo">
+							-
+						</div>
+					</div>
+				</Col>
+			</Row>
+			<Row>
+				<Col lg={2}>
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="tarjetas">
+							Tarjetas
+						</Label>
+						<div className="form-control" id="tarjetas">
+							{data?.visa + data?.amex + data?.mc}
+						</div>
+					</div>
+				</Col>
+				<Col lg={1}>
+					<div className="form-check">
+						<Label className="form-label text-muted text-uppercase fw-semibold opacity-0 d-block">
+							S
+						</Label>
+						<div
+							className={`form-check-input ${
+								data?.visa > 0 ? 'checked' : ''
+							}`}
+							type="checkbox"
+							id="visa"
+						/>
+						<Label className="form-check-label" htmlFor="visa">
+							Visa
+						</Label>
+					</div>
+				</Col>
+				<Col lg={1}>
+					<div className="form-check">
+						<Label className="form-label text-muted text-uppercase fw-semibold opacity-0 d-block">
+							S
+						</Label>
+						<div
+							className={`form-check-input ${
+								data?.mc > 0 ? 'checked' : ''
+							}`}
+							type="checkbox"
+							id="masterCard"
+						/>
+						<Label
+							className="form-check-label"
+							htmlFor="masterCard"
+						>
+							Master Card
+						</Label>
+					</div>
+				</Col>
+				<Col lg={1}>
+					<div className="form-check">
+						<Label className="form-label text-muted text-uppercase fw-semibold opacity-0 d-block">
+							S
+						</Label>
+						<div
+							className={`form-check-input ${
+								data?.amex > 0 ? 'checked' : ''
+							}`}
+							type="checkbox"
+							id="amex"
+						/>
+						<Label className="form-check-label" htmlFor="amex">
+							Amex
+						</Label>
+					</div>
+				</Col>
+				<Col lg={1}>
+					<div className="form-check">
+						<Label className="form-label text-muted text-uppercase fw-semibold opacity-0 d-block">
+							S
+						</Label>
+						<div
+							className="form-check-input"
+							type="checkbox"
+							id="otras"
+						/>
+						<Label className="form-check-label" htmlFor="otras">
+							Otras
+						</Label>
+					</div>
+				</Col>
+				<Col lg={3}>
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="cual">
+							Cual
+						</Label>
+						<div className="form-control" id="cual">
+							-
+						</div>
+					</div>
+				</Col>
+			</Row>
+			<h5 className="mt-3 text-primary">Detalle de la operación</h5>
+			<hr />
+			<Row>
+				<Col lg={3}>
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="representante">
+							Call center
+						</Label>
+						<div className="form-control" id="representante">
+							{data?.callcenter?.name ?? '-'}
+						</div>
+					</div>
+				</Col>
+				<Col lg={3}>
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="proveedor">
+							Segmento
+						</Label>
+						<div className="form-control" id="proveedor">
+							{data?.segment?.name ?? '-'}
+						</div>
+					</div>
+				</Col>
+				<Col lg={3}>
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="precall">
+							Programa
+						</Label>
+						<div className="form-control" id="precall">
+							{data?.program?.name ?? '-'}
+						</div>
+					</div>
+				</Col>
+				<Col lg={3}>
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="hooked">
+							Hooked
+						</Label>
+						<div className="form-control" id="hooked">
+							{data?.hooked?.toString() ?? '-'}
+						</div>
+					</div>
+				</Col>
+			</Row>
+			{/* <hr />
 					{!editMode && (
 						<div className="d-flex mt-3">
 							<Button
@@ -396,9 +383,7 @@ const ViewReservationInformation = ({
 							</Button>
 						</div>
 					)} */}
-				</CardBody>
-			</Card>
-		</Col>
+		</>
 	);
 };
 

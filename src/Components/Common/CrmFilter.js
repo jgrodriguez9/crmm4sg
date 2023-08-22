@@ -31,30 +31,6 @@ const CrmFilter = ({
 		setselectCountry(selectCountry);
 	};
 
-	const country = [
-		{
-			options: [
-				{ label: 'Select country', value: 'Select country' },
-				{ label: 'Argentina', value: 'Argentina' },
-				{ label: 'Belgium', value: 'Belgium' },
-				{ label: 'Brazil', value: 'Brazil' },
-				{ label: 'Colombia', value: 'Colombia' },
-				{ label: 'Denmark', value: 'Denmark' },
-				{ label: 'France', value: 'France' },
-				{ label: 'Germany', value: 'Germany' },
-				{ label: 'Mexico', value: 'Mexico' },
-				{ label: 'Russia', value: 'Russia' },
-				{ label: 'Spain', value: 'Spain' },
-				{ label: 'Syria', value: 'Syria' },
-				{ label: 'United Kingdom', value: 'United Kingdom' },
-				{
-					label: 'United States of America',
-					value: 'United States of America',
-				},
-			],
-		},
-	];
-
 	return (
 		<Offcanvas
 			direction="end"
@@ -69,7 +45,61 @@ const CrmFilter = ({
 			<div className="d-flex flex-column justify-content-end h-100">
 				<OffcanvasBody className="mb-6">
 					<Row>
-						<Col xs="12" md="6">
+						<Col xs="12" md="4">
+							<div className="mb-3">
+								<Label
+									htmlFor="id-booking"
+									className="form-label text-muted text-uppercase fw-semibold mb-0"
+								>
+									Booking
+								</Label>
+								<Input
+									className="form-control"
+									type="text"
+									id="id-booking"
+								/>
+							</div>
+						</Col>
+						<Col xs="12" md="4">
+							<div className="mb-2">
+								<Label
+									htmlFor="certificado"
+									className="form-label text-muted mb-0"
+								>
+									Certificado
+								</Label>
+								<Input
+									className="form-control"
+									type="text"
+									id="certificado"
+									value={query.certificate}
+									onChange={(e) =>
+										setQuery((prev) => ({
+											...prev,
+											certificate: e.target.value,
+										}))
+									}
+								/>
+							</div>
+						</Col>
+						<Col xs="12" md="4">
+							<div className="mb-3">
+								<Label
+									htmlFor="contarto"
+									className="form-label text-muted text-uppercase fw-semibold mb-0"
+								>
+									Contrato
+								</Label>
+								<Input
+									className="form-control"
+									type="text"
+									id="contarto"
+								/>
+							</div>
+						</Col>
+					</Row>
+					<Row>
+						<Col xs="12" md="4">
 							<div className="mb-2">
 								<Label
 									htmlFor="call-center"
@@ -95,9 +125,44 @@ const CrmFilter = ({
 								/>
 							</div>
 						</Col>
+						<Col xs="12" md="4">
+							<div className="mb-3">
+								<Label
+									htmlFor="segmento-select"
+									className="form-label text-muted text-uppercase fw-semibold mb-0"
+								>
+									Segmento
+								</Label>
+								<SelectAsync
+									fnFilter={getSegmentPaginate}
+									query={'?page=1&max=10'}
+									keyCompare={'name'}
+									inputId="segmento-select"
+								/>
+							</div>
+						</Col>
+						<Col xs="12" md="4">
+							<div className="mb-3">
+								<Label
+									htmlFor="fecha-range"
+									className="form-label text-muted text-uppercase fw-semibold mb-0"
+								>
+									Fecha
+								</Label>
+								<Flatpickr
+									className="form-control"
+									id="fecha-range"
+									placeholder="Seleccionar rango de fecha"
+									options={{
+										mode: 'range',
+										dateFormat: 'd-M-Y',
+									}}
+								/>
+							</div>
+						</Col>
 					</Row>
 					<Row>
-						<Col xs="12" md="6">
+						<Col xs="12" md="4">
 							<div className="mb-3">
 								<Label
 									htmlFor="nombre"
@@ -119,7 +184,7 @@ const CrmFilter = ({
 								/>
 							</div>
 						</Col>
-						<Col xs="12" md="6">
+						<Col xs="12" md="4">
 							<div className="mb-2">
 								<Label
 									htmlFor="apellido"
@@ -141,7 +206,7 @@ const CrmFilter = ({
 								/>
 							</div>
 						</Col>
-						<Col xs="12" md="6">
+						<Col xs="12" md="4">
 							<div className="mb-3">
 								<Label
 									htmlFor="telefono"
@@ -163,29 +228,7 @@ const CrmFilter = ({
 								/>
 							</div>
 						</Col>
-						<Col xs="12" md="6">
-							<div className="mb-3">
-								<Label
-									htmlFor="telefono"
-									className="form-label text-muted text-uppercase fw-semibold mb-0"
-								>
-									Email
-								</Label>
-								<Input
-									className="form-control"
-									type="text"
-									id="telefono"
-									value={query.email}
-									onChange={(e) =>
-										setQuery((prev) => ({
-											...prev,
-											email: e.target.value,
-										}))
-									}
-								/>
-							</div>
-						</Col>
-						<Col xs="12" md="6">
+						<Col xs="12" md="4">
 							<div className="mb-3">
 								<Label
 									htmlFor="pais"
@@ -207,7 +250,7 @@ const CrmFilter = ({
 								/>
 							</div>
 						</Col>
-						<Col xs="12" md="6">
+						<Col xs="12" md="4">
 							<div className="mb-3">
 								<Label
 									htmlFor="estado"
@@ -232,202 +275,22 @@ const CrmFilter = ({
 						<Col xs="12" md="4">
 							<div className="mb-3">
 								<Label
-									htmlFor="etnia-select"
+									htmlFor="telefono"
 									className="form-label text-muted text-uppercase fw-semibold mb-0"
 								>
-									Etnia
-								</Label>
-								<Select
-									className="mb-0"
-									value={selectCountry}
-									onChange={() => {
-										handleselectCountry();
-									}}
-									options={[
-										{ value: 'Etnia 1', label: 'Etnia 1' },
-									]}
-									placeholder="Seleccionar opción"
-									id="etnia-select"
-								></Select>
-							</div>
-						</Col>
-						<Col xs="12" md="8">
-							<div className="mb-3">
-								<Label
-									htmlFor="fecha-range"
-									className="form-label text-muted text-uppercase fw-semibold mb-0"
-								>
-									Fecha
-								</Label>
-								<Flatpickr
-									className="form-control"
-									id="fecha-range"
-									placeholder="Seleccionar rango de fecha"
-									options={{
-										mode: 'range',
-										dateFormat: 'd-M-Y',
-									}}
-								/>
-							</div>
-						</Col>
-						<Col xs="12" md="4">
-							<div className="mb-3">
-								<Label
-									htmlFor="consultor-select"
-									className="form-label text-muted text-uppercase fw-semibold mb-0"
-								>
-									Consultor
-								</Label>
-								<Select
-									className="mb-0"
-									value={selectCountry}
-									onChange={() => {
-										handleselectCountry();
-									}}
-									options={[
-										{
-											value: 'Consultor 1',
-											label: 'Consultor 1',
-										},
-									]}
-									placeholder="Seleccionar opción"
-									id="consultor-select"
-								></Select>
-							</div>
-						</Col>
-						<Col xs="12" md="4">
-							<div className="mb-3">
-								<Label
-									htmlFor="tiponota-select"
-									className="form-label text-muted text-uppercase fw-semibold mb-0"
-								>
-									Tipo nota
-								</Label>
-								<Select
-									className="mb-0"
-									value={selectCountry}
-									onChange={() => {
-										handleselectCountry();
-									}}
-									options={[
-										{
-											value: 'Tipo nota 1',
-											label: 'Tipo nota 1',
-										},
-									]}
-									placeholder="Seleccionar opción"
-									id="tiponota-select"
-								></Select>
-							</div>
-						</Col>
-						<Col xs="12" md="4">
-							<div className="mb-3">
-								<Label
-									htmlFor="fecha-nota"
-									className="form-label text-muted text-uppercase fw-semibold mb-0"
-								>
-									Fecha nota
-								</Label>
-								<Flatpickr
-									className="form-control"
-									id="fecha-nota"
-									placeholder="Seleccionar fecha"
-									options={{
-										dateFormat: 'd-M-Y',
-									}}
-								/>
-							</div>
-						</Col>
-						<Col xs="12" md="4">
-							<div className="mb-3">
-								<Label
-									htmlFor="segmento-select"
-									className="form-label text-muted text-uppercase fw-semibold mb-0"
-								>
-									Segmento
-								</Label>
-								<SelectAsync
-									fnFilter={getSegmentPaginate}
-									query={'?page=1&max=10'}
-									keyCompare={'name'}
-									inputId="segmento-select"
-								/>
-							</div>
-						</Col>
-						<Col xs="12" md="4">
-							<div className="mb-3">
-								<Label
-									htmlFor="motivonota-select"
-									className="form-label text-muted text-uppercase fw-semibold mb-0"
-								>
-									Motivo nota
-								</Label>
-								<Select
-									className="mb-0"
-									value={selectCountry}
-									onChange={() => {
-										handleselectCountry();
-									}}
-									options={[
-										{
-											value: 'Motivo nota 1',
-											label: 'Motivo nota 1',
-										},
-									]}
-									placeholder="Seleccionar opción"
-									id="motivonota-select"
-								></Select>
-							</div>
-						</Col>
-						<Col xs="12" md="4">
-							<div className="mb-3">
-								<Label
-									htmlFor="id-booking"
-									className="form-label text-muted text-uppercase fw-semibold mb-0"
-								>
-									ID Booking
+									Email
 								</Label>
 								<Input
 									className="form-control"
 									type="text"
-									id="id-booking"
-								/>
-							</div>
-						</Col>
-						<Col xs="12" md="4">
-							<div className="form-check">
-								<Label
-									htmlFor="segmento-select"
-									className="form-label text-muted text-uppercase fw-semibold mb-0 opacity-0 d-block"
-								>
-									Segmento
-								</Label>
-								<Input
-									className="form-check-input"
-									type="checkbox"
-									id="con-referidos"
-									defaultValue="option1"
-								/>
-								<Label
-									className="form-check-label"
-									htmlFor="con-referidos"
-								>
-									Con referidos
-								</Label>
-							</div>
-						</Col>
-						<Col xs="12" md="8">
-							<div className="mb-3">
-								<Label
-									htmlFor="contarto"
-									className="form-label text-muted text-uppercase fw-semibold mb-0"
-								>
-									Contrato
-								</Label>
-								<Input
-									className="form-control"
-									type="text"
-									id="contarto"
+									id="telefono"
+									value={query.email}
+									onChange={(e) =>
+										setQuery((prev) => ({
+											...prev,
+											email: e.target.value,
+										}))
+									}
 								/>
 							</div>
 						</Col>

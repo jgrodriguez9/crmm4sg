@@ -169,6 +169,12 @@ const Reservation = () => {
 			collapse: true,
 			body: [
 				{
+					label: 'Nombre',
+					value: `${item?.customer?.firstName} ${
+						item?.customer?.lastName ?? ''
+					}`,
+				},
+				{
 					label: 'Estado civil',
 					value: item?.maritalStatus ?? '',
 				},
@@ -262,13 +268,13 @@ const Reservation = () => {
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'Id Reservación',
+				Header: 'Id',
 				accessor: 'id',
 				filterable: false,
 				style: {
 					cursor: 'pointer',
 				},
-				width: '9%',
+				width: '7%',
 			},
 			{
 				Header: 'Confirmación',
@@ -277,16 +283,16 @@ const Reservation = () => {
 				style: {
 					cursor: 'pointer',
 				},
-				width: '9%',
+				width: '8%',
 			},
 			{
-				Header: 'Id Booking',
+				Header: 'Booking',
 				accessor: 'booking',
 				filterable: false,
 				style: {
 					cursor: 'pointer',
 				},
-				width: '8%',
+				width: '7%',
 			},
 			{
 				Header: 'Nombre',
@@ -346,7 +352,7 @@ const Reservation = () => {
 				style: {
 					cursor: 'pointer',
 				},
-				width: '10%',
+				width: '9%',
 			},
 			{
 				Header: 'Pax',
@@ -355,14 +361,23 @@ const Reservation = () => {
 				style: {
 					cursor: 'pointer',
 				},
-				width: '5%',
+				width: '4%',
+			},
+			{
+				Header: 'Estatus',
+				accessor: 'status.name',
+				filterable: false,
+				style: {
+					cursor: 'pointer',
+				},
+				width: '7%',
 			},
 			{
 				id: 'action',
 				style: {
 					cursor: 'pointer',
 				},
-				width: '5%',
+				width: '4%',
 				Cell: (cellProps) => {
 					return (
 						<ul className="list-inline hstack gap-2 mb-0">

@@ -1,41 +1,11 @@
 import { Col, Label, Row } from 'reactstrap';
-import { clickToCall } from '../../../../../helpers/customer';
-import { useDispatch } from 'react-redux';
-import { addMessage } from '../../../../../slices/messages/reducer';
-import { ERROR_SERVER } from '../../../../constants/messages';
-import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 
-const ViewLeadInformation = ({ editMode, setEditMode, data }) => {
-	const dispatch = useDispatch();
-
-	const onHandleClickToCall = async (phoneType) => {
-		try {
-			// const body = {
-			// 	customerId: data.id,
-			// 	//option: phoneType
-			// 	//extension: '?'
-			// };
-			//test
-			let formdata = new FormData();
-			formdata['customerId'] = 930706;
-			const response = await clickToCall(formdata, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			});
-			console.log(response);
-		} catch (error) {
-			let message = ERROR_SERVER;
-			message = extractMeaningfulMessage(error, message);
-			dispatch(
-				addMessage({
-					message: message,
-					type: 'error',
-				})
-			);
-		}
-	};
-
+const ViewLeadInformation = ({
+	editMode,
+	setEditMode,
+	data,
+	onHandleClickToCall,
+}) => {
 	return (
 		<>
 			<Row>
