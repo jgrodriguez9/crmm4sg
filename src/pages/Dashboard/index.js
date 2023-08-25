@@ -11,20 +11,29 @@ import UpcomingActivities from './UpcomingActivities';
 import Widgets from './Widgets';
 import ComingSoon from '../Utils/ComingSoon';
 import kpi from '../../assets/images/kpi.png';
-
+import DashboardAgent from '../../Components/Dashboard/DashboardAgent';
 
 const DashboardCrm = () => {
-    document.title="Inicio | CRM - M4S";
-    return (
-        <React.Fragment>
-            <div className="page-content">
-                <Container fluid>  
-                    <BreadCrumb title="CRM" pageTitle="Inicio" urlPageTitle="/dashboard" />
-                    <Row>
-                        <Col><img src={kpi} className='w-100' alt='' /></Col>
-                        {/* <ComingSoon /> */}
-                    </Row>
-                    {/* <Row>
+	document.title = 'Inicio | CRM - M4S';
+	return (
+		<React.Fragment>
+			<div className="page-content">
+				<Container fluid>
+					{/* <BreadCrumb
+						title="CRM"
+						pageTitle="Inicio"
+						urlPageTitle="/dashboard"
+					/> */}
+					<Row>
+						{/*Dashboard agente*/}
+						<DashboardAgent />
+
+						<Col>
+							<img src={kpi} className="w-100" alt="" />
+						</Col>
+						{/* <ComingSoon /> */}
+					</Row>
+					{/* <Row>
                         <Widgets />
                     </Row>
                     <Row>
@@ -40,10 +49,10 @@ const DashboardCrm = () => {
                         <UpcomingActivities />
                         <ClosingDeals />
                     </Row> */}
-                </Container>
-            </div>
-        </React.Fragment>
-    );
+				</Container>
+			</div>
+		</React.Fragment>
+	);
 };
 
 export default DashboardCrm;
