@@ -37,12 +37,14 @@ import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../../slices/messages/reducer';
 import { toast } from 'react-toastify';
 import ClickToCallAlert from '../../../../Components/Operation/Lead/ClickToCall/ClickToCallAlert';
+import { useEffect } from 'react';
 
 const LeadProfile = () => {
 	document.title = 'Detalle del Lead | CRM - M4S';
 	const { id } = useParams();
 	const dispatch = useDispatch();
 	const [activeTab, setActiveTab] = useState('6');
+	const [dataLeft, setDataLeft] = useState([]);
 	const tabChange = (tab) => {
 		if (activeTab !== tab) setActiveTab(tab);
 	};
@@ -87,6 +89,204 @@ const LeadProfile = () => {
 		}
 	};
 
+	useEffect(() => {
+		if (itemData?.data && !errorItem) {
+			const telefonos = [];
+			if (itemData?.data?.phone1) {
+				const phone1 = {
+					title: itemData?.data?.phone1,
+					iconClass:
+						'fs-15 ri-phone-line text-primary cursor-pointer',
+					action: () => onHandleClickToCall('phone1'),
+				};
+				telefonos.push(phone1);
+			}
+			if (itemData?.data?.phone2) {
+				const phone2 = {
+					title: itemData?.data?.phone2,
+					iconClass:
+						'fs-15 ri-phone-line text-primary cursor-pointer',
+					action: () => onHandleClickToCall('phone2'),
+				};
+				telefonos.push(phone2);
+			}
+			if (itemData?.data?.phone3) {
+				const phone3 = {
+					title: itemData?.data?.phone3,
+					iconClass:
+						'fs-15 ri-phone-line text-primary cursor-pointer',
+					action: () => onHandleClickToCall('phone3'),
+				};
+				telefonos.push(phone3);
+			}
+			if (itemData?.data?.movil) {
+				const movil = {
+					title: itemData?.data?.movil,
+					iconClass:
+						'fs-15 ri-phone-line text-primary cursor-pointer',
+					action: () => onHandleClickToCall('movil'),
+				};
+				telefonos.push(movil);
+			}
+
+			const parseInfoLeft = [
+				{
+					tableClass:
+						'table table-sm align-middle pb-3 fs-7 table-borderless border-bottom w-100',
+					header: null,
+					body: [
+						{
+							title: 'Correo',
+							items: [
+								{
+									title: itemData?.data?.email,
+									iconClass:
+										'fs-15 ri-mail-line text-danger cursor-pointer',
+									action: () => {},
+								},
+							],
+						},
+						{
+							title: 'Teléfonos',
+							items: [...telefonos],
+						},
+					],
+				},
+				{
+					tableClass:
+						'table table-sm align-middle pb-3 fs-7 table-borderless border-bottom w-100',
+					header: { title: 'Información principal' },
+					body: [
+						{
+							title: 'Contrato',
+							items: [
+								{
+									title: itemData?.data?.contract,
+									iconClass: null,
+									action: () => {},
+								},
+							],
+						},
+					],
+				},
+				{
+					tableClass:
+						'table table-sm align-middle pb-3 fs-7 table-borderless w-100',
+					header: { title: 'Acerca de este cliente' },
+					body: [
+						{
+							title: 'Dirección',
+							items: [
+								{
+									title: itemData?.data?.address,
+									iconClass: null,
+									action: () => {},
+								},
+							],
+						},
+						{
+							title: 'País',
+							items: [
+								{
+									title: itemData?.data?.country,
+									iconClass: null,
+									action: () => {},
+								},
+							],
+						},
+						{
+							title: 'Estado',
+							items: [
+								{
+									title: itemData?.data?.state,
+									iconClass: null,
+									action: () => {},
+								},
+							],
+						},
+						{
+							title: 'Ciudad',
+							items: [
+								{
+									title: itemData?.data?.city,
+									iconClass: null,
+									action: () => {},
+								},
+							],
+						},
+						{
+							title: 'CP',
+							items: [
+								{
+									title: itemData?.data?.postalCode,
+									iconClass: null,
+									action: () => {},
+								},
+							],
+						},
+						{
+							title: 'Ingreso',
+							items: [
+								{
+									title: itemData?.data?.income,
+									iconClass: null,
+									action: () => {},
+								},
+							],
+						},
+						{
+							title: 'Estado civil',
+							items: [
+								{
+									title: itemData?.data?.maritalStatus,
+									iconClass: null,
+									action: () => {},
+								},
+							],
+						},
+						{
+							title: 'Fecha nacimiento',
+							items: [
+								{
+									title: itemData?.data?.fechaNacimiento,
+									iconClass: null,
+									action: () => {},
+								},
+							],
+						},
+					],
+				},
+				{
+					header: { title: 'Atribución de creación de este cliente' },
+					body: [
+						{
+							title: 'Usuario que lo creó',
+							items: [
+								{
+									title: itemData?.data?.userName,
+									iconClass: null,
+									action: () => {},
+								},
+							],
+						},
+						{
+							title: 'Call center',
+							items: [
+								{
+									title: itemData?.data?.callcenter?.name,
+									iconClass: null,
+									action: () => {},
+								},
+							],
+						},
+					],
+				},
+			];
+			console.log(parseInfoLeft);
+			setDataLeft(parseInfoLeft);
+		}
+	}, [itemData?.data, errorItem]);
+
 	return (
 		<>
 			<div className="page-content">
@@ -118,7 +318,7 @@ const LeadProfile = () => {
 					{itemData && !isFetchingItem && !errorItem && (
 						<Row>
 							<Col xxl={3}>
-								<Card>
+								<Card className="shadow">
 									<CardBody className="p-0">
 										<div className="d-flex align-items-center mb-2 p-3">
 											<div className="flex-grow-1">
@@ -127,333 +327,88 @@ const LeadProfile = () => {
 												</h5>
 											</div>
 										</div>
-										<div className="table-card p-3 mb-4">
-											<table className="table mb-0">
-												<tbody>
-													<tr>
-														<td className="fw-medium">
-															Correo
-														</td>
-														<td>
-															<div className="d-flex justify-content-between">
-																<div>
+										<div className="table-card p-3">
+											{dataLeft.map((it, idx) => (
+												<table
+													className={it.tableClass}
+													key={`dataLeft-${idx}`}
+												>
+													<tbody>
+														{it.header && (
+															<tr>
+																<th
+																	className="text-primary border-bottom-0"
+																	colSpan={2}
+																>
 																	{
-																		itemData
-																			?.data
-																			?.email
+																		it
+																			.header
+																			.title
 																	}
-																</div>
-																<div>
-																	<i
-																		className={`fs-15 ri-mail-line text-danger`}
+																</th>
+															</tr>
+														)}
+														{it.body.map(
+															(body, bodyIdx) => (
+																<tr
+																	key={`dataLedt-body-${bodyIdx}`}
+																>
+																	<td
+																		className="fw-medium"
 																		style={{
-																			cursor: 'pointer',
+																			width: '45%',
 																		}}
-																	></i>
-																</div>
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td className="fw-medium">
-															Teléfono
-														</td>
-														<td>
-															{itemData?.data
-																?.phone1 && (
-																<div className="d-flex justify-content-between">
-																	<div>
+																	>
 																		{
-																			itemData
-																				?.data
-																				?.phone1
+																			body.title
 																		}
-																	</div>
-																	<div>
-																		<i
-																			className={`fs-15 ri-phone-line text-primary`}
-																			onClick={(
-																				e
-																			) =>
-																				onHandleClickToCall(
-																					'phone1'
-																				)
-																			}
-																			style={{
-																				cursor: 'pointer',
-																			}}
-																		></i>
-																	</div>
-																</div>
-															)}
-															{itemData?.data
-																?.phone2 && (
-																<div className="d-flex justify-content-between">
-																	<div>
-																		{
-																			itemData
-																				?.data
-																				?.phone2
-																		}
-																	</div>
-																	<div>
-																		<i
-																			className={`fs-15 ri-phone-line text-primary`}
-																			onClick={(
-																				e
-																			) =>
-																				onHandleClickToCall(
-																					'phone2'
-																				)
-																			}
-																			style={{
-																				cursor: 'pointer',
-																			}}
-																		></i>
-																	</div>
-																</div>
-															)}
-															{itemData?.data
-																?.phone3 && (
-																<div className="d-flex justify-content-between">
-																	<div>
-																		{
-																			itemData
-																				?.data
-																				?.phone3
-																		}
-																	</div>
-																	<div>
-																		<i
-																			className={`fs-15 ri-phone-line text-primary`}
-																			onClick={(
-																				e
-																			) =>
-																				onHandleClickToCall(
-																					'phone3'
-																				)
-																			}
-																			style={{
-																				cursor: 'pointer',
-																			}}
-																		></i>
-																	</div>
-																</div>
-															)}
-															{itemData?.data
-																?.movil && (
-																<div className="d-flex justify-content-between">
-																	<div>
-																		{
-																			itemData
-																				?.data
-																				?.movil
-																		}
-																	</div>
-																	<div>
-																		<i
-																			className={`fs-15 ri-phone-line text-primary`}
-																			onClick={(
-																				e
-																			) =>
-																				onHandleClickToCall(
-																					'movil'
-																				)
-																			}
-																			style={{
-																				cursor: 'pointer',
-																			}}
-																		></i>
-																	</div>
-																</div>
-															)}
-														</td>
-													</tr>
-												</tbody>
-											</table>
+																	</td>
+																	<td
+																		style={{
+																			width: '55%',
+																		}}
+																	>
+																		{body.items.map(
+																			(
+																				bodyItem,
+																				bItIdx
+																			) => (
+																				<div
+																					className="d-flex justify-content-between align-items-center"
+																					key={`body-it-${bItIdx}`}
+																				>
+																					<div>
+																						{
+																							bodyItem.title
+																						}
+																					</div>
+																					{bodyItem.iconClass && (
+																						<div>
+																							<i
+																								className={`${bodyItem.iconClass}`}
+																								onClick={
+																									bodyItem.action
+																								}
+																							></i>
+																						</div>
+																					)}
+																				</div>
+																			)
+																		)}
+																	</td>
+																</tr>
+															)
+														)}
+													</tbody>
+												</table>
+											))}
 										</div>
-
-										<UncontrolledAccordion
-											id="vista-previa-accordion"
-											className="custom-accordionwithicon accordion-border-box"
-											defaultOpen="0"
-										>
-											<AccordionItem className="rounded-0 border-top-0 border-bottom-0 m-0 pb-0">
-												<AccordionHeader targetId="1">
-													Información principal
-												</AccordionHeader>
-												<AccordionBody accordionId="1">
-													<table className="table mb-0 fs-6">
-														<tbody>
-															<tr>
-																<td className="fw-medium">
-																	Contrato
-																</td>
-																<td>
-																	{
-																		itemData
-																			?.data
-																			?.contract
-																	}
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</AccordionBody>
-											</AccordionItem>
-											<AccordionItem className="rounded-0 m-0 border-bottom-0">
-												<AccordionHeader targetId="2">
-													Acerca de este cliente
-												</AccordionHeader>
-												<AccordionBody accordionId="2">
-													<table className="table mb-0 fs-6">
-														<tbody>
-															<tr>
-																<td className="fw-medium">
-																	Dirección
-																</td>
-																<td>
-																	{
-																		itemData
-																			?.data
-																			?.address
-																	}
-																</td>
-															</tr>
-															<tr>
-																<td className="fw-medium">
-																	País
-																</td>
-																<td>
-																	{
-																		itemData
-																			?.data
-																			?.country
-																	}
-																</td>
-															</tr>
-															<tr>
-																<td className="fw-medium">
-																	Estado
-																</td>
-																<td>
-																	{
-																		itemData
-																			?.data
-																			?.state
-																	}
-																</td>
-															</tr>
-															<tr>
-																<td className="fw-medium">
-																	Ciudad
-																</td>
-																<td>
-																	{
-																		itemData
-																			?.data
-																			?.city
-																	}
-																</td>
-															</tr>
-															<tr>
-																<td className="fw-medium">
-																	CP
-																</td>
-																<td>
-																	{
-																		itemData
-																			?.data
-																			?.postalCode
-																	}
-																</td>
-															</tr>
-															<tr>
-																<td className="fw-medium">
-																	Ingreso
-																</td>
-																<td>
-																	{
-																		itemData
-																			?.data
-																			?.income
-																	}
-																</td>
-															</tr>
-															<tr>
-																<td className="fw-medium">
-																	Estado civil
-																</td>
-																<td>
-																	{
-																		itemData
-																			?.data
-																			?.maritalStatus
-																	}
-																</td>
-															</tr>
-															<tr>
-																<td className="fw-medium">
-																	Fecha
-																	nacimiento
-																</td>
-																<td>
-																	{
-																		itemData
-																			?.data
-																			?.fechaNacimiento
-																	}
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</AccordionBody>
-											</AccordionItem>
-											<AccordionItem className="rounded-0 m-0">
-												<AccordionHeader targetId="3">
-													Atribución de creación de
-													este cliente
-												</AccordionHeader>
-												<AccordionBody accordionId="3">
-													<table className="table mb-0 fs-6">
-														<tbody>
-															<tr>
-																<td className="fw-medium">
-																	Usuario que
-																	lo creó
-																</td>
-																<td>
-																	{
-																		itemData
-																			?.data
-																			?.userName
-																	}
-																</td>
-															</tr>
-															<tr>
-																<td className="fw-medium">
-																	Call center
-																</td>
-																<td>
-																	{
-																		itemData
-																			?.data
-																			?.callcenter
-																			?.name
-																	}
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</AccordionBody>
-											</AccordionItem>
-										</UncontrolledAccordion>
 									</CardBody>
 								</Card>
 							</Col>
 
 							<Col xxl={9}>
-								<Card>
+								<Card className="shadow">
 									<CardHeader>
 										<Nav
 											className="nav-tabs-custom rounded card-header-tabs border-bottom-0"

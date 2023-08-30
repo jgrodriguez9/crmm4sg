@@ -10,7 +10,7 @@ const ViewReservationInformation = ({
 }) => {
 	return (
 		<>
-			<Row>
+			<Row className="fs-7">
 				<Col xs="12" md="6">
 					<Row>
 						<Col lg={4}>
@@ -202,9 +202,9 @@ const ViewReservationInformation = ({
 					</Row>
 				</Col>
 			</Row>
-			<h5 className="mt-3 text-primary">Detalle del titular</h5>
+			<h6 className="mt-3 text-primary">Detalle del titular</h6>
 			<hr />
-			<Row>
+			<Row className="fs-7">
 				<Col lg={3}>
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="estadoCivil">
@@ -236,7 +236,7 @@ const ViewReservationInformation = ({
 					</div>
 				</Col>
 			</Row>
-			<Row>
+			<Row className="fs-7">
 				<Col lg={2}>
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="tarjetas">
@@ -327,9 +327,9 @@ const ViewReservationInformation = ({
 					</div>
 				</Col>
 			</Row>
-			<h5 className="mt-3 text-primary">Detalle de la operación</h5>
+			<h6 className="mt-3 text-primary">Detalle de la operación</h6>
 			<hr />
-			<Row>
+			<Row className="fs-7">
 				<Col lg={3}>
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="representante">

@@ -302,7 +302,7 @@ const Lead = () => {
 					/>
 					<Row>
 						<Col xxl={12}>
-							<Card id="contactList">
+							<Card className="shadow">
 								<CardBody className="pt-0">
 									<div>
 										{!isLoading ? (
@@ -316,9 +316,9 @@ const Lead = () => {
 															: []
 													}
 													className="custom-header-css"
-													divClass="table-responsive table-card mb-3"
+													divClass="table-responsive mb-3"
 													tableClass="align-middle table-nowrap"
-													theadClass="table-light"
+													theadClass=""
 													onSelectRow={gotToPage}
 												/>
 												<PaginationManual

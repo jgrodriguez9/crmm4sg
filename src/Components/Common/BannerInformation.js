@@ -24,17 +24,17 @@ const BannerInformation = ({ data, showBreadcrumb = true }) => {
 									</div>
 									<div className="col-md">
 										{data?.subTitle && (
-											<span className="badge bg-primary fs-12">
+											<span className="badge bg-primary fs-7">
 												{data?.subTitle}
 											</span>
 										)}
 										<h4
-											className="fw-semibold"
+											className="fw-semibold fs-6"
 											id="ticket-title"
 										>
 											{data?.title}
 										</h4>
-										<div className="hstack gap-3 flex-wrap">
+										<div className="hstack gap-3 flex-wrap fs-7">
 											{data?.subInfo.map(
 												(it, indexSubInfo) => (
 													<>
@@ -74,7 +74,10 @@ const BannerInformation = ({ data, showBreadcrumb = true }) => {
 																								className={`${itValue.icon} align-bottom me-1`}
 																							/>
 																						)}
-																						<span id="ticket-client">
+																						<span
+																							id="ticket-client"
+																							className="fs-7"
+																						>
 																							{
 																								itValue.value
 																							}
@@ -93,7 +96,10 @@ const BannerInformation = ({ data, showBreadcrumb = true }) => {
 																	)}
 																</div>
 															) : (
-																<span id="ticket-client">
+																<span
+																	id="ticket-client"
+																	className="fs-7"
+																>
 																	{it.label &&
 																		`${it.label}: `}
 																	{it.value}

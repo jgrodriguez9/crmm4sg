@@ -456,7 +456,7 @@ const Reservation = () => {
 
 					<Row>
 						<Col xxl={12}>
-							<Card id="contactList">
+							<Card className="shadow">
 								<CardBody className="pt-0">
 									<div>
 										{!isLoading ? (
@@ -470,9 +470,8 @@ const Reservation = () => {
 															: []
 													}
 													className="custom-header-css"
-													divClass="table-responsive table-card mb-3"
+													divClass="table-responsive mb-3"
 													tableClass="align-middle"
-													theadClass="table-light"
 													onSelectRow={gotToPage}
 												/>
 												<PaginationManual

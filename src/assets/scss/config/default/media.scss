@@ -1,0 +1,11 @@
+@include media-breakpoint-up(lg){
+    [data-layout="horizontal"] .layout-width, 
+    [data-layout="horizontal"] .container-fluid, 
+    [data-layout="horizontal"] .container-sm, 
+    [data-layout="horizontal"] .container-md, 
+    [data-layout="horizontal"] .container-lg, 
+    [data-layout="horizontal"] .container-xl, 
+    [data-layout="horizontal"] .container-xxl{
+        max-width: 96%;
+    }   
+}

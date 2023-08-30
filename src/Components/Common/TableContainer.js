@@ -122,7 +122,7 @@ const TableContainer = ({
 										</tr>
 										{row.isExpanded &&
 										renderRowSubComponent ? (
-											<tr className="bg-light">
+											<tr className="bg-light bg-opacity-50">
 												<td colSpan={row.cells.length}>
 													{console.log(row)}
 													{renderRowSubComponent(row)}

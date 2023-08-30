@@ -40,9 +40,9 @@ const TabsReservation = ({ itemData }) => {
 							}}
 							type="button"
 						>
-							<h5 className="text-primary">
+							<h6 className="text-primary">
 								Detalle de la reservación
-							</h5>
+							</h6>
 						</NavLink>
 					</NavItem>
 					<NavItem>
@@ -56,7 +56,7 @@ const TabsReservation = ({ itemData }) => {
 							}}
 							type="button"
 						>
-							<h5 className="text-primary">Paxes</h5>
+							<h6 className="text-primary">Pagos</h6>
 						</NavLink>
 					</NavItem>
 					<NavItem>
@@ -70,7 +70,7 @@ const TabsReservation = ({ itemData }) => {
 							}}
 							type="button"
 						>
-							<h5 className="text-primary">Notas</h5>
+							<h6 className="text-primary">Paxes</h6>
 						</NavLink>
 					</NavItem>
 					<NavItem>
@@ -84,7 +84,35 @@ const TabsReservation = ({ itemData }) => {
 							}}
 							type="button"
 						>
-							<h5 className="text-primary">Transportación</h5>
+							<h6 className="text-primary">Notas</h6>
+						</NavLink>
+					</NavItem>
+					<NavItem>
+						<NavLink
+							to="#"
+							className={classNames({
+								active: activeTab === '5',
+							})}
+							onClick={() => {
+								tabChange('5');
+							}}
+							type="button"
+						>
+							<h6 className="text-primary">Transportación</h6>
+						</NavLink>
+					</NavItem>
+					<NavItem>
+						<NavLink
+							to="#"
+							className={classNames({
+								active: activeTab === '6',
+							})}
+							onClick={() => {
+								tabChange('6');
+							}}
+							type="button"
+						>
+							<h6 className="text-primary">Servicios</h6>
 						</NavLink>
 					</NavItem>
 				</Nav>

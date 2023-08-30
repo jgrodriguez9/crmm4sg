@@ -25,7 +25,7 @@ const PaginationManual = ({ query, setQuery, setQueryFilter, totalPages }) => {
 	};
 
 	return (
-		<Row className="justify-content-md-end justify-content-center align-items-center p-1">
+		<Row className="justify-content-md-end justify-content-center align-items-center p-1 fs-7">
 			<Col className="col-md-auto">
 				<div className="d-flex gap-1">
 					<Button

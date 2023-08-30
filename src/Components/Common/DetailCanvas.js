@@ -63,7 +63,7 @@ const DetailCanvas = ({
 				</OffcanvasBody>
 			)}
 			{info && !isLoading && !error && (
-				<OffcanvasBody className="p-0 mb-6">
+				<OffcanvasBody className="p-0 mb-6 fs-7">
 					{info?.header && (
 						<div className="d-flex mb-2 p-3">
 							<div className="pe-2">
@@ -78,7 +78,7 @@ const DetailCanvas = ({
 								)}
 							</div>
 							<div>
-								<h5 className="mt-4 mb-1">{`${info.header.title.label} ${info.header.title.value}`}</h5>
+								<h6 className="mt-4 mb-1 text-primary">{`${info.header.title.label} ${info.header.title.value}`}</h6>
 								{info.header.body.map((it, idx) => (
 									<p
 										key={`header-${idx}`}
@@ -108,7 +108,7 @@ const DetailCanvas = ({
 									>
 										<button
 											className={classNames(
-												'accordion-button',
+												'accordion-button fs-7',
 												{ collapsed: !it.collapse }
 											)}
 											type="button"
@@ -141,7 +141,7 @@ const DetailCanvas = ({
 															}
 														>
 															<h6
-																className={`fs-6 fw-normal mb-0 ${bElement.extraClassess}`}
+																className={`fs-7 fw-normal mb-0 ${bElement.extraClassess}`}
 															>
 																{bElement.label}
 															</h6>
@@ -177,7 +177,7 @@ const DetailCanvas = ({
 																)
 															) : (
 																<span
-																	className={`fs-6 ${bElement.extraClassess}`}
+																	className={`fs-7 ${bElement.extraClassess}`}
 																>
 																	{
 																		bElement.value
