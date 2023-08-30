@@ -21,7 +21,14 @@ import { addMessage } from '../../../../../slices/messages/reducer';
 import { useDispatch } from 'react-redux';
 import TabsReservation from '../../../Reservation/TabsReservation';
 
-const TableReservation = ({ customerId }) => {
+const TableReservation = ({
+	customerId,
+	tableClass = 'align-middle table-nowrap',
+	divClass = 'table-responsive table-card mb-3',
+	className = 'custom-header-css',
+	hover = true,
+	theadClass = 'table-light',
+}) => {
 	const dispatch = useDispatch();
 	const [query, setQuery] = useState({
 		max: 10,
@@ -129,7 +136,8 @@ const TableReservation = ({ customerId }) => {
 								>
 									<i
 										className="ri-file-search-fill fs-16"
-										onClick={() => {
+										onClick={(e) => {
+											e.preventDefault();
 											setIdItem(
 												cellProps.row.original.id
 											);
@@ -296,10 +304,11 @@ const TableReservation = ({ customerId }) => {
 					<TableContainer
 						columns={columns}
 						data={isSuccess ? reservationData.data.list : []}
-						className="custom-header-css"
-						divClass="table-responsive table-card mb-3"
-						tableClass="align-middle table-nowrap"
-						theadClass="table-light"
+						className={className}
+						divClass={divClass}
+						tableClass={tableClass}
+						theadClass={theadClass}
+						hover={hover}
 					/>
 					<PaginationManual
 						query={query}

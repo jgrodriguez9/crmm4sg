@@ -486,7 +486,7 @@ const LeadProfile = () => {
 													}}
 													type="button"
 												>
-													Reservaciones
+													Origen
 												</NavLink>
 											</NavItem>
 											<NavItem>

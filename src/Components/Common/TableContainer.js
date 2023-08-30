@@ -1,15 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {
-	useTable,
-	useGlobalFilter,
-	useAsyncDebounce,
-	useSortBy,
-	useFilters,
-	useExpanded,
-	usePagination,
-	useRowSelect,
-} from 'react-table';
+import { useTable, usePagination, useExpanded } from 'react-table';
 import { Table } from 'reactstrap';
 
 const TableContainer = ({
@@ -21,12 +12,15 @@ const TableContainer = ({
 	trClass,
 	thClass,
 	divClass,
+	hover = true,
 	pageCount = -1,
 	queryPageIndex = 0,
 	handlePage,
 	onSelectRow = (row) => {},
 	firstRender = true,
 	setItems,
+	renderRowSubComponent = (row) => null,
+	tableTitle = null,
 }) => {
 	const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow } =
 		useTable(
@@ -40,32 +34,23 @@ const TableContainer = ({
 					pageSize: customPageSize,
 				},
 			},
+			useExpanded,
 			usePagination
 		);
-
 	return (
 		<Fragment>
-			{/* <Row className="mb-3">
-        {isGlobalSearch && (
-          <Col md={1}>
-            <select
-              className="form-select"
-              value={pageSize}
-              onChange={onChangeInSelect}
-            >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <option key={pageSize} value={pageSize}>
-                  Show {pageSize}
-                </option>
-              ))}
-            </select>
-          </Col>
-        )}        
-      </Row> */}
-
 			<div className={divClass}>
-				<Table hover {...getTableProps()} className={tableClass}>
+				<Table
+					hover={hover}
+					{...getTableProps()}
+					className={`${tableClass} fs-7`}
+				>
 					<thead className={theadClass}>
+						{tableTitle && (
+							<tr className="bg-light">
+								<th colSpan={columns.length}>{tableTitle}</th>
+							</tr>
+						)}
 						{headerGroups.map((headerGroup) => (
 							<tr
 								className={trClass}
@@ -135,6 +120,15 @@ const TableContainer = ({
 												}
 											)}
 										</tr>
+										{row.isExpanded &&
+										renderRowSubComponent ? (
+											<tr className="bg-light">
+												<td colSpan={row.cells.length}>
+													{console.log(row)}
+													{renderRowSubComponent(row)}
+												</td>
+											</tr>
+										) : null}
 									</Fragment>
 								);
 							})
