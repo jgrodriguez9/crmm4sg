@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-	AccordionBody,
-	AccordionHeader,
-	AccordionItem,
 	Alert,
 	Card,
 	CardBody,
@@ -16,11 +13,9 @@ import {
 	Row,
 	TabContent,
 	TabPane,
-	UncontrolledAccordion,
 } from 'reactstrap';
 import BreadCrumb from '../../../../Components/Common/BreadCrumb';
 import classNames from 'classnames';
-import LeadInformation from '../../../../Components/Operation/Lead/Tab/LeadInformation';
 import NotasCliente from '../../../../Components/Operation/Lead/Tab/NotasCliente';
 import SMSClient from '../../../../Components/Operation/Lead/Tab/SMSClient';
 import WhatsappClient from '../../../../Components/Operation/Lead/Tab/WhatsappClient';
@@ -29,7 +24,6 @@ import { useQuery } from 'react-query';
 import { fecthItem } from '../Util/services';
 import Loader from '../../../../Components/Common/Loader';
 import showFriendlyMessafe from '../../../../util/showFriendlyMessafe';
-import ReservationClient from '../../../../Components/Operation/Lead/Tab/ReservationClient';
 import { clickToCall } from '../../../../helpers/customer';
 import { ERROR_SERVER } from '../../../../Components/constants/messages';
 import extractMeaningfulMessage from '../../../../util/extractMeaningfulMessage';
@@ -38,6 +32,7 @@ import { addMessage } from '../../../../slices/messages/reducer';
 import { toast } from 'react-toastify';
 import ClickToCallAlert from '../../../../Components/Operation/Lead/ClickToCall/ClickToCallAlert';
 import { useEffect } from 'react';
+import OriginClient from '../../../../Components/Operation/Lead/Tab/OriginClient';
 
 const LeadProfile = () => {
 	document.title = 'Detalle del Lead | CRM - M4S';
@@ -257,6 +252,8 @@ const LeadProfile = () => {
 					],
 				},
 				{
+					tableClass:
+						'table table-sm align-middle pb-3 fs-7 table-borderless w-100',
 					header: { title: 'Atribución de creación de este cliente' },
 					body: [
 						{
@@ -282,7 +279,6 @@ const LeadProfile = () => {
 					],
 				},
 			];
-			console.log(parseInfoLeft);
 			setDataLeft(parseInfoLeft);
 		}
 	}, [itemData?.data, errorItem]);
@@ -538,7 +534,7 @@ const LeadProfile = () => {
 											</TabPane>
 											<TabPane tabId="6">
 												{activeTab === '6' && (
-													<ReservationClient
+													<OriginClient
 														customerId={
 															itemData.data?.id
 														}

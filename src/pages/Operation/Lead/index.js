@@ -92,7 +92,6 @@ const Lead = () => {
 				accessor: 'nombre',
 				filterable: false,
 				style: {
-					cursor: 'pointer',
 					width: '18%',
 				},
 				Cell: (contact) => (
@@ -108,9 +107,14 @@ const Lead = () => {
 								</div>
 							</div>
 							<div className="flex-grow-1 ms-2 name">
-								{`${contact.row.original.firstName} ${
-									contact.row.original.lastName ?? ''
-								}`}
+								<Link
+									to={`/client/${contact.row.original.id}`}
+									className="link-primary link-offset-2 text-decoration-underline link-underline-opacity-25 link-underline-opacity-100-hover"
+								>
+									{`${contact.row.original.firstName} ${
+										contact.row.original.lastName ?? ''
+									}`}
+								</Link>
 							</div>
 						</div>
 					</>
@@ -121,7 +125,6 @@ const Lead = () => {
 				accessor: 'booking',
 				filterable: false,
 				style: {
-					cursor: 'pointer',
 					width: '10%',
 				},
 			},
@@ -130,7 +133,6 @@ const Lead = () => {
 				accessor: 'callcenter.name',
 				filterable: false,
 				style: {
-					cursor: 'pointer',
 					width: '14%',
 				},
 			},
@@ -139,7 +141,6 @@ const Lead = () => {
 				accessor: 'campana',
 				filterable: false,
 				style: {
-					cursor: 'pointer',
 					width: '14%',
 				},
 			},
@@ -148,7 +149,6 @@ const Lead = () => {
 				accessor: 'age',
 				filterable: false,
 				style: {
-					cursor: 'pointer',
 					width: '10%',
 				},
 			},
@@ -157,7 +157,6 @@ const Lead = () => {
 				accessor: 'country',
 				filterable: false,
 				style: {
-					cursor: 'pointer',
 					width: '9%',
 				},
 			},
@@ -166,7 +165,6 @@ const Lead = () => {
 				accessor: 'userName',
 				filterable: false,
 				style: {
-					cursor: 'pointer',
 					width: '9%',
 				},
 			},
@@ -175,7 +173,6 @@ const Lead = () => {
 				accessor: 'status',
 				filterable: false,
 				style: {
-					cursor: 'pointer',
 					width: '10%',
 				},
 			},
@@ -319,7 +316,6 @@ const Lead = () => {
 													divClass="table-responsive mb-3"
 													tableClass="align-middle table-nowrap"
 													theadClass=""
-													onSelectRow={gotToPage}
 												/>
 												<PaginationManual
 													query={query}

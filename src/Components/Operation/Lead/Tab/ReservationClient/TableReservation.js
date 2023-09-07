@@ -14,7 +14,6 @@ import diffDates from '../../../../../util/diffDates';
 import { Alert, Col, Container, Row } from 'reactstrap';
 import showFriendlyMessafe from '../../../../../util/showFriendlyMessafe';
 import BannerInformation from '../../../../Common/BannerInformation';
-import ViewReservationInformation from '../../../Reservation/ViewReservationInformation';
 import parseObjectToQueryUrl from '../../../../../util/parseObjectToQueryUrl';
 import PaginationManual from '../../../../Common/PaginationManual';
 import { addMessage } from '../../../../../slices/messages/reducer';
@@ -22,7 +21,7 @@ import { useDispatch } from 'react-redux';
 import TabsReservation from '../../../Reservation/TabsReservation';
 
 const TableReservation = ({
-	customerId,
+	booking,
 	tableClass = 'align-middle table-nowrap',
 	divClass = 'table-responsive table-card mb-3',
 	className = 'custom-header-css',
@@ -33,7 +32,7 @@ const TableReservation = ({
 	const [query, setQuery] = useState({
 		max: 10,
 		page: 1,
-		customerId: customerId,
+		booking: booking,
 	});
 	const [queryFilter, setQueryFilter] = useState(
 		parseObjectToQueryUrl(query)
@@ -67,56 +66,62 @@ const TableReservation = ({
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'ID. Reservación',
+				Header: 'Id',
 				accessor: 'id',
 				filterable: false,
-				style: {
-					width: '10%',
-				},
+				width: '10%',
 			},
 			{
 				Header: 'Confirmación',
 				accessor: 'confirm',
 				filterable: false,
-				style: {
-					width: '10%',
-				},
-			},
-			{
-				Header: 'Booking',
-				accessor: 'booking',
-				filterable: false,
-				style: {
-					width: '10%',
-				},
+				width: '10%',
 			},
 			{
 				Header: 'Hotel',
 				accessor: 'hotel.name',
 				filterable: false,
-				style: {
-					width: '35%',
-				},
+				width: '20%',
 			},
 			{
-				Header: 'Fecha llegada',
+				Header: 'Plan',
+				accessor: 'intPlan',
+				filterable: false,
+				width: '16%',
+			},
+			{
+				Header: 'LLegada',
 				accessor: 'initialDate',
 				filterable: false,
-				style: {
-					width: '15%',
-				},
+				width: '8%',
 				Cell: ({ value }) =>
 					moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'),
 			},
 			{
-				Header: 'Fecha salida',
+				Header: 'Salida',
 				accessor: 'finalDate',
 				filterable: false,
-				style: {
-					width: '15%',
-				},
+				width: '8%',
 				Cell: ({ value }) =>
 					moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'),
+			},
+			{
+				Header: 'Call center',
+				accessor: 'callcenter.name',
+				filterable: false,
+				width: '11%',
+			},
+			{
+				Header: 'Pax',
+				accessor: 'adult',
+				filterable: false,
+				width: '4%',
+			},
+			{
+				Header: 'Estatus',
+				accessor: 'status.name',
+				filterable: false,
+				width: '8%',
 			},
 			{
 				id: 'action',

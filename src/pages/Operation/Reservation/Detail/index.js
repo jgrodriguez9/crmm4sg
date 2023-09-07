@@ -1,29 +1,13 @@
-import {
-	Alert,
-	Card,
-	CardBody,
-	Col,
-	Container,
-	Nav,
-	NavItem,
-	NavLink,
-	Row,
-	TabContent,
-	TabPane,
-} from 'reactstrap';
+import { Alert, Col, Container, Row } from 'reactstrap';
 import BannerInformation from '../../../../Components/Common/BannerInformation';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import ViewReservationInformation from '../../../../Components/Operation/Reservation/ViewReservationInformation';
-import FormReservationInformation from '../../../../Components/Operation/Reservation/FormReservationInformation';
+import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { fecthReservationById } from '../Util/services';
 import Loader from '../../../../Components/Common/Loader';
 import showFriendlyMessafe from '../../../../util/showFriendlyMessafe';
 import diffDates from '../../../../util/diffDates';
 import moment from 'moment';
-import classNames from 'classnames';
 import TabsReservation from '../../../../Components/Operation/Reservation/TabsReservation';
 
 const ReservationDetail = () => {

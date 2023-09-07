@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Alert, Input } from 'reactstrap';
 import SimpleBar from 'simplebar-react';
 import { fecthItems } from '../../pages/Operation/Lead/Util/services';
@@ -20,7 +20,7 @@ const SearchOption = () => {
 		isLoading,
 	} = useQuery(
 		['getCustomerByPhone', value],
-		() => fecthItems(`max=10&page=1&movil=${value}`),
+		() => fecthItems(`max=10&page=1&booking=${value}`),
 		{
 			enabled: false,
 		}

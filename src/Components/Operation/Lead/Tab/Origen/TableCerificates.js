@@ -1,114 +1,150 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import TableContainer from '../../../../Common/TableContainer';
 import Loader from '../../../../Common/Loader';
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import GlobalCanvas from '../../../../Common/GlobalCanvas';
-import { useQuery } from 'react-query';
-import {
-	fecthReservation,
-	fecthReservationById,
-} from '../../../../../pages/Operation/Reservation/Util/services';
+
 import moment from 'moment';
-import diffDates from '../../../../../util/diffDates';
-import { Alert, Col, Container, Row } from 'reactstrap';
+import {
+	Alert,
+	DropdownItem,
+	DropdownMenu,
+	DropdownToggle,
+	UncontrolledDropdown,
+} from 'reactstrap';
 import showFriendlyMessafe from '../../../../../util/showFriendlyMessafe';
-import BannerInformation from '../../../../Common/BannerInformation';
-import ViewReservationInformation from '../../../Reservation/ViewReservationInformation';
-import parseObjectToQueryUrl from '../../../../../util/parseObjectToQueryUrl';
-import PaginationManual from '../../../../Common/PaginationManual';
-import { addMessage } from '../../../../../slices/messages/reducer';
-import { useDispatch } from 'react-redux';
-import TabsReservation from '../../../Reservation/TabsReservation';
 import TableReservation from '../ReservationClient/TableReservation';
+import jsFormatNumber from '../../../../../util/jsFormatNumber';
 
-const TableCerificates = ({ customerId, tableTitle = null }) => {
-	const dispatch = useDispatch();
-	const [query, setQuery] = useState({
-		max: 10,
-		page: 1,
-		customerId: customerId,
-	});
-	const [queryFilter, setQueryFilter] = useState(
-		parseObjectToQueryUrl(query)
-	);
-	// const {
-	// 	data: reservationData,
-	// 	error: errorReservationQuery,
-	// 	isLoading,
-	// 	isSuccess,
-	// } = useQuery(
-	// 	['getReservationPaginate', queryFilter],
-	// 	() => fecthReservation(queryFilter),
-	// 	{
-	// 		keepPreviousData: true,
-	// 	}
-	// );
-	// useEffect(() => {
-	// 	if (errorReservationQuery?.code) {
-	// 		dispatch(
-	// 			addMessage({
-	// 				message: showFriendlyMessafe(errorReservationQuery?.code),
-	// 				type: 'error',
-	// 			})
-	// 		);
-	// 	}
-	// }, [errorReservationQuery, dispatch]);
-
+const TableCerificates = ({
+	tableTitle = null,
+	itemData = [],
+	errorItem = null,
+	isFetchingItem = true,
+	isSuccess,
+}) => {
 	const columns = useMemo(
 		() => [
 			{
 				Header: 'Booking',
-				accessor: 'booking',
+				accessor: 'idBooking',
+				style: {
+					width: '10%',
+				},
 			},
 			{
 				Header: 'Paquete',
-				accessor: 'package',
+				accessor: 'campaign.name',
+				style: {
+					width: '26%',
+				},
 			},
 			{
 				Header: 'F. Venta',
-				accessor: 'dateSell',
+				accessor: 'saleDate',
+				Cell: ({ value }) =>
+					value
+						? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY')
+						: '',
+				style: {
+					width: '10%',
+				},
 			},
 			{
 				Header: 'Supervisor',
 				accessor: 'supervisor',
+				style: {
+					width: '10%',
+				},
 			},
 			{
 				Header: 'No. Pagos',
-				accessor: 'payments',
+				accessor: 'numberOfPayments',
+				style: {
+					width: '6%',
+				},
 			},
 			{
 				Header: 'Saldo',
-				accessor: 'saldo',
+				accessor: 'balance',
+				style: {
+					width: '8%',
+				},
+				Cell: ({ value }) => jsFormatNumber(value),
 			},
 			{
 				Header: 'Usuario',
 				accessor: 'user',
+				style: {
+					width: '10%',
+				},
 			},
 			{
 				Header: 'Estatus',
-				accessor: 'status',
-			},
-			{
-				Header: 'Email',
-				accessor: 'email',
+				accessor: 'reservationStatus.status',
+				style: {
+					width: '10%',
+				},
 			},
 			{
 				id: 'expander', // Make sure it has an ID
+				style: {
+					width: '10%',
+				},
 				Cell: ({ row }) => (
-					<div className="d-flex">
-						<div>
+					<div className="d-flex align-items-center">
+						<div className="me-1">
 							{row.isExpanded ? (
 								<i
-									className="bx bxs-chevron-up-circle text-primary fs-4 cursor-pointer"
+									className="mdi mdi-chevron-up-circle text-primary fs-4 cursor-pointer"
 									onClick={() => row.toggleRowExpanded()}
+									title="Ocultar Reservación"
 								/>
 							) : (
 								<i
-									className="bx bxs-chevron-down-circle text-primary fs-4 cursor-pointer"
+									className="mdi mdi-chevron-down-circle text-primary fs-4 cursor-pointer"
 									onClick={() => row.toggleRowExpanded()}
+									title="Ver Reservación"
 								/>
 							)}
+						</div>
+						<div className="me-1">
+							<i
+								className="mdi mdi-email-send fs-4 cursor-pointer text-success"
+								title="Envío carta de compra"
+							/>
+						</div>
+						<div className="me-1">
+							<i
+								className="mdi mdi-calendar-cursor fs-4 cursor-pointer text-info"
+								title="Accesso a modulo de Reservaciones"
+							/>
+						</div>
+						<div>
+							<UncontrolledDropdown>
+								<DropdownToggle
+									className="text-dark dropdown-btn p-0"
+									tag="a"
+									role="button"
+								>
+									<i className="mdi mdi-dots-horizontal fs-4 cursor-pointer" />
+								</DropdownToggle>
+								<DropdownMenu className="dropdown-menu-end">
+									<DropdownItem onClick={() => {}}>
+										Envío de promociones
+									</DropdownItem>
+									<DropdownItem onClick={() => {}}>
+										Survey
+									</DropdownItem>
+									<DropdownItem onClick={() => {}}>
+										Transferencia de booking a nuevo cliente
+									</DropdownItem>
+									<DropdownItem onClick={() => {}}>
+										Grabaciones
+									</DropdownItem>
+									<DropdownItem onClick={() => {}}>
+										Archivo digital
+									</DropdownItem>
+								</DropdownMenu>
+							</UncontrolledDropdown>
 						</div>
 					</div>
 				),
@@ -116,77 +152,41 @@ const TableCerificates = ({ customerId, tableTitle = null }) => {
 		],
 		[]
 	);
-	const data = [
-		{
-			booking: '140964292',
-			package: 'PKG 5/4 Laguna suite AU $599 USD',
-			dateSell: '06/06/2023',
-			supervisor: 'MACASHUMP',
-			payments: 5,
-			saldo: '$499.17',
-			user: 'FCRGRTU',
-			status: 'Procesable',
-			email: 'Pagos',
-		},
-		{
-			booking: '140964292',
-			package: 'PKG 5/4 Laguna suite AU $599 USD',
-			dateSell: '06/06/2023',
-			supervisor: 'MACASHUMP',
-			payments: 5,
-			saldo: '$499.17',
-			user: 'FCRGRTU',
-			status: 'Procesable',
-			email: 'Pagos',
-		},
-	];
 
 	return (
 		<div>
-			{/* {!isLoading ? (
+			{errorItem && !isFetchingItem && (
+				<Alert color="danger" className="mb-0">
+					{showFriendlyMessafe(errorItem?.code)}
+				</Alert>
+			)}
+			{!isFetchingItem ? (
 				<>
 					<TableContainer
 						columns={columns}
-						data={isSuccess ? reservationData.data.list : []}
+						data={isSuccess ? itemData.data.listCertificates : []}
 						className="custom-header-css"
-						divClass="table-responsive table-card mb-3"
-						tableClass="align-middle table-nowrap"
-						theadClass="table-light"
-					/>
-					<PaginationManual
-						query={query}
-						setQuery={setQuery}
-						setQueryFilter={setQueryFilter}
-						totalPages={
-							reservationData?.data?.pagination?.totalPages ?? 1
-						}
+						divClass="mb-3"
+						tableClass="align-middle table-wrap"
+						tableTitle={tableTitle}
+						hover={false}
+						renderRowSubComponent={(row) => (
+							<div className="shadow bg-white m-2">
+								<TableReservation
+									booking={row.original.idBooking}
+									tableClass={'m-0 align-middle table-wrap'}
+									divClass="table-responsive"
+									theadClass=""
+									className=""
+									hover={false}
+								/>
+							</div>
+						)}
 					/>
 				</>
 			) : (
 				<Loader />
-			)} */}
-
-			<TableContainer
-				columns={columns}
-				data={data}
-				className="custom-header-css"
-				divClass="table-responsive mb-3"
-				tableClass="align-middle table-nowrap"
-				tableTitle={tableTitle}
-				hover={false}
-				renderRowSubComponent={(row) => (
-					<div className="shadow bg-white m-2">
-						<TableReservation
-							customerId={customerId}
-							tableClass={'m-0'}
-							divClass="table-responsive"
-							theadClass=""
-							className=""
-							hover={false}
-						/>
-					</div>
-				)}
-			/>
+			)}
 		</div>
 	);
 };

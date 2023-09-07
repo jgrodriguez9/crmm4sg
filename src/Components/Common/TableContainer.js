@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, usePagination, useExpanded } from 'react-table';
 import { Table } from 'reactstrap';
@@ -124,7 +124,6 @@ const TableContainer = ({
 										renderRowSubComponent ? (
 											<tr className="bg-light bg-opacity-50">
 												<td colSpan={row.cells.length}>
-													{console.log(row)}
 													{renderRowSubComponent(row)}
 												</td>
 											</tr>

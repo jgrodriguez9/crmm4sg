@@ -28,14 +28,20 @@ const DashboardAgent = () => {
 				<Col xs={12} md={4}>
 					<div className="d-flex align-items-center justify-content-end">
 						<div className="flex-grow-1 me-2">
-							<DatePicker
-								id="rangeDate"
-								options={{
-									mode: 'range',
-								}}
-								onChangeDate={(e) => console.log(e)}
-								placeholder="Seleccionar rango de fecha"
-							/>
+							<div className="input-group">
+								<DatePicker
+									id="rangeDate"
+									className="form-control border-0 dash-filter-picker shadow-sm"
+									options={{
+										mode: 'range',
+									}}
+									onChangeDate={(e) => console.log(e)}
+									placeholder="Seleccionar rango de fecha"
+								/>
+								<div className="input-group-text bg-primary border-primary text-white">
+									<i className="ri-calendar-2-line"></i>
+								</div>
+							</div>
 						</div>
 						<div>
 							<Select
@@ -43,6 +49,7 @@ const DashboardAgent = () => {
 								onChange={(e) => {}}
 								options={options}
 								placeholder={SELECT_OPTION}
+								className="shadow-sm"
 							></Select>
 						</div>
 					</div>

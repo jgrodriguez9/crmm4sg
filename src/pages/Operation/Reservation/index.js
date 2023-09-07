@@ -271,36 +271,32 @@ const Reservation = () => {
 				Header: 'Id',
 				accessor: 'id',
 				filterable: false,
-				style: {
-					cursor: 'pointer',
-				},
 				width: '7%',
+				Cell: ({ value }) => (
+					<Link
+						to={`/reservation/${value}`}
+						className="link-primary link-offset-2 text-decoration-underline link-underline-opacity-25 link-underline-opacity-100-hover"
+					>
+						{value}
+					</Link>
+				),
 			},
 			{
 				Header: 'Confirmación',
 				accessor: 'confirm',
 				filterable: false,
-				style: {
-					cursor: 'pointer',
-				},
 				width: '8%',
 			},
 			{
 				Header: 'Booking',
 				accessor: 'booking',
 				filterable: false,
-				style: {
-					cursor: 'pointer',
-				},
 				width: '7%',
 			},
 			{
 				Header: 'Nombre',
 				accessor: 'customer.firstName',
 				filterable: false,
-				style: {
-					cursor: 'pointer',
-				},
 				width: '12%',
 				Cell: ({ row, value }) =>
 					`${value.toUpperCase()} ${row.original.customer.lastName.toUpperCase()}`,
@@ -309,27 +305,18 @@ const Reservation = () => {
 				Header: 'Hotel',
 				accessor: 'hotel.name',
 				filterable: false,
-				style: {
-					cursor: 'pointer',
-				},
 				width: '13%',
 			},
 			{
 				Header: 'Plan',
 				accessor: 'intPlan',
 				filterable: false,
-				style: {
-					cursor: 'pointer',
-				},
 				width: '13%',
 			},
 			{
 				Header: 'LLegada',
 				accessor: 'initialDate',
 				filterable: false,
-				style: {
-					cursor: 'pointer',
-				},
 				width: '8%',
 				Cell: ({ value }) =>
 					moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'),
@@ -338,9 +325,6 @@ const Reservation = () => {
 				Header: 'Salida',
 				accessor: 'finalDate',
 				filterable: false,
-				style: {
-					cursor: 'pointer',
-				},
 				width: '8%',
 				Cell: ({ value }) =>
 					moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'),
@@ -349,34 +333,22 @@ const Reservation = () => {
 				Header: 'Call center',
 				accessor: 'callcenter.name',
 				filterable: false,
-				style: {
-					cursor: 'pointer',
-				},
 				width: '9%',
 			},
 			{
 				Header: 'Pax',
 				accessor: 'adult',
 				filterable: false,
-				style: {
-					cursor: 'pointer',
-				},
 				width: '4%',
 			},
 			{
 				Header: 'Estatus',
 				accessor: 'status.name',
 				filterable: false,
-				style: {
-					cursor: 'pointer',
-				},
 				width: '7%',
 			},
 			{
 				id: 'action',
-				style: {
-					cursor: 'pointer',
-				},
 				width: '4%',
 				Cell: (cellProps) => {
 					return (
@@ -407,10 +379,6 @@ const Reservation = () => {
 		],
 		[]
 	);
-
-	const gotToPage = (row) => {
-		navigate(`/reservation/${row.id}`);
-	};
 
 	useEffect(() => {
 		if (errorReservationQuery?.code) {
@@ -472,7 +440,6 @@ const Reservation = () => {
 													className="custom-header-css"
 													divClass="table-responsive mb-3"
 													tableClass="align-middle"
-													onSelectRow={gotToPage}
 												/>
 												<PaginationManual
 													query={query}

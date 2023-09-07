@@ -1,4 +1,8 @@
-import { getCustomer, getCustomerPaginate } from '../../../../helpers/customer';
+import {
+	getCustomer,
+	getCustomerPaginate,
+	getOriginsByCustomer,
+} from '../../../../helpers/customer';
 
 //get client promise
 const fecthItem = async (id) => {
@@ -12,4 +16,10 @@ const fecthItems = async (q) => {
 	return response;
 };
 
-export { fecthItem, fecthItems };
+//get origin de clients
+const fecthOriginClients = async (id) => {
+	const response = await getOriginsByCustomer(id);
+	return response;
+};
+
+export { fecthItem, fecthItems, fecthOriginClients };

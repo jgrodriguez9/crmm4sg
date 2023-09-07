@@ -13,6 +13,9 @@ import {
 } from 'reactstrap';
 import FormReservationInformation from './FormReservationInformation';
 import ViewReservationInformation from './ViewReservationInformation';
+import ReservationPaxes from './ReservationPaxes';
+import ReservationService from './ReservationService';
+import ReservationPayment from './ReservationPayment';
 
 const TabsReservation = ({ itemData }) => {
 	const [activeTab, setActiveTab] = useState('1');
@@ -84,7 +87,7 @@ const TabsReservation = ({ itemData }) => {
 							}}
 							type="button"
 						>
-							<h6 className="text-primary">Notas</h6>
+							<h6 className="text-primary">Transportación</h6>
 						</NavLink>
 					</NavItem>
 					<NavItem>
@@ -95,20 +98,6 @@ const TabsReservation = ({ itemData }) => {
 							})}
 							onClick={() => {
 								tabChange('5');
-							}}
-							type="button"
-						>
-							<h6 className="text-primary">Transportación</h6>
-						</NavLink>
-					</NavItem>
-					<NavItem>
-						<NavLink
-							to="#"
-							className={classNames({
-								active: activeTab === '6',
-							})}
-							onClick={() => {
-								tabChange('6');
 							}}
 							type="button"
 						>
@@ -134,6 +123,28 @@ const TabsReservation = ({ itemData }) => {
 											data={itemData.data}
 										/>
 									))}
+							</TabPane>
+							<TabPane tabId="2">
+								{activeTab === '2' && (
+									<ReservationPayment
+										ReservationId={itemData.data.id}
+									/>
+								)}
+							</TabPane>
+							<TabPane tabId="3">
+								{activeTab === '3' && (
+									<ReservationPaxes
+										ReservationId={itemData.data.id}
+									/>
+								)}
+							</TabPane>
+							<TabPane tabId="4">Transportación</TabPane>
+							<TabPane tabId="5">
+								{activeTab === '5' && (
+									<ReservationService
+										ReservationId={itemData.data.id}
+									/>
+								)}
 							</TabPane>
 						</TabContent>
 					</Col>

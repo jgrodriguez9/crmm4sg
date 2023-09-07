@@ -1,6 +1,9 @@
 import {
+	getPaxesByReservation,
+	getPaymentsByReservation,
 	getReservation,
 	getReservationPaginate,
+	getServicesByReservation,
 } from '../../../../helpers/reservation';
 
 //query filter
@@ -14,4 +17,23 @@ const fecthReservationById = async (id) => {
 	return response;
 };
 
-export { fecthReservation, fecthReservationById };
+const fecthPaxesByReservation = async (id) => {
+	const response = await getPaxesByReservation(id);
+	return response;
+};
+
+const fecthServicesByReservation = async (id) => {
+	const response = await getServicesByReservation(id);
+	return response;
+};
+const fecthPaymentByReservation = async (id) => {
+	const response = await getPaymentsByReservation(id);
+	return response;
+};
+export {
+	fecthReservation,
+	fecthReservationById,
+	fecthPaxesByReservation,
+	fecthServicesByReservation,
+	fecthPaymentByReservation,
+};

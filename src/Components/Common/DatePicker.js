@@ -8,12 +8,13 @@ const DatePicker = ({
 	dateFormat = 'd/m/Y',
 	options,
 	placeholder = '',
+	className = 'form-control',
 }) => {
 	return (
 		<Flatpickr
 			name={name}
 			id="datepicker-publish-input"
-			className="form-control"
+			className={className}
 			placeholder={placeholder}
 			options={{
 				...options,
