@@ -3,15 +3,18 @@ import {
 	fecthPaxesByReservation,
 	fecthPaymentByReservation,
 } from '../../../pages/Operation/Reservation/Util/services';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import jsFormatNumber from '../../../util/jsFormatNumber';
 import moment from 'moment';
 import { Alert, Col, Row } from 'reactstrap';
 import showFriendlyMessafe from '../../../util/showFriendlyMessafe';
 import TableContainer from '../../Common/TableContainer';
 import Loader from '../../Common/Loader';
+import BasicModal from '../../Common/BasicModal';
+import FormPaymentClient from './Tab/Payment/FormPaymentClient';
 
 const ReservationPayment = ({ ReservationId }) => {
+	const [showModal, setShowModal] = useState(false);
 	const { data, error, isLoading, isSuccess } = useQuery(
 		['getPaymentByReservation', ReservationId],
 		() => fecthPaymentByReservation(ReservationId),
@@ -110,6 +113,17 @@ const ReservationPayment = ({ ReservationId }) => {
 			)}
 			<Row>
 				<Col xxl={12}>
+					<div className="d-flex align-items-center justify-content-end flex-wrap gap-2 mb-2">
+						<button
+							className="btn btn-info btn-sm"
+							onClick={() => setShowModal(true)}
+						>
+							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
+							Nuevo pago
+						</button>
+					</div>
+				</Col>
+				<Col xxl={12}>
 					<div>
 						{!isLoading ? (
 							<>
@@ -126,6 +140,13 @@ const ReservationPayment = ({ ReservationId }) => {
 						)}
 					</div>
 				</Col>
+				<BasicModal
+					open={showModal}
+					setOpen={setShowModal}
+					title="Agregar pago"
+					size="md"
+					children={<FormPaymentClient />}
+				/>
 			</Row>
 		</>
 	);
