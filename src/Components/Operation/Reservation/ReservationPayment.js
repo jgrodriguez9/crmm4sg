@@ -100,6 +100,8 @@ const ReservationPayment = ({ ReservationId }) => {
 		[]
 	);
 
+	const toggleDialog = () => setShowModal(!showModal);
+
 	return (
 		<>
 			{error && !isLoading && (
@@ -116,7 +118,7 @@ const ReservationPayment = ({ ReservationId }) => {
 					<div className="d-flex align-items-center justify-content-end flex-wrap gap-2 mb-2">
 						<button
 							className="btn btn-info btn-sm"
-							onClick={() => setShowModal(true)}
+							onClick={toggleDialog}
 						>
 							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
 							Nuevo pago
@@ -145,7 +147,7 @@ const ReservationPayment = ({ ReservationId }) => {
 					setOpen={setShowModal}
 					title="Agregar pago"
 					size="md"
-					children={<FormPaymentClient />}
+					children={<FormPaymentClient toggleDialog={toggleDialog} />}
 				/>
 			</Row>
 		</>

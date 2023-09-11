@@ -1,15 +1,34 @@
 import moment from 'moment';
-import { Button, Card, CardBody, Col, Label, Row } from 'reactstrap';
+import { Col, Label, Row } from 'reactstrap';
 import diffDates from '../../../util/diffDates';
 import Flatpickr from 'react-flatpickr';
+import { useState } from 'react';
+import BasicModal from '../../Common/BasicModal';
+import FormReservationEdit from './Tab/Reservation/FormReservationEdit';
 
 const ViewReservationInformation = ({
 	editMode = false,
 	setEditMode = () => {},
 	data,
 }) => {
+	const [showModal, setShowModal] = useState(false);
+
+	const toggleDialog = () => setShowModal(!showModal);
 	return (
 		<>
+			<Row>
+				<Col xxl={12}>
+					<div className="d-flex align-items-center justify-content-end flex-wrap gap-2 mb-2">
+						<button
+							className="btn btn-info btn-sm"
+							onClick={() => setShowModal(true)}
+						>
+							<i className="ri-edit-fill me-1 align-bottom"></i>{' '}
+							Editar reservación
+						</button>
+					</div>
+				</Col>
+			</Row>
 			<Row className="fs-7">
 				<Col xs="12" md="6">
 					<Row>
@@ -371,18 +390,14 @@ const ViewReservationInformation = ({
 					</div>
 				</Col>
 			</Row>
-			{/* <hr />
-					{!editMode && (
-						<div className="d-flex mt-3">
-							<Button
-								type="button"
-								color="primary"
-								onClick={() => setEditMode(true)}
-							>
-								Editar
-							</Button>
-						</div>
-					)} */}
+			<BasicModal
+				open={showModal}
+				setOpen={setShowModal}
+				title="Editar reservación"
+				size="xl"
+				classBody="py-1 px-3"
+				children={<FormReservationEdit toggleDialog={toggleDialog} />}
+			/>
 		</>
 	);
 };

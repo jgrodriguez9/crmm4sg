@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Card, CardBody, Col, Container, Row } from 'reactstrap';
-import BreadCrumb from '../../../Components/Common/BreadCrumb';
+import { Button, Card, CardBody, Col, Container, Row } from 'reactstrap';
 import ReservationFilter from '../../../Components/Operation/Reservation/ReservationFilter';
 import TableContainer from '../../../Components/Common/TableContainer';
 import Loader from '../../../Components/Common/Loader';
 import { useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import DetailCanvas from '../../../Components/Common/DetailCanvas';
 import { useQuery } from 'react-query';
 import { useDispatch } from 'react-redux';
@@ -16,6 +15,9 @@ import PaginationManual from '../../../Components/Common/PaginationManual';
 import parseObjectToQueryUrl from '../../../util/parseObjectToQueryUrl';
 import { fecthReservation, fecthReservationById } from './Util/services';
 import diffDates from '../../../util/diffDates';
+import BasicModal from '../../../Components/Common/BasicModal';
+import FormReservationInformation from '../../../Components/Operation/Reservation/FormReservationInformation';
+import CardHeaderGlobal from '../../../Components/Common/CardHeaderGlobal';
 
 const initFilter = {
 	//reserva
@@ -52,7 +54,7 @@ const Reservation = () => {
 	document.title = 'Reservación | CRM - M4SG';
 	const dispatch = useDispatch();
 	const [idItem, setIdItem] = useState(null);
-	const navigate = useNavigate();
+	const [showModal, setShowModal] = useState(false);
 	const [query, setQuery] = useState({
 		max: 10,
 		page: 1,
@@ -405,11 +407,14 @@ const Reservation = () => {
 		setQuery(copyQuery);
 		setDataSelect(initFilterModel);
 	};
+	const toggleDialog = () => {
+		setShowModal(!showModal);
+	};
 	return (
 		<>
 			<div className="page-content">
 				<Container fluid>
-					<div className="mb-2">
+					{/* <div className="mb-2">
 						<BreadCrumb
 							title="Reservaciones"
 							pageTitle="Inicio"
@@ -420,12 +425,39 @@ const Reservation = () => {
 								cleanFilter: onCleanFilter,
 							}}
 						/>
-					</div>
+					</div> */}
 
 					<Row>
 						<Col xxl={12}>
 							<Card className="shadow">
+								<CardHeaderGlobal
+									title={'Reservaciones'}
+									add={{
+										action: toggleDialog,
+										title: 'Crear reservación',
+									}}
+								/>
 								<CardBody className="pt-0">
+									<div className="py-3 d-flex justify-content-end border border-dashed border-end-0 border-start-0">
+										<div>
+											<button
+												className="btn btn-info me-1"
+												onClick={toggleFilter}
+											>
+												<i className="ri-equalizer-fill me-1 align-bottom"></i>{' '}
+												Filtros
+											</button>
+											<Button
+												color="danger"
+												outline
+												type="button"
+												className="fw-500"
+												onClick={onCleanFilter}
+											>
+												Limpiar filtros
+											</Button>
+										</div>
+									</div>
 									<div>
 										{!isLoading ? (
 											<>
@@ -482,6 +514,16 @@ const Reservation = () => {
 				data={info}
 				error={errrorItem}
 				isLoading={isFetchingItem}
+			/>
+			<BasicModal
+				open={showModal}
+				setOpen={setShowModal}
+				title="Agregar reservación"
+				size="xl"
+				classBody="py-1 px-3"
+				children={
+					<FormReservationInformation toggleDialog={toggleDialog} />
+				}
 			/>
 		</>
 	);

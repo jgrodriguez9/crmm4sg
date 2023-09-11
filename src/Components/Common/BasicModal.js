@@ -6,6 +6,7 @@ export default function BasicModal({
 	title,
 	children = null,
 	size = 'sm',
+	classBody = 'py-2 px-5',
 }) {
 	const onCloseClick = () => {
 		setOpen(false);
@@ -25,7 +26,7 @@ export default function BasicModal({
 				<h5 className="modal-title">{title}</h5>
 			</ModalHeader>
 			<hr />
-			<ModalBody className="py-2 px-5">{children}</ModalBody>
+			<ModalBody className={classBody}>{children}</ModalBody>
 		</Modal>
 	);
 }

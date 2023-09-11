@@ -6,8 +6,12 @@ import { fecthPaxesByReservation } from '../../../pages/Operation/Reservation/Ut
 import TableContainer from '../../Common/TableContainer';
 import Loader from '../../Common/Loader';
 import showFriendlyMessafe from '../../../util/showFriendlyMessafe';
+import { useState } from 'react';
+import BasicModal from '../../Common/BasicModal';
+import FormPaxes from './Tab/Paxes/FormPaxes';
 
 const ReservationPaxes = ({ ReservationId }) => {
+	const [showModal, setShowModal] = useState(false);
 	const { data, error, isLoading, isSuccess } = useQuery(
 		['getPaxesByReservation', ReservationId],
 		() => fecthPaxesByReservation(ReservationId),
@@ -52,6 +56,8 @@ const ReservationPaxes = ({ ReservationId }) => {
 		[]
 	);
 
+	const toggleDialog = () => setShowModal(!showModal);
+
 	return (
 		<>
 			{error && !isLoading && (
@@ -64,6 +70,17 @@ const ReservationPaxes = ({ ReservationId }) => {
 				</Row>
 			)}
 			<Row>
+				<Col xxl={12}>
+					<div className="d-flex align-items-center justify-content-end flex-wrap gap-2 mb-2">
+						<button
+							className="btn btn-info btn-sm"
+							onClick={toggleDialog}
+						>
+							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
+							Nuevo acompañante
+						</button>
+					</div>
+				</Col>
 				<Col xxl={12}>
 					<div>
 						{!isLoading ? (
@@ -82,6 +99,13 @@ const ReservationPaxes = ({ ReservationId }) => {
 					</div>
 				</Col>
 			</Row>
+			<BasicModal
+				open={showModal}
+				setOpen={setShowModal}
+				title="Agregar Acompañante"
+				size="md"
+				children={<FormPaxes toggleDialog={toggleDialog} />}
+			/>
 		</>
 	);
 };

@@ -1,7 +1,7 @@
 import { Button, Col, Form, Input, Label, Row } from 'reactstrap';
 import InputMask from 'react-input-mask';
 
-const FormPaymentClient = () => {
+const FormPaymentClient = ({ toggleDialog }) => {
 	return (
 		<Form>
 			<Row>
@@ -97,6 +97,7 @@ const FormPaymentClient = () => {
 					</div>
 				</Col>
 			</Row>
+
 			<div className="d-flex mt-3">
 				<Button type="submit" color="primary" className="me-2">
 					Pagar
@@ -105,7 +106,7 @@ const FormPaymentClient = () => {
 					type="button"
 					color="danger"
 					className="btn-soft-danger"
-					onClick={() => {}}
+					onClick={toggleDialog ? toggleDialog : () => {}}
 				>
 					Cancelar
 				</Button>

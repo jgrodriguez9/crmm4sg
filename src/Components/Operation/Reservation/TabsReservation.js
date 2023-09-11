@@ -11,7 +11,6 @@ import {
 	TabContent,
 	TabPane,
 } from 'reactstrap';
-import FormReservationInformation from './FormReservationInformation';
 import ViewReservationInformation from './ViewReservationInformation';
 import ReservationPaxes from './ReservationPaxes';
 import ReservationService from './ReservationService';
@@ -110,19 +109,13 @@ const TabsReservation = ({ itemData }) => {
 					<Col>
 						<TabContent activeTab={activeTab}>
 							<TabPane tabId="1">
-								{activeTab === '1' &&
-									(editMode ? (
-										<FormReservationInformation
-											editMode={editMode}
-											setEditMode={setEditMode}
-										/>
-									) : (
-										<ViewReservationInformation
-											editMode={editMode}
-											setEditMode={setEditMode}
-											data={itemData.data}
-										/>
-									))}
+								{activeTab === '1' && (
+									<ViewReservationInformation
+										editMode={editMode}
+										setEditMode={setEditMode}
+										data={itemData.data}
+									/>
+								)}
 							</TabPane>
 							<TabPane tabId="2">
 								{activeTab === '2' && (

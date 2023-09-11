@@ -1,19 +1,15 @@
-import { Button, Col, Form, Input, Label, Row, Table } from 'reactstrap';
+import { Button, Col, Form, Input, Label, Row } from 'reactstrap';
 import Select from 'react-select';
-import DatePicker from '../../Common/DatePicker';
 import { Country, State, City } from 'country-state-city';
 import { useMemo, useState } from 'react';
-import { SELECT_OPTION } from '../../constants/messages';
 import PhoneInput from 'react-phone-input-2';
 import es from 'react-phone-input-2/lang/es.json';
 import 'react-phone-input-2/lib/style.css';
-import { incomeOpt, maritalStatusOpt } from '../../constants/utils';
+import { SELECT_OPTION } from '../../../../constants/messages';
+import { incomeOpt, maritalStatusOpt } from '../../../../constants/utils';
+import DatePicker from '../../../../Common/DatePicker';
 
-const FormReservationInformation = ({
-	editMode,
-	setEditMode,
-	toggleDialog,
-}) => {
+const FormReservationEdit = ({ toggleDialog }) => {
 	const [countryDefault, setCountryDefault] = useState(null);
 	const [statesDefault, setStatesDefault] = useState(null);
 	const [citiesDefault, setCitiesDefault] = useState(null);
@@ -460,63 +456,6 @@ const FormReservationInformation = ({
 				</Col>
 			</Row>
 
-			<h5 className="text-primary">Acompañantes</h5>
-			<hr />
-			<Table className="w-100 fs-7 table-sm align-middle">
-				<thead>
-					<tr>
-						<th style={{ width: '13%' }}>Nombre</th>
-						<th style={{ width: '22%' }}>Apellidos</th>
-						<th style={{ width: '14%' }}>Fecha nacimiento</th>
-						<th style={{ width: '10%' }}>Edad</th>
-						<th style={{ width: '18%' }}>Ocupación</th>
-						<th style={{ width: '18%' }}>Relación</th>
-						<th style={{ width: '5%' }}></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<Input type="text" className="form-control" />
-						</td>
-						<td>
-							<Input type="text" className="form-control" />
-						</td>
-						<td>
-							<DatePicker
-								id="fechaLlegada"
-								date=""
-								onChangeDate={(date) => console.log(date)}
-							/>
-						</td>
-						<td>
-							<Input type="text" className="form-control" />
-						</td>
-						<td>
-							<Select
-								value={null}
-								onChange={(value) => {}}
-								options={[]}
-								classNamePrefix="select2-selection"
-								placeholder={SELECT_OPTION}
-							/>
-						</td>
-						<td>
-							<Select
-								value={null}
-								onChange={(value) => {}}
-								options={[]}
-								classNamePrefix="select2-selection"
-								placeholder={SELECT_OPTION}
-							/>
-						</td>
-						<td className="text-center">
-							<i className="text-danger mdi mdi-close-circle fs-5" />
-						</td>
-					</tr>
-				</tbody>
-			</Table>
-
 			<div className="d-flex my-3">
 				<Button type="submit" color="primary" className="me-2">
 					Aceptar
@@ -534,4 +473,4 @@ const FormReservationInformation = ({
 	);
 };
 
-export default FormReservationInformation;
+export default FormReservationEdit;
