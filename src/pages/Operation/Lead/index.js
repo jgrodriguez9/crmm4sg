@@ -1,11 +1,10 @@
 import { Card, CardBody, Col, Container, Row } from 'reactstrap';
-import BreadCrumb from '../../../Components/Common/BreadCrumb';
 import CrmFilter from '../../../Components/Common/CrmFilter';
 import { useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import TableContainer from '../../../Components/Common/TableContainer';
 import Loader from '../../../Components/Common/Loader';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 
 //Import actions
@@ -22,6 +21,10 @@ import { ERROR_SERVER } from '../../../Components/constants/messages';
 import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
 import { toast } from 'react-toastify';
 import ClickToCallAlert from '../../../Components/Operation/Lead/ClickToCall/ClickToCallAlert';
+import CardHeaderGlobal from '../../../Components/Common/CardHeaderGlobal';
+import FilterCommandGlobal from '../../../Components/Common/FilterCommandGlobal';
+import BasicModal from '../../../Components/Common/BasicModal';
+import FormClient from '../../../Components/Operation/Lead/Tab/LeadInformation/FormClient';
 
 const initFilter = {
 	//id: '',
@@ -40,8 +43,8 @@ const initFilterModel = {
 const Lead = () => {
 	document.title = 'Cliente | CRM - M4SG';
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 	const [idItem, setIdItem] = useState(null);
+	const [showModal, setShowModal] = useState(false);
 	const [query, setQuery] = useState({
 		max: 10,
 		page: 1,
@@ -211,10 +214,6 @@ const Lead = () => {
 		[]
 	);
 
-	const gotToPage = (row) => {
-		navigate(`/client/1`);
-	};
-
 	const buscar = () => {
 		setFilterDialog(false);
 		const copyQuery = { ...query, page: 1 };
@@ -278,29 +277,33 @@ const Lead = () => {
 				itemData.data,
 				onHandleClickToCall
 			);
-			console.log(data);
 			setInfo(data);
 		}
 	}, [itemData, isFetchingItem]);
+
+	const toggleDialog = () => {
+		setShowModal(!showModal);
+	};
 
 	return (
 		<>
 			<div className="page-content">
 				<Container fluid>
-					<BreadCrumb
-						title="Cliente"
-						pageTitle="Inicio"
-						urlPageTitle="/dashboard"
-						filter={{
-							allow: true,
-							action: toggleFilter,
-							cleanFilter: onCleanFilter,
-						}}
-					/>
 					<Row>
 						<Col xxl={12}>
 							<Card className="shadow">
+								<CardHeaderGlobal
+									title={'Cliente'}
+									add={{
+										action: toggleDialog,
+										title: 'Crear cliente',
+									}}
+								/>
 								<CardBody className="pt-0">
+									<FilterCommandGlobal
+										toggleFilter={toggleFilter}
+										onCleanFilter={onCleanFilter}
+									/>
 									<div>
 										{!isLoading ? (
 											<>
@@ -358,6 +361,14 @@ const Lead = () => {
 				data={info}
 				error={errrorItem}
 				isLoading={isFetchingItem}
+			/>
+			<BasicModal
+				open={showModal}
+				setOpen={setShowModal}
+				title="Agregar cliente"
+				size="xl"
+				classBody="py-1 px-3"
+				children={<FormClient toggleDialog={toggleDialog} />}
 			/>
 		</>
 	);

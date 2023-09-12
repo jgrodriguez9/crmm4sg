@@ -33,11 +33,14 @@ import { toast } from 'react-toastify';
 import ClickToCallAlert from '../../../../Components/Operation/Lead/ClickToCall/ClickToCallAlert';
 import { useEffect } from 'react';
 import OriginClient from '../../../../Components/Operation/Lead/Tab/OriginClient';
+import BasicModal from '../../../../Components/Common/BasicModal';
+import FormClient from '../../../../Components/Operation/Lead/Tab/LeadInformation/FormClient';
 
 const LeadProfile = () => {
 	document.title = 'Detalle del Lead | CRM - M4S';
 	const { id } = useParams();
 	const dispatch = useDispatch();
+	const [showModal, setShowModal] = useState(false);
 	const [activeTab, setActiveTab] = useState('6');
 	const [dataLeft, setDataLeft] = useState([]);
 	const tabChange = (tab) => {
@@ -283,6 +286,10 @@ const LeadProfile = () => {
 		}
 	}, [itemData?.data, errorItem]);
 
+	const toggleDialog = () => {
+		setShowModal(!showModal);
+	};
+
 	return (
 		<>
 			<div className="page-content">
@@ -321,6 +328,12 @@ const LeadProfile = () => {
 												<h5 className="card-title mb-0 text-primary">
 													{`${itemData?.data?.firstName} ${itemData?.data?.lastName}`}
 												</h5>
+											</div>
+											<div>
+												<i
+													className="ri-edit-fill cursor-pointer"
+													onClick={toggleDialog}
+												/>
 											</div>
 										</div>
 										<div className="table-card p-3">
@@ -549,6 +562,19 @@ const LeadProfile = () => {
 					)}
 				</Container>
 			</div>
+			<BasicModal
+				open={showModal}
+				setOpen={setShowModal}
+				title="Agregar cliente"
+				size="xl"
+				classBody="py-1 px-3"
+				children={
+					<FormClient
+						toggleDialog={toggleDialog}
+						textBtnSubmit="Editar"
+					/>
+				}
+			/>
 		</>
 	);
 };

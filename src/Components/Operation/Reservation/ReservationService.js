@@ -7,8 +7,12 @@ import { Alert, Col, Row } from 'reactstrap';
 import showFriendlyMessafe from '../../../util/showFriendlyMessafe';
 import TableContainer from '../../Common/TableContainer';
 import Loader from '../../Common/Loader';
+import { useState } from 'react';
+import BasicModal from '../../Common/BasicModal';
+import FormService from './Tab/Service/FormService';
 
 const ReservationService = ({ ReservationId }) => {
+	const [showModal, setShowModal] = useState(false);
 	const { data, error, isLoading, isSuccess } = useQuery(
 		['getServiceByReservation', ReservationId],
 		() => fecthServicesByReservation(ReservationId),
@@ -26,7 +30,7 @@ const ReservationService = ({ ReservationId }) => {
 				width: '29%',
 			},
 			{
-				Header: 'Pax',
+				Header: 'Adultos',
 				accessor: 'pax',
 				filterable: false,
 				width: '5%',
@@ -84,6 +88,8 @@ const ReservationService = ({ ReservationId }) => {
 		[]
 	);
 
+	const toggleDialog = () => setShowModal(!showModal);
+
 	return (
 		<>
 			{error && !isLoading && (
@@ -96,6 +102,17 @@ const ReservationService = ({ ReservationId }) => {
 				</Row>
 			)}
 			<Row>
+				<Col xxl={12}>
+					<div className="d-flex align-items-center justify-content-end flex-wrap gap-2 mb-2">
+						<button
+							className="btn btn-info btn-sm"
+							onClick={toggleDialog}
+						>
+							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
+							Nuevo servicio
+						</button>
+					</div>
+				</Col>
 				<Col xxl={12}>
 					<div>
 						{!isLoading ? (
@@ -114,6 +131,13 @@ const ReservationService = ({ ReservationId }) => {
 					</div>
 				</Col>
 			</Row>
+			<BasicModal
+				open={showModal}
+				setOpen={setShowModal}
+				title="Agregar Servicio"
+				size="md"
+				children={<FormService toggleDialog={toggleDialog} />}
+			/>
 		</>
 	);
 };

@@ -18,6 +18,7 @@ import diffDates from '../../../util/diffDates';
 import BasicModal from '../../../Components/Common/BasicModal';
 import FormReservationInformation from '../../../Components/Operation/Reservation/FormReservationInformation';
 import CardHeaderGlobal from '../../../Components/Common/CardHeaderGlobal';
+import FilterCommandGlobal from '../../../Components/Common/FilterCommandGlobal';
 
 const initFilter = {
 	//reserva
@@ -414,19 +415,6 @@ const Reservation = () => {
 		<>
 			<div className="page-content">
 				<Container fluid>
-					{/* <div className="mb-2">
-						<BreadCrumb
-							title="Reservaciones"
-							pageTitle="Inicio"
-							urlPageTitle="/dashboard"
-							filter={{
-								allow: true,
-								action: toggleFilter,
-								cleanFilter: onCleanFilter,
-							}}
-						/>
-					</div> */}
-
 					<Row>
 						<Col xxl={12}>
 							<Card className="shadow">
@@ -438,26 +426,10 @@ const Reservation = () => {
 									}}
 								/>
 								<CardBody className="pt-0">
-									<div className="py-3 d-flex justify-content-end border border-dashed border-end-0 border-start-0">
-										<div>
-											<button
-												className="btn btn-info me-1"
-												onClick={toggleFilter}
-											>
-												<i className="ri-equalizer-fill me-1 align-bottom"></i>{' '}
-												Filtros
-											</button>
-											<Button
-												color="danger"
-												outline
-												type="button"
-												className="fw-500"
-												onClick={onCleanFilter}
-											>
-												Limpiar filtros
-											</Button>
-										</div>
-									</div>
+									<FilterCommandGlobal
+										toggleFilter={toggleFilter}
+										onCleanFilter={onCleanFilter}
+									/>
 									<div>
 										{!isLoading ? (
 											<>

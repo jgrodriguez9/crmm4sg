@@ -1,15 +1,14 @@
-import { Button, Col, Form, Input, Label, Row, Table } from 'reactstrap';
+import { Button, Col, Form, Input, Label, Row } from 'reactstrap';
 import Select from 'react-select';
-import DatePicker from '../../Common/DatePicker';
 import { Country, State, City } from 'country-state-city';
 import { useMemo, useState } from 'react';
-import { SELECT_OPTION } from '../../constants/messages';
+import { SELECT_OPTION } from '../../../../constants/messages';
 import PhoneInput from 'react-phone-input-2';
 import es from 'react-phone-input-2/lang/es.json';
-import 'react-phone-input-2/lib/style.css';
-import { incomeOpt, maritalStatusOpt } from '../../constants/utils';
+import { incomeOpt, maritalStatusOpt } from '../../../../constants/utils';
+import DatePicker from '../../../../Common/DatePicker';
 
-const FormReservationInformation = ({ toggleDialog }) => {
+const FormClient = ({ toggleDialog, textBtnSubmit = 'Aceptar' }) => {
 	const [countryDefault, setCountryDefault] = useState(null);
 	const [statesDefault, setStatesDefault] = useState(null);
 	const [citiesDefault, setCitiesDefault] = useState(null);
@@ -31,33 +30,43 @@ const FormReservationInformation = ({ toggleDialog }) => {
 			return [];
 		}
 	}, [countryDefault, statesDefault]);
-
 	return (
-		<Form className="fs-7">
-			<h5 className="mt-3 text-primary">Detalle del titular</h5>
-			<hr />
-			<Row className="mb-md-3 mb-2">
-				<Col xs="12" md="6">
+		<Form>
+			<Row>
+				<Col xs="12" md="4">
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="firstName">
-							Nombre
-						</Label>
+						<Label className="form-label mb-0">Nombre</Label>
 						<Input
 							type="text"
 							className="form-control"
-							id="firstName"
+							id="nombre"
+							defaultValue="Daniel"
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="6">
+				<Col xs="12" md="4">
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="lastName">
-							Apellidos
-						</Label>
+						<Label className="form-label mb-0">Apellido</Label>
 						<Input
 							type="text"
 							className="form-control"
-							id="lastName"
+							id="nombre"
+							defaultValue="Maximiliano"
+						/>
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-2">
+						<Label
+							className="form-label mb-0"
+							htmlFor="fechaLlegada"
+						>
+							Fecha nacimiento
+						</Label>
+						<DatePicker
+							id="fechaLlegada"
+							date="29/06/2023"
+							onChangeDate={(date) => console.log(date)}
 						/>
 					</div>
 				</Col>
@@ -329,193 +338,9 @@ const FormReservationInformation = ({ toggleDialog }) => {
 				</Col>
 			</Row>
 
-			<h5 className="text-primary">Detalle de la reservación</h5>
-			<hr />
-			<Row>
-				<Col xs="12" md="6">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="hotel">
-							Hotel
-						</Label>
-						<Select
-							id="hotel"
-							className="mb-0"
-							value={{
-								value: 'Ocean Spa Hotel',
-								label: 'Ocean Spa Hotel',
-							}}
-							onChange={() => {}}
-							options={[
-								{
-									value: 'Ocean Spa Hotel',
-									label: 'Ocean Spa Hotel',
-								},
-							]}
-							placeholder="Seleccionar opción"
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="6">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="plan">
-							Plan
-						</Label>
-						<Select
-							id="plan"
-							className="mb-0"
-							value={{
-								value: 'All Inclusive Multiple',
-								label: 'All Inclusive Multiple',
-							}}
-							onChange={() => {}}
-							options={[
-								{
-									value: 'All Inclusive Multiple',
-									label: 'All Inclusive Multiple',
-								},
-							]}
-							placeholder="Seleccionar opción"
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="fechaLlegada">
-							Fecha llegada
-						</Label>
-						<DatePicker
-							id="fechaLlegada"
-							date="29/06/2023"
-							onChangeDate={(date) => console.log(date)}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="fechaSalida">
-							Fecha salida
-						</Label>
-						<DatePicker
-							id="fechaSalida"
-							date="29/06/2023"
-							onChangeDate={(date) => console.log(date)}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="noches">
-							Noches
-						</Label>
-						<Input
-							type="text"
-							className="form-control"
-							id="noches"
-							defaultValue="4"
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="adultos">
-							Adultos
-						</Label>
-						<Input
-							type="text"
-							className="form-control"
-							id="adultos"
-							defaultValue="2"
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="juniors">
-							Menores
-						</Label>
-						<Input
-							type="text"
-							className="form-control"
-							id="juniors"
-							defaultValue="0"
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="infantes">
-							Infantes
-						</Label>
-						<Input
-							type="text"
-							className="form-control"
-							id="infantes"
-							defaultValue="0"
-						/>
-					</div>
-				</Col>
-			</Row>
-
-			<h5 className="text-primary">Acompañantes</h5>
-			<hr />
-			<Table className="w-100 fs-7 table-sm align-middle">
-				<thead>
-					<tr>
-						<th style={{ width: '13%' }}>Nombre</th>
-						<th style={{ width: '22%' }}>Apellidos</th>
-						<th style={{ width: '14%' }}>Fecha nacimiento</th>
-						<th style={{ width: '10%' }}>Edad</th>
-						<th style={{ width: '18%' }}>Ocupación</th>
-						<th style={{ width: '18%' }}>Relación</th>
-						<th style={{ width: '5%' }}></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<Input type="text" className="form-control" />
-						</td>
-						<td>
-							<Input type="text" className="form-control" />
-						</td>
-						<td>
-							<DatePicker
-								id="fechaLlegada"
-								date=""
-								onChangeDate={(date) => console.log(date)}
-							/>
-						</td>
-						<td>
-							<Input type="text" className="form-control" />
-						</td>
-						<td>
-							<Select
-								value={null}
-								onChange={(value) => {}}
-								options={[]}
-								classNamePrefix="select2-selection"
-								placeholder={SELECT_OPTION}
-							/>
-						</td>
-						<td>
-							<Select
-								value={null}
-								onChange={(value) => {}}
-								options={[]}
-								classNamePrefix="select2-selection"
-								placeholder={SELECT_OPTION}
-							/>
-						</td>
-						<td className="text-center">
-							<i className="text-danger mdi mdi-close-circle fs-5" />
-						</td>
-					</tr>
-				</tbody>
-			</Table>
-
 			<div className="d-flex my-3">
 				<Button type="submit" color="primary" className="me-2">
-					Aceptar
+					{textBtnSubmit}
 				</Button>
 				<Button
 					type="button"
@@ -530,4 +355,4 @@ const FormReservationInformation = ({ toggleDialog }) => {
 	);
 };
 
-export default FormReservationInformation;
+export default FormClient;
