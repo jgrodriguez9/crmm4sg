@@ -438,7 +438,8 @@ const Reservation = () => {
 													data={
 														isSuccess
 															? reservationData
-																	.data.list
+																	?.data
+																	?.list ?? []
 															: []
 													}
 													className="custom-header-css"

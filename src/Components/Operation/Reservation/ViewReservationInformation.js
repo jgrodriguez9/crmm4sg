@@ -105,6 +105,44 @@ const ViewReservationInformation = ({
 								</div>
 							</div>
 						</Col>
+					</Row>
+				</Col>
+				<Col xs="12" md="6">
+					<Row>
+						<Col lg={6}>
+							<div className="mb-3">
+								<Label
+									className="form-label"
+									htmlFor="fechaLlegada"
+								>
+									Fecha llegada
+								</Label>
+								<div className="form-control" id="fechaLlegada">
+									{moment(
+										data.initialDate,
+										'YYYY-MM-DD'
+									).format('DD/MM/YYYY')}
+								</div>
+							</div>
+						</Col>
+						<Col lg={6}>
+							<div className="mb-3">
+								<Label
+									className="form-label"
+									htmlFor="fechaSalida"
+								>
+									Fecha salida
+								</Label>
+								<div className="form-control" id="fechaSalida">
+									{moment(
+										data.finalDate,
+										'YYYY-MM-DD'
+									).format('DD/MM/YYYY')}
+								</div>
+							</div>
+						</Col>
+					</Row>
+					<Row>
 						<Col lg={2}>
 							<div className="mb-3">
 								<Label className="form-label" htmlFor="adultos">
@@ -165,57 +203,6 @@ const ViewReservationInformation = ({
 								<div className="form-control" id="infantes">
 									{data?.infant ?? '-'}
 								</div>
-							</div>
-						</Col>
-					</Row>
-				</Col>
-				<Col xs="12" md="6">
-					<Row>
-						<Col lg={6}>
-							<div className="mb-3">
-								<Label
-									className="form-label"
-									htmlFor="fechaLlegada"
-								>
-									Fecha llegada
-								</Label>
-								<div className="form-control" id="fechaLlegada">
-									{moment(
-										data.initialDate,
-										'YYYY-MM-DD'
-									).format('DD/MM/YYYY')}
-								</div>
-							</div>
-						</Col>
-						<Col lg={6}>
-							<div className="mb-3">
-								<Label
-									className="form-label"
-									htmlFor="fechaSalida"
-								>
-									Fecha salida
-								</Label>
-								<div className="form-control" id="fechaSalida">
-									{moment(
-										data.finalDate,
-										'YYYY-MM-DD'
-									).format('DD/MM/YYYY')}
-								</div>
-							</div>
-						</Col>
-						<Col lg={12}>
-							<div className="mt-3">
-								<Label className="form-label mb-0">
-									Checar disponibilidad
-								</Label>
-								<Flatpickr
-									className="form-control d-none"
-									options={{
-										inline: true,
-										dateFormat: 'Y-m-d',
-										locale: 'es',
-									}}
-								/>
 							</div>
 						</Col>
 					</Row>

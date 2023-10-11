@@ -25,6 +25,7 @@ import CardHeaderGlobal from '../../../Components/Common/CardHeaderGlobal';
 import FilterCommandGlobal from '../../../Components/Common/FilterCommandGlobal';
 import BasicModal from '../../../Components/Common/BasicModal';
 import FormClient from '../../../Components/Operation/Lead/Tab/LeadInformation/FormClient';
+import ErrorBoundary from '../../../Components/Common/ErrorBoundary';
 
 const initFilter = {
 	//id: '',
@@ -311,8 +312,8 @@ const Lead = () => {
 													columns={columns}
 													data={
 														isSuccess
-															? itemsData.data
-																	.list
+															? itemsData?.data
+																	?.list ?? []
 															: []
 													}
 													className="custom-header-css"
