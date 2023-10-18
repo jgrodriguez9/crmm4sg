@@ -48,7 +48,7 @@ const CrmFilter = ({
 						<Col xs="12" md="4">
 							<div className="mb-3">
 								<Label
-									htmlFor="id-booking"
+									htmlFor="booking"
 									className="form-label text-muted text-uppercase fw-semibold mb-0"
 								>
 									Booking
@@ -56,14 +56,21 @@ const CrmFilter = ({
 								<Input
 									className="form-control"
 									type="text"
-									id="id-booking"
+									id="booking"
+									value={query.booking}
+									onChange={(e) =>
+										setQuery((prev) => ({
+											...prev,
+											booking: e.target.value,
+										}))
+									}
 								/>
 							</div>
 						</Col>
 						<Col xs="12" md="4">
 							<div className="mb-2">
 								<Label
-									htmlFor="certificado"
+									htmlFor="certifiateNumber"
 									className="form-label text-muted mb-0"
 								>
 									Certificado
@@ -71,12 +78,12 @@ const CrmFilter = ({
 								<Input
 									className="form-control"
 									type="text"
-									id="certificado"
-									value={query.certificate}
+									id="certifiateNumber"
+									value={query.certifiateNumber}
 									onChange={(e) =>
 										setQuery((prev) => ({
 											...prev,
-											certificate: e.target.value,
+											certifiateNumber: e.target.value,
 										}))
 									}
 								/>
@@ -85,7 +92,7 @@ const CrmFilter = ({
 						<Col xs="12" md="4">
 							<div className="mb-3">
 								<Label
-									htmlFor="contarto"
+									htmlFor="contract"
 									className="form-label text-muted text-uppercase fw-semibold mb-0"
 								>
 									Contrato
@@ -93,7 +100,14 @@ const CrmFilter = ({
 								<Input
 									className="form-control"
 									type="text"
-									id="contarto"
+									id="contract"
+									value={query.contract}
+									onChange={(e) =>
+										setQuery((prev) => ({
+											...prev,
+											contract: e.target.value,
+										}))
+									}
 								/>
 							</div>
 						</Col>
@@ -138,24 +152,16 @@ const CrmFilter = ({
 									query={'?page=1&max=10'}
 									keyCompare={'name'}
 									inputId="segmento-select"
-								/>
-							</div>
-						</Col>
-						<Col xs="12" md="4">
-							<div className="mb-3">
-								<Label
-									htmlFor="fecha-range"
-									className="form-label text-muted text-uppercase fw-semibold mb-0"
-								>
-									Fecha
-								</Label>
-								<Flatpickr
-									className="form-control"
-									id="fecha-range"
-									placeholder="Seleccionar rango de fecha"
-									options={{
-										mode: 'range',
-										dateFormat: 'd-M-Y',
+									value={dataSelect.segmentModel}
+									onChange={(value) => {
+										setQuery((prev) => ({
+											...prev,
+											segment: value?.value ?? '',
+										}));
+										setDataSelect((prev) => ({
+											...prev,
+											segmentModel: value,
+										}));
 									}}
 								/>
 							</div>

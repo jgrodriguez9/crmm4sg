@@ -22,8 +22,8 @@ export default function BasicModal({
 			className="overflow-hidden"
 			size={size}
 		>
-			<ModalHeader toggle={onCloseClick}>
-				<h5 className="modal-title">{title}</h5>
+			<ModalHeader toggle={onCloseClick} className="modal-title">
+				{title}
 			</ModalHeader>
 			<hr />
 			<ModalBody className={classBody}>{children}</ModalBody>

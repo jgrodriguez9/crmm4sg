@@ -25,10 +25,10 @@ import CardHeaderGlobal from '../../../Components/Common/CardHeaderGlobal';
 import FilterCommandGlobal from '../../../Components/Common/FilterCommandGlobal';
 import BasicModal from '../../../Components/Common/BasicModal';
 import FormClient from '../../../Components/Operation/Lead/Tab/LeadInformation/FormClient';
-import ErrorBoundary from '../../../Components/Common/ErrorBoundary';
+import moment from 'moment/moment';
 
 const initFilter = {
-	//id: '',
+	certifiateNumber: '',
 	callCenter: '',
 	lastName: '',
 	firstName: '',
@@ -36,9 +36,13 @@ const initFilter = {
 	movil: '',
 	country: '',
 	state: '',
+	contract: '',
+	segment: '',
+	booking: '',
 };
 const initFilterModel = {
 	callCenterModel: null,
+	segmentModel: null,
 };
 
 const Lead = () => {
@@ -125,11 +129,11 @@ const Lead = () => {
 				),
 			},
 			{
-				Header: 'Id Booking',
-				accessor: 'booking',
+				Header: 'Booking',
+				accessor: 'sale.booking',
 				filterable: false,
 				style: {
-					width: '10%',
+					width: '8%',
 				},
 			},
 			{
@@ -142,7 +146,7 @@ const Lead = () => {
 			},
 			{
 				Header: 'Campaña',
-				accessor: 'campana',
+				accessor: 'sale.campaign.name',
 				filterable: false,
 				style: {
 					width: '14%',
@@ -174,11 +178,25 @@ const Lead = () => {
 			},
 			{
 				Header: 'Estatus',
-				accessor: 'status',
+				accessor: 'sale.reservationStatus.status',
 				filterable: false,
 				style: {
 					width: '10%',
 				},
+			},
+			{
+				Header: 'F.Venta',
+				accessor: 'sale.saleDate',
+				filterable: false,
+				style: {
+					width: '10%',
+				},
+				Cell: ({ value }) =>
+					value
+						? moment(value, 'YYY-MM-DDTHH:mm').format(
+								'DD/MM/YYYY HH:mm'
+						  )
+						: '',
 			},
 			{
 				id: 'action',

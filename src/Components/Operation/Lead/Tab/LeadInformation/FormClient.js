@@ -1,58 +1,215 @@
-import { Button, Col, Form, Input, Label, Row } from 'reactstrap';
+import { Button, Col, Form, FormFeedback, Input, Label, Row } from 'reactstrap';
 import Select from 'react-select';
-import { Country, State, City } from 'country-state-city';
-import { useMemo, useState } from 'react';
-import { SELECT_OPTION } from '../../../../constants/messages';
+import { Country } from 'country-state-city';
+import { useState } from 'react';
+import {
+	ERROR_SERVER,
+	FIELD_REQUIRED,
+	SELECT_OPTION,
+	UPDATE_SUCCESS,
+} from '../../../../constants/messages';
 import PhoneInput from 'react-phone-input-2';
 import es from 'react-phone-input-2/lang/es.json';
-import { incomeOpt, maritalStatusOpt } from '../../../../constants/utils';
 import DatePicker from '../../../../Common/DatePicker';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import moment from 'moment';
+import StateInput from '../../../../Controller/StateInput';
+import CityInput from '../../../../Controller/CityInput';
+import DisabledInput from '../../../../Controller/DisabledInput';
+import { updateCustomer } from '../../../../../helpers/customer';
+import { useDispatch } from 'react-redux';
+import { addMessage } from '../../../../../slices/messages/reducer';
+import removetEmptyObject from '../../../../../util/removetEmptyObject';
+import { useQuery } from 'react-query';
+import { fetchMaritalStatus } from '../../../../../services/maritalStatus';
+import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 
-const FormClient = ({ toggleDialog, textBtnSubmit = 'Aceptar' }) => {
-	const [countryDefault, setCountryDefault] = useState(null);
-	const [statesDefault, setStatesDefault] = useState(null);
-	const [citiesDefault, setCitiesDefault] = useState(null);
-	const [phone, setPhone] = useState('');
-	const statesOpt = useMemo(() => {
-		if (countryDefault) {
-			return State.getStatesOfCountry(countryDefault.value);
-		} else {
-			return [];
+const FormClient = ({
+	toggleDialog,
+	textBtnSubmit = 'Aceptar',
+	customer,
+	refetchClient,
+}) => {
+	console.log(customer);
+	const dispatch = useDispatch();
+	const [fechaNacimiento, setFechaNacimiento] = useState(
+		customer?.fechaNacimiento
+			? moment(customer?.fechaNacimiento, 'YYYY-MM-DD').toDate()
+			: null
+	);
+	const [countryDefault, setCountryDefault] = useState(
+		customer?.country
+			? { label: customer?.country, value: customer?.country }
+			: null
+	);
+	const [statesDefault, setStatesDefault] = useState(
+		customer?.state
+			? { label: customer?.state, value: customer?.state }
+			: null
+	);
+	const [citiesDefault, setCitiesDefault] = useState(
+		customer?.city ? { label: customer?.city, value: customer?.city } : null
+	);
+	const [phone1, setPhone1] = useState('');
+	const [phone2, setPhone2] = useState('');
+	const [mobile, setMobile] = useState('');
+
+	const { data: maritalStatusOpt } = useQuery(
+		['getMaritalStatus'],
+		() => fetchMaritalStatus(),
+		{
+			select: (data) =>
+				data.data.maritaStatusList.map((item) => ({
+					value: item.key,
+					label: item.value,
+				})),
 		}
-	}, [countryDefault]);
-	const citiesOpt = useMemo(() => {
-		if (countryDefault && statesDefault) {
-			return City.getCitiesOfState(
-				countryDefault.value,
-				statesDefault.value
-			);
-		} else {
-			return [];
-		}
-	}, [countryDefault, statesDefault]);
+	);
+
+	const formik = useFormik({
+		// enableReinitialize : use this flag when initial values needs to be changed
+		enableReinitialize: true,
+		initialValues: {
+			id: customer?.id ?? '',
+			firstName: customer?.firstName ?? '',
+			lastName: customer?.lastName ?? '',
+			fechaNacimiento: customer?.fechaNacimiento ?? '',
+			address: customer?.address ?? '',
+			postalCode: customer?.postalCode ?? '',
+			country: customer?.country ?? '',
+			state: customer?.state ?? '',
+			city: customer?.city ?? '',
+			phone1: customer?.phone1 ?? '',
+			phone2: customer?.phone2 ?? '',
+			movil: customer?.movil ?? '',
+			email: customer?.email ?? '',
+			maritalStatusKey:
+				maritalStatusOpt?.find(
+					(it) => it.label === customer?.maritalStatus
+				).value ?? '',
+		},
+		validationSchema: Yup.object({
+			firstName: Yup.string().required(FIELD_REQUIRED),
+			lastName: Yup.string().required(FIELD_REQUIRED),
+		}),
+		onSubmit: async (values) => {
+			//submit request
+			try {
+				if (values.id) {
+					//updating existing one
+					const data = {};
+					Object.entries(removetEmptyObject(values)).forEach(
+						(entry) => {
+							const [key, value] = entry;
+							if (key === 'fechaNacimiento') {
+								data[key] = moment(
+									values.fechaNacimiento
+								).format('YYYY-MM-DD');
+							} else {
+								data[key] = value;
+							}
+						}
+					);
+					let response = await updateCustomer(values.id, data);
+					if (response) {
+						dispatch(
+							addMessage({
+								type: 'success',
+								message: UPDATE_SUCCESS,
+							})
+						);
+						toggleDialog();
+						refetchClient();
+					} else {
+						dispatch(
+							addMessage({
+								type: 'error',
+								message: ERROR_SERVER,
+							})
+						);
+					}
+				} else {
+					//creating one
+				}
+			} catch (error) {
+				let message = ERROR_SERVER;
+				message = extractMeaningfulMessage(error, message);
+				dispatch(
+					addMessage({
+						type: 'error',
+						message: message,
+					})
+				);
+			}
+		},
+	});
+	console.log(formik.values);
+	const [editPhone1, setEditPhone1] = useState(false);
+	const togglePhone1 = () => setEditPhone1(!editPhone1);
+	const [editPhone2, setEditPhone2] = useState(false);
+	const togglePhone2 = () => setEditPhone2(!editPhone1);
+	const [editMobile, setEditMobile] = useState(false);
+	const toggleMobile = () => setEditMobile(!editMobile);
+
+	const [editCorreo, setEditCorreo] = useState(false);
+	const toggleCorreo = () => {
+		setEditCorreo(!editCorreo);
+		formik.setFieldValue('email', '');
+	};
 	return (
-		<Form>
+		<Form
+			className="needs-validation fs-7"
+			onSubmit={(e) => {
+				e.preventDefault();
+				formik.handleSubmit();
+				return false;
+			}}
+		>
+			{/* {console.log(formik.errors)} */}
 			<Row>
 				<Col xs="12" md="4">
 					<div className="mb-2">
-						<Label className="form-label mb-0">Nombre</Label>
+						<Label className="form-label mb-0" htmlFor="firstName">
+							Nombre
+						</Label>
 						<Input
 							type="text"
-							className="form-control"
-							id="nombre"
-							defaultValue="Daniel"
+							className={`form-control ${
+								formik.errors.firstName ? 'is-invalid' : ''
+							}`}
+							id="firstName"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.firstName}
 						/>
+						{formik.errors.firstName && (
+							<FormFeedback type="invalid d-block">
+								{formik.errors.firstName}
+							</FormFeedback>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-2">
-						<Label className="form-label mb-0">Apellido</Label>
+						<Label className="form-label mb-0" htmlFor="lastName">
+							Apellido
+						</Label>
 						<Input
 							type="text"
-							className="form-control"
-							id="nombre"
-							defaultValue="Maximiliano"
+							className={`form-control ${
+								formik.errors.lastName ? 'is-invalid' : ''
+							}`}
+							id="lastName"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.lastName}
 						/>
+						{formik.errors.lastName && (
+							<FormFeedback type="invalid d-block">
+								{formik.errors.lastName}
+							</FormFeedback>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -65,8 +222,21 @@ const FormClient = ({ toggleDialog, textBtnSubmit = 'Aceptar' }) => {
 						</Label>
 						<DatePicker
 							id="fechaLlegada"
-							date="29/06/2023"
-							onChangeDate={(date) => console.log(date)}
+							date={fechaNacimiento}
+							onChangeDate={(value) => {
+								setFechaNacimiento(value[0]);
+								if (value.length > 0) {
+									formik.setFieldValue(
+										`fechaNacimiento`,
+										value[0]
+									);
+								} else {
+									formik.setFieldValue(
+										`fechaNacimiento`,
+										null
+									);
+								}
+							}}
 						/>
 					</div>
 				</Col>
@@ -77,8 +247,13 @@ const FormClient = ({ toggleDialog, textBtnSubmit = 'Aceptar' }) => {
 						</Label>
 						<Input
 							type="text"
-							className="form-control"
+							className={`form-control ${
+								formik.errors.address ? 'is-invalid' : ''
+							}`}
 							id="address"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.address}
 						/>
 					</div>
 				</Col>
@@ -91,6 +266,9 @@ const FormClient = ({ toggleDialog, textBtnSubmit = 'Aceptar' }) => {
 							type="text"
 							className="form-control"
 							id="postalCode"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.postalCode}
 						/>
 					</div>
 				</Col>
@@ -103,8 +281,14 @@ const FormClient = ({ toggleDialog, textBtnSubmit = 'Aceptar' }) => {
 							value={countryDefault}
 							onChange={(value) => {
 								setCountryDefault(value);
+								formik.setFieldValue(
+									'country',
+									value?.label ?? ''
+								);
 								setStatesDefault(null);
+								formik.setFieldValue('state', '');
 								setCitiesDefault(null);
+								formik.setFieldValue('city', '');
 							}}
 							options={Country.getAllCountries().map((it) => ({
 								label: it.name,
@@ -120,18 +304,18 @@ const FormClient = ({ toggleDialog, textBtnSubmit = 'Aceptar' }) => {
 						<Label className="form-label mb-0" htmlFor="country">
 							Estado
 						</Label>
-						<Select
+						<StateInput
 							value={statesDefault}
-							onChange={(value) => {
+							handleChange={(value) => {
 								setStatesDefault(value);
+								formik.setFieldValue(
+									'state',
+									value?.label ?? ''
+								);
 								setCitiesDefault(null);
+								formik.setFieldValue('city', '');
 							}}
-							options={statesOpt.map((s) => ({
-								label: s.name,
-								value: s.isoCode,
-							}))}
-							classNamePrefix="select2-selection"
-							placeholder={SELECT_OPTION}
+							country={countryDefault}
 						/>
 					</div>
 				</Col>
@@ -140,17 +324,17 @@ const FormClient = ({ toggleDialog, textBtnSubmit = 'Aceptar' }) => {
 						<Label className="form-label mb-0" htmlFor="country">
 							Ciudad
 						</Label>
-						<Select
+						<CityInput
 							value={citiesDefault}
-							onChange={(value) => {
+							handleChange={(value) => {
 								setCitiesDefault(value);
+								formik.setFieldValue(
+									'city',
+									value?.label ?? ''
+								);
 							}}
-							options={citiesOpt.map((c) => ({
-								label: c.name,
-								value: c.isoCode,
-							}))}
-							classNamePrefix="select2-selection"
-							placeholder={SELECT_OPTION}
+							country={countryDefault}
+							state={statesDefault}
 						/>
 					</div>
 				</Col>
@@ -159,18 +343,36 @@ const FormClient = ({ toggleDialog, textBtnSubmit = 'Aceptar' }) => {
 						<Label className="form-label mb-0" htmlFor="phone1">
 							Teléfono casa
 						</Label>
-						<PhoneInput
-							inputClass={`form-control w-100`}
-							countryCodeEditable={false}
-							enableSearch={true}
-							preferredCountries={['mx', 'us']}
-							disableSearchIcon={true}
-							localization={es}
-							value={phone}
-							onChange={(phone, country, e, formattedValue) => {
-								setPhone(phone);
-							}}
-						/>
+						{!editPhone1 ? (
+							<DisabledInput
+								endIcon={
+									<i
+										className="bx bxs-pencil text-primary"
+										onClick={togglePhone1}
+									/>
+								}
+								value={formik.values.phone1}
+							/>
+						) : (
+							<PhoneInput
+								inputClass={`form-control w-100`}
+								countryCodeEditable={false}
+								enableSearch={true}
+								preferredCountries={['mx', 'us']}
+								disableSearchIcon={true}
+								localization={es}
+								value={phone1}
+								onChange={(
+									phone,
+									country,
+									e,
+									formattedValue
+								) => {
+									setPhone1(phone);
+									formik.setFieldValue('phone1', phone);
+								}}
+							/>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -178,37 +380,73 @@ const FormClient = ({ toggleDialog, textBtnSubmit = 'Aceptar' }) => {
 						<Label className="form-label mb-0" htmlFor="phone1">
 							Teléfono trabajo
 						</Label>
-						<PhoneInput
-							inputClass={`form-control w-100`}
-							countryCodeEditable={false}
-							enableSearch={true}
-							preferredCountries={['mx', 'us']}
-							disableSearchIcon={true}
-							localization={es}
-							value={phone}
-							onChange={(phone, country, e, formattedValue) => {
-								setPhone(phone);
-							}}
-						/>
+						{!editPhone2 ? (
+							<DisabledInput
+								endIcon={
+									<i
+										className="bx bxs-pencil text-primary"
+										onClick={togglePhone2}
+									/>
+								}
+								value={formik.values.phone2}
+							/>
+						) : (
+							<PhoneInput
+								inputClass={`form-control w-100`}
+								countryCodeEditable={false}
+								enableSearch={true}
+								preferredCountries={['mx', 'us']}
+								disableSearchIcon={true}
+								localization={es}
+								value={phone2}
+								onChange={(
+									phone,
+									country,
+									e,
+									formattedValue
+								) => {
+									setPhone2(phone);
+									formik.setFieldValue('phone2', phone);
+								}}
+							/>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="phone1">
+						<Label className="form-label mb-0" htmlFor="movil">
 							Celular
 						</Label>
-						<PhoneInput
-							inputClass={`form-control w-100`}
-							countryCodeEditable={false}
-							enableSearch={true}
-							preferredCountries={['mx', 'us']}
-							disableSearchIcon={true}
-							localization={es}
-							value={phone}
-							onChange={(phone, country, e, formattedValue) => {
-								setPhone(phone);
-							}}
-						/>
+						{!editMobile ? (
+							<DisabledInput
+								endIcon={
+									<i
+										className="bx bxs-pencil text-primary"
+										onClick={toggleMobile}
+									/>
+								}
+								value={formik.values.movil}
+							/>
+						) : (
+							<PhoneInput
+								inputClass={`form-control w-100`}
+								countryCodeEditable={false}
+								enableSearch={true}
+								preferredCountries={['mx', 'us']}
+								disableSearchIcon={true}
+								localization={es}
+								value={mobile}
+								onChange={(
+									phone,
+									country,
+									e,
+									formattedValue
+								) => {
+									setMobile(phone);
+									formik.setFieldValue('movil', phone);
+								}}
+							/>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -216,11 +454,28 @@ const FormClient = ({ toggleDialog, textBtnSubmit = 'Aceptar' }) => {
 						<Label className="form-label mb-0" htmlFor="email">
 							Correo electrónico
 						</Label>
-						<Input
-							type="text"
-							className="form-control"
-							id="email"
-						/>
+						{!editCorreo ? (
+							<DisabledInput
+								endIcon={
+									<i
+										className="bx bxs-pencil text-primary"
+										onClick={toggleCorreo}
+									/>
+								}
+								value={formik.values.email}
+							/>
+						) : (
+							<Input
+								type="text"
+								className={`form-control ${
+									formik.errors.email ? 'is-invalid' : ''
+								}`}
+								id="email"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.email}
+							/>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -234,8 +489,27 @@ const FormClient = ({ toggleDialog, textBtnSubmit = 'Aceptar' }) => {
 						<Select
 							id="estadoCivil"
 							className="mb-0"
-							value={null}
-							onChange={() => {}}
+							value={
+								formik.values.maritalStatusKey
+									? {
+											value: formik.values
+												.maritalStatusKey,
+											label:
+												maritalStatusOpt?.find(
+													(it) =>
+														it.value ===
+														formik.values
+															.maritalStatusKey
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'maritalStatusKey',
+									value?.value ?? ''
+								);
+							}}
 							options={maritalStatusOpt}
 							placeholder="Seleccionar opción"
 						/>
@@ -243,96 +517,18 @@ const FormClient = ({ toggleDialog, textBtnSubmit = 'Aceptar' }) => {
 				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="ingreso">
+						<Label className="form-label mb-0" htmlFor="income+">
 							Ingreso
 						</Label>
-						<Select
-							id="ingreso"
-							className="mb-0"
-							value={null}
-							onChange={() => {}}
-							options={incomeOpt}
-							placeholder="Seleccionar opción"
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-2">
-						<Row className="mt-3">
-							<Col xs="6">
-								<div className="form-check">
-									<Input
-										className="form-check-input"
-										type="checkbox"
-										id="visa"
-										checked={true}
-									/>
-									<Label
-										className="form-check-label"
-										htmlFor="visa"
-									>
-										Visa
-									</Label>
-								</div>
-							</Col>
-							<Col xs="6">
-								<div className="form-check">
-									<Input
-										className="form-check-input"
-										type="checkbox"
-										id="masterCard"
-									/>
-									<Label
-										className="form-check-label"
-										htmlFor="masterCard"
-									>
-										Master Card
-									</Label>
-								</div>
-							</Col>
-							<Col xs="6">
-								<div className="form-check">
-									<Input
-										className="form-check-input"
-										type="checkbox"
-										id="amex"
-									/>
-									<Label
-										className="form-check-label"
-										htmlFor="amex"
-									>
-										Amex
-									</Label>
-								</div>
-							</Col>
-							<Col xs="6">
-								<div className="form-check">
-									<Input
-										className="form-check-input"
-										type="checkbox"
-										id="otras"
-									/>
-									<Label
-										className="form-check-label"
-										htmlFor="otras"
-									>
-										Otras
-									</Label>
-								</div>
-							</Col>
-						</Row>
-					</div>
-				</Col>
-				<Col xs="12" md="8">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="comentario">
-							Comentario
-						</Label>
-						<textarea
-							id="comentario"
-							name="comentario"
-							className={`form-control`}
-							rows={3}
+						<Input
+							type="text"
+							className={`form-control ${
+								formik.errors.income ? 'is-invalid' : ''
+							}`}
+							id="income"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.income}
 						/>
 					</div>
 				</Col>

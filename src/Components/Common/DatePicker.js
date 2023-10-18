@@ -9,20 +9,27 @@ const DatePicker = ({
 	options,
 	placeholder = '',
 	className = 'form-control',
+	element,
+	onOpen = () => {},
+	onClose = () => {},
 }) => {
 	return (
 		<Flatpickr
 			name={name}
 			id="datepicker-publish-input"
 			className={className}
-			placeholder={placeholder}
+			placeholder={placeholder ? placeholder : 'dd/MM/YYYY'}
 			options={{
 				...options,
+				altInput: true,
+				altFormat: dateFormat,
 				dateFormat: dateFormat,
 				locale: Spanish,
 			}}
-			onChange={(e) => onChangeDate(e)}
-			value={date || ''}
+			value={date}
+			onChange={(date) => onChangeDate(date, element)}
+			onOpen={onOpen}
+			onClose={onClose}
 		/>
 	);
 };

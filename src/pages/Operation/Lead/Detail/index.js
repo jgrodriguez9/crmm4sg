@@ -51,6 +51,7 @@ const LeadProfile = () => {
 		data: itemData,
 		error: errorItem,
 		isFetching: isFetchingItem,
+		refetch: refetchClient,
 	} = useQuery(['getCustomer', id], () => fecthItem(id), {
 		refetchOnWindowFocus: false,
 	});
@@ -565,13 +566,15 @@ const LeadProfile = () => {
 			<BasicModal
 				open={showModal}
 				setOpen={setShowModal}
-				title="Agregar cliente"
+				title="Editar cliente"
 				size="xl"
 				classBody="py-1 px-3"
 				children={
 					<FormClient
 						toggleDialog={toggleDialog}
 						textBtnSubmit="Editar"
+						customer={itemData?.data ?? null}
+						refetchClient={refetchClient}
 					/>
 				}
 			/>

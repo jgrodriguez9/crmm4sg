@@ -1,30 +1,35 @@
-
 //LOGIN
-export const POST_LOGIN = "https://api.m4sunset.com:444/v1/security/fusion/login"
+export const POST_LOGIN =
+	'https://api.m4sunset.com:444/v1/security/fusion/login';
 
 //catalogues
 
 //call center
-export const callCenter = '/callCenter'
+export const callCenter = '/callCenter';
 //hotel
-export const hotel = '/hotel'
+export const hotel = '/hotel';
 //program
-export const program = '/program'
+export const program = '/program';
 //mealPlan
-export const mealPlan = '/mealPlan'
+export const mealPlan = '/mealPlan';
 //segment
-export const segment = '/segment'
+export const segment = '/segment';
 //merchant
-export const merchant = '/merchant'
+export const merchant = '/merchant';
 //reservation status
-export const reservationStatus = '/reservationStatus'
+export const reservationStatus = '/reservationStatus';
 //campañas
-export const campaing = '/campaing'
+export const campaing = '/campaing';
 
 //end catalogues
 
-
 //reservation
-export const reservation = '/reservation'
+export const reservation = '/reservation';
 //customer
-export const customer = '/customer'
+export const customer = '/customer';
+
+//maritalStatus
+export const maritalStatus = '/customer/getMaritalStatusList';
+
+//paxes
+export const pax = '/pax';
