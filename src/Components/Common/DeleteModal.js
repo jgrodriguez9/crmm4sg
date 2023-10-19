@@ -1,9 +1,9 @@
 import { Col, Modal, ModalBody, Row } from 'reactstrap';
-import ContentLoader from '../Loader/ContentLoader';
 import {
 	DELETE_QUESTION,
 	DELETE_QUESTION_CONFIRMATION,
 } from '../constants/messages';
+import ButtonsLoader from '../Loader/ButtonsLoader';
 
 export default function DeleteModal({
 	handleDelete,
@@ -24,7 +24,6 @@ export default function DeleteModal({
 			keyboard={false}
 			className="overflow-hidden"
 		>
-			{isDeleting && <ContentLoader text="Eliminando..." />}
 			<ModalBody className="py-3 px-5">
 				<Row>
 					<Col lg={12}>
@@ -39,24 +38,24 @@ export default function DeleteModal({
 					</Col>
 				</Row>
 				<Row>
-					<Col>
+					<Col className="mt-3 d-flex justify-content-center">
 						{isDeleting ? (
-							<div className="text-center mt-3">
-								<button
-									type="button"
-									className="btn btn-danger btn-lg ms-2"
-									disabled
-								>
-									¡Sí, eliminarlo!
-								</button>
-								<button
-									type="button"
-									className="btn btn-light btn-lg ms-2"
-									disabled
-								>
-									Cancelar
-								</button>
-							</div>
+							<ButtonsLoader
+								buttons={[
+									{
+										text: '¡Sí, eliminarlo!',
+										color: 'danger',
+										className: 'btn-lg ms-2',
+										loader: true,
+									},
+									{
+										text: 'Cancelar',
+										color: 'light',
+										className: 'btn-lg ms-2',
+										loader: false,
+									},
+								]}
+							/>
 						) : (
 							<div className="text-center mt-3">
 								<button

@@ -1,6 +1,7 @@
 import { Card, CardBody, Col, Row } from 'reactstrap';
 import img from '../../assets/images/companies/img-4.png';
 import { Link } from 'react-router-dom';
+import { Fragment } from 'react';
 
 const BannerInformation = ({ data, showBreadcrumb = true }) => {
 	return (
@@ -37,12 +38,13 @@ const BannerInformation = ({ data, showBreadcrumb = true }) => {
 										<div className="hstack gap-3 flex-wrap fs-7">
 											{data?.subInfo.map(
 												(it, indexSubInfo) => (
-													<>
+													<Fragment
+														key={`sunInfo-${indexSubInfo}`}
+													>
 														<div
 															className={
 																it.classes
 															}
-															key={`sunInfo-${indexSubInfo}`}
 														>
 															{it.icon && (
 																<i
@@ -112,7 +114,7 @@ const BannerInformation = ({ data, showBreadcrumb = true }) => {
 																1 && (
 															<div className="vr"></div>
 														)}
-													</>
+													</Fragment>
 												)
 											)}
 										</div>

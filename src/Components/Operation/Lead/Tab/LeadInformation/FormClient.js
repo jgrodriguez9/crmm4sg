@@ -1,7 +1,7 @@
 import { Button, Col, Form, FormFeedback, Input, Label, Row } from 'reactstrap';
 import Select from 'react-select';
 import { Country } from 'country-state-city';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
 	ERROR_SERVER,
 	FIELD_REQUIRED,
@@ -17,13 +17,14 @@ import moment from 'moment';
 import StateInput from '../../../../Controller/StateInput';
 import CityInput from '../../../../Controller/CityInput';
 import DisabledInput from '../../../../Controller/DisabledInput';
-import { updateCustomer } from '../../../../../helpers/customer';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import removetEmptyObject from '../../../../../util/removetEmptyObject';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { fetchMaritalStatus } from '../../../../../services/maritalStatus';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
+import { updateClientService } from '../../../../../services/client';
+import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 
 const FormClient = ({
 	toggleDialog,
@@ -31,7 +32,6 @@ const FormClient = ({
 	customer,
 	refetchClient,
 }) => {
-	console.log(customer);
 	const dispatch = useDispatch();
 	const [fechaNacimiento, setFechaNacimiento] = useState(
 		customer?.fechaNacimiento
@@ -54,7 +54,9 @@ const FormClient = ({
 	const [phone1, setPhone1] = useState('');
 	const [phone2, setPhone2] = useState('');
 	const [mobile, setMobile] = useState('');
+	const [email, setEmail] = useState('');
 
+	//getStatus
 	const { data: maritalStatusOpt } = useQuery(
 		['getMaritalStatus'],
 		() => fetchMaritalStatus(),
@@ -66,6 +68,37 @@ const FormClient = ({
 				})),
 		}
 	);
+
+	//update client
+	const {
+		mutate: updateCient,
+		isLoading,
+		isError,
+		error,
+		isSuccess,
+	} = useMutation(updateClientService);
+
+	useEffect(() => {
+		if (isSuccess) {
+			dispatch(
+				addMessage({
+					type: 'success',
+					message: UPDATE_SUCCESS,
+				})
+			);
+			toggleDialog();
+			refetchClient();
+		} else if (isError) {
+			let message = ERROR_SERVER;
+			message = extractMeaningfulMessage(error, message);
+			dispatch(
+				addMessage({
+					type: 'error',
+					message: message,
+				})
+			);
+		}
+	}, [isSuccess, isError, dispatch, error]);
 
 	const formik = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
@@ -95,56 +128,34 @@ const FormClient = ({
 		}),
 		onSubmit: async (values) => {
 			//submit request
-			try {
-				if (values.id) {
-					//updating existing one
-					const data = {};
-					Object.entries(removetEmptyObject(values)).forEach(
-						(entry) => {
-							const [key, value] = entry;
-							if (key === 'fechaNacimiento') {
-								data[key] = moment(
-									values.fechaNacimiento
-								).format('YYYY-MM-DD');
-							} else {
-								data[key] = value;
-							}
-						}
+			const data = {};
+			Object.entries(removetEmptyObject(values)).forEach((entry) => {
+				const [key, value] = entry;
+				if (key === 'fechaNacimiento') {
+					data[key] = moment(values.fechaNacimiento).format(
+						'YYYY-MM-DD'
 					);
-					let response = await updateCustomer(values.id, data);
-					if (response) {
-						dispatch(
-							addMessage({
-								type: 'success',
-								message: UPDATE_SUCCESS,
-							})
-						);
-						toggleDialog();
-						refetchClient();
-					} else {
-						dispatch(
-							addMessage({
-								type: 'error',
-								message: ERROR_SERVER,
-							})
-						);
-					}
-				} else {
-					//creating one
+				} else if (
+					key !== 'phone1' &&
+					key !== 'phone2' &&
+					key !== 'movil' &&
+					key !== 'email'
+				) {
+					data[key] = value;
 				}
-			} catch (error) {
-				let message = ERROR_SERVER;
-				message = extractMeaningfulMessage(error, message);
-				dispatch(
-					addMessage({
-						type: 'error',
-						message: message,
-					})
-				);
-			}
+			});
+			if (phone1) data['phone1'] = phone1;
+			if (phone2) data['phone2'] = phone2;
+			if (mobile) data['movil'] = mobile;
+			if (email) data['email'] = email;
+
+			updateCient({
+				id: values.id,
+				body: data,
+			});
 		},
 	});
-	console.log(formik.values);
+
 	const [editPhone1, setEditPhone1] = useState(false);
 	const togglePhone1 = () => setEditPhone1(!editPhone1);
 	const [editPhone2, setEditPhone2] = useState(false);
@@ -166,7 +177,6 @@ const FormClient = ({
 				return false;
 			}}
 		>
-			{/* {console.log(formik.errors)} */}
 			<Row>
 				<Col xs="12" md="4">
 					<div className="mb-2">
@@ -467,13 +477,10 @@ const FormClient = ({
 						) : (
 							<Input
 								type="text"
-								className={`form-control ${
-									formik.errors.email ? 'is-invalid' : ''
-								}`}
+								className={`form-control`}
 								id="email"
-								onChange={formik.handleChange}
-								onBlur={formik.handleBlur}
-								value={formik.values.email}
+								onChange={(e) => setEmail(e.target.value)}
+								value={email}
 							/>
 						)}
 					</div>
@@ -534,19 +541,40 @@ const FormClient = ({
 				</Col>
 			</Row>
 
-			<div className="d-flex my-3">
-				<Button type="submit" color="primary" className="me-2">
-					{textBtnSubmit}
-				</Button>
-				<Button
-					type="button"
-					color="danger"
-					className="btn-soft-danger"
-					onClick={toggleDialog ? toggleDialog : () => {}}
-				>
-					Cancelar
-				</Button>
-			</div>
+			{isLoading ? (
+				<div className="d-flex my-3">
+					<ButtonsLoader
+						buttons={[
+							{
+								text: textBtnSubmit,
+								color: 'primary',
+								className: 'me-2',
+								loader: true,
+							},
+							{
+								text: 'Cancelar',
+								color: 'danger',
+								className: 'btn-soft-danger',
+								loader: false,
+							},
+						]}
+					/>
+				</div>
+			) : (
+				<div className="d-flex my-3">
+					<Button type="submit" color="primary" className="me-2">
+						{textBtnSubmit}
+					</Button>
+					<Button
+						type="button"
+						color="danger"
+						className="btn-soft-danger"
+						onClick={toggleDialog ? toggleDialog : () => {}}
+					>
+						Cancelar
+					</Button>
+				</div>
+			)}
 		</Form>
 	);
 };

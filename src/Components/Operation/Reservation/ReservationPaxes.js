@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { Alert, Col, Row } from 'reactstrap';
 import { fecthPaxesByReservation } from '../../../pages/Operation/Reservation/Util/services';
@@ -13,11 +13,16 @@ import CellActions from '../../Common/CellActions';
 import { deleteIconClass, editIconClass } from '../../constants/icons';
 import { deletePaxService } from '../../../services/pax';
 import DeleteModal from '../../Common/DeleteModal';
+import { DELETE_SUCCESS, ERROR_SERVER } from '../../constants/messages';
+import { useDispatch } from 'react-redux';
+import { addMessage } from '../../../slices/messages/reducer';
+import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
 
 const ReservationPaxes = ({ reservationId }) => {
 	const [showModal, setShowModal] = useState(false);
 	const [pax, setPax] = useState(null);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+	const dispatch = useDispatch();
 	const { data, error, isLoading, isSuccess, refetch } = useQuery(
 		['getPaxesByReservation', reservationId],
 		() => fecthPaxesByReservation(reservationId),
@@ -30,6 +35,7 @@ const ReservationPaxes = ({ reservationId }) => {
 		mutate: deletePaxMutation,
 		isLoading: isDeleting,
 		isError,
+		error: errorDel,
 		isSuccess: isSuccessDel,
 	} = useMutation(deletePaxService);
 
@@ -51,6 +57,28 @@ const ReservationPaxes = ({ reservationId }) => {
 		const { original } = row;
 		setPax({ id: original.id });
 	};
+
+	useEffect(() => {
+		if (isSuccessDel) {
+			refetch();
+			setShowDeleteDialog(false);
+			dispatch(
+				addMessage({
+					message: DELETE_SUCCESS,
+					type: 'success',
+				})
+			);
+		} else if (isError) {
+			let message = ERROR_SERVER;
+			message = extractMeaningfulMessage(errorDel, message);
+			dispatch(
+				addMessage({
+					message: message,
+					type: 'error',
+				})
+			);
+		}
+	}, [isSuccessDel, isError, dispatch, errorDel, refetch]);
 
 	const actions = [
 		{

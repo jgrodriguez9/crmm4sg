@@ -131,7 +131,7 @@ const LeadProfile = () => {
 			const parseInfoLeft = [
 				{
 					tableClass:
-						'table table-sm align-middle pb-3 fs-7 table-borderless border-bottom w-100',
+						'table table-sm pb-3 fs-7 table-borderless border-bottom w-100',
 					header: null,
 					body: [
 						{

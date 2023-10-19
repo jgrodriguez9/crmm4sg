@@ -1,11 +1,9 @@
 import { Button, Col, Form, FormFeedback, Input, Label, Row } from 'reactstrap';
 import DatePicker from '../../../../Common/DatePicker';
-import Select from 'react-select';
 import {
 	ERROR_SERVER,
 	FIELD_REQUIRED,
 	SAVE_SUCCESS,
-	SELECT_OPTION,
 	UPDATE_SUCCESS,
 } from '../../../../constants/messages';
 import { useDispatch } from 'react-redux';
@@ -13,10 +11,15 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import removetEmptyObject from '../../../../../util/removetEmptyObject';
 import moment from 'moment';
-import { createPax, updatePax } from '../../../../../helpers/pax';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useMutation } from 'react-query';
+import {
+	createPaxService,
+	updatePaxService,
+} from '../../../../../services/pax';
+import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 
 const FormPaxes = ({
 	toggleDialog,
@@ -30,6 +33,68 @@ const FormPaxes = ({
 			? moment(pax?.fechadnacimiento, 'YYYY-MM-DD').toDate()
 			: null
 	);
+
+	//create pax
+	const {
+		mutate: createItem,
+		isLoading: isCreating,
+		isError: isErrorCreating,
+		error: errorCreating,
+		isSuccess: isSuccessCreating,
+	} = useMutation(createPaxService);
+
+	useEffect(() => {
+		if (isSuccessCreating) {
+			dispatch(
+				addMessage({
+					type: 'success',
+					message: SAVE_SUCCESS,
+				})
+			);
+			toggleDialog();
+			refetchPaxs();
+		} else if (isErrorCreating) {
+			let message = ERROR_SERVER;
+			message = extractMeaningfulMessage(errorCreating, message);
+			dispatch(
+				addMessage({
+					type: 'error',
+					message: message,
+				})
+			);
+		}
+	}, [isSuccessCreating, isErrorCreating, dispatch, errorCreating]);
+
+	//update pax
+	const {
+		mutate: updateItem,
+		isLoading: isUpdating,
+		isError: isErrorUpdating,
+		error: errorUpdating,
+		isSuccess: isSuccessUpdating,
+	} = useMutation(updatePaxService);
+
+	useEffect(() => {
+		if (isSuccessUpdating) {
+			dispatch(
+				addMessage({
+					type: 'success',
+					message: UPDATE_SUCCESS,
+				})
+			);
+			toggleDialog();
+			refetchPaxs();
+		} else if (isErrorUpdating) {
+			let message = ERROR_SERVER;
+			message = extractMeaningfulMessage(errorUpdating, message);
+			dispatch(
+				addMessage({
+					type: 'error',
+					message: message,
+				})
+			);
+		}
+	}, [isSuccessUpdating, isErrorUpdating, dispatch, errorUpdating]);
 
 	const formik = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
@@ -50,72 +115,27 @@ const FormPaxes = ({
 		}),
 		onSubmit: async (values) => {
 			//submit request
-			try {
-				const data = {};
-				Object.entries(removetEmptyObject(values)).forEach((entry) => {
-					const [key, value] = entry;
-					if (key === 'fechadnacimiento') {
-						data[key] = moment(values.fechadnacimiento).format(
-							'YYYY-MM-DD'
-						);
-					} else {
-						data[key] = value;
-					}
-				});
-				if (values.id) {
-					//updating existing one
-					let response = await updatePax(
-						values.id,
-						reservationId,
-						data
+			const data = {};
+			Object.entries(removetEmptyObject(values)).forEach((entry) => {
+				const [key, value] = entry;
+				if (key === 'fechadnacimiento') {
+					data[key] = moment(values.fechadnacimiento).format(
+						'YYYY-MM-DD'
 					);
-					if (response) {
-						dispatch(
-							addMessage({
-								type: 'success',
-								message: UPDATE_SUCCESS,
-							})
-						);
-						toggleDialog();
-						refetchPaxs();
-					} else {
-						dispatch(
-							addMessage({
-								type: 'error',
-								message: ERROR_SERVER,
-							})
-						);
-					}
 				} else {
-					//creating one
-					let response = await createPax(data);
-					if (response) {
-						dispatch(
-							addMessage({
-								type: 'success',
-								message: SAVE_SUCCESS,
-							})
-						);
-						toggleDialog();
-						refetchPaxs();
-					} else {
-						dispatch(
-							addMessage({
-								type: 'error',
-								message: ERROR_SERVER,
-							})
-						);
-					}
+					data[key] = value;
 				}
-			} catch (error) {
-				let message = ERROR_SERVER;
-				message = extractMeaningfulMessage(error, message);
-				dispatch(
-					addMessage({
-						type: 'error',
-						message: message,
-					})
-				);
+			});
+			if (values.id) {
+				//updating existing one
+				updateItem({
+					idPax: values.id,
+					reservationId: reservationId,
+					body: data,
+				});
+			} else {
+				//creating one
+				createItem({ body: data });
 			}
 		},
 	});
@@ -252,19 +272,40 @@ const FormPaxes = ({
 				</Col>
 			</Row>
 
-			<div className="d-flex mt-3">
-				<Button type="submit" color="primary" className="me-2">
-					Aceptar
-				</Button>
-				<Button
-					type="button"
-					color="danger"
-					className="btn-soft-danger"
-					onClick={toggleDialog ? toggleDialog : () => {}}
-				>
-					Cancelar
-				</Button>
-			</div>
+			{isCreating || isUpdating ? (
+				<div className="d-flex my-3">
+					<ButtonsLoader
+						buttons={[
+							{
+								text: 'Aceptar',
+								color: 'primary',
+								className: 'me-2',
+								loader: true,
+							},
+							{
+								text: 'Cancelar',
+								color: 'danger',
+								className: 'btn-soft-danger',
+								loader: false,
+							},
+						]}
+					/>
+				</div>
+			) : (
+				<div className="d-flex mt-3">
+					<Button type="submit" color="primary" className="me-2">
+						Aceptar
+					</Button>
+					<Button
+						type="button"
+						color="danger"
+						className="btn-soft-danger"
+						onClick={toggleDialog ? toggleDialog : () => {}}
+					>
+						Cancelar
+					</Button>
+				</div>
+			)}
 		</Form>
 	);
 };

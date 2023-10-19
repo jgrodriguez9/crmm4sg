@@ -6,6 +6,7 @@ const getPaxByReservationAndId = (idPax, idReservation) =>
 const createPax = (data) => post(`${url.pax}`, data);
 const updatePax = (idPax, idReservation, data) =>
 	put(`${url.pax}/${idPax}/${idReservation}`, data);
-const deletePax = (idPax, idReservation) => del(`${url.pax}/${idPax}`);
+const deletePax = (idPax, idReservation) =>
+	del(`${url.pax}/${idPax}/${idReservation}`);
 
 export { getPaxByReservationAndId, createPax, updatePax, deletePax };

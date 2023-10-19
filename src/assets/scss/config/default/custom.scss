@@ -143,3 +143,13 @@ div.form-check-input.checked {
 .shadow {
   box-shadow: 0 1px 2px rgba(56, 65, 74, 0.50) !important;
 }
+.content-loader{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
