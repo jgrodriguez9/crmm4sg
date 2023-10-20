@@ -35,6 +35,8 @@ import { useEffect } from 'react';
 import OriginClient from '../../../../Components/Operation/Lead/Tab/OriginClient';
 import BasicModal from '../../../../Components/Common/BasicModal';
 import FormClient from '../../../../Components/Operation/Lead/Tab/LeadInformation/FormClient';
+import moment from 'moment';
+import { DATE_FORMAT } from '../../../../common/globalsProp';
 
 const LeadProfile = () => {
 	document.title = 'Detalle del Lead | CRM - M4S';
@@ -247,7 +249,12 @@ const LeadProfile = () => {
 							title: 'Fecha nacimiento',
 							items: [
 								{
-									title: itemData?.data?.fechaNacimiento,
+									title: itemData?.data?.fechaNacimiento
+										? moment(
+												itemData?.data?.fechaNacimiento,
+												'YYYY-MM-DD'
+										  ).format(DATE_FORMAT)
+										: '',
 									iconClass: null,
 									action: () => {},
 								},

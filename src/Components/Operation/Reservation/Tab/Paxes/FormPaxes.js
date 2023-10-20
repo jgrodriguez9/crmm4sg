@@ -20,6 +20,8 @@ import {
 	updatePaxService,
 } from '../../../../../services/pax';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
+import calcAge from '../../../../../util/calcAge';
+import DisabledInput from '../../../../Controller/DisabledInput';
 
 const FormPaxes = ({
 	toggleDialog,
@@ -104,7 +106,10 @@ const FormPaxes = ({
 			firstName: pax?.firstName ?? '',
 			lastName: pax?.lastName ?? '',
 			fechadnacimiento: pax?.fechadnacimiento ?? '',
-			age: pax?.age ?? '',
+			age:
+				pax?.age ?? pax?.fechadnacimiento
+					? calcAge(moment(pax?.fechadnacimiento))
+					: '',
 			relation: pax?.relation ?? '',
 			occupation: pax?.occupation ?? '',
 			reservation: reservationId,
@@ -139,7 +144,6 @@ const FormPaxes = ({
 			}
 		},
 	});
-	console.log(formik.values);
 	return (
 		<Form
 			className="needs-validation fs-7"
@@ -209,11 +213,16 @@ const FormPaxes = ({
 										`fechadnacimiento`,
 										value[0]
 									);
+									const fecha = moment(value[0]).format(
+										'YYYY/MM/DD'
+									);
+									formik.setFieldValue('age', calcAge(fecha));
 								} else {
 									formik.setFieldValue(
 										`fechadnacimiento`,
 										null
 									);
+									formik.setFieldValue('age', '');
 								}
 							}}
 						/>
@@ -224,16 +233,7 @@ const FormPaxes = ({
 						<Label className="form-label mb-0" htmlFor="age">
 							Edad
 						</Label>
-						<Input
-							type="text"
-							className={`form-control ${
-								formik.errors.age ? 'is-invalid' : ''
-							}`}
-							id="age"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.age}
-						/>
+						<DisabledInput value={formik.values.age} />
 					</div>
 				</Col>
 				<Col lg={12}>
