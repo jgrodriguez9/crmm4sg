@@ -33,3 +33,6 @@ export const maritalStatus = '/customer/getMaritalStatusList';
 
 //paxes
 export const pax = '/pax';
+
+//contract service
+export const contractService = '/contractService/subserviceList';

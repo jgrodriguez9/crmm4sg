@@ -1,5 +1,4 @@
 import { useQuery } from 'react-query';
-import { fecthServicesByReservation } from '../../../pages/Operation/Reservation/Util/services';
 import { useMemo } from 'react';
 import jsFormatNumber from '../../../util/jsFormatNumber';
 import moment from 'moment';
@@ -10,16 +9,29 @@ import Loader from '../../Common/Loader';
 import { useState } from 'react';
 import BasicModal from '../../Common/BasicModal';
 import FormService from './Tab/Service/FormService';
+import { getServicesByReservation } from '../../../helpers/contractService';
 
 const ReservationService = ({ ReservationId }) => {
 	const [showModal, setShowModal] = useState(false);
 	const { data, error, isLoading, isSuccess } = useQuery(
 		['getServiceByReservation', ReservationId],
-		() => fecthServicesByReservation(ReservationId),
+		async () => {
+			const response = await getServicesByReservation(ReservationId);
+			console.log(response);
+			return response;
+		},
 		{
 			keepPreviousData: true,
+			select: (response) => response.data.subServiceList,
 		}
 	);
+	// const { data, error, isLoading, isSuccess } = useQuery(
+	// 	['getServiceByReservation', ReservationId],
+	// 	() => fecthServicesByReservation(ReservationId),
+	// 	{
+	// 		keepPreviousData: true,
+	// 	}
+	// );
 
 	const columns = useMemo(
 		() => [
@@ -119,7 +131,7 @@ const ReservationService = ({ ReservationId }) => {
 							<>
 								<TableContainer
 									columns={columns}
-									data={isSuccess ? data.data.list : []}
+									data={isSuccess ? data : []}
 									className="custom-header-css"
 									divClass="mb-3"
 									tableClass="align-middle table-wrap"

@@ -4,6 +4,7 @@ import {
 	ERROR_SERVER,
 	FIELD_REQUIRED,
 	SAVE_SUCCESS,
+	SELECT_OPTION,
 	UPDATE_SUCCESS,
 } from '../../../../constants/messages';
 import { useDispatch } from 'react-redux';
@@ -14,7 +15,7 @@ import moment from 'moment';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 import { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import {
 	createPaxService,
 	updatePaxService,
@@ -22,6 +23,8 @@ import {
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import calcAge from '../../../../../util/calcAge';
 import DisabledInput from '../../../../Controller/DisabledInput';
+import { getRelationship } from '../../../../../helpers/pax';
+import Select from 'react-select';
 
 const FormPaxes = ({
 	toggleDialog,
@@ -34,6 +37,25 @@ const FormPaxes = ({
 		pax?.fechadnacimiento
 			? moment(pax?.fechadnacimiento, 'YYYY-MM-DD').toDate()
 			: null
+	);
+
+	//query to get relationship
+	const { data: dataRelationships } = useQuery(
+		'getRelationship',
+		async () => {
+			const response = await getRelationship();
+			return response;
+		},
+		{
+			select: (response) => {
+				return (
+					response.data.relationList.map((item) => ({
+						value: item.id,
+						label: item.spanishDescription,
+					})) ?? []
+				);
+			},
+		}
 	);
 
 	//create pax
@@ -110,7 +132,7 @@ const FormPaxes = ({
 				pax?.age ?? pax?.fechadnacimiento
 					? calcAge(moment(pax?.fechadnacimiento))
 					: '',
-			relation: pax?.relation ?? '',
+			relation: pax?.relation,
 			occupation: pax?.occupation ?? '',
 			reservation: reservationId,
 		},
@@ -258,15 +280,30 @@ const FormPaxes = ({
 						<Label className="form-label mb-0" htmlFor="relation">
 							Relación
 						</Label>
-						<Input
-							type="text"
-							className={`form-control ${
-								formik.errors.relation ? 'is-invalid' : ''
-							}`}
-							id="relation"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.relation}
+						<Select
+							value={
+								formik.values.relation
+									? {
+											value: formik.values.relation.id,
+											label:
+												dataRelationships.find(
+													(item) =>
+														item.value ===
+														formik.values.relation
+															.id
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'relation.id',
+									value.value
+								);
+							}}
+							options={dataRelationships}
+							classNamePrefix="select2-selection"
+							placeholder={SELECT_OPTION}
 						/>
 					</div>
 				</Col>

@@ -15,6 +15,7 @@ import ViewReservationInformation from './ViewReservationInformation';
 import ReservationPaxes from './ReservationPaxes';
 import ReservationService from './ReservationService';
 import ReservationPayment from './ReservationPayment';
+import ReservationTransportation from './ReservationTransportation';
 
 const TabsReservation = ({ itemData }) => {
 	const [activeTab, setActiveTab] = useState('1');
@@ -51,6 +52,20 @@ const TabsReservation = ({ itemData }) => {
 						<NavLink
 							to="#"
 							className={classNames({
+								active: activeTab === '3',
+							})}
+							onClick={() => {
+								tabChange('3');
+							}}
+							type="button"
+						>
+							<h6 className="text-primary">Paxes</h6>
+						</NavLink>
+					</NavItem>
+					<NavItem>
+						<NavLink
+							to="#"
+							className={classNames({
 								active: activeTab === '2',
 							})}
 							onClick={() => {
@@ -61,18 +76,19 @@ const TabsReservation = ({ itemData }) => {
 							<h6 className="text-primary">Pagos</h6>
 						</NavLink>
 					</NavItem>
+
 					<NavItem>
 						<NavLink
 							to="#"
 							className={classNames({
-								active: activeTab === '3',
+								active: activeTab === '5',
 							})}
 							onClick={() => {
-								tabChange('3');
+								tabChange('5');
 							}}
 							type="button"
 						>
-							<h6 className="text-primary">Paxes</h6>
+							<h6 className="text-primary">Servicios</h6>
 						</NavLink>
 					</NavItem>
 					<NavItem>
@@ -89,20 +105,6 @@ const TabsReservation = ({ itemData }) => {
 							<h6 className="text-primary">Transportación</h6>
 						</NavLink>
 					</NavItem>
-					<NavItem>
-						<NavLink
-							to="#"
-							className={classNames({
-								active: activeTab === '5',
-							})}
-							onClick={() => {
-								tabChange('5');
-							}}
-							type="button"
-						>
-							<h6 className="text-primary">Servicios</h6>
-						</NavLink>
-					</NavItem>
 				</Nav>
 				<hr />
 				<Row>
@@ -117,13 +119,6 @@ const TabsReservation = ({ itemData }) => {
 									/>
 								)}
 							</TabPane>
-							<TabPane tabId="2">
-								{activeTab === '2' && (
-									<ReservationPayment
-										ReservationId={itemData.data.id}
-									/>
-								)}
-							</TabPane>
 							<TabPane tabId="3">
 								{activeTab === '3' && (
 									<ReservationPaxes
@@ -131,10 +126,23 @@ const TabsReservation = ({ itemData }) => {
 									/>
 								)}
 							</TabPane>
-							<TabPane tabId="4">Transportación</TabPane>
 							<TabPane tabId="5">
 								{activeTab === '5' && (
 									<ReservationService
+										ReservationId={itemData.data.id}
+									/>
+								)}
+							</TabPane>
+							<TabPane tabId="2">
+								{activeTab === '2' && (
+									<ReservationPayment
+										ReservationId={itemData.data.id}
+									/>
+								)}
+							</TabPane>
+							<TabPane tabId="4">
+								{activeTab === '4' && (
+									<ReservationTransportation
 										ReservationId={itemData.data.id}
 									/>
 								)}

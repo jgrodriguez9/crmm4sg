@@ -8,5 +8,12 @@ const updatePax = (idPax, idReservation, data) =>
 	put(`${url.pax}/${idPax}/${idReservation}`, data);
 const deletePax = (idPax, idReservation) =>
 	del(`${url.pax}/${idPax}/${idReservation}`);
+const getRelationship = () => get(`${url.pax}/relationList`);
 
-export { getPaxByReservationAndId, createPax, updatePax, deletePax };
+export {
+	getPaxByReservationAndId,
+	createPax,
+	updatePax,
+	deletePax,
+	getRelationship,
+};

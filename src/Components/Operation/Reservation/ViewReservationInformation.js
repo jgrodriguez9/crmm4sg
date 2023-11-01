@@ -1,7 +1,6 @@
 import moment from 'moment';
 import { Col, Label, Row } from 'reactstrap';
 import diffDates from '../../../util/diffDates';
-import Flatpickr from 'react-flatpickr';
 import { useState } from 'react';
 import BasicModal from '../../Common/BasicModal';
 import FormReservationEdit from './Tab/Reservation/FormReservationEdit';
@@ -41,7 +40,7 @@ const ViewReservationInformation = ({
 									No. confirmación
 								</Label>
 								<div className="form-control" id="confirmacion">
-									-
+									{data?.confirm ?? '-'}
 								</div>
 							</div>
 						</Col>
@@ -249,7 +248,7 @@ const ViewReservationInformation = ({
 							Tarjetas
 						</Label>
 						<div className="form-control" id="tarjetas">
-							{data?.visa + data?.amex + data?.mc}
+							{data?.cards ?? '-'}
 						</div>
 					</div>
 				</Col>
@@ -313,7 +312,9 @@ const ViewReservationInformation = ({
 							S
 						</Label>
 						<div
-							className="form-check-input"
+							className={`form-check-input ${
+								data?.other > 0 ? 'checked' : ''
+							}`}
 							type="checkbox"
 							id="otras"
 						/>
@@ -328,7 +329,7 @@ const ViewReservationInformation = ({
 							Cual
 						</Label>
 						<div className="form-control" id="cual">
-							-
+							{data?.cotra ?? ''}
 						</div>
 					</div>
 				</Col>
