@@ -1,20 +1,20 @@
-import { Col, Row } from 'reactstrap';
-import TableNotas from './NotasCliente/TableNotas';
 import { useState } from 'react';
-import BasicModal from '../../../Common/BasicModal';
-import FormNotaCliente from './NotasCliente/FormNotaCliente';
 import { useQuery } from 'react-query';
-import { getNotesByClient } from '../../../../helpers/notes';
-import { deleteIconClass, editIconClass } from '../../../constants/icons';
-import DeleteModal from '../../../Common/DeleteModal';
+import { getNotesByReservation } from '../../../helpers/notes';
+import { Col, Row } from 'reactstrap';
+import TableNotas from '../Lead/Tab/NotasCliente/TableNotas';
+import BasicModal from '../../Common/BasicModal';
+import FormNotaCliente from '../Lead/Tab/NotasCliente/FormNotaCliente';
+import { deleteIconClass, editIconClass } from '../../constants/icons';
+import DeleteModal from '../../Common/DeleteModal';
 
-const NotasCliente = ({ customerId }) => {
+const ReservationNotas = ({ ReservationId }) => {
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const { data, error, isLoading, isSuccess } = useQuery(
-		['getNotesByClient', customerId],
+		['getNotesByClient', ReservationId],
 		async () => {
-			const response = await getNotesByClient(customerId);
+			const response = await getNotesByReservation(ReservationId);
 			return response;
 		},
 		{
@@ -54,11 +54,11 @@ const NotasCliente = ({ customerId }) => {
 				<Col>
 					<div className="d-flex align-items-center justify-content-end flex-wrap gap-2 mb-2">
 						<button
-							className="btn btn-info"
+							className="btn btn-info btn-sm"
 							onClick={() => setShowAddModal(true)}
 						>
 							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
-							Agregar
+							Nueva nota
 						</button>
 					</div>
 				</Col>
@@ -87,4 +87,4 @@ const NotasCliente = ({ customerId }) => {
 	);
 };
 
-export default NotasCliente;
+export default ReservationNotas;

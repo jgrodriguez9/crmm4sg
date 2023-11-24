@@ -10,6 +10,7 @@
 		"Apellidos",
 		"Atribución",
 		"borderless",
+		"Buscar",
 		"callcenter",
 		"cancelada",
 		"Cancelar",
@@ -79,6 +80,7 @@
 		"Teléfono",
 		"telefonos",
 		"Teléfonos",
+		"Tipo",
 		"toastify",
 		"trabajo",
 		"Usuario"

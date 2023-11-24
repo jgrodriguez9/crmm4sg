@@ -3,9 +3,9 @@ import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { Alert, Input } from 'reactstrap';
 import SimpleBar from 'simplebar-react';
-import { fecthItems } from '../../pages/Operation/Lead/Util/services';
 import Loader from './Loader';
 import showFriendlyMessafe from '../../util/showFriendlyMessafe';
+import { filterGlobalCustomer } from '../../helpers/reservation';
 
 const SearchOption = () => {
 	const [value, setValue] = useState('');
@@ -19,8 +19,12 @@ const SearchOption = () => {
 		refetch,
 		isLoading,
 	} = useQuery(
-		['getCustomerByPhone', value],
-		() => fecthItems(`max=10&page=1&booking=${value}`),
+		['filterGlobalCustomer', value],
+		async () => {
+			const response = await filterGlobalCustomer(value);
+			console.log(response);
+			return response;
+		},
 		{
 			enabled: false,
 		}
@@ -91,6 +95,7 @@ const SearchOption = () => {
 				<div
 					className="dropdown-menu dropdown-menu-lg"
 					id="search-dropdown"
+					style={{ width: '620px' }}
 				>
 					<SimpleBar style={{ height: '420px' }}>
 						<div className="dropdown-header">
@@ -120,19 +125,24 @@ const SearchOption = () => {
 											<thead>
 												<tr>
 													<th
-														style={{ width: '60%' }}
+														style={{ width: '55%' }}
 													>
 														Nombre
 													</th>
 													<th
-														style={{ width: '20%' }}
+														style={{ width: '15%' }}
 													>
-														País
+														Certificado
 													</th>
 													<th
-														style={{ width: '20%' }}
+														style={{ width: '15%' }}
 													>
-														Estado
+														Reservación
+													</th>
+													<th
+														style={{ width: '15%' }}
+													>
+														Confirmación
 													</th>
 												</tr>
 											</thead>
@@ -143,7 +153,7 @@ const SearchOption = () => {
 															key={it.id}
 															onClick={(e) =>
 																navigate(
-																	`/client/${it.id}`
+																	`/client/${it?.customer?.id}`
 																)
 															}
 															style={{
@@ -151,18 +161,23 @@ const SearchOption = () => {
 															}}
 														>
 															<td>{`${
-																it?.firstName ??
+																it?.customer
+																	?.firstName ??
 																''
 															} ${
-																it?.lastName ??
+																it?.customer
+																	?.lastName ??
 																''
 															}`}</td>
 															<td>
-																{it?.country ??
+																{it?.certificate ??
 																	''}
 															</td>
 															<td>
-																{it?.state ??
+																{it?.id ?? ''}
+															</td>
+															<td>
+																{it?.confirm ??
 																	''}
 															</td>
 														</tr>

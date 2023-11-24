@@ -15,7 +15,7 @@ import moment from 'moment';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 import { useEffect, useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import {
 	createPaxService,
 	updatePaxService,
@@ -23,7 +23,6 @@ import {
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import calcAge from '../../../../../util/calcAge';
 import DisabledInput from '../../../../Controller/DisabledInput';
-import { getRelationship } from '../../../../../helpers/pax';
 import Select from 'react-select';
 
 const FormPaxes = ({
@@ -31,31 +30,13 @@ const FormPaxes = ({
 	pax = null,
 	reservationId,
 	refetchPaxs,
+	dataRelationships,
 }) => {
 	const dispatch = useDispatch();
 	const [fechaNacimiento, setFechaNacimiento] = useState(
 		pax?.fechadnacimiento
 			? moment(pax?.fechadnacimiento, 'YYYY-MM-DD').toDate()
 			: null
-	);
-
-	//query to get relationship
-	const { data: dataRelationships } = useQuery(
-		'getRelationship',
-		async () => {
-			const response = await getRelationship();
-			return response;
-		},
-		{
-			select: (response) => {
-				return (
-					response.data.relationList.map((item) => ({
-						value: item.id,
-						label: item.spanishDescription,
-					})) ?? []
-				);
-			},
-		}
 	);
 
 	//create pax
@@ -284,22 +265,18 @@ const FormPaxes = ({
 							value={
 								formik.values.relation
 									? {
-											value: formik.values.relation.id,
+											value: formik.values.relation,
 											label:
 												dataRelationships.find(
 													(item) =>
 														item.value ===
 														formik.values.relation
-															.id
 												)?.label ?? '',
 									  }
 									: null
 							}
 							onChange={(value) => {
-								formik.setFieldValue(
-									'relation.id',
-									value.value
-								);
+								formik.setFieldValue('relation', value.value);
 							}}
 							options={dataRelationships}
 							classNamePrefix="select2-selection"

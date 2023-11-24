@@ -17,6 +17,7 @@ import { DELETE_SUCCESS, ERROR_SERVER } from '../../constants/messages';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
+import { getRelationship } from '../../../helpers/pax';
 
 const ReservationPaxes = ({ reservationId }) => {
 	const [showModal, setShowModal] = useState(false);
@@ -28,6 +29,25 @@ const ReservationPaxes = ({ reservationId }) => {
 		() => fecthPaxesByReservation(reservationId),
 		{
 			keepPreviousData: true,
+		}
+	);
+	//realtions ships
+	//query to get relationship
+	const { data: dataRelationships } = useQuery(
+		'getRelationship',
+		async () => {
+			const response = await getRelationship();
+			return response;
+		},
+		{
+			select: (response) => {
+				return (
+					response.data.relationList.map((item) => ({
+						value: item.id,
+						label: item.spanishDescription,
+					})) ?? []
+				);
+			},
 		}
 	);
 	//delete pax
@@ -101,13 +121,16 @@ const ReservationPaxes = ({ reservationId }) => {
 				filterable: false,
 				width: '40%',
 				Cell: ({ row, value }) =>
-					`${value.toUpperCase()} ${row.original.lastName.toUpperCase()}`,
+					`${value?.toUpperCase()} ${row.original.lastName?.toUpperCase()}`,
 			},
 			{
 				Header: 'Relación',
 				accessor: 'relation',
 				filterable: false,
 				width: '20%',
+				Cell: ({ value }) =>
+					dataRelationships?.find((it) => it.value === value)
+						?.label ?? value,
 			},
 			{
 				Header: 'Ocupación',
@@ -133,7 +156,7 @@ const ReservationPaxes = ({ reservationId }) => {
 				},
 			},
 		],
-		[]
+		[dataRelationships]
 	);
 
 	const toggleDialog = () => setShowModal(!showModal);
@@ -201,6 +224,7 @@ const ReservationPaxes = ({ reservationId }) => {
 						reservationId={reservationId}
 						refetchPaxs={refetch}
 						pax={pax}
+						dataRelationships={dataRelationships}
 					/>
 				}
 			/>

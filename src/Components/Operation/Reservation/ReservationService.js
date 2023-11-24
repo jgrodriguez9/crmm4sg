@@ -9,29 +9,21 @@ import Loader from '../../Common/Loader';
 import { useState } from 'react';
 import BasicModal from '../../Common/BasicModal';
 import FormService from './Tab/Service/FormService';
-import { getServicesByReservation } from '../../../helpers/contractService';
+import { getServicesByReservation } from '../../../helpers/reservation';
 
-const ReservationService = ({ ReservationId }) => {
+const ReservationService = ({ ReservationId, reservation }) => {
 	const [showModal, setShowModal] = useState(false);
 	const { data, error, isLoading, isSuccess } = useQuery(
 		['getServiceByReservation', ReservationId],
 		async () => {
 			const response = await getServicesByReservation(ReservationId);
-			console.log(response);
 			return response;
 		},
 		{
 			keepPreviousData: true,
-			select: (response) => response.data.subServiceList,
+			select: (response) => response.data.list,
 		}
 	);
-	// const { data, error, isLoading, isSuccess } = useQuery(
-	// 	['getServiceByReservation', ReservationId],
-	// 	() => fecthServicesByReservation(ReservationId),
-	// 	{
-	// 		keepPreviousData: true,
-	// 	}
-	// );
 
 	const columns = useMemo(
 		() => [
@@ -39,7 +31,7 @@ const ReservationService = ({ ReservationId }) => {
 				Header: 'Descripción',
 				accessor: 'description',
 				filterable: false,
-				width: '29%',
+				width: '25%',
 			},
 			{
 				Header: 'Adultos',
@@ -57,21 +49,21 @@ const ReservationService = ({ ReservationId }) => {
 				Header: 'Monto',
 				accessor: 'amount',
 				filterable: false,
-				width: '8%',
+				width: '10%',
 				Cell: ({ value }) => jsFormatNumber(value),
 			},
 			{
 				Header: 'Comisión',
 				accessor: 'commission',
 				filterable: false,
-				width: '8%',
+				width: '10%',
 				Cell: ({ value }) => jsFormatNumber(value),
 			},
 			{
 				Header: 'User',
 				accessor: 'user',
 				filterable: false,
-				width: '15%',
+				width: '10%',
 			},
 			{
 				Header: 'Comisión del usuario',
@@ -148,7 +140,13 @@ const ReservationService = ({ ReservationId }) => {
 				setOpen={setShowModal}
 				title="Agregar Servicio"
 				size="md"
-				children={<FormService toggleDialog={toggleDialog} />}
+				children={
+					<FormService
+						toggleDialog={toggleDialog}
+						ReservationId={ReservationId}
+						reservation={reservation}
+					/>
+				}
 			/>
 		</>
 	);

@@ -9,6 +9,8 @@ const getServicesByReservation = (id) =>
 	get(`${url.reservation}/getAllServices/${id}`);
 const getPaymentsByReservation = (id) =>
 	get(`${url.reservation}/getAllPayments/${id}`);
+const filterGlobalCustomer = (parameter) =>
+	get(`${url.reservation}/search?parameter=${parameter}`);
 
 export {
 	getReservationPaginate,
@@ -16,4 +18,5 @@ export {
 	getPaxesByReservation,
 	getServicesByReservation,
 	getPaymentsByReservation,
+	filterGlobalCustomer,
 };

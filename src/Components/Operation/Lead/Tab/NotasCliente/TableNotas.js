@@ -1,119 +1,93 @@
-import { useMemo, useState } from "react";
-import TableContainer from "../../../../Common/TableContainer";
-import Loader from "../../../../Common/Loader";
-import { useEffect } from "react";
-import { listNotas } from "../../../../../common/data/common";
+import { useMemo } from 'react';
+import TableContainer from '../../../../Common/TableContainer';
+import Loader from '../../../../Common/Loader';
+import moment from 'moment';
+import CellActions from '../../../../Common/CellActions';
 
-const TableNotas = () => {
-    const [item, setItems] = useState({
-        loading: true,
-        data: [],
-        isSuccess: false,
-        error: null
-    });
+const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
+	const columns = useMemo(
+		() => [
+			{
+				Header: 'Tipo',
+				accessor: 'noteType.type',
+				filterable: false,
+				style: {
+					width: '10%',
+				},
+			},
+			{
+				Header: 'Estado',
+				accessor: 'status',
+				filterable: false,
+				style: {
+					width: '10%',
+				},
+			},
+			{
+				Header: 'Nota',
+				accessor: 'note',
+				filterable: false,
+				style: {
+					width: '35%',
+				},
+			},
+			{
+				Header: 'Req. especial',
+				accessor: 'specialReq',
+				filterable: false,
+				style: {
+					width: '20%',
+				},
+			},
+			{
+				Header: 'Fecha',
+				accessor: 'date',
+				filterable: false,
+				style: {
+					width: '10%',
+				},
+				Cell: ({ value }) =>
+					value
+						? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY')
+						: '',
+			},
+			{
+				Header: 'Usuario',
+				accessor: 'user',
+				filterable: false,
+				style: {
+					width: '10%',
+				},
+			},
+			{
+				id: 'action',
+				width: '5%',
+				Cell: ({ row }) => {
+					return <CellActions actions={actions} row={row} />;
+				},
+			},
+		],
+		[]
+	);
+	return (
+		<div>
+			{isSuccess || !isLoading ? (
+				<TableContainer
+					columns={columns}
+					data={data}
+					isGlobalFilter={false}
+					isAddUserList={false}
+					customPageSize={8}
+					className="custom-header-css"
+					divClass="mb-3"
+					tableClass="align-middle table-wrap"
+					hover={false}
+				/>
+			) : (
+				<Loader error={error} />
+			)}
+		</div>
+	);
+};
 
-    const columns = useMemo(
-        () => [
-          {
-            Header: "Tipo",
-            accessor: "tipo",
-            filterable: false,
-            style: {
-                width: '10%',
-            }
-          },
-          {
-            Header: "Motivo",
-            accessor: "motivo",
-            filterable: false,
-            style: {
-                width: '14%',
-            }
-          },
-          {
-            Header: "Nota",
-            accessor: "nota",
-            filterable: false,
-            style: {
-                width: '30%',
-            }
-          },
-          {
-            Header: "Fecha",
-            accessor: "fecha",
-            filterable: false,
-            style: {
-                width: '8%',
-            }
-          },
-          {
-            Header: "Consultor",
-            accessor: "consultor",
-            filterable: false,
-            style: {
-                width: '12%',
-            }
-          },
-          {
-            Header: "Contrato",
-            accessor: "contrato",
-            filterable: false,
-            style: {
-                width: '10%',
-            }
-          },
-          {
-            Header: "Follow Up",
-            accessor: "followUp",
-            filterable: false,
-            style: {
-                width: '8%',
-            }
-          },
-          {
-            Header: "Hora FUp",
-            accessor: "horaFUp",
-            filterable: false,
-            style: {
-                width: '8%',
-            }
-          },
-        ],
-        []
-    );
-
-    //test
-    useEffect(() => {
-        setTimeout(() => {
-            setItems(prev=>({
-                ...prev,
-                loading: false,
-                isSuccess: true,
-                data: listNotas
-            }))
-        }, 2000)
-    }, [])
-
-    return (
-        <div>
-            {item.isSuccess || !item.loading ? (
-            <TableContainer
-                columns={columns}
-                data={item.data}
-                isGlobalFilter={false}
-                isAddUserList={false}
-                customPageSize={8}
-                className="custom-header-css"
-                divClass="table-responsive table-card mb-3"
-                tableClass="align-middle table-nowrap"
-                theadClass="table-light"
-                isContactsFilter={true}
-                SearchPlaceholder='Buscar...'
-            />
-            ) : (<Loader error={item.error} />)
-            }
-        </div>
-    )
-}
-
-export default TableNotas
+export default TableNotas;

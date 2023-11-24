@@ -35,4 +35,7 @@ export const maritalStatus = '/customer/getMaritalStatusList';
 export const pax = '/pax';
 
 //contract service
-export const contractService = '/contractService/subserviceList';
+export const contractService = '/contractService';
+
+// notas
+export const customerNote = '/customerNote';
