@@ -1,7 +1,13 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { useTable, usePagination, useExpanded } from 'react-table';
+import {
+	useTable,
+	usePagination,
+	useExpanded,
+	useGlobalFilter,
+} from 'react-table';
 import { Table } from 'reactstrap';
+import GlobalFilter from './GlobalFilter';
 
 const TableContainer = ({
 	columns,
@@ -21,24 +27,45 @@ const TableContainer = ({
 	setItems,
 	renderRowSubComponent = (row) => null,
 	tableTitle = null,
+	glFilter = false,
 }) => {
-	const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow } =
-		useTable(
-			{
-				columns,
-				data,
-				pageCount: pageCount,
-				manualPagination: true,
-				initialState: {
-					pageIndex: queryPageIndex,
-					pageSize: customPageSize,
-				},
+	const {
+		getTableProps,
+		getTableBodyProps,
+		headerGroups,
+		page,
+		prepareRow,
+		preGlobalFilteredRows,
+		setGlobalFilter,
+		state,
+	} = useTable(
+		{
+			columns,
+			data,
+			pageCount: pageCount,
+			manualPagination: true,
+			initialState: {
+				pageIndex: queryPageIndex,
+				pageSize: customPageSize,
 			},
-			useExpanded,
-			usePagination
-		);
+		},
+		useGlobalFilter,
+		useExpanded,
+		usePagination
+	);
 	return (
 		<Fragment>
+			{glFilter && (
+				<div className="d-flex mb-4">
+					<div style={{ marginTop: '-42px' }}>
+						<GlobalFilter
+							preGlobalFilteredRows={preGlobalFilteredRows}
+							globalFilter={state.globalFilter}
+							setGlobalFilter={setGlobalFilter}
+						/>
+					</div>
+				</div>
+			)}
 			<div className={divClass}>
 				<Table
 					hover={hover}

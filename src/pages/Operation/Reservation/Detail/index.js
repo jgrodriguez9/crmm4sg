@@ -117,6 +117,7 @@ const ReservationDetail = () => {
 						classes: 'badge rounded-pill bg-success fs-12',
 					},
 				],
+				sale: data.sale,
 			};
 			setDataView(bannerData);
 		}

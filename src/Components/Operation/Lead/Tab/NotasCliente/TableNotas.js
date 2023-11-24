@@ -82,6 +82,7 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 					divClass="mb-3"
 					tableClass="align-middle table-wrap"
 					hover={false}
+					glFilter={true}
 				/>
 			) : (
 				<Loader error={error} />
