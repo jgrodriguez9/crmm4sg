@@ -10,8 +10,12 @@ import { useState } from 'react';
 import BasicModal from '../../Common/BasicModal';
 import FormService from './Tab/Service/FormService';
 import { getServicesByReservation } from '../../../helpers/reservation';
+import CellActions from '../../Common/CellActions';
+import { deleteIconClass, editIconClass } from '../../constants/icons';
+import DeleteModal from '../../Common/DeleteModal';
 
 const ReservationService = ({ ReservationId, reservation }) => {
+	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	const { data, error, isLoading, isSuccess } = useQuery(
 		['getServiceByReservation', ReservationId],
@@ -24,6 +28,26 @@ const ReservationService = ({ ReservationId, reservation }) => {
 			select: (response) => response.data.list,
 		}
 	);
+	const editRow = (row) => {
+		const { original } = row;
+		console.log(original);
+	};
+	const showDialogDelete = (row) => {
+		setShowDeleteDialog(true);
+	};
+
+	const actions = [
+		{
+			iconClass: `${editIconClass} fs-5 text-primary`,
+			click: editRow,
+			labelTooltip: 'Editar',
+		},
+		{
+			iconClass: `${deleteIconClass} fs-5 text-danger`,
+			click: showDialogDelete,
+			labelTooltip: 'Eliminar',
+		},
+	];
 
 	const columns = useMemo(
 		() => [
@@ -88,12 +112,25 @@ const ReservationService = ({ ReservationId, reservation }) => {
 						? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY')
 						: '',
 			},
+			{
+				id: 'action',
+				width: '5%',
+				Cell: ({ row }) => {
+					return <CellActions actions={actions} row={row} />;
+				},
+			},
 		],
 		[]
 	);
 
 	const toggleDialog = () => setShowModal(!showModal);
-
+	const handleDelete = async () => {
+		// const dataToDelete = {
+		// 	idPax: pax.id,
+		// 	idReservation: reservationId,
+		// };
+		// deletePaxMutation(dataToDelete);
+	};
 	return (
 		<>
 			{error && !isLoading && (
@@ -139,7 +176,7 @@ const ReservationService = ({ ReservationId, reservation }) => {
 				open={showModal}
 				setOpen={setShowModal}
 				title="Agregar Servicio"
-				size="md"
+				size="lg"
 				children={
 					<FormService
 						toggleDialog={toggleDialog}
@@ -147,6 +184,12 @@ const ReservationService = ({ ReservationId, reservation }) => {
 						reservation={reservation}
 					/>
 				}
+			/>
+			<DeleteModal
+				handleDelete={handleDelete}
+				show={showDeleteDialog}
+				setShow={setShowDeleteDialog}
+				isDeleting={false}
 			/>
 		</>
 	);

@@ -146,7 +146,7 @@ const ReservationPayment = ({ ReservationId }) => {
 					open={showModal}
 					setOpen={setShowModal}
 					title="Agregar pago"
-					size="md"
+					size="lg"
 					children={<FormPaymentClient toggleDialog={toggleDialog} />}
 				/>
 			</Row>

@@ -16,6 +16,7 @@ import { getSubServicesByReservation } from '../../../../../helpers/contractServ
 import { useState } from 'react';
 import DisabledInput from '../../../../Controller/DisabledInput';
 import jsFormatNumber from '../../../../../util/jsFormatNumber';
+import DatePicker from '../../../../Common/DatePicker';
 
 const FormService = ({
 	toggleDialog,
@@ -106,7 +107,7 @@ const FormService = ({
 				<Col lg={12}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="service">
-							Subservicio
+							Tipo
 						</Label>
 						<Select
 							value={
@@ -140,24 +141,29 @@ const FormService = ({
 						)}
 					</div>
 				</Col>
-				<Col lg={12}>
+				<Col lg={3}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="nombre">
-							Descripción
+							Días
 						</Label>
 						<Input
 							type="text"
 							className={`form-control ${
-								formik.errors.description ? 'is-invalid' : ''
+								formik.errors.pax ? 'is-invalid' : ''
 							}`}
-							id="description"
+							id="pax"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
-							value={formik.values.description}
+							value={formik.values.pax}
 						/>
+						{formik.errors.pax && (
+							<FormFeedback type="invalid" className="d-block">
+								{formik.errors.pax}
+							</FormFeedback>
+						)}
 					</div>
 				</Col>
-				<Col lg={6}>
+				<Col lg={3}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="nombre">
 							Adultos
@@ -179,7 +185,7 @@ const FormService = ({
 						)}
 					</div>
 				</Col>
-				<Col lg={6}>
+				<Col lg={3}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="nombre">
 							Menores
@@ -196,36 +202,70 @@ const FormService = ({
 						/>
 					</div>
 				</Col>
-				<Col lg={6}>
+				<Col lg={3}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="nombre">
-							Folio dolphin
+							Importe
 						</Label>
 						<Input
 							type="text"
 							className={`form-control ${
-								formik.errors.folioDolphin ? 'is-invalid' : ''
+								formik.errors.childs ? 'is-invalid' : ''
 							}`}
-							id="folioDolphin"
+							id="childs"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
-							value={formik.values.folioDolphin}
+							value={formik.values.childs}
 						/>
 					</div>
 				</Col>
 				<Col lg={6}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="nombre">
-							Total
+							Promoción
 						</Label>
-						<DisabledInput value={jsFormatNumber(price)} />
+						<Select
+							value={null}
+							onChange={() => {}}
+							options={[]}
+							name="choices-single-default"
+							id="idStatus"
+						></Select>
+					</div>
+				</Col>
+				<Col lg={6}>
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="nombre">
+							Fecha de uso
+						</Label>
+						<DatePicker
+							id="fechaLlegada"
+							date={null}
+							onChangeDate={() => {}}
+						/>
+					</div>
+				</Col>
+				<Col lg={12}>
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="nombre">
+							Descripción
+						</Label>
+						<textarea
+							id="description"
+							name="description"
+							className={`form-control`}
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.description}
+							rows={5}
+						/>
 					</div>
 				</Col>
 			</Row>
 
 			<div className="d-flex mt-3">
 				<Button type="submit" color="primary" className="me-2">
-					Pagar
+					Aceptar
 				</Button>
 				<Button
 					type="button"
