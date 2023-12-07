@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useMemo } from 'react';
 import jsFormatNumber from '../../../util/jsFormatNumber';
 import moment from 'moment';
@@ -13,11 +13,25 @@ import { getServicesByReservation } from '../../../helpers/reservation';
 import CellActions from '../../Common/CellActions';
 import { deleteIconClass, editIconClass } from '../../constants/icons';
 import DeleteModal from '../../Common/DeleteModal';
+import { deleteService } from '../../../helpers/contractService';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { addMessage } from '../../../slices/messages/reducer';
+import { DELETE_SUCCESS, ERROR_SERVER } from '../../constants/messages';
+import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
 
 const ReservationService = ({ ReservationId, reservation }) => {
+	const dispatch = useDispatch();
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+	const [serviceSelected, setServiceSelected] = useState(null);
 	const [showModal, setShowModal] = useState(false);
-	const { data, error, isLoading, isSuccess } = useQuery(
+	const {
+		data,
+		error,
+		isLoading,
+		isSuccess,
+		refetch: refetchServices,
+	} = useQuery(
 		['getServiceByReservation', ReservationId],
 		async () => {
 			const response = await getServicesByReservation(ReservationId);
@@ -31,8 +45,29 @@ const ReservationService = ({ ReservationId, reservation }) => {
 	const editRow = (row) => {
 		const { original } = row;
 		console.log(original);
+		setServiceSelected({
+			idService: original?.idService ?? '',
+			subService: original?.subService ?? '',
+			idBooking: original?.idBooking ?? '',
+			quantity: original?.quantity ?? '',
+			pax: original?.pax ?? 2,
+			amount: original?.amount ?? 0,
+			description: original?.description ?? '',
+			childs: original?.childs ?? 0,
+			// certificateNumber: reservation?.confirm ?? '',
+			// commission: 0,
+			// "userComission": "",
+			confirmation: reservation.confirm,
+			// "location": "Isla Mujeres",
+			folioDolphin: original?.folioDolphin,
+			// "idPromotion": 123,
+			reservation: reservation.id,
+		});
+		setShowModal(true);
 	};
 	const showDialogDelete = (row) => {
+		const { original } = row;
+		setServiceSelected(original);
 		setShowDeleteDialog(true);
 	};
 
@@ -123,14 +158,45 @@ const ReservationService = ({ ReservationId, reservation }) => {
 		[]
 	);
 
+	//delete service
+	const {
+		mutate: deleteItem,
+		isLoading: isDeleting,
+		isError,
+		error: errorDel,
+		isSuccess: isSuccessDel,
+	} = useMutation(deleteService);
+
 	const toggleDialog = () => setShowModal(!showModal);
 	const handleDelete = async () => {
-		// const dataToDelete = {
-		// 	idPax: pax.id,
-		// 	idReservation: reservationId,
-		// };
-		// deletePaxMutation(dataToDelete);
+		const dataToDelete = {
+			idBooking: serviceSelected.idBooking,
+			idService: serviceSelected.idService,
+		};
+		deleteItem(dataToDelete);
 	};
+
+	useEffect(() => {
+		if (isSuccessDel) {
+			refetchServices();
+			setShowDeleteDialog(false);
+			dispatch(
+				addMessage({
+					message: DELETE_SUCCESS,
+					type: 'success',
+				})
+			);
+		} else if (isError) {
+			let message = ERROR_SERVER;
+			message = extractMeaningfulMessage(errorDel, message);
+			dispatch(
+				addMessage({
+					message: message,
+					type: 'error',
+				})
+			);
+		}
+	}, [isSuccessDel, isError, dispatch, errorDel, refetchServices]);
 	return (
 		<>
 			{error && !isLoading && (
@@ -182,6 +248,8 @@ const ReservationService = ({ ReservationId, reservation }) => {
 						toggleDialog={toggleDialog}
 						ReservationId={ReservationId}
 						reservation={reservation}
+						service={serviceSelected}
+						refetchServices={refetchServices}
 					/>
 				}
 			/>
@@ -189,7 +257,7 @@ const ReservationService = ({ ReservationId, reservation }) => {
 				handleDelete={handleDelete}
 				show={showDeleteDialog}
 				setShow={setShowDeleteDialog}
-				isDeleting={false}
+				isDeleting={isDeleting}
 			/>
 		</>
 	);

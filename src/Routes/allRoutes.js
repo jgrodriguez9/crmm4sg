@@ -1,50 +1,43 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 
 //Dashboard
-import Dashboard from "../pages/Dashboard";
+import Dashboard from '../pages/Dashboard';
 
 //login
-import Login from "../pages/Authentication/Login";
-import Logout from "../pages/Authentication/Logout";
-import Lead from "../pages/Operation/Lead";
-import LeadProfile from "../pages/Operation/Lead/Detail";
-import Reservation from "../pages/Operation/Reservation";
-import ReservationDetail from "../pages/Operation/Reservation/Detail";
+import Login from '../pages/Authentication/Login';
+import Logout from '../pages/Authentication/Logout';
+import Lead from '../pages/Operation/Lead';
+import LeadProfile from '../pages/Operation/Lead/Detail';
+import Reservation from '../pages/Operation/Reservation';
+import ReservationDetail from '../pages/Operation/Reservation/Detail';
 
-// User Profile
-// import UserProfile from "../pages/Authentication/user-profile";
-
-
-const authProtectedRoutes = [
-  { path: "/dashboard", component: <Dashboard /> },
-
-  //Cliente
-  { path: "/client", component: <Lead /> },
-  { path: "/client/:id", component: <LeadProfile /> },
-
-  //Cliente
-  { path: "/reservation", component: <Reservation /> },
-  { path: "/reservation/:idReservation", component: <ReservationDetail /> },
-
-  //User Profile
-  // { path: "/profile", component: <UserProfile /> },
-
-  // this route should be at the end of all other routes
-  // eslint-disable-next-line react/display-name
-  {
-    path: "/",
-    exact: true,
-    component: <Navigate to="/dashboard" />,
-  },
-  { path: "*", component: <Navigate to="/dashboard" /> },
+const protectedRoutes = [
+	{ path: '/dashboard', component: <Dashboard /> },
+	{ path: '/logout', component: <Logout /> },
+	{
+		path: '/',
+		exact: true,
+		component: <Navigate to="/dashboard" />,
+	},
+	{ path: '*', component: <Navigate to="/dashboard" /> },
 ];
 
-const publicRoutes = [
-  // Authentication Page
-  { path: "/logout", component: <Logout /> },
-  { path: "/login", component: <Login /> },
-
+const clientRoute = [
+	//Client
+	{ path: '/client', component: <Lead /> },
+	{ path: '/client/:id', component: <LeadProfile /> },
 ];
 
-export { authProtectedRoutes, publicRoutes };
+const reservationRoute = [
+	//Reservation
+	{ path: '/reservation', component: <Reservation /> },
+	{ path: '/reservation/:idReservation', component: <ReservationDetail /> },
+];
+
+// roles
+const agentRoutes = [...protectedRoutes, ...clientRoute, ...reservationRoute];
+
+const publicRoutes = [{ path: '/login', component: <Login /> }];
+
+export { publicRoutes, protectedRoutes, agentRoutes };

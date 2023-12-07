@@ -39,3 +39,6 @@ export const contractService = '/contractService';
 
 // notas
 export const customerNote = '/customerNote';
+
+//subiservices
+export const subServices = '/subServices';

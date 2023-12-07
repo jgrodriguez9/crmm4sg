@@ -1,47 +1,73 @@
 import { Button, Col, Form, FormFeedback, Input, Label, Row } from 'reactstrap';
 import Select from 'react-select';
 import {
+	ERROR_SERVER,
 	FIELD_GREATER_THAN_CERO,
 	FIELD_INTEGER,
 	FIELD_NUMERIC,
 	FIELD_POSITIVE,
 	FIELD_REQUIRED,
+	SAVE_SUCCESS,
 	SELECT_OPTION,
+	UPDATE_SUCCESS,
 } from '../../../../constants/messages';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import removetEmptyObject from '../../../../../util/removetEmptyObject';
-import { useQuery } from 'react-query';
-import { getSubServicesByReservation } from '../../../../../helpers/contractService';
-import { useState } from 'react';
-import DisabledInput from '../../../../Controller/DisabledInput';
-import jsFormatNumber from '../../../../../util/jsFormatNumber';
+import { useMutation, useQuery } from 'react-query';
 import DatePicker from '../../../../Common/DatePicker';
+import { getSubServices } from '../../../../../helpers/subService';
+import {
+	createContractService,
+	updateService,
+} from '../../../../../helpers/contractService';
+import { useEffect } from 'react';
+import ButtonsLoader from '../../../../Loader/ButtonsLoader';
+import { useDispatch } from 'react-redux';
+import { addMessage } from '../../../../../slices/messages/reducer';
+import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 
 const FormService = ({
 	toggleDialog,
 	service = null,
 	ReservationId,
 	reservation,
+	refetchServices,
 }) => {
-	const [price, setPrice] = useState(0);
-	const { data, error, isLoading, isSuccess } = useQuery(
-		['getSubServicesByReservation', ReservationId],
+	const dispatch = useDispatch();
+	const { data } = useQuery(
+		['getSubServices', ReservationId],
 		async () => {
-			const response = await getSubServicesByReservation(ReservationId);
+			const response = await getSubServices('?max=1000');
 			return response;
 		},
 		{
 			keepPreviousData: true,
-			select: (response) => response.data.subServiceList,
+			select: (response) => response.data.list,
 		}
 	);
+
+	const {
+		mutate: createService,
+		isLoading: isCreating,
+		isError: isErrorCreating,
+		error: errorCreating,
+		isSuccess: isSuccessCreating,
+	} = useMutation(createContractService);
+
+	const {
+		mutate: updateItem,
+		isLoading: isUpdating,
+		isError: isErrorUpdating,
+		error: errorUpdating,
+		isSuccess: isSuccessUpdating,
+	} = useMutation(updateService);
 
 	const formik = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
 		enableReinitialize: true,
 		initialValues: {
-			id: service?.id ?? '',
+			idService: service?.idService ?? '',
 			subService: service?.subService ?? '',
 			idBooking: reservation?.booking ?? '',
 			quantity: service?.quantity ?? '',
@@ -78,22 +104,55 @@ const FormService = ({
 				const [key, value] = entry;
 				data[key] = value;
 			});
-			data['quantity'] = parseInt(values.pax) + parseInt(values.childs);
+			// data['quantity'] = parseInt(values.pax) + parseInt(values.childs);
 			console.log(data);
-			// if (values.id) {
-			// 	//updating existing one
-			// 	updateItem({
-			// 		idPax: values.id,
-			// 		reservationId: reservationId,
-			// 		body: data,
-			// 	});
-			// } else {
-			// 	//creating one
-			// 	createItem({ body: data });
-			// }
+			if (values.idService) {
+				//updating existing one
+				updateItem(data);
+			} else {
+				//creating one
+				createService(data);
+			}
 		},
 	});
-	console.log(formik.values);
+	useEffect(() => {
+		if (isSuccessCreating || isSuccessUpdating) {
+			dispatch(
+				addMessage({
+					type: 'success',
+					message: isSuccessCreating ? SAVE_SUCCESS : UPDATE_SUCCESS,
+				})
+			);
+			toggleDialog();
+			refetchServices();
+		} else if (isErrorCreating || isErrorUpdating) {
+			let message = ERROR_SERVER;
+			let serverError = isErrorCreating ? errorCreating : errorUpdating;
+			message = extractMeaningfulMessage(serverError, message);
+			dispatch(
+				addMessage({
+					type: 'error',
+					message: message,
+				})
+			);
+		}
+	}, [
+		isSuccessCreating,
+		isErrorCreating,
+		dispatch,
+		errorCreating,
+		isUpdating,
+		isErrorUpdating,
+		errorUpdating,
+		isSuccessUpdating,
+	]);
+
+	const populateValues = (value) => {
+		const selectedValue = data.find((it) => it.id === value.value);
+		formik.setFieldValue('pax', selectedValue?.adults ?? 0);
+		formik.setFieldValue('childs', selectedValue?.children ?? 0);
+		formik.setFieldValue('amount', selectedValue?.price ?? 0);
+	};
 	return (
 		<Form
 			className="needs-validation fs-7"
@@ -115,7 +174,7 @@ const FormService = ({
 									? {
 											value: formik.values.subService,
 											label:
-												data.find(
+												data?.find(
 													(item) =>
 														item.id ===
 														formik.values.subService
@@ -124,7 +183,12 @@ const FormService = ({
 									: null
 							}
 							onChange={(value) => {
-								formik.setFieldValue('subService', value.value);
+								formik.setFieldValue(
+									'subService',
+									value.value,
+									true
+								);
+								populateValues(value);
 							}}
 							options={data?.map((it) => ({
 								value: it.id,
@@ -210,12 +274,12 @@ const FormService = ({
 						<Input
 							type="text"
 							className={`form-control ${
-								formik.errors.childs ? 'is-invalid' : ''
+								formik.errors.amount ? 'is-invalid' : ''
 							}`}
-							id="childs"
+							id="amount"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
-							value={formik.values.childs}
+							value={formik.values.amount}
 						/>
 					</div>
 				</Col>
@@ -263,19 +327,40 @@ const FormService = ({
 				</Col>
 			</Row>
 
-			<div className="d-flex mt-3">
-				<Button type="submit" color="primary" className="me-2">
-					Aceptar
-				</Button>
-				<Button
-					type="button"
-					color="danger"
-					className="btn-soft-danger"
-					onClick={toggleDialog ? toggleDialog : () => {}}
-				>
-					Cancelar
-				</Button>
-			</div>
+			{isCreating || isUpdating ? (
+				<div className="d-flex my-3">
+					<ButtonsLoader
+						buttons={[
+							{
+								text: 'Aceptar',
+								color: 'primary',
+								className: 'me-2',
+								loader: true,
+							},
+							{
+								text: 'Cancelar',
+								color: 'danger',
+								className: 'btn-soft-danger',
+								loader: false,
+							},
+						]}
+					/>
+				</div>
+			) : (
+				<div className="d-flex mt-3">
+					<Button type="submit" color="primary" className="me-2">
+						Aceptar
+					</Button>
+					<Button
+						type="button"
+						color="danger"
+						className="btn-soft-danger"
+						onClick={toggleDialog ? toggleDialog : () => {}}
+					>
+						Cancelar
+					</Button>
+				</div>
+			)}
 		</Form>
 	);
 };
