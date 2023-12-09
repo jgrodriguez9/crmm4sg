@@ -5,11 +5,38 @@ import { useMemo, useState } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import es from 'react-phone-input-2/lang/es.json';
 import 'react-phone-input-2/lib/style.css';
-import { SELECT_OPTION } from '../../../../constants/messages';
-import { incomeOpt, maritalStatusOpt } from '../../../../constants/utils';
+import {
+	FIELD_INTEGER,
+	FIELD_NUMERIC,
+	FIELD_POSITIVE,
+	FIELD_REQUIRED,
+	SELECT_OPTION,
+} from '../../../../constants/messages';
 import DatePicker from '../../../../Common/DatePicker';
+import { useDispatch } from 'react-redux';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import removetEmptyObject from '../../../../../util/removetEmptyObject';
+import { useQuery } from 'react-query';
+import { fetchMaritalStatus } from '../../../../../services/maritalStatus';
+import { getHotelAll } from '../../../../../helpers/catalogues/hotel';
+import { getMealPlanAll } from '../../../../../helpers/catalogues/meal_plan';
+import moment from 'moment';
+import DisabledInput from '../../../../Controller/DisabledInput';
+import diffDates from '../../../../../util/diffDates';
 
-const FormReservationEdit = ({ toggleDialog }) => {
+const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
+	const dispatch = useDispatch();
+	const [initialDate, setInitialDate] = useState(
+		reservation?.initialDate
+			? moment(reservation?.initialDate, 'YYYY-MM-DD').toDate()
+			: null
+	);
+	const [finalDate, setFinalDate] = useState(
+		reservation?.finalDate
+			? moment(reservation?.finalDate, 'YYYY-MM-DD').toDate()
+			: null
+	);
 	const [countryDefault, setCountryDefault] = useState(null);
 	const [statesDefault, setStatesDefault] = useState(null);
 	const [citiesDefault, setCitiesDefault] = useState(null);
@@ -31,33 +58,160 @@ const FormReservationEdit = ({ toggleDialog }) => {
 			return [];
 		}
 	}, [countryDefault, statesDefault]);
+	//getMaritalStatus
+	const { data: maritalStatusOpt } = useQuery(
+		['getMaritalStatus'],
+		() => fetchMaritalStatus(),
+		{
+			select: (data) =>
+				data.data.maritaStatusList.map((item) => ({
+					value: item.key,
+					label: item.value,
+				})),
+		}
+	);
+	//getHotel
+	const { data: hotelOpt } = useQuery(['getHotelAll'], () => getHotelAll(), {
+		select: (data) =>
+			data.data?.list.map((item) => ({
+				value: item.id,
+				label: item.name,
+			})) ?? [],
+	});
+	//getMealPlan
+	const { data: mealPlanOpt } = useQuery(
+		['getMealPlanAll'],
+		() => getMealPlanAll(),
+		{
+			select: (data) =>
+				data.data?.list.map((item) => ({
+					value: item.id,
+					label: item.plan,
+				})) ?? [],
+		}
+	);
+
+	const formik = useFormik({
+		// enableReinitialize : use this flag when initial values needs to be changed
+		enableReinitialize: true,
+		initialValues: {
+			id: reservation?.id ?? '',
+			dateRequest: reservation?.dateRequest ?? '',
+			dateChange: reservation?.dateChange ?? '',
+			adult: reservation?.adult ?? '',
+			child: reservation?.adult ?? '',
+			infant: reservation?.infant ?? '',
+			booking: reservation?.booking ?? '',
+			confirm3: reservation?.confirm3 ?? '',
+			hotel: reservation?.hotel ?? { id: '' },
+			initialDate: reservation?.initialDate ?? '',
+			finalDate: reservation?.finalDate ?? '',
+			intPlan: reservation?.intPlan ?? '',
+			maritalStatus: reservation?.maritalStatus ?? '',
+			income: reservation?.income ?? '',
+			cards: reservation?.cards ?? '',
+			visa: reservation?.visa ?? 0,
+			mc: reservation?.mc ?? 0,
+			amex: reservation?.amex ?? 0,
+			other: reservation?.other ?? 0,
+			callCenter: reservation?.callCenter ?? { id: '' },
+			segment: reservation?.segment ?? { id: '' },
+			program: reservation?.program ?? { id: '' },
+			hooked: reservation?.hooked ?? '',
+			status: reservation?.status ?? { id: '' },
+			customer: reservation?.customer ?? { id: '' },
+		},
+		validationSchema: Yup.object({
+			dateRequest: Yup.string().required(FIELD_REQUIRED),
+			adult: Yup.number()
+				.min(0, FIELD_POSITIVE)
+				.integer(FIELD_INTEGER)
+				.typeError(FIELD_NUMERIC)
+				.required(FIELD_REQUIRED),
+			child: Yup.number()
+				.min(0, FIELD_POSITIVE)
+				.integer(FIELD_INTEGER)
+				.typeError(FIELD_NUMERIC)
+				.required(FIELD_REQUIRED),
+			cards: Yup.string().required(FIELD_REQUIRED),
+			callCenter: Yup.object().shape({
+				id: Yup.string().required(FIELD_REQUIRED),
+			}),
+			status: Yup.object().shape({
+				id: Yup.string().required(FIELD_REQUIRED),
+			}),
+			customer: Yup.object().shape({
+				id: Yup.string().required(FIELD_REQUIRED),
+			}),
+		}),
+		onSubmit: async (values) => {
+			//submit request
+			const data = {};
+			Object.entries(removetEmptyObject(values)).forEach((entry) => {
+				const [key, value] = entry;
+				data[key] = value;
+			});
+			// data['quantity'] = parseInt(values.pax) + parseInt(values.childs);
+			console.log(data);
+			if (values.idService) {
+				//updating existing one
+				// updateItem(data);
+			} else {
+				//creating one
+				// createService(data);
+			}
+		},
+	});
 
 	return (
-		<Form className="fs-7">
+		<Form
+			className="needs-validation fs-7"
+			onSubmit={(e) => {
+				e.preventDefault();
+				formik.handleSubmit();
+				return false;
+			}}
+		>
 			<h5 className="mt-3 text-primary">Detalle del titular</h5>
 			<hr />
 			<Row className="mb-md-3 mb-2">
 				<Col xs="12" md="6">
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="firstName">
+						<Label
+							className="form-label mb-0"
+							htmlFor="customer.firstName"
+						>
 							Nombre
 						</Label>
 						<Input
 							type="text"
-							className="form-control"
-							id="firstName"
+							className={`form-control ${
+								formik.errors.customer?.id ? 'is-invalid' : ''
+							}`}
+							id="customer.firstName"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.customer.firstName}
 						/>
 					</div>
 				</Col>
 				<Col xs="12" md="6">
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="lastName">
+						<Label
+							className="form-label mb-0"
+							htmlFor="customer.lastName"
+						>
 							Apellidos
 						</Label>
 						<Input
 							type="text"
-							className="form-control"
-							id="lastName"
+							className={`form-control ${
+								formik.errors.customer?.id ? 'is-invalid' : ''
+							}`}
+							id="customer.lastName"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.customer.lastName}
 						/>
 					</div>
 				</Col>
@@ -218,32 +372,52 @@ const FormReservationEdit = ({ toggleDialog }) => {
 					<div className="mb-2">
 						<Label
 							className="form-label mb-0"
-							htmlFor="estadoCivil"
+							htmlFor="maritalStatus"
 						>
 							Estado civil
 						</Label>
 						<Select
-							id="estadoCivil"
+							id="maritalStatus"
 							className="mb-0"
-							value={null}
-							onChange={() => {}}
+							value={
+								formik.values.maritalStatus
+									? {
+											value: formik.values.maritalStatus,
+											label:
+												maritalStatusOpt?.find(
+													(it) =>
+														it.value ===
+														formik.values
+															.maritalStatus
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'maritalStatus',
+									value?.value ?? ''
+								);
+							}}
 							options={maritalStatusOpt}
-							placeholder="Seleccionar opción"
+							placeholder={SELECT_OPTION}
 						/>
 					</div>
 				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="ingreso">
+						<Label className="form-label mb-0" htmlFor="income">
 							Ingreso
 						</Label>
-						<Select
-							id="ingreso"
-							className="mb-0"
-							value={null}
-							onChange={() => {}}
-							options={incomeOpt}
-							placeholder="Seleccionar opción"
+						<Input
+							type="text"
+							className={`form-control ${
+								formik.errors.income ? 'is-invalid' : ''
+							}`}
+							id="income"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.income}
 						/>
 					</div>
 				</Col>
@@ -256,7 +430,17 @@ const FormReservationEdit = ({ toggleDialog }) => {
 										className="form-check-input"
 										type="checkbox"
 										id="visa"
-										checked={true}
+										checked={
+											formik.values.visa === 1
+												? true
+												: false
+										}
+										onChange={(evt) =>
+											formik.setFieldValue(
+												'visa',
+												evt.target.checked ? 1 : 0
+											)
+										}
 									/>
 									<Label
 										className="form-check-label"
@@ -271,11 +455,22 @@ const FormReservationEdit = ({ toggleDialog }) => {
 									<Input
 										className="form-check-input"
 										type="checkbox"
-										id="masterCard"
+										id="mc"
+										checked={
+											formik.values.mc === 1
+												? true
+												: false
+										}
+										onChange={(evt) =>
+											formik.setFieldValue(
+												'mc',
+												evt.target.checked ? 1 : 0
+											)
+										}
 									/>
 									<Label
 										className="form-check-label"
-										htmlFor="masterCard"
+										htmlFor="mc"
 									>
 										Master Card
 									</Label>
@@ -287,6 +482,17 @@ const FormReservationEdit = ({ toggleDialog }) => {
 										className="form-check-input"
 										type="checkbox"
 										id="amex"
+										checked={
+											formik.values.amex === 1
+												? true
+												: false
+										}
+										onChange={(evt) =>
+											formik.setFieldValue(
+												'amex',
+												evt.target.checked ? 1 : 0
+											)
+										}
 									/>
 									<Label
 										className="form-check-label"
@@ -301,11 +507,22 @@ const FormReservationEdit = ({ toggleDialog }) => {
 									<Input
 										className="form-check-input"
 										type="checkbox"
-										id="otras"
+										id="other"
+										checked={
+											formik.values.other === 1
+												? true
+												: false
+										}
+										onChange={(evt) =>
+											formik.setFieldValue(
+												'other',
+												evt.target.checked ? 1 : 0
+											)
+										}
 									/>
 									<Label
 										className="form-check-label"
-										htmlFor="otras"
+										htmlFor="other"
 									>
 										Otras
 									</Label>
@@ -314,7 +531,22 @@ const FormReservationEdit = ({ toggleDialog }) => {
 						</Row>
 					</div>
 				</Col>
-				<Col xs="12" md="8">
+				<Col xs="12" md="3">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="comentario">
+							Tarjetas
+						</Label>
+						<Input
+							type="text"
+							className={`form-control`}
+							id="cards"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.cards}
+						/>
+					</div>
+				</Col>
+				<Col xs="12" md="5">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="comentario">
 							Comentario
@@ -340,18 +572,27 @@ const FormReservationEdit = ({ toggleDialog }) => {
 						<Select
 							id="hotel"
 							className="mb-0"
-							value={{
-								value: 'Ocean Spa Hotel',
-								label: 'Ocean Spa Hotel',
+							value={
+								formik.values.hotel?.id
+									? {
+											value: formik.values.hotel.id,
+											label:
+												hotelOpt?.find(
+													(it) =>
+														it.value ===
+														formik.values.hotel.id
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'hotel.id',
+									value?.value ?? ''
+								);
 							}}
-							onChange={() => {}}
-							options={[
-								{
-									value: 'Ocean Spa Hotel',
-									label: 'Ocean Spa Hotel',
-								},
-							]}
-							placeholder="Seleccionar opción"
+							options={hotelOpt}
+							placeholder={SELECT_OPTION}
 						/>
 					</div>
 				</Col>
@@ -361,20 +602,34 @@ const FormReservationEdit = ({ toggleDialog }) => {
 							Plan
 						</Label>
 						<Select
-							id="plan"
+							id="hotel"
 							className="mb-0"
-							value={{
-								value: 'All Inclusive Multiple',
-								label: 'All Inclusive Multiple',
+							value={
+								formik.values.intPlan
+									? {
+											value:
+												mealPlanOpt?.find(
+													(it) =>
+														it.label ===
+														formik.values.intPlan
+												)?.value ?? '',
+											label:
+												mealPlanOpt?.find(
+													(it) =>
+														it.label ===
+														formik.values.intPlan
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'hotel.id',
+									value?.value ?? ''
+								);
 							}}
-							onChange={() => {}}
-							options={[
-								{
-									value: 'All Inclusive Multiple',
-									label: 'All Inclusive Multiple',
-								},
-							]}
-							placeholder="Seleccionar opción"
+							options={mealPlanOpt}
+							placeholder={SELECT_OPTION}
 						/>
 					</div>
 				</Col>
@@ -384,21 +639,38 @@ const FormReservationEdit = ({ toggleDialog }) => {
 							Fecha llegada
 						</Label>
 						<DatePicker
-							id="fechaLlegada"
-							date="29/06/2023"
-							onChangeDate={(date) => console.log(date)}
+							id="initialDate"
+							date={initialDate}
+							onChangeDate={(value) => {
+								setInitialDate(value[0]);
+								if (value.length > 0) {
+									formik.setFieldValue(
+										`initialDate`,
+										value[0]
+									);
+								} else {
+									formik.setFieldValue(`initialDate`, null);
+								}
+							}}
 						/>
 					</div>
 				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-3">
-						<Label className="form-label" htmlFor="fechaSalida">
+						<Label className="form-label" htmlFor="finalDate">
 							Fecha salida
 						</Label>
 						<DatePicker
-							id="fechaSalida"
-							date="29/06/2023"
-							onChangeDate={(date) => console.log(date)}
+							id="finalDate"
+							date={finalDate}
+							onChangeDate={(value) => {
+								setFinalDate(value[0]);
+								if (value.length > 0) {
+									formik.setFieldValue(`finalDate`, value[0]);
+								} else {
+									formik.setFieldValue(`finalDate`, null);
+								}
+							}}
 						/>
 					</div>
 				</Col>
@@ -407,50 +679,57 @@ const FormReservationEdit = ({ toggleDialog }) => {
 						<Label className="form-label" htmlFor="noches">
 							Noches
 						</Label>
-						<Input
-							type="text"
-							className="form-control"
-							id="noches"
-							defaultValue="4"
+						<DisabledInput
+							value={diffDates(
+								formik.values?.initialDate,
+								formik.values?.finalDate,
+								'days'
+							)}
 						/>
 					</div>
 				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-3">
-						<Label className="form-label" htmlFor="adultos">
+						<Label className="form-label" htmlFor="adult">
 							Adultos
 						</Label>
 						<Input
 							type="text"
-							className="form-control"
-							id="adultos"
-							defaultValue="2"
+							className={`form-control`}
+							id="adult"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.adult}
 						/>
 					</div>
 				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-3">
-						<Label className="form-label" htmlFor="juniors">
+						<Label className="form-label" htmlFor="child">
 							Menores
 						</Label>
 						<Input
 							type="text"
-							className="form-control"
-							id="juniors"
-							defaultValue="0"
+							className={`form-control`}
+							id="child"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.child}
 						/>
 					</div>
 				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-3">
-						<Label className="form-label" htmlFor="infantes">
+						<Label className="form-label" htmlFor="infant">
 							Infantes
 						</Label>
 						<Input
 							type="text"
-							className="form-control"
-							id="infantes"
-							defaultValue="0"
+							className={`form-control`}
+							id="infant"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.infant}
 						/>
 					</div>
 				</Col>

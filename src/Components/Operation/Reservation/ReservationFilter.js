@@ -9,7 +9,6 @@ import {
 	Row,
 } from 'reactstrap';
 import DatePicker from '../../Common/DatePicker';
-import Select from 'react-select';
 import { getCallCenterPaginate } from '../../../helpers/catalogues/call_center';
 import SelectAsync from '../../Common/SelectAsync';
 import { getHotelPaginate } from '../../../helpers/catalogues/hotel';

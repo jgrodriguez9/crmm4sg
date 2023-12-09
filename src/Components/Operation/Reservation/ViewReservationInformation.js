@@ -384,7 +384,12 @@ const ViewReservationInformation = ({
 				title="Editar reservación"
 				size="xl"
 				classBody="py-1 px-3"
-				children={<FormReservationEdit toggleDialog={toggleDialog} />}
+				children={
+					<FormReservationEdit
+						reservation={data}
+						toggleDialog={toggleDialog}
+					/>
+				}
 			/>
 		</>
 	);
