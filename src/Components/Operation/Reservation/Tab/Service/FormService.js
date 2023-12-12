@@ -46,7 +46,7 @@ const FormService = ({
 			select: (response) => response.data.list,
 		}
 	);
-
+	console.log(reservation);
 	const {
 		mutate: createService,
 		isLoading: isCreating,
@@ -108,7 +108,11 @@ const FormService = ({
 			console.log(data);
 			if (values.idService) {
 				//updating existing one
-				updateItem(data);
+				updateItem({
+					idBooking: reservation.booking,
+					isService: values.idService,
+					body: data,
+				});
 			} else {
 				//creating one
 				createService(data);

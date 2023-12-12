@@ -6,7 +6,11 @@ const getSubServicesByReservation = (id) =>
 
 const createContractService = (data) => post(`${url.contractService}`, data);
 
-const updateService = (data) => put(`${url.contractService}`, data);
+const updateService = (data) =>
+	put(
+		`${url.contractService}/${data.idBooking}/${data.isService}`,
+		data.body
+	);
 
 const deleteService = (data) =>
 	del(`${url.contractService}/${data.idBooking}/${data.idService}`);

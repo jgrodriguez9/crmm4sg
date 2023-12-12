@@ -1,43 +1,53 @@
 import { Button, Col, Form, FormFeedback, Input, Label, Row } from 'reactstrap';
 import Select from 'react-select';
 import { Country } from 'country-state-city';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import PhoneInput from 'react-phone-input-2';
+import es from 'react-phone-input-2/lang/es.json';
+import 'react-phone-input-2/lib/style.css';
 import {
 	ERROR_SERVER,
 	FIELD_REQUIRED,
 	SELECT_OPTION,
-	UPDATE_SUCCESS,
 } from '../../../../constants/messages';
-import PhoneInput from 'react-phone-input-2';
-import es from 'react-phone-input-2/lang/es.json';
-import DatePicker from '../../../../Common/DatePicker';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import moment from 'moment';
-import StateInput from '../../../../Controller/StateInput';
-import CityInput from '../../../../Controller/CityInput';
-import DisabledInput from '../../../../Controller/DisabledInput';
 import { useDispatch } from 'react-redux';
-import { addMessage } from '../../../../../slices/messages/reducer';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
 import removetEmptyObject from '../../../../../util/removetEmptyObject';
 import { useMutation, useQuery } from 'react-query';
 import { fetchMaritalStatus } from '../../../../../services/maritalStatus';
-import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
+import DisabledInput from '../../../../Controller/DisabledInput';
+import { fecthItem } from '../../../../../pages/Operation/Lead/Util/services';
 import { updateClientService } from '../../../../../services/client';
+import { useEffect } from 'react';
+import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
+import { addMessage } from '../../../../../slices/messages/reducer';
+import StateInput from '../../../../Controller/StateInput';
+import CityInput from '../../../../Controller/CityInput';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
+import { editIconClass } from '../../../../constants/icons';
 
-const FormClient = ({
-	toggleDialog,
-	textBtnSubmit = 'Aceptar',
-	customer,
-	refetchClient,
+const FormReservationClient = ({
+	reservation = null,
+	editClient,
+	setEditClient,
 }) => {
 	const dispatch = useDispatch();
-	const [fechaNacimiento, setFechaNacimiento] = useState(
-		customer?.fechaNacimiento
-			? moment(customer?.fechaNacimiento, 'YYYY-MM-DD').toDate()
-			: null
+	//service to get the client
+	const {
+		data: customer,
+		error: errrorItem,
+		isFetching: isFetchingItem,
+	} = useQuery(
+		['getCustomer', reservation.customer.id],
+		() => fecthItem(reservation.customer.id),
+		{
+			enabled: reservation?.customer?.id !== null,
+			refetchOnWindowFocus: false,
+			select: (response) => response.data,
+		}
 	);
+
 	const [countryDefault, setCountryDefault] = useState(
 		customer?.country
 			? { label: customer?.country, value: customer?.country }
@@ -51,12 +61,31 @@ const FormClient = ({
 	const [citiesDefault, setCitiesDefault] = useState(
 		customer?.city ? { label: customer?.city, value: customer?.city } : null
 	);
+
+	useEffect(() => {
+		setCountryDefault(
+			customer?.country
+				? { label: customer?.country, value: customer?.country }
+				: null
+		);
+		setStatesDefault(
+			customer?.state
+				? { label: customer?.state, value: customer?.state }
+				: null
+		);
+		setCitiesDefault(
+			customer?.city
+				? { label: customer?.city, value: customer?.city }
+				: null
+		);
+	}, [customer]);
+
 	const [phone1, setPhone1] = useState('');
 	const [phone2, setPhone2] = useState('');
 	const [mobile, setMobile] = useState('');
 	const [email, setEmail] = useState('');
 
-	//getStatus
+	//getMaritalStatus
 	const { data: maritalStatusOpt } = useQuery(
 		['getMaritalStatus'],
 		() => fetchMaritalStatus(),
@@ -75,20 +104,10 @@ const FormClient = ({
 		isLoading,
 		isError,
 		error,
-		isSuccess,
 	} = useMutation(updateClientService);
 
 	useEffect(() => {
-		if (isSuccess) {
-			dispatch(
-				addMessage({
-					type: 'success',
-					message: UPDATE_SUCCESS,
-				})
-			);
-			toggleDialog();
-			refetchClient();
-		} else if (isError) {
+		if (isError) {
 			let message = ERROR_SERVER;
 			message = extractMeaningfulMessage(error, message);
 			dispatch(
@@ -98,16 +117,15 @@ const FormClient = ({
 				})
 			);
 		}
-	}, [isSuccess, isError, dispatch, error]);
+	}, [isError, dispatch, error]);
 
 	const formik = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
 		enableReinitialize: true,
 		initialValues: {
-			id: customer?.id ?? '',
+			id: customer?.id,
 			firstName: customer?.firstName ?? '',
 			lastName: customer?.lastName ?? '',
-			fechaNacimiento: customer?.fechaNacimiento ?? '',
 			address: customer?.address ?? '',
 			postalCode: customer?.postalCode ?? '',
 			country: customer?.country ?? '',
@@ -131,11 +149,7 @@ const FormClient = ({
 			const data = {};
 			Object.entries(removetEmptyObject(values)).forEach((entry) => {
 				const [key, value] = entry;
-				if (key === 'fechaNacimiento') {
-					data[key] = moment(values.fechaNacimiento).format(
-						'YYYY-MM-DD'
-					);
-				} else if (
+				if (
 					key !== 'phone1' &&
 					key !== 'phone2' &&
 					key !== 'movil' &&
@@ -148,7 +162,6 @@ const FormClient = ({
 			if (phone2) data['phone2'] = phone2;
 			if (mobile) data['movil'] = mobile;
 			if (email) data['email'] = email;
-
 			updateCient({
 				id: values.id,
 				body: data,
@@ -162,12 +175,12 @@ const FormClient = ({
 	const togglePhone2 = () => setEditPhone2(!editPhone1);
 	const [editMobile, setEditMobile] = useState(false);
 	const toggleMobile = () => setEditMobile(!editMobile);
-
 	const [editCorreo, setEditCorreo] = useState(false);
 	const toggleCorreo = () => {
 		setEditCorreo(!editCorreo);
 		formik.setFieldValue('email', '');
 	};
+
 	return (
 		<Form
 			className="needs-validation fs-7"
@@ -177,10 +190,26 @@ const FormClient = ({
 				return false;
 			}}
 		>
-			<Row>
-				<Col xs="12" md="4">
+			<div className="d-flex align-items-center">
+				<h5 className=" my-0 text-primary me-3">Detalle del titular</h5>
+				<Button
+					size="sm"
+					color="light"
+					type="button"
+					onClick={() => setEditClient(true)}
+				>
+					<i className={editIconClass} /> Editar
+				</Button>
+			</div>
+
+			<hr />
+			<Row className="mb-md-3 mb-2">
+				<Col xs="12" md="6">
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="firstName">
+						<Label
+							className="form-label mb-0"
+							htmlFor="customer.firstName"
+						>
 							Nombre
 						</Label>
 						<Input
@@ -200,10 +229,13 @@ const FormClient = ({
 						)}
 					</div>
 				</Col>
-				<Col xs="12" md="4">
+				<Col xs="12" md="6">
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="lastName">
-							Apellido
+						<Label
+							className="form-label mb-0"
+							htmlFor="customer.lastName"
+						>
+							Apellidos
 						</Label>
 						<Input
 							type="text"
@@ -220,34 +252,6 @@ const FormClient = ({
 								{formik.errors.lastName}
 							</FormFeedback>
 						)}
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-2">
-						<Label
-							className="form-label mb-0"
-							htmlFor="fechaLlegada"
-						>
-							Fecha nacimiento
-						</Label>
-						<DatePicker
-							id="fechaLlegada"
-							date={fechaNacimiento}
-							onChangeDate={(value) => {
-								setFechaNacimiento(value[0]);
-								if (value.length > 0) {
-									formik.setFieldValue(
-										`fechaNacimiento`,
-										value[0]
-									);
-								} else {
-									formik.setFieldValue(
-										`fechaNacimiento`,
-										null
-									);
-								}
-							}}
-						/>
 					</div>
 				</Col>
 				<Col xs="12" md="8">
@@ -424,7 +428,7 @@ const FormClient = ({
 				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="movil">
+						<Label className="form-label mb-0" htmlFor="phone1">
 							Celular
 						</Label>
 						{!editMobile ? (
@@ -489,7 +493,7 @@ const FormClient = ({
 					<div className="mb-2">
 						<Label
 							className="form-label mb-0"
-							htmlFor="estadoCivil"
+							htmlFor="maritalStatus"
 						>
 							Estado civil
 						</Label>
@@ -524,7 +528,7 @@ const FormClient = ({
 				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="income+">
+						<Label className="form-label mb-0" htmlFor="income">
 							Ingreso
 						</Label>
 						<Input
@@ -541,12 +545,28 @@ const FormClient = ({
 				</Col>
 			</Row>
 
-			{isLoading ? (
+			{editClient && !isLoading && (
+				<div className="d-flex my-3">
+					<Button type="submit" color="primary" className="me-2">
+						Aceptar
+					</Button>
+					<Button
+						type="button"
+						color="danger"
+						className="btn-soft-danger"
+						onClick={() => setEditClient(false)}
+					>
+						Cancelar
+					</Button>
+				</div>
+			)}
+
+			{isLoading && editClient && (
 				<div className="d-flex my-3">
 					<ButtonsLoader
 						buttons={[
 							{
-								text: textBtnSubmit,
+								text: 'Aceptar',
 								color: 'primary',
 								className: 'me-2',
 								loader: true,
@@ -560,23 +580,9 @@ const FormClient = ({
 						]}
 					/>
 				</div>
-			) : (
-				<div className="d-flex my-3">
-					<Button type="submit" color="primary" className="me-2">
-						{textBtnSubmit}
-					</Button>
-					<Button
-						type="button"
-						color="danger"
-						className="btn-soft-danger"
-						onClick={toggleDialog ? toggleDialog : () => {}}
-					>
-						Cancelar
-					</Button>
-				</div>
 			)}
 		</Form>
 	);
 };
 
-export default FormClient;
+export default FormReservationClient;

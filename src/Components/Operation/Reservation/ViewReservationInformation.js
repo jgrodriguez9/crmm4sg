@@ -3,7 +3,7 @@ import { Col, Label, Row } from 'reactstrap';
 import diffDates from '../../../util/diffDates';
 import { useState } from 'react';
 import BasicModal from '../../Common/BasicModal';
-import FormReservationEdit from './Tab/Reservation/FormReservationEdit';
+import FormReservation from './Tab/Reservation/FormReservation';
 
 const ViewReservationInformation = ({
 	editMode = false,
@@ -385,7 +385,7 @@ const ViewReservationInformation = ({
 				size="xl"
 				classBody="py-1 px-3"
 				children={
-					<FormReservationEdit
+					<FormReservation
 						reservation={data}
 						toggleDialog={toggleDialog}
 					/>

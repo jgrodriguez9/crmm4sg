@@ -1,9 +1,6 @@
 import { Button, Col, Form, Input, Label, Row } from 'reactstrap';
 import Select from 'react-select';
-import { Country, State, City } from 'country-state-city';
-import { useMemo, useState } from 'react';
-import PhoneInput from 'react-phone-input-2';
-import es from 'react-phone-input-2/lang/es.json';
+import { useState } from 'react';
 import 'react-phone-input-2/lib/style.css';
 import {
 	FIELD_INTEGER,
@@ -17,13 +14,13 @@ import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import removetEmptyObject from '../../../../../util/removetEmptyObject';
-import { useQuery } from 'react-query';
-import { fetchMaritalStatus } from '../../../../../services/maritalStatus';
+import { useMutation, useQuery } from 'react-query';
 import { getHotelAll } from '../../../../../helpers/catalogues/hotel';
 import { getMealPlanAll } from '../../../../../helpers/catalogues/meal_plan';
 import moment from 'moment';
 import DisabledInput from '../../../../Controller/DisabledInput';
 import diffDates from '../../../../../util/diffDates';
+import { updateReservationService } from '../../../../../services/reservation';
 
 const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 	const dispatch = useDispatch();
@@ -36,39 +33,6 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 		reservation?.finalDate
 			? moment(reservation?.finalDate, 'YYYY-MM-DD').toDate()
 			: null
-	);
-	const [countryDefault, setCountryDefault] = useState(null);
-	const [statesDefault, setStatesDefault] = useState(null);
-	const [citiesDefault, setCitiesDefault] = useState(null);
-	const [phone, setPhone] = useState('');
-	const statesOpt = useMemo(() => {
-		if (countryDefault) {
-			return State.getStatesOfCountry(countryDefault.value);
-		} else {
-			return [];
-		}
-	}, [countryDefault]);
-	const citiesOpt = useMemo(() => {
-		if (countryDefault && statesDefault) {
-			return City.getCitiesOfState(
-				countryDefault.value,
-				statesDefault.value
-			);
-		} else {
-			return [];
-		}
-	}, [countryDefault, statesDefault]);
-	//getMaritalStatus
-	const { data: maritalStatusOpt } = useQuery(
-		['getMaritalStatus'],
-		() => fetchMaritalStatus(),
-		{
-			select: (data) =>
-				data.data.maritaStatusList.map((item) => ({
-					value: item.key,
-					label: item.value,
-				})),
-		}
 	);
 	//getHotel
 	const { data: hotelOpt } = useQuery(['getHotelAll'], () => getHotelAll(), {
@@ -91,12 +55,21 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 		}
 	);
 
+	//update reservation
+	const {
+		mutate: updateItem,
+		isLoading,
+		isError,
+		error,
+	} = useMutation(updateReservationService);
+
 	const formik = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
 		enableReinitialize: true,
 		initialValues: {
 			id: reservation?.id ?? '',
-			dateRequest: reservation?.dateRequest ?? '',
+			dateRequest:
+				reservation?.dateRequest ?? moment().format('YYYY-MM-DD'),
 			dateChange: reservation?.dateChange ?? '',
 			adult: reservation?.adult ?? '',
 			child: reservation?.adult ?? '',
@@ -114,7 +87,7 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 			mc: reservation?.mc ?? 0,
 			amex: reservation?.amex ?? 0,
 			other: reservation?.other ?? 0,
-			callCenter: reservation?.callCenter ?? { id: '' },
+			callCenter: reservation?.callcenter ?? { id: '' },
 			segment: reservation?.segment ?? { id: '' },
 			program: reservation?.program ?? { id: '' },
 			hooked: reservation?.hooked ?? '',
@@ -149,20 +122,28 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 			const data = {};
 			Object.entries(removetEmptyObject(values)).forEach((entry) => {
 				const [key, value] = entry;
+				if (key === 'initialDate') {
+					data[key] = moment(values.initialDate).format('YYYY-MM-DD');
+				} else if (key === 'finalDate') {
+					data[key] = moment(values.finalDate).format('YYYY-MM-DD');
+				}
 				data[key] = value;
 			});
 			// data['quantity'] = parseInt(values.pax) + parseInt(values.childs);
 			console.log(data);
-			if (values.idService) {
+			if (values.id) {
 				//updating existing one
-				// updateItem(data);
+				updateItem({
+					id: values.id,
+					body: data,
+				});
 			} else {
 				//creating one
 				// createService(data);
 			}
 		},
 	});
-
+	console.log(formik.errors);
 	return (
 		<Form
 			className="needs-validation fs-7"
@@ -172,255 +153,9 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 				return false;
 			}}
 		>
-			<h5 className="mt-3 text-primary">Detalle del titular</h5>
+			<h5 className="text-primary">Detalle de la reservación</h5>
 			<hr />
 			<Row className="mb-md-3 mb-2">
-				<Col xs="12" md="6">
-					<div className="mb-2">
-						<Label
-							className="form-label mb-0"
-							htmlFor="customer.firstName"
-						>
-							Nombre
-						</Label>
-						<Input
-							type="text"
-							className={`form-control ${
-								formik.errors.customer?.id ? 'is-invalid' : ''
-							}`}
-							id="customer.firstName"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.customer.firstName}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="6">
-					<div className="mb-2">
-						<Label
-							className="form-label mb-0"
-							htmlFor="customer.lastName"
-						>
-							Apellidos
-						</Label>
-						<Input
-							type="text"
-							className={`form-control ${
-								formik.errors.customer?.id ? 'is-invalid' : ''
-							}`}
-							id="customer.lastName"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.customer.lastName}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="8">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="address">
-							Dirección
-						</Label>
-						<Input
-							type="text"
-							className="form-control"
-							id="address"
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="postalCode">
-							CP
-						</Label>
-						<Input
-							type="text"
-							className="form-control"
-							id="postalCode"
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="country">
-							País
-						</Label>
-						<Select
-							value={countryDefault}
-							onChange={(value) => {
-								setCountryDefault(value);
-								setStatesDefault(null);
-								setCitiesDefault(null);
-							}}
-							options={Country.getAllCountries().map((it) => ({
-								label: it.name,
-								value: it.isoCode,
-							}))}
-							classNamePrefix="select2-selection"
-							placeholder={SELECT_OPTION}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="country">
-							Estado
-						</Label>
-						<Select
-							value={statesDefault}
-							onChange={(value) => {
-								setStatesDefault(value);
-								setCitiesDefault(null);
-							}}
-							options={statesOpt.map((s) => ({
-								label: s.name,
-								value: s.isoCode,
-							}))}
-							classNamePrefix="select2-selection"
-							placeholder={SELECT_OPTION}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="country">
-							Ciudad
-						</Label>
-						<Select
-							value={citiesDefault}
-							onChange={(value) => {
-								setCitiesDefault(value);
-							}}
-							options={citiesOpt.map((c) => ({
-								label: c.name,
-								value: c.isoCode,
-							}))}
-							classNamePrefix="select2-selection"
-							placeholder={SELECT_OPTION}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="phone1">
-							Teléfono casa
-						</Label>
-						<PhoneInput
-							inputClass={`form-control w-100`}
-							countryCodeEditable={false}
-							enableSearch={true}
-							preferredCountries={['mx', 'us']}
-							disableSearchIcon={true}
-							localization={es}
-							value={phone}
-							onChange={(phone, country, e, formattedValue) => {
-								setPhone(phone);
-							}}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="phone1">
-							Teléfono trabajo
-						</Label>
-						<PhoneInput
-							inputClass={`form-control w-100`}
-							countryCodeEditable={false}
-							enableSearch={true}
-							preferredCountries={['mx', 'us']}
-							disableSearchIcon={true}
-							localization={es}
-							value={phone}
-							onChange={(phone, country, e, formattedValue) => {
-								setPhone(phone);
-							}}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="phone1">
-							Celular
-						</Label>
-						<PhoneInput
-							inputClass={`form-control w-100`}
-							countryCodeEditable={false}
-							enableSearch={true}
-							preferredCountries={['mx', 'us']}
-							disableSearchIcon={true}
-							localization={es}
-							value={phone}
-							onChange={(phone, country, e, formattedValue) => {
-								setPhone(phone);
-							}}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="email">
-							Correo electrónico
-						</Label>
-						<Input
-							type="text"
-							className="form-control"
-							id="email"
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-2">
-						<Label
-							className="form-label mb-0"
-							htmlFor="maritalStatus"
-						>
-							Estado civil
-						</Label>
-						<Select
-							id="maritalStatus"
-							className="mb-0"
-							value={
-								formik.values.maritalStatus
-									? {
-											value: formik.values.maritalStatus,
-											label:
-												maritalStatusOpt?.find(
-													(it) =>
-														it.value ===
-														formik.values
-															.maritalStatus
-												)?.label ?? '',
-									  }
-									: null
-							}
-							onChange={(value) => {
-								formik.setFieldValue(
-									'maritalStatus',
-									value?.value ?? ''
-								);
-							}}
-							options={maritalStatusOpt}
-							placeholder={SELECT_OPTION}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="income">
-							Ingreso
-						</Label>
-						<Input
-							type="text"
-							className={`form-control ${
-								formik.errors.income ? 'is-invalid' : ''
-							}`}
-							id="income"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.income}
-						/>
-					</div>
-				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Row className="mt-3">
@@ -560,9 +295,6 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 					</div>
 				</Col>
 			</Row>
-
-			<h5 className="text-primary">Detalle de la reservación</h5>
-			<hr />
 			<Row>
 				<Col xs="12" md="6">
 					<div className="mb-2">
