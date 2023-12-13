@@ -1,17 +1,23 @@
 import { Col, Row } from 'reactstrap';
 import TableNotas from './NotasCliente/TableNotas';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BasicModal from '../../../Common/BasicModal';
 import FormNotaCliente from './NotasCliente/FormNotaCliente';
-import { useQuery } from 'react-query';
-import { getNotesByClient } from '../../../../helpers/notes';
+import { useMutation, useQuery } from 'react-query';
+import { deleteNote, getNotesByClient } from '../../../../helpers/notes';
 import { deleteIconClass, editIconClass } from '../../../constants/icons';
 import DeleteModal from '../../../Common/DeleteModal';
+import { useDispatch } from 'react-redux';
+import { addMessage } from '../../../../slices/messages/reducer';
+import { DELETE_SUCCESS, ERROR_SERVER } from '../../../constants/messages';
+import extractMeaningfulMessage from '../../../../util/extractMeaningfulMessage';
 
 const NotasCliente = ({ customerId }) => {
+	const dispatch = useDispatch();
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-	const { data, error, isLoading, isSuccess } = useQuery(
+	const [note, setNote] = useState(null);
+	const { data, error, isLoading, isSuccess, refetch } = useQuery(
 		['getNotesByClient', customerId],
 		async () => {
 			const response = await getNotesByClient(customerId);
@@ -24,9 +30,12 @@ const NotasCliente = ({ customerId }) => {
 	);
 	const editRow = (row) => {
 		const { original } = row;
-		console.log(original);
+		setNote(original);
+		setShowAddModal(true);
 	};
 	const showDialogDelete = (row) => {
+		const { original } = row;
+		setNote(original);
 		setShowDeleteDialog(true);
 	};
 	const actions = [
@@ -41,13 +50,43 @@ const NotasCliente = ({ customerId }) => {
 			labelTooltip: 'Eliminar',
 		},
 	];
+	//delete item
+	const {
+		mutate: deleteItem,
+		isLoading: isDeleting,
+		isError: isErrorDelete,
+		error: errorDelete,
+		isSuccess: isDeleted,
+	} = useMutation(deleteNote);
 	const handleDelete = async () => {
-		// const dataToDelete = {
-		// 	idPax: pax.id,
-		// 	idReservation: reservationId,
-		// };
-		// deletePaxMutation(dataToDelete);
+		const dataToDelete = {
+			customerId: customerId,
+			noteId: note.noteId,
+		};
+		deleteItem(dataToDelete);
 	};
+	useEffect(() => {
+		if (isDeleted) {
+			refetch();
+			setShowDeleteDialog(false);
+			dispatch(
+				addMessage({
+					message: DELETE_SUCCESS,
+					type: 'success',
+				})
+			);
+		} else if (isErrorDelete) {
+			let message = ERROR_SERVER;
+			message = extractMeaningfulMessage(errorDelete, message);
+			dispatch(
+				addMessage({
+					message: message,
+					type: 'error',
+				})
+			);
+		}
+	}, [dispatch, errorDelete, isDeleted, isErrorDelete, refetch]);
+	const toggleModalFormNote = () => setShowAddModal(!showAddModal);
 	return (
 		<>
 			<Row>
@@ -55,7 +94,10 @@ const NotasCliente = ({ customerId }) => {
 					<div className="d-flex align-items-center justify-content-end flex-wrap gap-2 mb-2">
 						<button
 							className="btn btn-info"
-							onClick={() => setShowAddModal(true)}
+							onClick={() => {
+								setNote(null);
+								setShowAddModal(true);
+							}}
 						>
 							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
 							Agregar
@@ -73,15 +115,22 @@ const NotasCliente = ({ customerId }) => {
 			<BasicModal
 				open={showAddModal}
 				setOpen={setShowAddModal}
-				title="Agregar nota"
+				title={note ? 'Editar nota' : 'Crear nota'}
 				size="lg"
-				children={<FormNotaCliente />}
+				children={
+					<FormNotaCliente
+						note={note}
+						customerId={customerId}
+						toggleModal={toggleModalFormNote}
+						refetch={refetch}
+					/>
+				}
 			/>
 			<DeleteModal
 				handleDelete={handleDelete}
 				show={showDeleteDialog}
 				setShow={setShowDeleteDialog}
-				isDeleting={false}
+				isDeleting={isDeleting}
 			/>
 		</>
 	);

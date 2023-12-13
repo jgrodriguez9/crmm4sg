@@ -166,6 +166,7 @@ const TabsReservation = ({ itemData }) => {
 								{activeTab === '6' && (
 									<ReservationNotas
 										ReservationId={itemData.data.id}
+										customerId={itemData.data.customer.id}
 									/>
 								)}
 							</TabPane>

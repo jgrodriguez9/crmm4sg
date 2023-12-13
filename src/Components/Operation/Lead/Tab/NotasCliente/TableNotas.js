@@ -40,8 +40,8 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 				},
 			},
 			{
-				Header: 'Fecha',
-				accessor: 'date',
+				Header: 'Fecha FUp',
+				accessor: 'contactDate',
 				filterable: false,
 				style: {
 					width: '10%',
