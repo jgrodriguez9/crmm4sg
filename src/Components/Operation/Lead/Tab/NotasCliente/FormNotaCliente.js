@@ -160,6 +160,7 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 					data[key] = value;
 				}
 			});
+			data['noteType'] = values.noteTypeId;
 			console.log(data);
 			if (data.noteId) {
 				updateItem({

@@ -1,4 +1,4 @@
-import { get, put } from './api_helper';
+import { get, post, put } from './api_helper';
 import * as url from './url';
 
 const getReservationPaginate = (query) => get(`${url.reservation}${query}`);
@@ -12,6 +12,7 @@ const getPaymentsByReservation = (id) =>
 const filterGlobalCustomer = (parameter) =>
 	get(`${url.reservation}/search?parameter=${parameter}`);
 const updateReservation = (id, data) => put(`${url.reservation}/${id}`, data);
+const createReservation = (data) => post(`${url.reservation}`, data);
 
 export {
 	getReservationPaginate,
@@ -21,4 +22,5 @@ export {
 	getPaymentsByReservation,
 	filterGlobalCustomer,
 	updateReservation,
+	createReservation,
 };

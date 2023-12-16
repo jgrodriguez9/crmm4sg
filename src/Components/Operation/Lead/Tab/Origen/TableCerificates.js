@@ -24,6 +24,31 @@ const TableCerificates = ({
 	const columns = useMemo(
 		() => [
 			{
+				id: 'expander', // Make sure it has an ID
+				style: {
+					width: '3%',
+				},
+				Cell: ({ row }) => (
+					<div className="d-flex">
+						<div>
+							{row.isExpanded ? (
+								<i
+									className="mdi mdi-chevron-up-circle text-primary fs-4 cursor-pointer"
+									onClick={() => row.toggleRowExpanded()}
+									title="Ocultar Reservación"
+								/>
+							) : (
+								<i
+									className="mdi mdi-chevron-down-circle text-primary fs-4 cursor-pointer"
+									onClick={() => row.toggleRowExpanded()}
+									title="Ver Reservación"
+								/>
+							)}
+						</div>
+					</div>
+				),
+			},
+			{
 				Header: 'Booking',
 				accessor: 'idBooking',
 				style: {
@@ -85,27 +110,12 @@ const TableCerificates = ({
 				},
 			},
 			{
-				id: 'expander', // Make sure it has an ID
+				id: 'dropdown', // Make sure it has an ID
 				style: {
-					width: '10%',
+					width: '7%',
 				},
 				Cell: ({ row }) => (
 					<div className="d-flex align-items-center">
-						<div className="me-1">
-							{row.isExpanded ? (
-								<i
-									className="mdi mdi-chevron-up-circle text-primary fs-4 cursor-pointer"
-									onClick={() => row.toggleRowExpanded()}
-									title="Ocultar Reservación"
-								/>
-							) : (
-								<i
-									className="mdi mdi-chevron-down-circle text-primary fs-4 cursor-pointer"
-									onClick={() => row.toggleRowExpanded()}
-									title="Ver Reservación"
-								/>
-							)}
-						</div>
 						<div className="me-1">
 							<i
 								className="mdi mdi-email-send fs-4 cursor-pointer text-success"

@@ -17,12 +17,14 @@ import removetEmptyObject from '../../../../../util/removetEmptyObject';
 import { useMutation, useQuery } from 'react-query';
 import { getHotelAll } from '../../../../../helpers/catalogues/hotel';
 import { getMealPlanAll } from '../../../../../helpers/catalogues/meal_plan';
+import { getCallCenterAll } from '../../../../../helpers/catalogues/call_center';
+import { getReservationStatusAll } from '../../../../../helpers/catalogues/reservation_status';
 import moment from 'moment';
 import DisabledInput from '../../../../Controller/DisabledInput';
 import diffDates from '../../../../../util/diffDates';
-import { updateReservationService } from '../../../../../services/reservation';
+import { createReservation } from '../../../../../helpers/reservation';
 
-const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
+const FormReservationCreate = ({ reservation = null, toggleDialog }) => {
 	const dispatch = useDispatch();
 	const [initialDate, setInitialDate] = useState(
 		reservation?.initialDate
@@ -54,14 +56,38 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 				})) ?? [],
 		}
 	);
+	//getCallCenter
+	const { data: callCenterOpt } = useQuery(
+		['getCallCenterAll'],
+		() => getCallCenterAll(),
+		{
+			select: (data) =>
+				data.data?.list.map((item) => ({
+					value: item.id,
+					label: item.name,
+				})) ?? [],
+		}
+	);
+	//getReservationStatus
+	const { data: reservationStatusOpt } = useQuery(
+		['getReservationStatusAll'],
+		() => getReservationStatusAll(),
+		{
+			select: (data) =>
+				data.data?.list.map((item) => ({
+					value: item.id,
+					label: item.status,
+				})) ?? [],
+		}
+	);
 
-	//update reservation
+	//create reservation
 	const {
-		mutate: updateItem,
-		isLoading: isUpdating,
-		isError: isErrorUpdate,
-		error: errorUpdate,
-	} = useMutation(updateReservationService);
+		mutate: createItem,
+		isLoading: isCreating,
+		isError: isErrorCreate,
+		error: errorCreate,
+	} = useMutation(createReservation);
 
 	const formik = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
@@ -131,10 +157,7 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 			});
 			// data['quantity'] = parseInt(values.pax) + parseInt(values.childs);
 			console.log(data);
-			updateItem({
-				id: values.id,
-				body: data,
-			});
+			createItem(data);
 		},
 	});
 	console.log(formik.values);
@@ -147,8 +170,244 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 				return false;
 			}}
 		>
-			<h5 className="text-primary">Detalle de la reservación</h5>
-			<hr />
+			<Row>
+				<Col xs="12" md="4">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="hotel">
+							Estado
+						</Label>
+						<Select
+							id="hotel"
+							className="mb-0"
+							value={
+								formik.values.status?.id
+									? {
+											value: formik.values.status.id,
+											label:
+												reservationStatusOpt?.find(
+													(it) =>
+														it.value ===
+														formik.values.status.id
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'status.id',
+									value?.value ?? ''
+								);
+							}}
+							options={reservationStatusOpt}
+							placeholder={SELECT_OPTION}
+						/>
+					</div>
+				</Col>
+			</Row>
+			<Row>
+				<Col xs="12" md="4">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="hotel">
+							Hotel
+						</Label>
+						<Select
+							id="hotel"
+							className="mb-0"
+							value={
+								formik.values.hotel?.id
+									? {
+											value: formik.values.hotel.id,
+											label:
+												hotelOpt?.find(
+													(it) =>
+														it.value ===
+														formik.values.hotel.id
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'hotel.id',
+									value?.value ?? ''
+								);
+							}}
+							options={hotelOpt}
+							placeholder={SELECT_OPTION}
+						/>
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="plan">
+							Plan
+						</Label>
+						<Select
+							id="hotel"
+							className="mb-0"
+							value={
+								formik.values.intPlan
+									? {
+											value:
+												mealPlanOpt?.find(
+													(it) =>
+														it.label ===
+														formik.values.intPlan
+												)?.value ?? '',
+											label:
+												mealPlanOpt?.find(
+													(it) =>
+														it.label ===
+														formik.values.intPlan
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'intPlan',
+									value?.label ?? ''
+								);
+							}}
+							options={mealPlanOpt}
+							placeholder={SELECT_OPTION}
+						/>
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="hotel">
+							Call center
+						</Label>
+						<Select
+							id="hotel"
+							className="mb-0"
+							value={
+								formik.values.callCenter?.id
+									? {
+											value: formik.values.callCenter.id,
+											label:
+												callCenterOpt?.find(
+													(it) =>
+														it.value ===
+														formik.values.callCenter
+															.id
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'callCenter.id',
+									value?.value ?? ''
+								);
+							}}
+							options={callCenterOpt}
+							placeholder={SELECT_OPTION}
+						/>
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="fechaLlegada">
+							Fecha llegada
+						</Label>
+						<DatePicker
+							id="initialDate"
+							date={initialDate}
+							onChangeDate={(value) => {
+								setInitialDate(value[0]);
+								if (value.length > 0) {
+									formik.setFieldValue(
+										`initialDate`,
+										value[0]
+									);
+								} else {
+									formik.setFieldValue(`initialDate`, null);
+								}
+							}}
+						/>
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="finalDate">
+							Fecha salida
+						</Label>
+						<DatePicker
+							id="finalDate"
+							date={finalDate}
+							onChangeDate={(value) => {
+								setFinalDate(value[0]);
+								if (value.length > 0) {
+									formik.setFieldValue(`finalDate`, value[0]);
+								} else {
+									formik.setFieldValue(`finalDate`, null);
+								}
+							}}
+						/>
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="noches">
+							Noches
+						</Label>
+						<DisabledInput
+							value={diffDates(
+								formik.values?.initialDate,
+								formik.values?.finalDate,
+								'days'
+							)}
+						/>
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="adult">
+							Adultos
+						</Label>
+						<Input
+							type="text"
+							className={`form-control`}
+							id="adult"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.adult}
+						/>
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="child">
+							Menores
+						</Label>
+						<Input
+							type="text"
+							className={`form-control`}
+							id="child"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.child}
+						/>
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-3">
+						<Label className="form-label" htmlFor="infant">
+							Infantes
+						</Label>
+						<Input
+							type="text"
+							className={`form-control`}
+							id="infant"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.infant}
+						/>
+					</div>
+				</Col>
+			</Row>
 			<Row className="mb-md-3 mb-2">
 				<Col xs="12" md="4">
 					<div className="mb-2">
@@ -289,177 +548,6 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 					</div>
 				</Col>
 			</Row>
-			<Row>
-				<Col xs="12" md="6">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="hotel">
-							Hotel
-						</Label>
-						<Select
-							id="hotel"
-							className="mb-0"
-							value={
-								formik.values.hotel?.id
-									? {
-											value: formik.values.hotel.id,
-											label:
-												hotelOpt?.find(
-													(it) =>
-														it.value ===
-														formik.values.hotel.id
-												)?.label ?? '',
-									  }
-									: null
-							}
-							onChange={(value) => {
-								formik.setFieldValue(
-									'hotel.id',
-									value?.value ?? ''
-								);
-							}}
-							options={hotelOpt}
-							placeholder={SELECT_OPTION}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="6">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="plan">
-							Plan
-						</Label>
-						<Select
-							id="hotel"
-							className="mb-0"
-							value={
-								formik.values.intPlan
-									? {
-											value:
-												mealPlanOpt?.find(
-													(it) =>
-														it.label ===
-														formik.values.intPlan
-												)?.value ?? '',
-											label:
-												mealPlanOpt?.find(
-													(it) =>
-														it.label ===
-														formik.values.intPlan
-												)?.label ?? '',
-									  }
-									: null
-							}
-							onChange={(value) => {
-								formik.setFieldValue(
-									'intPlan',
-									value?.label ?? ''
-								);
-							}}
-							options={mealPlanOpt}
-							placeholder={SELECT_OPTION}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="fechaLlegada">
-							Fecha llegada
-						</Label>
-						<DatePicker
-							id="initialDate"
-							date={initialDate}
-							onChangeDate={(value) => {
-								setInitialDate(value[0]);
-								if (value.length > 0) {
-									formik.setFieldValue(
-										`initialDate`,
-										value[0]
-									);
-								} else {
-									formik.setFieldValue(`initialDate`, null);
-								}
-							}}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="finalDate">
-							Fecha salida
-						</Label>
-						<DatePicker
-							id="finalDate"
-							date={finalDate}
-							onChangeDate={(value) => {
-								setFinalDate(value[0]);
-								if (value.length > 0) {
-									formik.setFieldValue(`finalDate`, value[0]);
-								} else {
-									formik.setFieldValue(`finalDate`, null);
-								}
-							}}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="noches">
-							Noches
-						</Label>
-						<DisabledInput
-							value={diffDates(
-								formik.values?.initialDate,
-								formik.values?.finalDate,
-								'days'
-							)}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="adult">
-							Adultos
-						</Label>
-						<Input
-							type="text"
-							className={`form-control`}
-							id="adult"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.adult}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="child">
-							Menores
-						</Label>
-						<Input
-							type="text"
-							className={`form-control`}
-							id="child"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.child}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="infant">
-							Infantes
-						</Label>
-						<Input
-							type="text"
-							className={`form-control`}
-							id="infant"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.infant}
-						/>
-					</div>
-				</Col>
-			</Row>
 
 			<div className="d-flex my-3">
 				<Button type="submit" color="primary" className="me-2">
@@ -478,4 +566,4 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 	);
 };
 
-export default FormReservationEdit;
+export default FormReservationCreate;
