@@ -87,10 +87,16 @@ const ReservationService = ({ ReservationId, reservation }) => {
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'Descripción',
+				Header: 'Servicio',
+				accessor: 'subService.name',
+				filterable: false,
+				width: '15%',
+			},
+			{
+				Header: 'Nota',
 				accessor: 'description',
 				filterable: false,
-				width: '25%',
+				width: '17%',
 			},
 			{
 				Header: 'Adultos',
@@ -108,14 +114,14 @@ const ReservationService = ({ ReservationId, reservation }) => {
 				Header: 'Monto',
 				accessor: 'amount',
 				filterable: false,
-				width: '10%',
+				width: '8%',
 				Cell: ({ value }) => jsFormatNumber(value),
 			},
 			{
 				Header: 'Comisión',
 				accessor: 'commission',
 				filterable: false,
-				width: '10%',
+				width: '8%',
 				Cell: ({ value }) => jsFormatNumber(value),
 			},
 			{
@@ -135,13 +141,13 @@ const ReservationService = ({ ReservationId, reservation }) => {
 				Header: 'Folio Dolphin',
 				accessor: 'folioDolphin',
 				filterable: false,
-				width: '10%',
+				width: '8%',
 			},
 			{
 				Header: 'Fecha creación',
 				accessor: 'insertdate',
 				filterable: false,
-				width: '10%',
+				width: '9%',
 				Cell: ({ value }) =>
 					value
 						? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY')

@@ -51,6 +51,7 @@ const OriginClient = ({ customerId }) => {
 						errorItem={errorItem}
 						isFetchingItem={isFetchingItem}
 						isSuccess={isSuccesOrigin}
+						onHandleCreateReservation={onHandleCreateReservation}
 					/>
 				</Col>
 			</Row>

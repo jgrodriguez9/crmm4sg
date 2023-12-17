@@ -20,6 +20,7 @@ const TableCerificates = ({
 	errorItem = null,
 	isFetchingItem = true,
 	isSuccess,
+	onHandleCreateReservation,
 }) => {
 	const columns = useMemo(
 		() => [
@@ -118,8 +119,9 @@ const TableCerificates = ({
 					<div className="d-flex align-items-center">
 						<div className="me-1">
 							<i
-								className="mdi mdi-email-send fs-4 cursor-pointer text-success"
-								title="Envío carta de compra"
+								className="mdi mdi-database-plus fs-4 cursor-pointer text-success"
+								title="Crear reservación"
+								onClick={() => onHandleCreateReservation(row)}
 							/>
 						</div>
 						<div className="me-1">

@@ -21,8 +21,13 @@ import moment from 'moment';
 import DisabledInput from '../../../../Controller/DisabledInput';
 import diffDates from '../../../../../util/diffDates';
 import { updateReservationService } from '../../../../../services/reservation';
+import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 
-const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
+const FormReservationEdit = ({
+	reservation = null,
+	toggleDialog,
+	editClient,
+}) => {
 	const dispatch = useDispatch();
 	const [initialDate, setInitialDate] = useState(
 		reservation?.initialDate
@@ -137,7 +142,6 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 			});
 		},
 	});
-	console.log(formik.values);
 	return (
 		<Form
 			className="needs-validation fs-7"
@@ -149,146 +153,6 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 		>
 			<h5 className="text-primary">Detalle de la reservación</h5>
 			<hr />
-			<Row className="mb-md-3 mb-2">
-				<Col xs="12" md="4">
-					<div className="mb-2">
-						<Row className="mt-3">
-							<Col xs="6">
-								<div className="form-check">
-									<Input
-										className="form-check-input"
-										type="checkbox"
-										id="visa"
-										checked={
-											formik.values.visa === 1
-												? true
-												: false
-										}
-										onChange={(evt) =>
-											formik.setFieldValue(
-												'visa',
-												evt.target.checked ? 1 : 0
-											)
-										}
-									/>
-									<Label
-										className="form-check-label"
-										htmlFor="visa"
-									>
-										Visa
-									</Label>
-								</div>
-							</Col>
-							<Col xs="6">
-								<div className="form-check">
-									<Input
-										className="form-check-input"
-										type="checkbox"
-										id="mc"
-										checked={
-											formik.values.mc === 1
-												? true
-												: false
-										}
-										onChange={(evt) =>
-											formik.setFieldValue(
-												'mc',
-												evt.target.checked ? 1 : 0
-											)
-										}
-									/>
-									<Label
-										className="form-check-label"
-										htmlFor="mc"
-									>
-										Master Card
-									</Label>
-								</div>
-							</Col>
-							<Col xs="6">
-								<div className="form-check">
-									<Input
-										className="form-check-input"
-										type="checkbox"
-										id="amex"
-										checked={
-											formik.values.amex === 1
-												? true
-												: false
-										}
-										onChange={(evt) =>
-											formik.setFieldValue(
-												'amex',
-												evt.target.checked ? 1 : 0
-											)
-										}
-									/>
-									<Label
-										className="form-check-label"
-										htmlFor="amex"
-									>
-										Amex
-									</Label>
-								</div>
-							</Col>
-							<Col xs="6">
-								<div className="form-check">
-									<Input
-										className="form-check-input"
-										type="checkbox"
-										id="other"
-										checked={
-											formik.values.other === 1
-												? true
-												: false
-										}
-										onChange={(evt) =>
-											formik.setFieldValue(
-												'other',
-												evt.target.checked ? 1 : 0
-											)
-										}
-									/>
-									<Label
-										className="form-check-label"
-										htmlFor="other"
-									>
-										Otras
-									</Label>
-								</div>
-							</Col>
-						</Row>
-					</div>
-				</Col>
-				<Col xs="12" md="3">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="comentario">
-							Tarjetas
-						</Label>
-						<Input
-							type="text"
-							className={`form-control`}
-							id="cards"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.cards}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="5">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="comentario">
-							Comentario
-						</Label>
-						<textarea
-							id="comentario"
-							name="comentario"
-							className={`form-control`}
-							rows={3}
-						/>
-					</div>
-				</Col>
-			</Row>
 			<Row>
 				<Col xs="12" md="6">
 					<div className="mb-2">
@@ -460,20 +324,189 @@ const FormReservationEdit = ({ reservation = null, toggleDialog }) => {
 					</div>
 				</Col>
 			</Row>
+			<Row className="mb-md-3 mb-2">
+				<Col xs="12" md="4">
+					<div className="mb-2">
+						<Row className="mt-3">
+							<Col xs="6">
+								<div className="form-check">
+									<Input
+										className="form-check-input"
+										type="checkbox"
+										id="visa"
+										checked={
+											formik.values.visa === 1
+												? true
+												: false
+										}
+										onChange={(evt) =>
+											formik.setFieldValue(
+												'visa',
+												evt.target.checked ? 1 : 0
+											)
+										}
+									/>
+									<Label
+										className="form-check-label"
+										htmlFor="visa"
+									>
+										Visa
+									</Label>
+								</div>
+							</Col>
+							<Col xs="6">
+								<div className="form-check">
+									<Input
+										className="form-check-input"
+										type="checkbox"
+										id="mc"
+										checked={
+											formik.values.mc === 1
+												? true
+												: false
+										}
+										onChange={(evt) =>
+											formik.setFieldValue(
+												'mc',
+												evt.target.checked ? 1 : 0
+											)
+										}
+									/>
+									<Label
+										className="form-check-label"
+										htmlFor="mc"
+									>
+										Master Card
+									</Label>
+								</div>
+							</Col>
+							<Col xs="6">
+								<div className="form-check">
+									<Input
+										className="form-check-input"
+										type="checkbox"
+										id="amex"
+										checked={
+											formik.values.amex === 1
+												? true
+												: false
+										}
+										onChange={(evt) =>
+											formik.setFieldValue(
+												'amex',
+												evt.target.checked ? 1 : 0
+											)
+										}
+									/>
+									<Label
+										className="form-check-label"
+										htmlFor="amex"
+									>
+										Amex
+									</Label>
+								</div>
+							</Col>
+							<Col xs="6">
+								<div className="form-check">
+									<Input
+										className="form-check-input"
+										type="checkbox"
+										id="other"
+										checked={
+											formik.values.other === 1
+												? true
+												: false
+										}
+										onChange={(evt) =>
+											formik.setFieldValue(
+												'other',
+												evt.target.checked ? 1 : 0
+											)
+										}
+									/>
+									<Label
+										className="form-check-label"
+										htmlFor="other"
+									>
+										Otras
+									</Label>
+								</div>
+							</Col>
+						</Row>
+					</div>
+				</Col>
+				<Col xs="12" md="3">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="comentario">
+							Tarjetas
+						</Label>
+						<Input
+							type="text"
+							className={`form-control`}
+							id="cards"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.cards}
+						/>
+					</div>
+				</Col>
+				<Col xs="12" md="5">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="comentario">
+							Comentario
+						</Label>
+						<textarea
+							id="comentario"
+							name="comentario"
+							className={`form-control`}
+							rows={3}
+						/>
+					</div>
+				</Col>
+			</Row>
 
-			<div className="d-flex my-3">
-				<Button type="submit" color="primary" className="me-2">
-					Aceptar
-				</Button>
-				<Button
-					type="button"
-					color="danger"
-					className="btn-soft-danger"
-					onClick={toggleDialog ? toggleDialog : () => {}}
-				>
-					Cancelar
-				</Button>
-			</div>
+			{!isUpdating && (
+				<div className="d-flex my-3">
+					<Button
+						type="submit"
+						color="primary"
+						className="me-2"
+						disabled={editClient}
+					>
+						Aceptar
+					</Button>
+					<Button
+						type="button"
+						color="danger"
+						className="btn-soft-danger"
+						onClick={toggleDialog ? toggleDialog : () => {}}
+						disabled={editClient}
+					>
+						Cancelar
+					</Button>
+				</div>
+			)}
+
+			{isUpdating && (
+				<div className="d-flex my-3">
+					<ButtonsLoader
+						buttons={[
+							{
+								text: 'Aceptar',
+								color: 'primary',
+								className: 'me-2',
+								loader: true,
+							},
+							{
+								text: 'Cancelar',
+								color: 'danger',
+								className: 'btn-soft-danger',
+								loader: false,
+							},
+						]}
+					/>
+				</div>
+			)}
 		</Form>
 	);
 };

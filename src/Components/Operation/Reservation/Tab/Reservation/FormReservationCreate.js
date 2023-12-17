@@ -23,6 +23,7 @@ import moment from 'moment';
 import DisabledInput from '../../../../Controller/DisabledInput';
 import diffDates from '../../../../../util/diffDates';
 import { createReservation } from '../../../../../helpers/reservation';
+import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 
 const FormReservationCreate = ({ reservation = null, toggleDialog }) => {
 	const dispatch = useDispatch();
@@ -549,19 +550,42 @@ const FormReservationCreate = ({ reservation = null, toggleDialog }) => {
 				</Col>
 			</Row>
 
-			<div className="d-flex my-3">
-				<Button type="submit" color="primary" className="me-2">
-					Aceptar
-				</Button>
-				<Button
-					type="button"
-					color="danger"
-					className="btn-soft-danger"
-					onClick={toggleDialog ? toggleDialog : () => {}}
-				>
-					Cancelar
-				</Button>
-			</div>
+			{!isCreating && (
+				<div className="d-flex my-3">
+					<Button type="submit" color="primary" className="me-2">
+						Aceptar
+					</Button>
+					<Button
+						type="button"
+						color="danger"
+						className="btn-soft-danger"
+						onClick={toggleDialog ? toggleDialog : () => {}}
+					>
+						Cancelar
+					</Button>
+				</div>
+			)}
+
+			{isCreating && (
+				<div className="d-flex my-3">
+					<ButtonsLoader
+						buttons={[
+							{
+								text: 'Aceptar',
+								color: 'primary',
+								className: 'me-2',
+								loader: true,
+							},
+							{
+								text: 'Cancelar',
+								color: 'danger',
+								className: 'btn-soft-danger',
+								loader: false,
+							},
+						]}
+					/>
+				</div>
+			)}
 		</Form>
 	);
 };

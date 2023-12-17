@@ -29,8 +29,9 @@ import { editIconClass } from '../../../../constants/icons';
 
 const FormReservationClient = ({
 	reservation = null,
-	editClient,
 	setEditClient,
+	editClient,
+	setOpenClient,
 }) => {
 	const dispatch = useDispatch();
 	//service to get the client
@@ -190,13 +191,13 @@ const FormReservationClient = ({
 				return false;
 			}}
 		>
-			<div className="d-flex align-items-center">
-				<h5 className=" my-0 text-primary me-3">Detalle del titular</h5>
+			<div className="d-flex justify-content-end">
 				<Button
 					size="sm"
 					color="light"
 					type="button"
 					onClick={() => setEditClient(true)}
+					disabled={editClient}
 				>
 					<i className={editIconClass} /> Editar
 				</Button>
@@ -212,16 +213,21 @@ const FormReservationClient = ({
 						>
 							Nombre
 						</Label>
-						<Input
-							type="text"
-							className={`form-control ${
-								formik.errors.firstName ? 'is-invalid' : ''
-							}`}
-							id="firstName"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.firstName}
-						/>
+						{!editClient && (
+							<DisabledInput value={formik.values.firstName} />
+						)}
+						{editClient && (
+							<Input
+								type="text"
+								className={`form-control ${
+									formik.errors.firstName ? 'is-invalid' : ''
+								}`}
+								id="firstName"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.firstName}
+							/>
+						)}
 						{formik.errors.firstName && (
 							<FormFeedback type="invalid d-block">
 								{formik.errors.firstName}
@@ -237,16 +243,22 @@ const FormReservationClient = ({
 						>
 							Apellidos
 						</Label>
-						<Input
-							type="text"
-							className={`form-control ${
-								formik.errors.lastName ? 'is-invalid' : ''
-							}`}
-							id="lastName"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.lastName}
-						/>
+						{!editClient && (
+							<DisabledInput value={formik.values.lastName} />
+						)}
+						{editClient && (
+							<Input
+								type="text"
+								className={`form-control ${
+									formik.errors.lastName ? 'is-invalid' : ''
+								}`}
+								id="lastName"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.lastName}
+							/>
+						)}
+
 						{formik.errors.lastName && (
 							<FormFeedback type="invalid d-block">
 								{formik.errors.lastName}
@@ -259,16 +271,21 @@ const FormReservationClient = ({
 						<Label className="form-label mb-0" htmlFor="address">
 							Dirección
 						</Label>
-						<Input
-							type="text"
-							className={`form-control ${
-								formik.errors.address ? 'is-invalid' : ''
-							}`}
-							id="address"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.address}
-						/>
+						{!editClient && (
+							<DisabledInput value={formik.values.address} />
+						)}
+						{editClient && (
+							<Input
+								type="text"
+								className={`form-control ${
+									formik.errors.address ? 'is-invalid' : ''
+								}`}
+								id="address"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.address}
+							/>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -276,14 +293,19 @@ const FormReservationClient = ({
 						<Label className="form-label mb-0" htmlFor="postalCode">
 							CP
 						</Label>
-						<Input
-							type="text"
-							className="form-control"
-							id="postalCode"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.postalCode}
-						/>
+						{!editClient && (
+							<DisabledInput value={formik.values.postalCode} />
+						)}
+						{editClient && (
+							<Input
+								type="text"
+								className="form-control"
+								id="postalCode"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.postalCode}
+							/>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -291,26 +313,35 @@ const FormReservationClient = ({
 						<Label className="form-label mb-0" htmlFor="country">
 							País
 						</Label>
-						<Select
-							value={countryDefault}
-							onChange={(value) => {
-								setCountryDefault(value);
-								formik.setFieldValue(
-									'country',
-									value?.label ?? ''
-								);
-								setStatesDefault(null);
-								formik.setFieldValue('state', '');
-								setCitiesDefault(null);
-								formik.setFieldValue('city', '');
-							}}
-							options={Country.getAllCountries().map((it) => ({
-								label: it.name,
-								value: it.isoCode,
-							}))}
-							classNamePrefix="select2-selection"
-							placeholder={SELECT_OPTION}
-						/>
+						{!editClient && (
+							<DisabledInput
+								value={countryDefault?.value ?? ''}
+							/>
+						)}
+						{editClient && (
+							<Select
+								value={countryDefault}
+								onChange={(value) => {
+									setCountryDefault(value);
+									formik.setFieldValue(
+										'country',
+										value?.label ?? ''
+									);
+									setStatesDefault(null);
+									formik.setFieldValue('state', '');
+									setCitiesDefault(null);
+									formik.setFieldValue('city', '');
+								}}
+								options={Country.getAllCountries().map(
+									(it) => ({
+										label: it.name,
+										value: it.isoCode,
+									})
+								)}
+								classNamePrefix="select2-selection"
+								placeholder={SELECT_OPTION}
+							/>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -318,19 +349,24 @@ const FormReservationClient = ({
 						<Label className="form-label mb-0" htmlFor="country">
 							Estado
 						</Label>
-						<StateInput
-							value={statesDefault}
-							handleChange={(value) => {
-								setStatesDefault(value);
-								formik.setFieldValue(
-									'state',
-									value?.label ?? ''
-								);
-								setCitiesDefault(null);
-								formik.setFieldValue('city', '');
-							}}
-							country={countryDefault}
-						/>
+						{!editClient && (
+							<DisabledInput value={statesDefault?.value ?? ''} />
+						)}
+						{editClient && (
+							<StateInput
+								value={statesDefault}
+								handleChange={(value) => {
+									setStatesDefault(value);
+									formik.setFieldValue(
+										'state',
+										value?.label ?? ''
+									);
+									setCitiesDefault(null);
+									formik.setFieldValue('city', '');
+								}}
+								country={countryDefault}
+							/>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -338,18 +374,23 @@ const FormReservationClient = ({
 						<Label className="form-label mb-0" htmlFor="country">
 							Ciudad
 						</Label>
-						<CityInput
-							value={citiesDefault}
-							handleChange={(value) => {
-								setCitiesDefault(value);
-								formik.setFieldValue(
-									'city',
-									value?.label ?? ''
-								);
-							}}
-							country={countryDefault}
-							state={statesDefault}
-						/>
+						{!editClient && (
+							<DisabledInput value={citiesDefault?.value ?? ''} />
+						)}
+						{editClient && (
+							<CityInput
+								value={citiesDefault}
+								handleChange={(value) => {
+									setCitiesDefault(value);
+									formik.setFieldValue(
+										'city',
+										value?.label ?? ''
+									);
+								}}
+								country={countryDefault}
+								state={statesDefault}
+							/>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -497,33 +538,46 @@ const FormReservationClient = ({
 						>
 							Estado civil
 						</Label>
-						<Select
-							id="estadoCivil"
-							className="mb-0"
-							value={
-								formik.values.maritalStatusKey
-									? {
-											value: formik.values
-												.maritalStatusKey,
-											label:
-												maritalStatusOpt?.find(
-													(it) =>
-														it.value ===
-														formik.values
-															.maritalStatusKey
-												)?.label ?? '',
-									  }
-									: null
-							}
-							onChange={(value) => {
-								formik.setFieldValue(
-									'maritalStatusKey',
-									value?.value ?? ''
-								);
-							}}
-							options={maritalStatusOpt}
-							placeholder="Seleccionar opción"
-						/>
+						{!editClient && (
+							<DisabledInput
+								value={
+									maritalStatusOpt?.find(
+										(it) =>
+											it.value ===
+											formik.values.maritalStatusKey
+									)?.label ?? ' '
+								}
+							/>
+						)}
+						{editClient && (
+							<Select
+								id="estadoCivil"
+								className="mb-0"
+								value={
+									formik.values.maritalStatusKey
+										? {
+												value: formik.values
+													.maritalStatusKey,
+												label:
+													maritalStatusOpt?.find(
+														(it) =>
+															it.value ===
+															formik.values
+																.maritalStatusKey
+													)?.label ?? '',
+										  }
+										: null
+								}
+								onChange={(value) => {
+									formik.setFieldValue(
+										'maritalStatusKey',
+										value?.value ?? ''
+									);
+								}}
+								options={maritalStatusOpt}
+								placeholder="Seleccionar opción"
+							/>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -531,21 +585,26 @@ const FormReservationClient = ({
 						<Label className="form-label mb-0" htmlFor="income">
 							Ingreso
 						</Label>
-						<Input
-							type="text"
-							className={`form-control ${
-								formik.errors.income ? 'is-invalid' : ''
-							}`}
-							id="income"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.income}
-						/>
+						{!editClient && (
+							<DisabledInput value={formik.values.income} />
+						)}
+						{editClient && (
+							<Input
+								type="text"
+								className={`form-control ${
+									formik.errors.income ? 'is-invalid' : ''
+								}`}
+								id="income"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.income}
+							/>
+						)}
 					</div>
 				</Col>
 			</Row>
 
-			{editClient && !isLoading && (
+			{!isLoading && editClient && (
 				<div className="d-flex my-3">
 					<Button type="submit" color="primary" className="me-2">
 						Aceptar
@@ -554,14 +613,17 @@ const FormReservationClient = ({
 						type="button"
 						color="danger"
 						className="btn-soft-danger"
-						onClick={() => setEditClient(false)}
+						onClick={() => {
+							setEditClient(false);
+							setOpenClient(false);
+						}}
 					>
 						Cancelar
 					</Button>
 				</div>
 			)}
 
-			{isLoading && editClient && (
+			{isLoading && (
 				<div className="d-flex my-3">
 					<ButtonsLoader
 						buttons={[

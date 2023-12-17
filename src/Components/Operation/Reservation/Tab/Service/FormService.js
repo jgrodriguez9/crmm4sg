@@ -46,7 +46,6 @@ const FormService = ({
 			select: (response) => response.data.list,
 		}
 	);
-	console.log(reservation);
 	const {
 		mutate: createService,
 		isLoading: isCreating,
@@ -68,7 +67,7 @@ const FormService = ({
 		enableReinitialize: true,
 		initialValues: {
 			idService: service?.idService ?? '',
-			subService: service?.subService ?? '',
+			subService: service?.subService?.id ?? '',
 			idBooking: reservation?.booking ?? '',
 			quantity: service?.quantity ?? '',
 			pax: service?.pax ?? 2,
@@ -316,7 +315,7 @@ const FormService = ({
 				<Col lg={12}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="nombre">
-							Descripción
+							Nota
 						</Label>
 						<textarea
 							id="description"
