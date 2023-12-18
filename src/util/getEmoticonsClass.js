@@ -7,7 +7,7 @@ const getEmoticonsClass = (key) => {
 		4: 'ri-emotion-line emoticons-satisfied',
 		5: 'ri-emotion-laugh-line emoticons-very-satisfied',
 	};
-	return obj[key] ?? 'ri-open-arm-line text-light text-body-secondary';
+	return obj[key] ?? ' ri-question-line text-info';
 };
 const getBgEmoticonsClass = (key) => {
 	const obj = {

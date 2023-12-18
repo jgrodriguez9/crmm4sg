@@ -3,6 +3,8 @@ import TableContainer from '../../../../Common/TableContainer';
 import Loader from '../../../../Common/Loader';
 import moment from 'moment';
 import CellActions from '../../../../Common/CellActions';
+import { getEmoticonsClass } from '../../../../../util/getEmoticonsClass';
+import TooltipDescription from '../../../../Common/TooltipDescription';
 
 const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 	const columns = useMemo(
@@ -12,15 +14,31 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 				accessor: 'noteType.type',
 				filterable: false,
 				style: {
-					width: '10%',
+					width: '13%',
 				},
 			},
 			{
 				Header: 'Estado',
-				accessor: 'status',
+				accessor: 'status.mood',
 				filterable: false,
 				style: {
-					width: '10%',
+					width: '5%',
+				},
+				Cell: ({ row, value }) => {
+					return (
+						<div>
+							<i
+								id={`list-emot-${row.original?.status?.id}`}
+								className={`fs-3 cursor-pointer ${getEmoticonsClass(
+									parseInt(row.original?.status?.key ?? '100')
+								)}`}
+							/>
+							<TooltipDescription
+								text={value ?? 'Sin estado'}
+								id={`list-emot-${row.original?.status?.id}`}
+							/>
+						</div>
+					);
 				},
 			},
 			{
@@ -56,7 +74,7 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 				accessor: 'user',
 				filterable: false,
 				style: {
-					width: '10%',
+					width: '12%',
 				},
 			},
 			{
