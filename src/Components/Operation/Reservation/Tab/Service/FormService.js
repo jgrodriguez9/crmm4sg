@@ -26,6 +26,7 @@ import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
+import useUser from '../../../../../hooks/useUser';
 
 const FormService = ({
 	toggleDialog,
@@ -34,6 +35,7 @@ const FormService = ({
 	reservation,
 	refetchServices,
 }) => {
+	const user = useUser();
 	const dispatch = useDispatch();
 	const { data } = useQuery(
 		['getSubServices', ReservationId],
@@ -74,6 +76,8 @@ const FormService = ({
 			amount: service?.amount ?? 0,
 			description: service?.description ?? '',
 			childs: service?.childs ?? 0,
+			user: service?.user ?? user?.username,
+
 			// certificateNumber: reservation?.confirm ?? '',
 			// commission: 0,
 			// "userComission": "",

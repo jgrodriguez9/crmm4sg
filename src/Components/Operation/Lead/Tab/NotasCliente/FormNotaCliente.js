@@ -126,11 +126,11 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 
 	useEffect(() => {
 		const emot = emotionsClientsTypeOpt?.find(
-			(it) => it.value === note?.status
+			(it) => it.value === note?.status?.id
 		);
 		setAnimo(emot?.label ?? '');
 		setBgAnimo(getBgEmoticonsClass(emot?.key ?? ''));
-	}, [emotionsClientsTypeOpt, note?.status]);
+	}, [emotionsClientsTypeOpt, note?.status?.id]);
 
 	const formik = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed

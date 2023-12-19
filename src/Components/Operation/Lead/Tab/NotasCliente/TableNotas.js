@@ -5,6 +5,7 @@ import moment from 'moment';
 import CellActions from '../../../../Common/CellActions';
 import { getEmoticonsClass } from '../../../../../util/getEmoticonsClass';
 import TooltipDescription from '../../../../Common/TooltipDescription';
+import { DATE_TIME_FORMAT } from '../../../../../common/globalsProp';
 
 const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 	const columns = useMemo(
@@ -28,14 +29,14 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 					return (
 						<div>
 							<i
-								id={`list-emot-${row.original?.status?.id}`}
+								id={`list-emot-${row.id}`}
 								className={`fs-3 cursor-pointer ${getEmoticonsClass(
 									parseInt(row.original?.status?.key ?? '100')
 								)}`}
 							/>
 							<TooltipDescription
 								text={value ?? 'Sin estado'}
-								id={`list-emot-${row.original?.status?.id}`}
+								id={`list-emot-${row.id}`}
 							/>
 						</div>
 					);
@@ -46,7 +47,7 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 				accessor: 'note',
 				filterable: false,
 				style: {
-					width: '35%',
+					width: '25%',
 				},
 			},
 			{
@@ -56,6 +57,20 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 				style: {
 					width: '20%',
 				},
+			},
+			{
+				Header: 'Fecha creación',
+				accessor: 'date',
+				filterable: false,
+				style: {
+					width: '10%',
+				},
+				Cell: ({ value }) =>
+					value
+						? moment(value, 'YYYY-MM-DDTHH:mm').format(
+								DATE_TIME_FORMAT
+						  )
+						: '',
 			},
 			{
 				Header: 'Fecha FUp',

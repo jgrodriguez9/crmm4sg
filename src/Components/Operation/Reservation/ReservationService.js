@@ -54,6 +54,7 @@ const ReservationService = ({ ReservationId, reservation }) => {
 			amount: original?.amount ?? 0,
 			description: original?.description ?? '',
 			childs: original?.childs ?? 0,
+			user: original?.user ?? '',
 			// certificateNumber: reservation?.confirm ?? '',
 			// commission: 0,
 			// "userComission": "",
@@ -90,38 +91,31 @@ const ReservationService = ({ ReservationId, reservation }) => {
 				Header: 'Servicio',
 				accessor: 'subService.name',
 				filterable: false,
-				width: '15%',
+				width: '28%',
 			},
 			{
 				Header: 'Nota',
 				accessor: 'description',
 				filterable: false,
-				width: '17%',
+				width: '24%',
 			},
 			{
 				Header: 'Adultos',
 				accessor: 'pax',
 				filterable: false,
-				width: '5%',
+				width: '7%',
 			},
 			{
 				Header: 'Menores',
 				accessor: 'childs',
 				filterable: false,
-				width: '5%',
+				width: '7%',
 			},
 			{
 				Header: 'Monto',
 				accessor: 'amount',
 				filterable: false,
-				width: '8%',
-				Cell: ({ value }) => jsFormatNumber(value),
-			},
-			{
-				Header: 'Comisión',
-				accessor: 'commission',
-				filterable: false,
-				width: '8%',
+				width: '10%',
 				Cell: ({ value }) => jsFormatNumber(value),
 			},
 			{
@@ -131,23 +125,10 @@ const ReservationService = ({ ReservationId, reservation }) => {
 				width: '10%',
 			},
 			{
-				Header: 'Comisión del usuario',
-				accessor: 'userComission',
-				filterable: false,
-				width: '10%',
-				Cell: ({ value }) => jsFormatNumber(value),
-			},
-			{
-				Header: 'Folio Dolphin',
-				accessor: 'folioDolphin',
-				filterable: false,
-				width: '8%',
-			},
-			{
 				Header: 'Fecha creación',
 				accessor: 'insertdate',
 				filterable: false,
-				width: '9%',
+				width: '10%',
 				Cell: ({ value }) =>
 					value
 						? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY')
