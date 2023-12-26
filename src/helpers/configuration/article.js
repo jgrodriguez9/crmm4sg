@@ -6,5 +6,12 @@ const updateArticle = (data) =>
 	put(`${url.article}/${data.articleId}`, data.body);
 const createArticle = (data) => post(`${url.article}`, data);
 const deleteArticle = (data) => del(`${url.article}/${data.articleId}`);
+const helpArticleList = (query) => get(`${url.article}/listHelp?${query}`);
 
-export { getArticlePaginate, updateArticle, createArticle, deleteArticle };
+export {
+	getArticlePaginate,
+	updateArticle,
+	createArticle,
+	deleteArticle,
+	helpArticleList,
+};

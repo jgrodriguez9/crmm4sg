@@ -3,7 +3,6 @@ import { useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import TableContainer from '../../../Components/Common/TableContainer';
 import Loader from '../../../Components/Common/Loader';
-import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 
 //Import actions
@@ -52,7 +51,7 @@ const Article = () => {
 	const [queryFilter, setQueryFilter] = useState(
 		parseObjectToQueryUrl(query)
 	);
-	//query to get list clients
+	//query to get list
 	const {
 		data: itemsData,
 		error: errorItemsQuery,
@@ -66,8 +65,6 @@ const Article = () => {
 			keepPreviousData: true,
 		}
 	);
-
-	console.log(itemsData);
 
 	useEffect(() => {
 		if (errorItemsQuery?.code) {
@@ -88,7 +85,6 @@ const Article = () => {
 
 	const editPax = (row) => {
 		const { original } = row;
-		console.log(original);
 		setItem({
 			id: original.id ?? '',
 			title: original.title ?? '',

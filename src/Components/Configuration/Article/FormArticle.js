@@ -126,7 +126,6 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 				const [key, value] = entry;
 				data[key] = value;
 			});
-			console.log(data);
 			if (item?.id) {
 				updateItem({
 					articleId: item?.id,
@@ -137,9 +136,6 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 			}
 		},
 	});
-
-	console.log(formik.values);
-	console.log(formik.errors);
 
 	return (
 		<Form
