@@ -28,6 +28,7 @@ const FormReservationEdit = ({
 	toggleDialog,
 	editClient,
 }) => {
+	console.log(reservation);
 	const dispatch = useDispatch();
 	const [initialDate, setInitialDate] = useState(
 		reservation?.initialDate
@@ -84,7 +85,7 @@ const FormReservationEdit = ({
 			hotel: reservation?.hotel ?? { id: '' },
 			initialDate: reservation?.initialDate ?? '',
 			finalDate: reservation?.finalDate ?? '',
-			intPlan: reservation?.intPlan ?? '',
+			intPlan: reservation?.intPlan?.id ?? '',
 			maritalStatus: reservation?.maritalStatus ?? '',
 			income: reservation?.income ?? '',
 			cards: reservation?.cards ?? '',
@@ -101,6 +102,7 @@ const FormReservationEdit = ({
 		},
 		validationSchema: Yup.object({
 			dateRequest: Yup.string().required(FIELD_REQUIRED),
+			intPlan: Yup.string().required(FIELD_REQUIRED),
 			adult: Yup.number()
 				.min(0, FIELD_POSITIVE)
 				.integer(FIELD_INTEGER)
@@ -200,13 +202,13 @@ const FormReservationEdit = ({
 											value:
 												mealPlanOpt?.find(
 													(it) =>
-														it.label ===
+														it.value ===
 														formik.values.intPlan
 												)?.value ?? '',
 											label:
 												mealPlanOpt?.find(
 													(it) =>
-														it.label ===
+														it.value ===
 														formik.values.intPlan
 												)?.label ?? '',
 									  }
@@ -215,7 +217,7 @@ const FormReservationEdit = ({
 							onChange={(value) => {
 								formik.setFieldValue(
 									'intPlan',
-									value?.label ?? ''
+									value?.value ?? ''
 								);
 							}}
 							options={mealPlanOpt}

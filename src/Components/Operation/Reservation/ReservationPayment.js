@@ -13,13 +13,15 @@ import Loader from '../../Common/Loader';
 import BasicModal from '../../Common/BasicModal';
 import FormPaymentClient from './Tab/Payment/FormPaymentClient';
 
-const ReservationPayment = ({ ReservationId }) => {
+const ReservationPayment = ({ ReservationId, reservation }) => {
 	const [showModal, setShowModal] = useState(false);
 	const { data, error, isLoading, isSuccess } = useQuery(
-		['getPaymentByReservation', ReservationId],
-		() => fecthPaymentByReservation(ReservationId),
+		['getPaymentByReservation', reservation.booking],
+		() => fecthPaymentByReservation(reservation.booking),
 		{
-			keepPreviousData: true,
+			enabled:
+				reservation?.booking !== null &&
+				reservation?.booking !== undefined,
 		}
 	);
 
@@ -99,6 +101,7 @@ const ReservationPayment = ({ ReservationId }) => {
 		],
 		[]
 	);
+	console.log(data);
 
 	const toggleDialog = () => setShowModal(!showModal);
 

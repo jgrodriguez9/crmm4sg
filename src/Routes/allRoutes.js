@@ -11,6 +11,7 @@ import Lead from '../pages/Operation/Lead';
 import LeadProfile from '../pages/Operation/Lead/Detail';
 import Reservation from '../pages/Operation/Reservation';
 import ReservationDetail from '../pages/Operation/Reservation/Detail';
+import Article from '../pages/Configuration/Article';
 
 const protectedRoutes = [
 	{ path: '/dashboard', component: <Dashboard /> },
@@ -35,8 +36,15 @@ const reservationRoute = [
 	{ path: '/reservation/:idReservation', component: <ReservationDetail /> },
 ];
 
+const articleRoute = [{ path: '/article', component: <Article /> }];
+
 // roles
-const agentRoutes = [...protectedRoutes, ...clientRoute, ...reservationRoute];
+const agentRoutes = [
+	...protectedRoutes,
+	...clientRoute,
+	...reservationRoute,
+	...articleRoute,
+];
 
 const publicRoutes = [{ path: '/login', component: <Login /> }];
 

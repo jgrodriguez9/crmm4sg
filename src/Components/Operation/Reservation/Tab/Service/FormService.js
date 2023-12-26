@@ -21,12 +21,13 @@ import {
 	createContractService,
 	updateService,
 } from '../../../../../helpers/contractService';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 import useUser from '../../../../../hooks/useUser';
+import moment from 'moment';
 
 const FormService = ({
 	toggleDialog,
@@ -37,6 +38,11 @@ const FormService = ({
 }) => {
 	const user = useUser();
 	const dispatch = useDispatch();
+	const [activation, setActivation] = useState(
+		service?.activation
+			? moment(service?.activation, 'YYYY-MM-DD').toDate()
+			: null
+	);
 	const { data } = useQuery(
 		['getSubServices', ReservationId],
 		async () => {
@@ -77,7 +83,8 @@ const FormService = ({
 			description: service?.description ?? '',
 			childs: service?.childs ?? 0,
 			user: service?.user ?? user?.username,
-
+			activation: service?.activation ?? null,
+			nights: service?.nights ?? '',
 			// certificateNumber: reservation?.confirm ?? '',
 			// commission: 0,
 			// "userComission": "",
@@ -105,7 +112,11 @@ const FormService = ({
 			const data = {};
 			Object.entries(removetEmptyObject(values)).forEach((entry) => {
 				const [key, value] = entry;
-				data[key] = value;
+				if (key === 'activation') {
+					data[key] = moment(values.activation).format('YYYY-MM-DD');
+				} else {
+					data[key] = value;
+				}
 			});
 			// data['quantity'] = parseInt(values.pax) + parseInt(values.childs);
 			console.log(data);
@@ -214,22 +225,22 @@ const FormService = ({
 				</Col>
 				<Col lg={3}>
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="nombre">
+						<Label className="form-label mb-0" htmlFor="nights">
 							Días
 						</Label>
 						<Input
 							type="text"
 							className={`form-control ${
-								formik.errors.pax ? 'is-invalid' : ''
+								formik.errors.nights ? 'is-invalid' : ''
 							}`}
-							id="pax"
+							id="nights"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
-							value={formik.values.pax}
+							value={formik.values.nights}
 						/>
-						{formik.errors.pax && (
+						{formik.errors.nights && (
 							<FormFeedback type="invalid" className="d-block">
-								{formik.errors.pax}
+								{formik.errors.nights}
 							</FormFeedback>
 						)}
 					</div>
@@ -306,13 +317,23 @@ const FormService = ({
 				</Col>
 				<Col lg={6}>
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="nombre">
+						<Label className="form-label mb-0" htmlFor="activation">
 							Fecha de uso
 						</Label>
 						<DatePicker
-							id="fechaLlegada"
-							date={null}
-							onChangeDate={() => {}}
+							id="activation"
+							date={activation}
+							onChangeDate={(value) => {
+								setActivation(value[0]);
+								if (value.length > 0) {
+									formik.setFieldValue(
+										`activation`,
+										value[0]
+									);
+								} else {
+									formik.setFieldValue(`activation`, null);
+								}
+							}}
 						/>
 					</div>
 				</Col>

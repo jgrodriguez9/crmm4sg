@@ -10,6 +10,7 @@ const Navdata = () => {
 	//state data
 	const [isSecurity, setIsSecurity] = useState(false);
 	const [isOperation, setIsOperation] = useState(false);
+	const [isConfiguration, setIsConfiguration] = useState(false);
 
 	const [iscurrentState, setIscurrentState] = useState('Dashboard');
 
@@ -44,6 +45,29 @@ const Navdata = () => {
 			icon: 'ri-dashboard-2-line',
 			link: '/dashboard',
 			show: existsRole(roles, [ROLE_AGENT]),
+		},
+		{
+			id: 'configuration',
+			label: 'Configuración',
+			icon: 'ri-settings-5-line',
+			link: '/#',
+			click: function (e) {
+				e.preventDefault();
+				setIsConfiguration(!isOperation);
+				setIscurrentState('Configuration');
+				updateIconSidebar(e);
+			},
+			stateVariables: isConfiguration,
+			show: existsRole(roles, [ROLE_AGENT]),
+			subItems: [
+				{
+					id: 'article',
+					label: 'Artículos de ayuda',
+					link: '/article',
+					parentId: 'configuration',
+					show: existsRole(roles, [ROLE_AGENT]),
+				},
+			],
 		},
 		// {
 		//     id: "security",

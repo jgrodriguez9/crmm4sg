@@ -42,3 +42,12 @@ export const customerNote = '/customerNote';
 
 //subiservices
 export const subServices = '/subServices';
+
+//payment
+export const payment = '/payment';
+
+//article
+export const article = '/article';
+
+//article category
+export const categoryArticle = '/articleCategory';

@@ -312,7 +312,7 @@ const Reservation = () => {
 			},
 			{
 				Header: 'Plan',
-				accessor: 'intPlan',
+				accessor: 'intPlan.name',
 				filterable: false,
 				width: '13%',
 			},

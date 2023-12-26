@@ -7,8 +7,7 @@ const getPaxesByReservation = (id) =>
 	get(`${url.reservation}/getAllPaxes/${id}`);
 const getServicesByReservation = (id) =>
 	get(`${url.reservation}/getAllServices/${id}`);
-const getPaymentsByReservation = (id) =>
-	get(`${url.reservation}/getAllPayments/${id}`);
+const getPaymentsByReservation = (id) => get(`${url.payment}?idBooking=${id}`);
 const filterGlobalCustomer = (parameter) =>
 	get(`${url.reservation}/search?parameter=${parameter}`);
 const updateReservation = (id, data) => put(`${url.reservation}/${id}`, data);
