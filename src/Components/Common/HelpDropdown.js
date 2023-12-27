@@ -127,9 +127,9 @@ const HelpDropdown = () => {
 											className="d-flex align-items-center justify-content-between border-bottom"
 											onClick={() => seeDoc(item)}
 										>
-											<h5 className="m-0">
+											<h6 className="m-0">
 												{item.title}
-											</h5>
+											</h6>
 											<small className="text-muted fw-light">
 												{moment(
 													item.dateCreated,

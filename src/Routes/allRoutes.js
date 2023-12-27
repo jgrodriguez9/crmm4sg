@@ -12,6 +12,7 @@ import LeadProfile from '../pages/Operation/Lead/Detail';
 import Reservation from '../pages/Operation/Reservation';
 import ReservationDetail from '../pages/Operation/Reservation/Detail';
 import Article from '../pages/Configuration/Article';
+import ArticleCategory from '../pages/Configuration/Catalogues/ArticleCategory';
 
 const protectedRoutes = [
 	{ path: '/dashboard', component: <Dashboard /> },
@@ -38,12 +39,17 @@ const reservationRoute = [
 
 const articleRoute = [{ path: '/article', component: <Article /> }];
 
+const catalogueRoute = [
+	{ path: '/articleCategory', component: <ArticleCategory /> },
+];
+
 // roles
 const agentRoutes = [
 	...protectedRoutes,
 	...clientRoute,
 	...reservationRoute,
 	...articleRoute,
+	...catalogueRoute,
 ];
 
 const publicRoutes = [{ path: '/login', component: <Login /> }];

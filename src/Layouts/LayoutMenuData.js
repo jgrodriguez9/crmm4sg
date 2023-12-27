@@ -11,6 +11,7 @@ const Navdata = () => {
 	const [isSecurity, setIsSecurity] = useState(false);
 	const [isOperation, setIsOperation] = useState(false);
 	const [isConfiguration, setIsConfiguration] = useState(false);
+	const [isCatalogue, setIsCatalogue] = useState(false);
 
 	const [iscurrentState, setIscurrentState] = useState('Dashboard');
 
@@ -116,6 +117,29 @@ const Navdata = () => {
 					label: 'Reservación',
 					link: '/reservation',
 					parentId: 'operation',
+					show: existsRole(roles, [ROLE_AGENT]),
+				},
+			],
+		},
+		{
+			id: 'catalogue',
+			label: 'Catálogos',
+			icon: 'ri-align-justify',
+			link: '/#',
+			click: function (e) {
+				e.preventDefault();
+				setIsConfiguration(!isCatalogue);
+				setIscurrentState('Catalogue');
+				updateIconSidebar(e);
+			},
+			stateVariables: isConfiguration,
+			show: existsRole(roles, [ROLE_AGENT]),
+			subItems: [
+				{
+					id: 'articleCategory',
+					label: 'Categoría de artículos',
+					link: '/articleCategory',
+					parentId: 'catalogue',
 					show: existsRole(roles, [ROLE_AGENT]),
 				},
 			],
