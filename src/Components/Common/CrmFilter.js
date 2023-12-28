@@ -9,8 +9,6 @@ import {
 	Col,
 	Button,
 } from 'reactstrap';
-import Flatpickr from 'react-flatpickr';
-import Select from 'react-select';
 import SelectAsync from './SelectAsync';
 import { getSegmentPaginate } from '../../helpers/catalogues/segment';
 import { getCallCenterPaginate } from '../../helpers/catalogues/call_center';

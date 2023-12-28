@@ -8,6 +8,7 @@ import { SELECT_OPTION } from '../../../constants/messages';
 import DatePicker from '../../../Common/DatePicker';
 import DisabledInput from '../../../Controller/DisabledInput';
 import diffDates from '../../../../util/diffDates';
+import { getCallCenterAll } from '../../../../helpers/catalogues/call_center';
 
 const FormReservationCero = ({ formik }) => {
 	const [initialDate, setInitialDate] = useState(null);
@@ -29,6 +30,18 @@ const FormReservationCero = ({ formik }) => {
 				data.data?.list.map((item) => ({
 					value: item.id,
 					label: item.plan,
+				})) ?? [],
+		}
+	);
+	//getCallCenter
+	const { data: callCenterOpt } = useQuery(
+		['getCallCenterAll'],
+		() => getCallCenterAll(),
+		{
+			select: (data) =>
+				data.data?.list.map((item) => ({
+					value: item.id,
+					label: item.name,
 				})) ?? [],
 		}
 	);
@@ -105,7 +118,7 @@ const FormReservationCero = ({ formik }) => {
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="4">
+				<Col xs="12" md="6">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="hotelUnit">
 							Hotel Unit
@@ -122,7 +135,7 @@ const FormReservationCero = ({ formik }) => {
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="4">
+				<Col xs="12" md="6">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="unit">
 							Unit
@@ -139,7 +152,40 @@ const FormReservationCero = ({ formik }) => {
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="4">
+				<Col xs="12" md="6">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="hotel">
+							Call center
+						</Label>
+						<Select
+							id="hotel"
+							className="mb-0"
+							value={
+								formik.values.callCenter?.id
+									? {
+											value: formik.values.callCenter.id,
+											label:
+												callCenterOpt?.find(
+													(it) =>
+														it.value ===
+														formik.values.callCenter
+															.id
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'callCenter.id',
+									value?.value ?? ''
+								);
+							}}
+							options={callCenterOpt}
+							placeholder={SELECT_OPTION}
+						/>
+					</div>
+				</Col>
+				<Col xs="12" md="6">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="pickup">
 							Pickup
