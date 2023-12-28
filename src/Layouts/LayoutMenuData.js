@@ -68,6 +68,27 @@ const Navdata = () => {
 					parentId: 'configuration',
 					show: existsRole(roles, [ROLE_AGENT]),
 				},
+				{
+					id: 'catalogue',
+					label: 'Catálogos',
+					link: '/#',
+					isChildItem: true,
+					click: function (e) {
+						e.preventDefault();
+						setIsCatalogue(!isCatalogue);
+					},
+					parentId: 'configuration',
+					show: existsRole(roles, [ROLE_AGENT]),
+					stateVariables: isCatalogue,
+					childItems: [
+						{
+							id: 1,
+							label: 'Categoría de artículos',
+							link: '/articleCategory',
+							show: existsRole(roles, [ROLE_AGENT]),
+						},
+					],
+				},
 			],
 		},
 		// {
@@ -117,29 +138,6 @@ const Navdata = () => {
 					label: 'Reservación',
 					link: '/reservation',
 					parentId: 'operation',
-					show: existsRole(roles, [ROLE_AGENT]),
-				},
-			],
-		},
-		{
-			id: 'catalogue',
-			label: 'Catálogos',
-			icon: 'ri-align-justify',
-			link: '/#',
-			click: function (e) {
-				e.preventDefault();
-				setIsConfiguration(!isCatalogue);
-				setIscurrentState('Catalogue');
-				updateIconSidebar(e);
-			},
-			stateVariables: isConfiguration,
-			show: existsRole(roles, [ROLE_AGENT]),
-			subItems: [
-				{
-					id: 'articleCategory',
-					label: 'Categoría de artículos',
-					link: '/articleCategory',
-					parentId: 'catalogue',
 					show: existsRole(roles, [ROLE_AGENT]),
 				},
 			],

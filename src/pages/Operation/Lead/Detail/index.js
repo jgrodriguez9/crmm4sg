@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
 	Alert,
+	Button,
 	Card,
 	CardBody,
 	CardHeader,
@@ -37,6 +38,7 @@ import BasicModal from '../../../../Components/Common/BasicModal';
 import FormClient from '../../../../Components/Operation/Lead/Tab/LeadInformation/FormClient';
 import moment from 'moment';
 import { DATE_FORMAT } from '../../../../common/globalsProp';
+import { editIconClass } from '../../../../Components/constants/icons';
 
 const LeadProfile = () => {
 	document.title = 'Detalle del Lead | CRM - M4S';
@@ -337,12 +339,17 @@ const LeadProfile = () => {
 													{`${itemData?.data?.firstName} ${itemData?.data?.lastName}`}
 												</h5>
 											</div>
-											<div>
+											<Button
+												color="light"
+												size="sm"
+												className="d-flex align-items-center"
+												onClick={toggleDialog}
+											>
 												<i
-													className="ri-edit-fill cursor-pointer"
-													onClick={toggleDialog}
-												/>
-											</div>
+													className={`fs-5 ${editIconClass}`}
+												/>{' '}
+												Editar
+											</Button>
 										</div>
 										<div className="table-card p-3">
 											{dataLeft.map((it, idx) => (
