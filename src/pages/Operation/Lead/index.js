@@ -215,7 +215,7 @@ const Lead = () => {
 									className="text-muted d-inline-block"
 								>
 									<i
-										className="ri-user-search-fill fs-16"
+										className="ri-user-search-fill fs-16 text-secondary"
 										onClick={() => {
 											setIdItem(
 												cellProps.row.original.id
