@@ -22,7 +22,7 @@ const DetailCanvas = ({
 }) => {
 	const [info, setInfo] = useState(data);
 	const openAccordion = (idItem, valorElemento) => {
-		const copyItems = info.items.map((it) => ({ ...it, collapse: true }));
+		const copyItems = [...info.items]; //.map((it) => ({ ...it, collapse: true }));
 		const index = copyItems.findIndex((it) => it.id === idItem);
 		copyItems[index].collapse = valorElemento;
 		setInfo((prev) => ({

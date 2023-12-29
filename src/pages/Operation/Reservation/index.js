@@ -365,7 +365,7 @@ const Reservation = () => {
 									className="text-muted d-inline-block"
 								>
 									<i
-										className="ri-file-search-fill fs-16"
+										className="ri-file-search-fill fs-16 text-secondary"
 										onClick={() => {
 											setIdItem(
 												cellProps.row.original.id

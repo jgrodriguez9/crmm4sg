@@ -7,6 +7,7 @@ import Select from 'react-select';
 import { Country } from 'country-state-city';
 import { SELECT_OPTION } from '../../../constants/messages';
 import CityInput from '../../../Controller/CityInput';
+import { incomeOpt } from '../../../constants/utils';
 
 const FormReservationClient = ({ formik }) => {
 	const [countryDefault, setCountryDefault] = useState(null);
@@ -15,7 +16,7 @@ const FormReservationClient = ({ formik }) => {
 
 	return (
 		<Row className="mb-md-3 mb-2">
-			<Col xs="12" md="6">
+			<Col xs="12" md="4">
 				<div className="mb-2">
 					<Label className="form-label mb-0" htmlFor="firstName">
 						Nombre
@@ -37,7 +38,7 @@ const FormReservationClient = ({ formik }) => {
 					)}
 				</div>
 			</Col>
-			<Col xs="12" md="6">
+			<Col xs="12" md="4">
 				<div className="mb-2">
 					<Label className="form-label mb-0" htmlFor="lastName">
 						Apellido
@@ -59,7 +60,29 @@ const FormReservationClient = ({ formik }) => {
 					)}
 				</div>
 			</Col>
-			<Col xs="12" md="8">
+			<Col xs="12" md="4">
+				<div className="mb-2">
+					<Label className="form-label mb-0" htmlFor="email">
+						Correo electrónico
+					</Label>
+					<Input
+						type="text"
+						className={`form-control ${
+							formik.errors.email ? 'is-invalid' : ''
+						}`}
+						id="email"
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						value={formik.values.email}
+					/>
+					{formik.errors.email && (
+						<FormFeedback type="invalid d-block">
+							{formik.errors.email}
+						</FormFeedback>
+					)}
+				</div>
+			</Col>
+			<Col xs="12" md="4">
 				<div className="mb-2">
 					<Label className="form-label mb-0" htmlFor="address">
 						Dirección
@@ -88,6 +111,35 @@ const FormReservationClient = ({ formik }) => {
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
 						value={formik.values.postalCode}
+					/>
+				</div>
+			</Col>
+			<Col xs="12" md="4">
+				<div className="mb-2">
+					<Label className="form-label mb-0" htmlFor="srcIncome">
+						Ingreso
+					</Label>
+					<Select
+						id="ingreso"
+						className="mb-0"
+						value={
+							formik.values.srcIncome
+								? {
+										value: formik.values.srcIncome,
+										label:
+											incomeOpt.find(
+												(it) =>
+													it.value ===
+													formik.values.srcIncome
+											)?.label ?? '',
+								  }
+								: null
+						}
+						onChange={(value) => {
+							formik.setFieldValue('srcIncome', value.value);
+						}}
+						options={incomeOpt}
+						placeholder="Seleccionar opción"
 					/>
 				</div>
 			</Col>
@@ -202,40 +254,6 @@ const FormReservationClient = ({ formik }) => {
 						onChange={(phone) => {
 							formik.setFieldValue('movil', phone);
 						}}
-					/>
-				</div>
-			</Col>
-			<Col xs="12" md="4">
-				<div className="mb-2">
-					<Label className="form-label mb-0" htmlFor="email">
-						Correo electrónico
-					</Label>
-					<Input
-						type="text"
-						className={`form-control ${
-							formik.errors.email ? 'is-invalid' : ''
-						}`}
-						id="email"
-						onChange={formik.handleChange}
-						onBlur={formik.handleBlur}
-						value={formik.values.email}
-					/>
-				</div>
-			</Col>
-			<Col xs="12" md="4">
-				<div className="mb-2">
-					<Label className="form-label mb-0" htmlFor="srcIncome">
-						Ingreso
-					</Label>
-					<Input
-						type="text"
-						className={`form-control ${
-							formik.errors.srcIncome ? 'is-invalid' : ''
-						}`}
-						id="srcIncome"
-						onChange={formik.handleChange}
-						onBlur={formik.handleBlur}
-						value={formik.values.srcIncome}
 					/>
 				</div>
 			</Col>

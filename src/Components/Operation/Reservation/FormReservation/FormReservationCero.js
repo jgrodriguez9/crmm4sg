@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { getHotelAll } from '../../../../helpers/catalogues/hotel';
 import { getMealPlanAll } from '../../../../helpers/catalogues/meal_plan';
-import { Col, Input, Label, Row } from 'reactstrap';
+import { Col, FormFeedback, Input, Label, Row } from 'reactstrap';
 import Select from 'react-select';
 import { SELECT_OPTION } from '../../../constants/messages';
 import DatePicker from '../../../Common/DatePicker';
@@ -49,7 +49,7 @@ const FormReservationCero = ({ formik }) => {
 	return (
 		<>
 			<Row>
-				<Col xs="12" md="6">
+				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="hotel">
 							Hotel
@@ -81,7 +81,7 @@ const FormReservationCero = ({ formik }) => {
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="6">
+				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="plan">
 							Plan
@@ -118,41 +118,7 @@ const FormReservationCero = ({ formik }) => {
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="6">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="hotelUnit">
-							Hotel Unit
-						</Label>
-						<Select
-							id="hotelUnit"
-							className="mb-0"
-							value={null}
-							onChange={(value) => {
-								console.log(value);
-							}}
-							options={[]}
-							placeholder={SELECT_OPTION}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="6">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="unit">
-							Unit
-						</Label>
-						<Select
-							id="unit"
-							className="mb-0"
-							value={null}
-							onChange={(value) => {
-								console.log(value);
-							}}
-							options={[]}
-							placeholder={SELECT_OPTION}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="6">
+				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="hotel">
 							Call center
@@ -181,23 +147,6 @@ const FormReservationCero = ({ formik }) => {
 								);
 							}}
 							options={callCenterOpt}
-							placeholder={SELECT_OPTION}
-						/>
-					</div>
-				</Col>
-				<Col xs="12" md="6">
-					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="pickup">
-							Pickup
-						</Label>
-						<Select
-							id="pickup"
-							className="mb-0"
-							value={null}
-							onChange={(value) => {
-								console.log(value);
-							}}
-							options={[]}
 							placeholder={SELECT_OPTION}
 						/>
 					</div>
@@ -243,7 +192,7 @@ const FormReservationCero = ({ formik }) => {
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="4">
+				<Col xs="12" md="2">
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="noches">
 							Noches
@@ -257,6 +206,27 @@ const FormReservationCero = ({ formik }) => {
 						/>
 					</div>
 				</Col>
+				<Col xs="12" md="2">
+					<div className="form-check mt-4">
+						<Input
+							className="form-check-input"
+							type="checkbox"
+							id="pickup"
+							checked={
+								formik.values.pickup === 'P' ? true : false
+							}
+							onChange={(evt) =>
+								formik.setFieldValue(
+									'pickup',
+									evt.target.checked ? 'P' : 'NP'
+								)
+							}
+						/>
+						<Label className="form-check-label" htmlFor="pickup">
+							Pickup
+						</Label>
+					</div>
+				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="adult">
@@ -264,12 +234,20 @@ const FormReservationCero = ({ formik }) => {
 						</Label>
 						<Input
 							type="text"
-							className={`form-control`}
+							className={`form-control ${
+								formik.errors.adult ? 'is-invalid' : ''
+							}`}
 							id="adult"
+							name="adult"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
 							value={formik.values.adult}
 						/>
+						{formik.errors.adult && (
+							<FormFeedback type="invalid d-block">
+								{formik.errors.adult}
+							</FormFeedback>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -279,12 +257,19 @@ const FormReservationCero = ({ formik }) => {
 						</Label>
 						<Input
 							type="text"
-							className={`form-control`}
+							className={`form-control ${
+								formik.errors.child ? 'is-invalid' : ''
+							}`}
 							id="child"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
 							value={formik.values.child}
 						/>
+						{formik.errors.child && (
+							<FormFeedback type="invalid d-block">
+								{formik.errors.child}
+							</FormFeedback>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -294,12 +279,19 @@ const FormReservationCero = ({ formik }) => {
 						</Label>
 						<Input
 							type="text"
-							className={`form-control`}
+							className={`form-control ${
+								formik.errors.infant ? 'is-invalid' : ''
+							}`}
 							id="infant"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
 							value={formik.values.infant}
 						/>
+						{formik.errors.infant && (
+							<FormFeedback type="invalid d-block">
+								{formik.errors.infant}
+							</FormFeedback>
+						)}
 					</div>
 				</Col>
 			</Row>

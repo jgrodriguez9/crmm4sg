@@ -10,9 +10,9 @@ const maritalStatusOpt = [
 ];
 
 const incomeOpt = [
-	{ label: '31000 - 50000', value: '31000 - 50000' },
-	{ label: '51000 - 100000', value: '51000 - 100000' },
-	{ label: '+ 100000', value: '+ 100000' },
+	{ label: '3100 - 5000', value: '5000' },
+	{ label: '5100 - 10000', value: '10000' },
+	{ label: '+ 10000', value: '10100' },
 ];
 
 export { maritalStatusOpt, incomeOpt };

@@ -1,5 +1,14 @@
 import { Button, Form } from 'reactstrap';
-import { FIELD_REQUIRED } from '../../constants/messages';
+import {
+	CORREO_VALID,
+	ERROR_SERVER,
+	FIELD_GREATER_THAN_CERO,
+	FIELD_INTEGER,
+	FIELD_NUMERIC,
+	FIELD_POSITIVE,
+	FIELD_REQUIRED,
+	SAVE_SUCCESS,
+} from '../../constants/messages';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import removetEmptyObject from '../../../util/removetEmptyObject';
@@ -8,9 +17,26 @@ import FormReservationClient from './FormReservation/FormReservationClient';
 import FormReservationCero from './FormReservation/FormReservationCero';
 import FormReservationPaxes from './FormReservation/FormReservationPaxes';
 import useUser from '../../../hooks/useUser';
+import { useMutation } from 'react-query';
+import { createReservation } from '../../../helpers/reservation';
+import ButtonsLoader from '../../Loader/ButtonsLoader';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { addMessage } from '../../../slices/messages/reducer';
+import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
 
 const FormReservationInformation = ({ toggleDialog }) => {
+	const dispatch = useDispatch();
 	const user = useUser();
+
+	//create reservation
+	const {
+		mutate: createItem,
+		isLoading: isCreating,
+		isSuccess: isCreated,
+		isError: isErrorCreate,
+		error: errorCreate,
+	} = useMutation(createReservation);
 
 	const formik = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
@@ -38,14 +64,14 @@ const FormReservationInformation = ({ toggleDialog }) => {
 			comment: '',
 			finalDate: '',
 			hotel: { id: '' },
-			hotelUnit: '',
+			hotelUnit: 'UH',
 			infant: 0,
 			initialDate: '',
 			intPlan: '',
 			mc: 0,
 			other: 0,
-			pickup: '',
-			unit: '',
+			pickup: 'NP',
+			unit: 'UH',
 			userName: user?.username ?? '',
 			visa: 0,
 			//paxes
@@ -54,21 +80,38 @@ const FormReservationInformation = ({ toggleDialog }) => {
 		validationSchema: Yup.object({
 			firstName: Yup.string().required(FIELD_REQUIRED),
 			lastName: Yup.string().required(FIELD_REQUIRED),
+			email: Yup.string().email(CORREO_VALID),
+			adult: Yup.number()
+				.min(1, FIELD_GREATER_THAN_CERO)
+				.integer(FIELD_INTEGER)
+				.typeError(FIELD_NUMERIC)
+				.required(FIELD_REQUIRED),
+			child: Yup.number()
+				.min(0, FIELD_POSITIVE)
+				.integer(FIELD_INTEGER)
+				.typeError(FIELD_NUMERIC)
+				.required(FIELD_REQUIRED),
+			infant: Yup.number()
+				.min(0, FIELD_POSITIVE)
+				.integer(FIELD_INTEGER)
+				.typeError(FIELD_NUMERIC)
+				.required(FIELD_REQUIRED),
 		}),
 		onSubmit: async (values) => {
 			//submit request
 			const data = {};
 			Object.entries(removetEmptyObject(values)).forEach((entry) => {
 				const [key, value] = entry;
-				if (key === 'fechaNacimiento') {
-					data[key] = moment(values.fechaNacimiento).format(
-						'YYYY-MM-DD'
-					);
+				if (key === 'initialDate') {
+					data[key] = moment(values.initialDate).format('YYYY-MM-DD');
+				} else if (key === 'finalDate') {
+					data[key] = moment(values.finalDate).format('YYYY-MM-DD');
 				} else {
 					data[key] = value;
 				}
 			});
-
+			console.log(data);
+			createItem(data);
 			// create reservation
 		},
 	});
@@ -76,8 +119,37 @@ const FormReservationInformation = ({ toggleDialog }) => {
 	console.log(formik.values);
 	console.log(formik.errors);
 
+	useEffect(() => {
+		if (isCreated) {
+			dispatch(
+				addMessage({
+					type: 'success',
+					message: SAVE_SUCCESS,
+				})
+			);
+			// refetch();
+		} else if (isErrorCreate) {
+			let message = ERROR_SERVER;
+			let serverError = errorCreate;
+			message = extractMeaningfulMessage(serverError, message);
+			dispatch(
+				addMessage({
+					type: 'error',
+					message: message,
+				})
+			);
+		}
+	}, [isCreated, dispatch, isErrorCreate, errorCreate]);
+
 	return (
-		<Form className="fs-7">
+		<Form
+			className="needs-validation fs-7"
+			onSubmit={(e) => {
+				e.preventDefault();
+				formik.handleSubmit();
+				return false;
+			}}
+		>
 			<h5 className="mt-3 text-primary">Detalle del titular</h5>
 			<hr />
 			<FormReservationClient formik={formik} />
@@ -85,19 +157,42 @@ const FormReservationInformation = ({ toggleDialog }) => {
 			<hr />
 			<FormReservationCero formik={formik} />
 			<FormReservationPaxes formik={formik} />
-			<div className="d-flex my-3">
-				<Button type="submit" color="primary" className="me-2">
-					Aceptar
-				</Button>
-				<Button
-					type="button"
-					color="danger"
-					className="btn-soft-danger"
-					onClick={toggleDialog ? toggleDialog : () => {}}
-				>
-					Cancelar
-				</Button>
-			</div>
+			{!isCreating && (
+				<div className="d-flex my-3">
+					<Button type="submit" color="primary" className="me-2">
+						Aceptar
+					</Button>
+					<Button
+						type="button"
+						color="danger"
+						className="btn-soft-danger"
+						onClick={toggleDialog ? toggleDialog : () => {}}
+					>
+						Cancelar
+					</Button>
+				</div>
+			)}
+
+			{isCreating && (
+				<div className="d-flex my-3">
+					<ButtonsLoader
+						buttons={[
+							{
+								text: 'Aceptar',
+								color: 'primary',
+								className: 'me-2',
+								loader: true,
+							},
+							{
+								text: 'Cancelar',
+								color: 'danger',
+								className: 'btn-soft-danger',
+								loader: false,
+							},
+						]}
+					/>
+				</div>
+			)}
 		</Form>
 	);
 };

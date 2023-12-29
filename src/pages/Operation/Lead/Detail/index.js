@@ -39,6 +39,7 @@ import FormClient from '../../../../Components/Operation/Lead/Tab/LeadInformatio
 import moment from 'moment';
 import { DATE_FORMAT } from '../../../../common/globalsProp';
 import { editIconClass } from '../../../../Components/constants/icons';
+import TooltipDescription from '../../../../Components/Common/TooltipDescription';
 
 const LeadProfile = () => {
 	document.title = 'Detalle del Lead | CRM - M4S';
@@ -101,6 +102,10 @@ const LeadProfile = () => {
 					iconClass:
 						'fs-15 ri-phone-line text-primary cursor-pointer',
 					action: () => onHandleClickToCall('phone1'),
+					tooltip: {
+						id: 'tooltip-1',
+						title: 'LLamar',
+					},
 				};
 				telefonos.push(phone1);
 			}
@@ -110,6 +115,10 @@ const LeadProfile = () => {
 					iconClass:
 						'fs-15 ri-phone-line text-primary cursor-pointer',
 					action: () => onHandleClickToCall('phone2'),
+					tooltip: {
+						id: 'tooltip-2',
+						title: 'LLamar',
+					},
 				};
 				telefonos.push(phone2);
 			}
@@ -119,6 +128,10 @@ const LeadProfile = () => {
 					iconClass:
 						'fs-15 ri-phone-line text-primary cursor-pointer',
 					action: () => onHandleClickToCall('phone3'),
+					tooltip: {
+						id: 'tooltip-3',
+						title: 'LLamar',
+					},
 				};
 				telefonos.push(phone3);
 			}
@@ -128,6 +141,10 @@ const LeadProfile = () => {
 					iconClass:
 						'fs-15 ri-phone-line text-primary cursor-pointer',
 					action: () => onHandleClickToCall('movil'),
+					tooltip: {
+						id: 'tooltip-4',
+						title: 'LLamar',
+					},
 				};
 				telefonos.push(movil);
 			}
@@ -146,6 +163,10 @@ const LeadProfile = () => {
 									iconClass:
 										'fs-15 ri-mail-line text-danger cursor-pointer',
 									action: () => {},
+									tooltip: {
+										id: 'tooltip-correo-1',
+										title: 'Enviar correo',
+									},
 								},
 							],
 						},
@@ -270,7 +291,7 @@ const LeadProfile = () => {
 					header: { title: 'Atribución de creación de este cliente' },
 					body: [
 						{
-							title: 'Usuario que lo creó',
+							title: 'Agente asignado',
 							items: [
 								{
 									title: itemData?.data?.userName,
@@ -340,13 +361,13 @@ const LeadProfile = () => {
 												</h5>
 											</div>
 											<Button
-												color="light"
+												color="info"
 												size="sm"
 												className="d-flex align-items-center"
 												onClick={toggleDialog}
 											>
 												<i
-													className={`fs-5 ${editIconClass}`}
+													className={`fs-6 ${editIconClass}`}
 												/>{' '}
 												Editar
 											</Button>
@@ -413,7 +434,27 @@ const LeadProfile = () => {
 																								onClick={
 																									bodyItem.action
 																								}
-																							></i>
+																								id={
+																									bodyItem
+																										.tooltip
+																										?.id ??
+																									bodyItem.iconClass
+																								}
+																							/>
+																							{bodyItem.tooltip && (
+																								<TooltipDescription
+																									text={
+																										bodyItem
+																											.tooltip
+																											.title
+																									}
+																									id={
+																										bodyItem
+																											.tooltip
+																											.id
+																									}
+																								/>
+																							)}
 																						</div>
 																					)}
 																				</div>

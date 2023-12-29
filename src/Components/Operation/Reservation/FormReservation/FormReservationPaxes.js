@@ -2,8 +2,30 @@ import { Button, Col, Row, Table } from 'reactstrap';
 import DatePicker from '../../../Common/DatePicker';
 import { Field, FieldArray, FormikProvider } from 'formik';
 import { addIconClass } from '../../../constants/icons';
+import { useQuery } from 'react-query';
+import { getRelationship } from '../../../../helpers/pax';
+import Select from 'react-select';
+import { SELECT_OPTION } from '../../../constants/messages';
 
 const FormReservationPaxes = ({ formik }) => {
+	//query to get relationship
+	const { data: dataRelationships } = useQuery(
+		'getRelationship',
+		async () => {
+			const response = await getRelationship();
+			return response;
+		},
+		{
+			select: (response) => {
+				return (
+					response.data.relationList.map((item) => ({
+						value: item.id,
+						label: item.spanishDescription,
+					})) ?? []
+				);
+			},
+		}
+	);
 	return (
 		<FormikProvider value={formik}>
 			<FieldArray
@@ -117,9 +139,49 @@ const FormReservationPaxes = ({ formik }) => {
 													/>
 												</td>
 												<td>
-													<Field
-														className={`form-control`}
-														name={`paxes.${idx}.relation`}
+													<Select
+														value={
+															formik.values.paxes[
+																idx
+															].relation
+																? {
+																		value: formik
+																			.values
+																			.paxes[
+																			idx
+																		]
+																			.relation,
+																		label:
+																			dataRelationships.find(
+																				(
+																					item
+																				) =>
+																					item.value ===
+																					formik
+																						.values
+																						.paxes[
+																						idx
+																					]
+																						.relation
+																			)
+																				?.label ??
+																			'',
+																  }
+																: null
+														}
+														onChange={(value) => {
+															formik.setFieldValue(
+																`paxes.${idx}.relation`,
+																value.value
+															);
+														}}
+														options={
+															dataRelationships
+														}
+														classNamePrefix="select2-selection"
+														placeholder={
+															SELECT_OPTION
+														}
 													/>
 												</td>
 												<td className="text-center">
