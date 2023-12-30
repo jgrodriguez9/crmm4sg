@@ -25,7 +25,7 @@ import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
 
-const FormReservationInformation = ({ toggleDialog }) => {
+const FormReservationInformation = ({ toggleDialog, refetch }) => {
 	const dispatch = useDispatch();
 	const user = useUser();
 
@@ -42,19 +42,24 @@ const FormReservationInformation = ({ toggleDialog }) => {
 		// enableReinitialize : use this flag when initial values needs to be changed
 		enableReinitialize: true,
 		initialValues: {
-			firstName: '',
-			lastName: '',
-			// fechaNacimiento: customer?.fechaNacimiento ?? '',
-			address: '',
-			postalCode: '',
-			country: '',
-			state: '',
-			city: '',
-			phone1: '',
-			phone2: '',
-			movil: '',
-			email: '',
-			srcIncome: '',
+			customer: {
+				firstName: '',
+				lastName: '',
+				// fechaNacimiento: customer?.fechaNacimiento ?? '',
+				address: '',
+				postalCode: '',
+				country: '',
+				state: '',
+				city: '',
+				phone1: '',
+				phone2: '',
+				phone3: '',
+				movil: '',
+				email: '',
+				fax: '',
+				srcIncome: '',
+				userName: user?.username ?? '',
+			},
 			//reservation
 			adult: 2,
 			amex: 0,
@@ -64,23 +69,25 @@ const FormReservationInformation = ({ toggleDialog }) => {
 			comment: '',
 			finalDate: '',
 			hotel: { id: '' },
-			hotelUnit: 'UH',
+			hotelUnit: '',
 			infant: 0,
 			initialDate: '',
 			intPlan: '',
 			mc: 0,
 			other: 0,
 			pickup: 'NP',
-			unit: 'UH',
+			unit: '',
 			userName: user?.username ?? '',
 			visa: 0,
 			//paxes
 			paxes: [],
 		},
 		validationSchema: Yup.object({
-			firstName: Yup.string().required(FIELD_REQUIRED),
-			lastName: Yup.string().required(FIELD_REQUIRED),
-			email: Yup.string().email(CORREO_VALID),
+			customer: Yup.object().shape({
+				firstName: Yup.string().required(FIELD_REQUIRED),
+				lastName: Yup.string().required(FIELD_REQUIRED),
+				email: Yup.string().email(CORREO_VALID),
+			}),
 			adult: Yup.number()
 				.min(1, FIELD_GREATER_THAN_CERO)
 				.integer(FIELD_INTEGER)
@@ -96,6 +103,10 @@ const FormReservationInformation = ({ toggleDialog }) => {
 				.integer(FIELD_INTEGER)
 				.typeError(FIELD_NUMERIC)
 				.required(FIELD_REQUIRED),
+			hotel: Yup.object().shape({
+				id: Yup.string().required(FIELD_REQUIRED),
+			}),
+			hotelUnit: Yup.string().required(FIELD_REQUIRED),
 		}),
 		onSubmit: async (values) => {
 			//submit request
@@ -127,7 +138,8 @@ const FormReservationInformation = ({ toggleDialog }) => {
 					message: SAVE_SUCCESS,
 				})
 			);
-			// refetch();
+			refetch();
+			toggleDialog();
 		} else if (isErrorCreate) {
 			let message = ERROR_SERVER;
 			let serverError = errorCreate;

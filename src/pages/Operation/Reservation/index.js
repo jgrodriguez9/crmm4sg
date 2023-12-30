@@ -70,6 +70,7 @@ const Reservation = () => {
 		error: errorReservationQuery,
 		isLoading,
 		isSuccess,
+		refetch,
 	} = useQuery(
 		['getReservationPaginate', queryFilter],
 		() => fecthReservation(queryFilter),
@@ -495,7 +496,10 @@ const Reservation = () => {
 				size="xl"
 				classBody="py-1 px-3"
 				children={
-					<FormReservationInformation toggleDialog={toggleDialog} />
+					<FormReservationInformation
+						toggleDialog={toggleDialog}
+						refetch={refetch}
+					/>
 				}
 			/>
 		</>

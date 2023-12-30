@@ -51,3 +51,6 @@ export const article = '/article';
 
 //article category
 export const categoryArticle = '/articleCategory';
+
+//hotel unit
+export const hotelUnit = '/hotelUnit';

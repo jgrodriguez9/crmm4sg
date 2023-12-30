@@ -8,7 +8,8 @@ import { SELECT_OPTION } from '../../../constants/messages';
 import DatePicker from '../../../Common/DatePicker';
 import DisabledInput from '../../../Controller/DisabledInput';
 import diffDates from '../../../../util/diffDates';
-import { getCallCenterAll } from '../../../../helpers/catalogues/call_center';
+import { getCallCenterByUser } from '../../../../helpers/catalogues/call_center';
+import { getHotelUnitByHotelPaginate } from '../../../../helpers/catalogues/hotel_unit';
 
 const FormReservationCero = ({ formik }) => {
 	const [initialDate, setInitialDate] = useState(null);
@@ -35,14 +36,31 @@ const FormReservationCero = ({ formik }) => {
 	);
 	//getCallCenter
 	const { data: callCenterOpt } = useQuery(
-		['getCallCenterAll'],
-		() => getCallCenterAll(),
+		['getCallCenterByUser'],
+		() => getCallCenterByUser(),
 		{
 			select: (data) =>
 				data.data?.list.map((item) => ({
 					value: item.id,
 					label: item.name,
 				})) ?? [],
+		}
+	);
+	console.log(formik.values.hotel.id);
+	//getHotelUNitAndUnit
+	const { data: hotelUnitOpt } = useQuery(
+		['getHotelUnitByHotelPaginate', formik.values.hotel.id],
+		() =>
+			getHotelUnitByHotelPaginate(
+				`?page=1&max=1000&hotel=${formik.values.hotel.id}`
+			),
+		{
+			select: (data) =>
+				data.data?.list.map((item) => ({
+					value: item.id,
+					label: item.hotelUnit,
+				})) ?? [],
+			enabled: formik.values.hotel.id !== '',
 		}
 	);
 
@@ -79,6 +97,52 @@ const FormReservationCero = ({ formik }) => {
 							options={hotelOpt}
 							placeholder={SELECT_OPTION}
 						/>
+						{formik.errors.hotel?.id && (
+							<FormFeedback type="invalid" className="d-block">
+								{formik.errors.hotel?.id}
+							</FormFeedback>
+						)}
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="hotelUnit">
+							Unidad hotelera
+						</Label>
+						<Select
+							id="hotelUnit"
+							className="mb-0"
+							value={
+								formik.values.hotelUnit
+									? {
+											value: formik.values.hotelUnit,
+											label:
+												hotelUnitOpt?.find(
+													(it) =>
+														it.value ===
+														formik.values.hotelUnit
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'hotelUnit',
+									value?.value ?? ''
+								);
+								formik.setFieldValue(
+									'unit',
+									value?.value ?? ''
+								);
+							}}
+							options={hotelUnitOpt}
+							placeholder={SELECT_OPTION}
+						/>
+						{formik.errors.hotelUnit && (
+							<FormFeedback type="invalid" className="d-block">
+								{formik.errors.hotelUnit}
+							</FormFeedback>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -151,9 +215,12 @@ const FormReservationCero = ({ formik }) => {
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="4">
+				<Col xs="12" md="2">
 					<div className="mb-3">
-						<Label className="form-label" htmlFor="fechaLlegada">
+						<Label
+							className="form-label mb-0"
+							htmlFor="fechaLlegada"
+						>
 							Fecha llegada
 						</Label>
 						<DatePicker
@@ -173,9 +240,9 @@ const FormReservationCero = ({ formik }) => {
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="4">
+				<Col xs="12" md="2">
 					<div className="mb-3">
-						<Label className="form-label" htmlFor="finalDate">
+						<Label className="form-label mb-0" htmlFor="finalDate">
 							Fecha salida
 						</Label>
 						<DatePicker
@@ -194,7 +261,7 @@ const FormReservationCero = ({ formik }) => {
 				</Col>
 				<Col xs="12" md="2">
 					<div className="mb-3">
-						<Label className="form-label" htmlFor="noches">
+						<Label className="form-label mb-0" htmlFor="noches">
 							Noches
 						</Label>
 						<DisabledInput
@@ -207,7 +274,7 @@ const FormReservationCero = ({ formik }) => {
 					</div>
 				</Col>
 				<Col xs="12" md="2">
-					<div className="form-check mt-4">
+					<div className="form-check mt-3">
 						<Input
 							className="form-check-input"
 							type="checkbox"
@@ -229,7 +296,7 @@ const FormReservationCero = ({ formik }) => {
 				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-3">
-						<Label className="form-label" htmlFor="adult">
+						<Label className="form-label mb-0" htmlFor="adult">
 							Adultos
 						</Label>
 						<Input
@@ -252,7 +319,7 @@ const FormReservationCero = ({ formik }) => {
 				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-3">
-						<Label className="form-label" htmlFor="child">
+						<Label className="form-label mb-0" htmlFor="child">
 							Menores
 						</Label>
 						<Input
@@ -274,7 +341,7 @@ const FormReservationCero = ({ formik }) => {
 				</Col>
 				<Col xs="12" md="4">
 					<div className="mb-3">
-						<Label className="form-label" htmlFor="infant">
+						<Label className="form-label mb-0" htmlFor="infant">
 							Infantes
 						</Label>
 						<Input

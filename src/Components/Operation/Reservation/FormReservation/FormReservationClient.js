@@ -18,125 +18,146 @@ const FormReservationClient = ({ formik }) => {
 		<Row className="mb-md-3 mb-2">
 			<Col xs="12" md="4">
 				<div className="mb-2">
-					<Label className="form-label mb-0" htmlFor="firstName">
+					<Label
+						className="form-label mb-0"
+						htmlFor="customer.firstName"
+					>
 						Nombre
 					</Label>
 					<Input
 						type="text"
 						className={`form-control ${
-							formik.errors.firstName ? 'is-invalid' : ''
+							formik.errors.customer?.firstName
+								? 'is-invalid'
+								: ''
 						}`}
-						id="firstName"
+						id="customer.firstName"
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
-						value={formik.values.firstName}
+						value={formik.values.customer.firstName}
 					/>
-					{formik.errors.firstName && (
+					{formik.errors.customer?.firstName && (
 						<FormFeedback type="invalid d-block">
-							{formik.errors.firstName}
+							{formik.errors.customer?.firstName}
 						</FormFeedback>
 					)}
 				</div>
 			</Col>
 			<Col xs="12" md="4">
 				<div className="mb-2">
-					<Label className="form-label mb-0" htmlFor="lastName">
+					<Label
+						className="form-label mb-0"
+						htmlFor="customer.lastName"
+					>
 						Apellido
 					</Label>
 					<Input
 						type="text"
 						className={`form-control ${
-							formik.errors.lastName ? 'is-invalid' : ''
+							formik.errors.customer?.lastName ? 'is-invalid' : ''
 						}`}
-						id="lastName"
+						id="customer.lastName"
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
-						value={formik.values.lastName}
+						value={formik.values.customer.lastName}
 					/>
-					{formik.errors.lastName && (
+					{formik.errors.customer?.lastName && (
 						<FormFeedback type="invalid d-block">
-							{formik.errors.lastName}
+							{formik.errors.customer?.lastName}
 						</FormFeedback>
 					)}
 				</div>
 			</Col>
 			<Col xs="12" md="4">
 				<div className="mb-2">
-					<Label className="form-label mb-0" htmlFor="email">
+					<Label className="form-label mb-0" htmlFor="customer.email">
 						Correo electrónico
 					</Label>
 					<Input
 						type="text"
 						className={`form-control ${
-							formik.errors.email ? 'is-invalid' : ''
+							formik.errors.customer?.email ? 'is-invalid' : ''
 						}`}
-						id="email"
+						id="customer.email"
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
-						value={formik.values.email}
+						value={formik.values.customer.email}
 					/>
-					{formik.errors.email && (
+					{formik.errors.customer?.email && (
 						<FormFeedback type="invalid d-block">
-							{formik.errors.email}
+							{formik.errors.customer?.email}
 						</FormFeedback>
 					)}
 				</div>
 			</Col>
 			<Col xs="12" md="4">
 				<div className="mb-2">
-					<Label className="form-label mb-0" htmlFor="address">
+					<Label
+						className="form-label mb-0"
+						htmlFor="customer.address"
+					>
 						Dirección
 					</Label>
 					<Input
 						type="text"
 						className={`form-control ${
-							formik.errors.address ? 'is-invalid' : ''
+							formik.errors.customer?.address ? 'is-invalid' : ''
 						}`}
-						id="address"
+						id="customer.address"
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
-						value={formik.values.address}
+						value={formik.values.customer.address}
 					/>
 				</div>
 			</Col>
 			<Col xs="12" md="4">
 				<div className="mb-2">
-					<Label className="form-label mb-0" htmlFor="postalCode">
+					<Label
+						className="form-label mb-0"
+						htmlFor="customer.postalCode"
+					>
 						CP
 					</Label>
 					<Input
 						type="text"
 						className="form-control"
-						id="postalCode"
+						id="customer.postalCode"
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
-						value={formik.values.postalCode}
+						value={formik.values.customer.postalCode}
 					/>
 				</div>
 			</Col>
 			<Col xs="12" md="4">
 				<div className="mb-2">
-					<Label className="form-label mb-0" htmlFor="srcIncome">
+					<Label
+						className="form-label mb-0"
+						htmlFor="customer.srcIncome"
+					>
 						Ingreso
 					</Label>
 					<Select
-						id="ingreso"
+						id="customer.srcIncome"
 						className="mb-0"
 						value={
-							formik.values.srcIncome
+							formik.values.customer.srcIncome
 								? {
-										value: formik.values.srcIncome,
+										value: formik.values.customer.srcIncome,
 										label:
 											incomeOpt.find(
 												(it) =>
 													it.value ===
-													formik.values.srcIncome
+													formik.values.customer
+														.srcIncome
 											)?.label ?? '',
 								  }
 								: null
 						}
 						onChange={(value) => {
-							formik.setFieldValue('srcIncome', value.value);
+							formik.setFieldValue(
+								'customer.srcIncome',
+								value.value
+							);
 						}}
 						options={incomeOpt}
 						placeholder="Seleccionar opción"
@@ -145,18 +166,25 @@ const FormReservationClient = ({ formik }) => {
 			</Col>
 			<Col xs="12" md="4">
 				<div className="mb-2">
-					<Label className="form-label mb-0" htmlFor="country">
+					<Label
+						className="form-label mb-0"
+						htmlFor="customer.country"
+					>
 						País
 					</Label>
 					<Select
+						id="customer.country"
 						value={countryDefault}
 						onChange={(value) => {
 							setCountryDefault(value);
-							formik.setFieldValue('country', value?.label ?? '');
+							formik.setFieldValue(
+								'customer.country',
+								value?.label ?? ''
+							);
 							setStatesDefault(null);
-							formik.setFieldValue('state', '');
+							formik.setFieldValue('customer.state', '');
 							setCitiesDefault(null);
-							formik.setFieldValue('city', '');
+							formik.setFieldValue('customer.city', '');
 						}}
 						options={Country.getAllCountries().map((it) => ({
 							label: it.name,
@@ -169,16 +197,19 @@ const FormReservationClient = ({ formik }) => {
 			</Col>
 			<Col xs="12" md="4">
 				<div className="mb-2">
-					<Label className="form-label mb-0" htmlFor="country">
+					<Label className="form-label mb-0" htmlFor="customer.state">
 						Estado
 					</Label>
 					<StateInput
 						value={statesDefault}
 						handleChange={(value) => {
 							setStatesDefault(value);
-							formik.setFieldValue('state', value?.label ?? '');
+							formik.setFieldValue(
+								'customer.state',
+								value?.label ?? ''
+							);
 							setCitiesDefault(null);
-							formik.setFieldValue('city', '');
+							formik.setFieldValue('customer.city', '');
 						}}
 						country={countryDefault}
 					/>
@@ -186,14 +217,17 @@ const FormReservationClient = ({ formik }) => {
 			</Col>
 			<Col xs="12" md="4">
 				<div className="mb-2">
-					<Label className="form-label mb-0" htmlFor="country">
+					<Label className="form-label mb-0" htmlFor="customer.city">
 						Ciudad
 					</Label>
 					<CityInput
 						value={citiesDefault}
 						handleChange={(value) => {
 							setCitiesDefault(value);
-							formik.setFieldValue('city', value?.label ?? '');
+							formik.setFieldValue(
+								'customer.city',
+								value?.label ?? ''
+							);
 						}}
 						country={countryDefault}
 						state={statesDefault}
@@ -212,16 +246,16 @@ const FormReservationClient = ({ formik }) => {
 						preferredCountries={['mx', 'us']}
 						disableSearchIcon={true}
 						localization={es}
-						value={formik.values.phone1}
+						value={formik.values.customer.phone1}
 						onChange={(phone) => {
-							formik.setFieldValue('phone1', phone);
+							formik.setFieldValue('customer.phone1', phone);
 						}}
 					/>
 				</div>
 			</Col>
 			<Col xs="12" md="4">
 				<div className="mb-2">
-					<Label className="form-label mb-0" htmlFor="phone1">
+					<Label className="form-label mb-0" htmlFor="phone2">
 						Teléfono trabajo
 					</Label>
 					<PhoneInput
@@ -231,9 +265,9 @@ const FormReservationClient = ({ formik }) => {
 						preferredCountries={['mx', 'us']}
 						disableSearchIcon={true}
 						localization={es}
-						value={formik.values.phone2}
+						value={formik.values.customer.phone2}
 						onChange={(phone) => {
-							formik.setFieldValue('phone2', phone);
+							formik.setFieldValue('customer.phone2', phone);
 						}}
 					/>
 				</div>
@@ -250,9 +284,9 @@ const FormReservationClient = ({ formik }) => {
 						preferredCountries={['mx', 'us']}
 						disableSearchIcon={true}
 						localization={es}
-						value={formik.values.movil}
+						value={formik.values.customer.movil}
 						onChange={(phone) => {
-							formik.setFieldValue('movil', phone);
+							formik.setFieldValue('customer.movil', phone);
 						}}
 					/>
 				</div>
