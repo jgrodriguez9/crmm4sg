@@ -1,8 +1,7 @@
 import { Card, CardBody, Col, Row } from 'reactstrap';
-import img from '../../assets/images/companies/img-4.png';
-import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
 import moment from 'moment';
+import jsFormatNumber from '../../util/jsFormatNumber';
 
 const BannerInformation = ({ data, showBreadcrumb = true }) => {
 	console.log(data);
@@ -15,62 +14,44 @@ const BannerInformation = ({ data, showBreadcrumb = true }) => {
 							<div className="col-md">
 								<Row className="align-items-center">
 									<div className="col-md-auto">
-										<div className="avatar-md mb-md-0 mb-4">
-											<div className="avatar-title bg-white rounded-circle">
-												<img
-													src={img}
-													alt=""
-													className="avatar-sm"
-												/>
+										<div className="position-relative d-inline-block">
+											<div className="avatar-md rounded-circle img-thumbnail">
+												<div className="avatar-title bg-soft-secondary text-secondary rounded-circle fs-2">
+													{data?.subTitle.charAt(0)}
+												</div>
 											</div>
 										</div>
 									</div>
 									<div className="col-md">
-										<div className="d-flex">
+										<div className="d-flex mb-2">
 											<div className="me-5">
 												{data?.subTitle && (
 													<span className="badge bg-primary fs-7">
 														{data?.subTitle}
 													</span>
 												)}
-												<h4
-													className="fw-semibold fs-6"
-													id="ticket-title"
-												>
-													{data?.title}
-												</h4>
-											</div>
-											<div>
-												<div className="d-flex flex-col">
-													<div className="lh-sm me-4">
-														<span className="d-block fw-bold">
-															Booking
-														</span>
-														<span>
+												<div className="d-flex align-items-center">
+													<h4
+														className="fw-semibold fs-6 mb-0"
+														id="ticket-title"
+													>
+														{data?.title}
+													</h4>
+													{data?.subTitleInfo && (
+														<span
+															id="ticket-client"
+															className="fs-7 ms-3 text-muted"
+														>
+															{data?.subTitleInfo
+																.label &&
+																`${data.subTitleInfo.label}: `}
 															{
-																data?.sale
-																	?.idBooking
+																data
+																	?.subTitleInfo
+																	.value
 															}
 														</span>
-													</div>
-													<div className="lh-sm">
-														<span className="d-block fw-bold">
-															Fecha venta
-														</span>
-														<span>
-															{data?.sale
-																?.saleDate
-																? moment(
-																		data
-																			?.sale
-																			?.saleDate,
-																		'YYY-MM-DD'
-																  ).format(
-																		'DD/MM/YYYY'
-																  )
-																: ''}
-														</span>
-													</div>
+													)}
 												</div>
 											</div>
 										</div>
@@ -162,7 +143,78 @@ const BannerInformation = ({ data, showBreadcrumb = true }) => {
 							</div>
 							{showBreadcrumb && (
 								<div className="col-md-auto mt-md-0 mt-4">
-									<div className="hstack gap-1 flex-wrap">
+									<div>
+										<div className="d-flex flex-col">
+											<div className="lh-sm">
+												<span className="d-block fw-bold">
+													Booking
+												</span>
+												<span className="fs-7">
+													{data?.sale?.idBooking ??
+														''}
+												</span>
+											</div>
+											<div className="vr mx-2" />
+											<div className="lh-sm">
+												<span className="d-block fw-bold">
+													Paquete
+												</span>
+												<span className="fs-7">
+													{data?.sale?.campaign
+														?.name ?? ''}
+												</span>
+											</div>
+											<div className="vr mx-2" />
+											<div className="lh-sm">
+												<span className="d-block fw-bold">
+													Fecha venta
+												</span>
+												<span className="fs-7">
+													{data?.sale?.saleDate
+														? moment(
+																data?.sale
+																	?.saleDate,
+																'YYY-MM-DD'
+														  ).format('DD/MM/YYYY')
+														: ''}
+												</span>
+											</div>
+											<div className="vr mx-2" />
+											<div className="lh-sm">
+												<span className="d-block fw-bold">
+													No. pagos
+												</span>
+												<span className="fs-7">
+													{data?.sale
+														?.numberOfPayments ??
+														''}
+												</span>
+											</div>
+											<div className="vr mx-2" />
+											<div className="lh-sm">
+												<span className="d-block fw-bold">
+													Saldo
+												</span>
+												<span className="fs-7">
+													{jsFormatNumber(
+														data?.sale?.balance
+													)}
+												</span>
+											</div>
+											<div className="vr mx-2" />
+											<div className="lh-sm">
+												<span className="d-block fw-bold">
+													Estatus
+												</span>
+												<span className="fs-7">
+													{data?.sale
+														?.reservationStatus
+														?.status ?? ''}
+												</span>
+											</div>
+										</div>
+									</div>
+									{/* <div className="hstack gap-1 flex-wrap">
 										<div className="page-title-right">
 											<ol className="breadcrumb m-0">
 												<li className="breadcrumb-item">
@@ -175,7 +227,7 @@ const BannerInformation = ({ data, showBreadcrumb = true }) => {
 												</li>
 											</ol>
 										</div>
-									</div>
+									</div> */}
 								</div>
 							)}
 						</Row>

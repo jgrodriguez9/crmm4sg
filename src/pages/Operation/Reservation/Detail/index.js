@@ -34,6 +34,11 @@ const ReservationDetail = () => {
 				subTitle: `${data?.customer?.firstName ?? ''} ${
 					data?.customer?.lastName
 				}`,
+				subTitleInfo: {
+					label: 'Plan',
+					value: data?.intPlan?.name ?? '-',
+					classes: 'text-muted',
+				},
 				subInfo: [
 					{
 						label: null,
@@ -59,23 +64,9 @@ const ReservationDetail = () => {
 							},
 							{
 								label: null,
-								icon: 'ri-user-3-line',
-								value: '-',
-								title: 'Juniors',
-								classes: 'text-muted',
-							},
-							{
-								label: null,
-								icon: 'ri-user-unfollow-line',
-								value: '-',
-								title: 'Menores que no pagan',
-								classes: 'text-muted',
-							},
-							{
-								label: null,
 								icon: 'ri-user-follow-line',
 								value: data?.child ?? '-',
-								title: 'Menores que pagan',
+								title: 'Menores',
 								classes: 'text-muted',
 							},
 							{
@@ -86,12 +77,6 @@ const ReservationDetail = () => {
 								classes: 'text-muted',
 							},
 						],
-						classes: 'text-muted',
-					},
-					{
-						label: 'Plan',
-						icon: null,
-						value: '-',
 						classes: 'text-muted',
 					},
 					{
