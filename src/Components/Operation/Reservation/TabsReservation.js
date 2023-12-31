@@ -18,7 +18,7 @@ import ReservationPayment from './ReservationPayment';
 import ReservationTransportation from './ReservationTransportation';
 import ReservationNotas from './ReservationNotas';
 
-const TabsReservation = ({ itemData }) => {
+const TabsReservation = ({ itemData, refetchReservation }) => {
 	const [activeTab, setActiveTab] = useState('1');
 	const [editMode, setEditMode] = useState(false);
 
@@ -130,6 +130,7 @@ const TabsReservation = ({ itemData }) => {
 										editMode={editMode}
 										setEditMode={setEditMode}
 										data={itemData.data}
+										refetchReservation={refetchReservation}
 									/>
 								)}
 							</TabPane>

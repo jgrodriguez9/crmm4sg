@@ -18,6 +18,7 @@ const ReservationDetail = () => {
 		data: itemData,
 		error: errorItem,
 		isFetching: isFetchingItem,
+		refetch: refetchReservation,
 	} = useQuery(
 		['getReservation', idReservation],
 		() => fecthReservationById(idReservation),
@@ -135,7 +136,10 @@ const ReservationDetail = () => {
 						</Row>
 						<Row>
 							<Col>
-								<TabsReservation itemData={itemData} />
+								<TabsReservation
+									itemData={itemData}
+									refetchReservation={refetchReservation}
+								/>
 							</Col>
 						</Row>
 					</>

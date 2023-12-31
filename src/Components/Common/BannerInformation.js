@@ -4,7 +4,6 @@ import moment from 'moment';
 import jsFormatNumber from '../../util/jsFormatNumber';
 
 const BannerInformation = ({ data, showBreadcrumb = true }) => {
-	console.log(data);
 	return (
 		<Col lg={12}>
 			<Card className="mt-n4 mx-n4 mb-n5">

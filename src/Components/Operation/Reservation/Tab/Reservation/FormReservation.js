@@ -12,7 +12,11 @@ import { useState } from 'react';
 import classNames from 'classnames';
 import { editIconClass } from '../../../../constants/icons';
 
-const FormReservation = ({ reservation = null, toggleDialog }) => {
+const FormReservation = ({
+	reservation = null,
+	toggleDialog,
+	refetchReservation,
+}) => {
 	const [editClient, setEditClient] = useState(false);
 	const [openClient, setOpenClient] = useState(false);
 
@@ -82,6 +86,7 @@ const FormReservation = ({ reservation = null, toggleDialog }) => {
 					reservation={reservation}
 					toggleDialog={toggleDialog}
 					editClient={editClient}
+					refetchReservation={refetchReservation}
 				/>
 			</Col>
 		</Row>

@@ -1,13 +1,15 @@
-import { Button, Col, Form, Input, Label, Row } from 'reactstrap';
+import { Button, Col, Form, FormFeedback, Input, Label, Row } from 'reactstrap';
 import Select from 'react-select';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-phone-input-2/lib/style.css';
 import {
+	ERROR_SERVER,
 	FIELD_INTEGER,
 	FIELD_NUMERIC,
 	FIELD_POSITIVE,
 	FIELD_REQUIRED,
 	SELECT_OPTION,
+	UPDATE_SUCCESS,
 } from '../../../../constants/messages';
 import DatePicker from '../../../../Common/DatePicker';
 import { useDispatch } from 'react-redux';
@@ -22,13 +24,16 @@ import DisabledInput from '../../../../Controller/DisabledInput';
 import diffDates from '../../../../../util/diffDates';
 import { updateReservationService } from '../../../../../services/reservation';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
+import { getHotelUnitByHotelPaginate } from '../../../../../helpers/catalogues/hotel_unit';
+import { addMessage } from '../../../../../slices/messages/reducer';
+import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 
 const FormReservationEdit = ({
 	reservation = null,
 	toggleDialog,
 	editClient,
+	refetchReservation,
 }) => {
-	console.log(reservation);
 	const dispatch = useDispatch();
 	const [initialDate, setInitialDate] = useState(
 		reservation?.initialDate
@@ -65,6 +70,7 @@ const FormReservationEdit = ({
 	const {
 		mutate: updateItem,
 		isLoading: isUpdating,
+		isSuccess: isUpdated,
 		isError: isErrorUpdate,
 		error: errorUpdate,
 	} = useMutation(updateReservationService);
@@ -99,6 +105,8 @@ const FormReservationEdit = ({
 			hooked: reservation?.hooked ?? '',
 			status: reservation?.status ?? { id: '' },
 			customer: reservation?.customer ?? { id: '' },
+			hotelUnit: reservation?.hotelUnit ?? '',
+			unit: reservation?.unit ?? '',
 		},
 		validationSchema: Yup.object({
 			dateRequest: Yup.string().required(FIELD_REQUIRED),
@@ -123,6 +131,7 @@ const FormReservationEdit = ({
 			customer: Yup.object().shape({
 				id: Yup.string().required(FIELD_REQUIRED),
 			}),
+			hotelUnit: Yup.string().required(FIELD_REQUIRED),
 		}),
 		onSubmit: async (values) => {
 			//submit request
@@ -137,13 +146,50 @@ const FormReservationEdit = ({
 				data[key] = value;
 			});
 			// data['quantity'] = parseInt(values.pax) + parseInt(values.childs);
-			console.log(data);
 			updateItem({
 				id: values.id,
 				body: data,
 			});
 		},
 	});
+	useEffect(() => {
+		if (isUpdated) {
+			dispatch(
+				addMessage({
+					type: 'success',
+					message: UPDATE_SUCCESS,
+				})
+			);
+			refetchReservation();
+			//reftech reserva
+		}
+		if (isErrorUpdate) {
+			let message = ERROR_SERVER;
+			message = extractMeaningfulMessage(errorUpdate, message);
+			dispatch(
+				addMessage({
+					type: 'error',
+					message: message,
+				})
+			);
+		}
+	}, [isUpdated, isErrorUpdate]);
+	//getHotelUNitAndUnit
+	const { data: hotelUnitOpt } = useQuery(
+		['getHotelUnitByHotelPaginate', formik.values.hotel.id],
+		() =>
+			getHotelUnitByHotelPaginate(
+				`?page=1&max=1000&hotel=${formik.values.hotel.id}`
+			),
+		{
+			select: (data) =>
+				data.data?.list.map((item) => ({
+					value: item.hotelUnit,
+					label: item.hotelUnit,
+				})) ?? [],
+			enabled: formik.values.hotel.id !== '',
+		}
+	);
 	return (
 		<Form
 			className="needs-validation fs-7"
@@ -156,7 +202,7 @@ const FormReservationEdit = ({
 			<h5 className="text-primary">Detalle de la reservación</h5>
 			<hr />
 			<Row>
-				<Col xs="12" md="6">
+				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="hotel">
 							Hotel
@@ -188,7 +234,48 @@ const FormReservationEdit = ({
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="6">
+				<Col xs="12" md="4">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="hotelUnit">
+							Unidad hotelera
+						</Label>
+						<Select
+							id="hotelUnit"
+							className="mb-0"
+							value={
+								formik.values.hotelUnit
+									? {
+											value: formik.values.hotelUnit,
+											label:
+												hotelUnitOpt?.find(
+													(it) =>
+														it.value ===
+														formik.values.hotelUnit
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'hotelUnit',
+									value?.value ?? ''
+								);
+								formik.setFieldValue(
+									'unit',
+									value?.value ?? ''
+								);
+							}}
+							options={hotelUnitOpt}
+							placeholder={SELECT_OPTION}
+						/>
+						{formik.errors.hotelUnit && (
+							<FormFeedback type="invalid" className="d-block">
+								{formik.errors.hotelUnit}
+							</FormFeedback>
+						)}
+					</div>
+				</Col>
+				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="plan">
 							Plan
@@ -225,9 +312,12 @@ const FormReservationEdit = ({
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="fechaLlegada">
+				<Col xs="12" md="2">
+					<div className="mb-2">
+						<Label
+							className="form-label mb-0"
+							htmlFor="fechaLlegada"
+						>
 							Fecha llegada
 						</Label>
 						<DatePicker
@@ -247,9 +337,9 @@ const FormReservationEdit = ({
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="finalDate">
+				<Col xs="12" md="2">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="finalDate">
 							Fecha salida
 						</Label>
 						<DatePicker
@@ -266,9 +356,9 @@ const FormReservationEdit = ({
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="noches">
+				<Col xs="12" md="2">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="noches">
 							Noches
 						</Label>
 						<DisabledInput
@@ -280,9 +370,9 @@ const FormReservationEdit = ({
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="adult">
+				<Col xs="12" md="2">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="adult">
 							Adultos
 						</Label>
 						<Input
@@ -295,9 +385,9 @@ const FormReservationEdit = ({
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="child">
+				<Col xs="12" md="2">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="child">
 							Menores
 						</Label>
 						<Input
@@ -310,9 +400,9 @@ const FormReservationEdit = ({
 						/>
 					</div>
 				</Col>
-				<Col xs="12" md="4">
-					<div className="mb-3">
-						<Label className="form-label" htmlFor="infant">
+				<Col xs="12" md="2">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="infant">
 							Infantes
 						</Label>
 						<Input

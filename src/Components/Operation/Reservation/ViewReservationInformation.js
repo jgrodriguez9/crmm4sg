@@ -6,13 +6,18 @@ import BasicModal from '../../Common/BasicModal';
 import FormReservation from './Tab/Reservation/FormReservation';
 import { useQuery } from 'react-query';
 import { fetchMaritalStatus } from '../../../services/maritalStatus';
+import HotelAvailability from '../../Common/HotelAvailability';
+import { editIconClass } from '../../constants/icons';
 
 const ViewReservationInformation = ({
 	editMode = false,
 	setEditMode = () => {},
 	data,
+	refetchReservation,
 }) => {
+	console.log(data);
 	const [showModal, setShowModal] = useState(false);
+	const [showModalAvailability, setShowModalAvailability] = useState(false);
 
 	const toggleDialog = () => setShowModal(!showModal);
 
@@ -33,13 +38,22 @@ const ViewReservationInformation = ({
 		<>
 			<Row>
 				<Col xxl={12}>
-					<div className="d-flex align-items-center justify-content-end flex-wrap gap-2 mb-2">
+					<div className="d-flex flex-row align-items-center justify-content-end flex-wrap gap-2 mb-2">
 						<button
-							className="btn btn-info btn-sm"
+							className="btn btn-info btn-sm me-2"
 							onClick={() => setShowModal(true)}
 						>
-							<i className="ri-edit-fill me-1 align-bottom"></i>{' '}
+							<i
+								classBody={`${editIconClass} me-1 align-bottom`}
+							></i>{' '}
 							Editar reservación
+						</button>
+						<button
+							className="btn btn-warning btn-sm"
+							onClick={() => setShowModalAvailability(true)}
+						>
+							<i className=" ri-calendar-2-line align-bottom"></i>{' '}
+							Ver disponibilidad
 						</button>
 					</div>
 				</Col>
@@ -408,6 +422,27 @@ const ViewReservationInformation = ({
 					<FormReservation
 						reservation={data}
 						toggleDialog={toggleDialog}
+						refetchReservation={refetchReservation}
+					/>
+				}
+			/>
+			<BasicModal
+				open={showModalAvailability}
+				setOpen={setShowModalAvailability}
+				title="Disponibilidad"
+				size="lg"
+				classBody="py-1 px-3"
+				children={
+					<HotelAvailability
+						initialDate={moment(
+							data?.initialDate,
+							'YYYY-MM-DD'
+						).toDate()}
+						finalDate={moment(
+							data?.finalDate,
+							'YYYY-MM-DD'
+						).toDate()}
+						hotel={data?.hotel?.id ?? null}
 					/>
 				}
 			/>

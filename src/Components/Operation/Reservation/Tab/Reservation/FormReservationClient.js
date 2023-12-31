@@ -49,7 +49,6 @@ const FormReservationClient = ({
 			select: (response) => response.data,
 		}
 	);
-	console.log(customer);
 	const [countryDefault, setCountryDefault] = useState(
 		customer?.country
 			? { label: customer?.country, value: customer?.country }
