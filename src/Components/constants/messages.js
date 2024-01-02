@@ -13,3 +13,4 @@ export const CORREO_VALID = 'Correo electrónico inválido';
 export const FIELD_INTEGER = 'Campo numérico entero';
 export const FIELD_POSITIVE = 'Campo debe ser mayor o igual a cero';
 export const FIELD_GREATER_THAN_CERO = 'Campo debe ser mayor a cero';
+export const FIELD_MAX_LENGHT = 'Campo con longitud máxima de';

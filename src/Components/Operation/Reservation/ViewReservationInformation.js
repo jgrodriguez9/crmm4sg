@@ -15,7 +15,6 @@ const ViewReservationInformation = ({
 	data,
 	refetchReservation,
 }) => {
-	console.log(data);
 	const [showModal, setShowModal] = useState(false);
 	const [showModalAvailability, setShowModalAvailability] = useState(false);
 
@@ -44,7 +43,7 @@ const ViewReservationInformation = ({
 							onClick={() => setShowModal(true)}
 						>
 							<i
-								classBody={`${editIconClass} me-1 align-bottom`}
+								className={`${editIconClass} mb-1 align-bottom`}
 							></i>{' '}
 							Editar reservación
 						</button>
@@ -52,7 +51,7 @@ const ViewReservationInformation = ({
 							className="btn btn-warning btn-sm"
 							onClick={() => setShowModalAvailability(true)}
 						>
-							<i className=" ri-calendar-2-line align-bottom"></i>{' '}
+							<i className="ri-calendar-2-line align-bottom"></i>{' '}
 							Ver disponibilidad
 						</button>
 					</div>

@@ -13,6 +13,7 @@ import { getCategoryArticlePaginate } from '../../../helpers/configuration/categ
 import { addMessage } from '../../../slices/messages/reducer';
 import {
 	ERROR_SERVER,
+	FIELD_MAX_LENGHT,
 	FIELD_REQUIRED,
 	SAVE_SUCCESS,
 	SELECT_OPTION,
@@ -118,6 +119,7 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 		validationSchema: Yup.object({
 			title: Yup.string().required(FIELD_REQUIRED),
 			url: Yup.string().required(FIELD_REQUIRED),
+			description: Yup.string().max(250, `${FIELD_MAX_LENGHT} 250`),
 		}),
 		onSubmit: async (values) => {
 			//submit request
@@ -260,7 +262,9 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 						<textarea
 							id="description"
 							name="description"
-							className={`form-control`}
+							className={`form-control ${
+								formik.errors.description ? 'is-invalid' : ''
+							}`}
 							value={formik.values.description}
 							onChange={(e) =>
 								formik.setFieldValue(
@@ -270,6 +274,11 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 							}
 							rows={5}
 						/>
+						{formik.errors.description && (
+							<FormFeedback type="invalid d-block">
+								{formik.errors.description}
+							</FormFeedback>
+						)}
 					</div>
 				</Col>
 			</Row>

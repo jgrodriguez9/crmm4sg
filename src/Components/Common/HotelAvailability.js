@@ -36,7 +36,6 @@ function HotelAvailability({ initialDate, finalDate, hotel }) {
 			setLoading(false);
 		}, 2000);
 	};
-	console.log(url);
 
 	return (
 		<Row>
