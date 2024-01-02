@@ -127,9 +127,6 @@ const FormReservationInformation = ({ toggleDialog, refetch }) => {
 		},
 	});
 
-	console.log(formik.values);
-	console.log(formik.errors);
-
 	useEffect(() => {
 		if (isCreated) {
 			dispatch(

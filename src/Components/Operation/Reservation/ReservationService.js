@@ -200,7 +200,10 @@ const ReservationService = ({ ReservationId, reservation }) => {
 					<div className="d-flex align-items-center justify-content-end flex-wrap gap-2 mb-2">
 						<button
 							className="btn btn-info btn-sm"
-							onClick={toggleDialog}
+							onClick={() => {
+								setServiceSelected(null);
+								toggleDialog();
+							}}
 						>
 							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
 							Nuevo servicio
@@ -230,6 +233,7 @@ const ReservationService = ({ ReservationId, reservation }) => {
 				setOpen={setShowModal}
 				title="Agregar Servicio"
 				size="lg"
+				classBody="py-2 px-3"
 				children={
 					<FormService
 						toggleDialog={toggleDialog}
