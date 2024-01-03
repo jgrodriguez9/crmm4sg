@@ -391,7 +391,7 @@ const FormReservationClient = ({
 									setCountryDefault(value);
 									formik.setFieldValue(
 										'country',
-										value?.label ?? ''
+										value?.value ?? ''
 									);
 									setStatesDefault(null);
 									formik.setFieldValue('state', '');
@@ -425,7 +425,7 @@ const FormReservationClient = ({
 									setStatesDefault(value);
 									formik.setFieldValue(
 										'state',
-										value?.label ?? ''
+										value?.value ?? ''
 									);
 									setCitiesDefault(null);
 									formik.setFieldValue('city', '');
@@ -450,7 +450,7 @@ const FormReservationClient = ({
 									setCitiesDefault(value);
 									formik.setFieldValue(
 										'city',
-										value?.label ?? ''
+										value?.value ?? ''
 									);
 								}}
 								country={countryDefault}
@@ -479,6 +479,12 @@ const FormReservationClient = ({
 								inputClass={`form-control w-100`}
 								countryCodeEditable={false}
 								enableSearch={true}
+								country={
+									!phone1
+										? formik.values?.country?.toLowerCase() ??
+										  ''
+										: ''
+								}
 								preferredCountries={['mx', 'us']}
 								disableSearchIcon={true}
 								localization={es}
@@ -515,6 +521,12 @@ const FormReservationClient = ({
 							<PhoneInput
 								inputClass={`form-control w-100`}
 								countryCodeEditable={false}
+								country={
+									!phone2
+										? formik.values?.country?.toLowerCase() ??
+										  ''
+										: ''
+								}
 								enableSearch={true}
 								preferredCountries={['mx', 'us']}
 								disableSearchIcon={true}
@@ -552,6 +564,12 @@ const FormReservationClient = ({
 							<PhoneInput
 								inputClass={`form-control w-100`}
 								countryCodeEditable={false}
+								country={
+									!mobile
+										? formik.values?.country?.toLowerCase() ??
+										  ''
+										: ''
+								}
 								enableSearch={true}
 								preferredCountries={['mx', 'us']}
 								disableSearchIcon={true}

@@ -179,7 +179,7 @@ const FormReservationClient = ({ formik }) => {
 							setCountryDefault(value);
 							formik.setFieldValue(
 								'customer.country',
-								value?.label ?? ''
+								value?.value ?? ''
 							);
 							setStatesDefault(null);
 							formik.setFieldValue('customer.state', '');
@@ -206,7 +206,7 @@ const FormReservationClient = ({ formik }) => {
 							setStatesDefault(value);
 							formik.setFieldValue(
 								'customer.state',
-								value?.label ?? ''
+								value?.value ?? ''
 							);
 							setCitiesDefault(null);
 							formik.setFieldValue('customer.city', '');
@@ -226,7 +226,7 @@ const FormReservationClient = ({ formik }) => {
 							setCitiesDefault(value);
 							formik.setFieldValue(
 								'customer.city',
-								value?.label ?? ''
+								value?.value ?? ''
 							);
 						}}
 						country={countryDefault}
@@ -242,6 +242,11 @@ const FormReservationClient = ({ formik }) => {
 					<PhoneInput
 						inputClass={`form-control w-100`}
 						countryCodeEditable={false}
+						country={
+							!formik.values.customer.phone1
+								? formik.values?.country?.toLowerCase() ?? ''
+								: ''
+						}
 						enableSearch={true}
 						preferredCountries={['mx', 'us']}
 						disableSearchIcon={true}
@@ -261,6 +266,11 @@ const FormReservationClient = ({ formik }) => {
 					<PhoneInput
 						inputClass={`form-control w-100`}
 						countryCodeEditable={false}
+						country={
+							!formik.values.customer.phone2
+								? formik.values?.country?.toLowerCase() ?? ''
+								: ''
+						}
 						enableSearch={true}
 						preferredCountries={['mx', 'us']}
 						disableSearchIcon={true}
@@ -280,6 +290,11 @@ const FormReservationClient = ({ formik }) => {
 					<PhoneInput
 						inputClass={`form-control w-100`}
 						countryCodeEditable={false}
+						country={
+							!formik.values.customer.movil
+								? formik.values?.country?.toLowerCase() ?? ''
+								: ''
+						}
 						enableSearch={true}
 						preferredCountries={['mx', 'us']}
 						disableSearchIcon={true}

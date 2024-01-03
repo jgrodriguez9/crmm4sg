@@ -159,7 +159,7 @@ const FormClient = ({
 	const [editPhone1, setEditPhone1] = useState(false);
 	const togglePhone1 = () => setEditPhone1(!editPhone1);
 	const [editPhone2, setEditPhone2] = useState(false);
-	const togglePhone2 = () => setEditPhone2(!editPhone1);
+	const togglePhone2 = () => setEditPhone2(!editPhone2);
 	const [editMobile, setEditMobile] = useState(false);
 	const toggleMobile = () => setEditMobile(!editMobile);
 
@@ -293,7 +293,7 @@ const FormClient = ({
 								setCountryDefault(value);
 								formik.setFieldValue(
 									'country',
-									value?.label ?? ''
+									value?.value ?? ''
 								);
 								setStatesDefault(null);
 								formik.setFieldValue('state', '');
@@ -307,6 +307,7 @@ const FormClient = ({
 							classNamePrefix="select2-selection"
 							placeholder={SELECT_OPTION}
 						/>
+						{console.log(Country.getAllCountries())}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -320,7 +321,7 @@ const FormClient = ({
 								setStatesDefault(value);
 								formik.setFieldValue(
 									'state',
-									value?.label ?? ''
+									value?.value ?? ''
 								);
 								setCitiesDefault(null);
 								formik.setFieldValue('city', '');
@@ -340,7 +341,7 @@ const FormClient = ({
 								setCitiesDefault(value);
 								formik.setFieldValue(
 									'city',
-									value?.label ?? ''
+									value?.value ?? ''
 								);
 							}}
 							country={countryDefault}
@@ -368,6 +369,12 @@ const FormClient = ({
 								inputClass={`form-control w-100`}
 								countryCodeEditable={false}
 								enableSearch={true}
+								country={
+									!phone1
+										? formik.values?.country?.toLowerCase() ??
+										  ''
+										: ''
+								}
 								preferredCountries={['mx', 'us']}
 								disableSearchIcon={true}
 								localization={es}
@@ -405,6 +412,12 @@ const FormClient = ({
 								inputClass={`form-control w-100`}
 								countryCodeEditable={false}
 								enableSearch={true}
+								country={
+									!phone2
+										? formik.values?.country?.toLowerCase() ??
+										  ''
+										: ''
+								}
 								preferredCountries={['mx', 'us']}
 								disableSearchIcon={true}
 								localization={es}
@@ -442,6 +455,12 @@ const FormClient = ({
 								inputClass={`form-control w-100`}
 								countryCodeEditable={false}
 								enableSearch={true}
+								country={
+									!mobile
+										? formik.values?.country?.toLowerCase() ??
+										  ''
+										: ''
+								}
 								preferredCountries={['mx', 'us']}
 								disableSearchIcon={true}
 								localization={es}
