@@ -51,7 +51,10 @@ const FormReservationClient = ({
 	);
 	const [countryDefault, setCountryDefault] = useState(
 		customer?.country
-			? { label: customer?.country, value: customer?.country }
+			? {
+					label: customer?.country?.name,
+					value: customer?.country?.iso_code,
+			  }
 			: null
 	);
 	const [statesDefault, setStatesDefault] = useState(
@@ -66,7 +69,10 @@ const FormReservationClient = ({
 	useEffect(() => {
 		setCountryDefault(
 			customer?.country
-				? { label: customer?.country, value: customer?.country }
+				? {
+						label: customer?.country?.name,
+						value: customer?.country?.iso_code,
+				  }
 				: null
 		);
 		setStatesDefault(
@@ -381,7 +387,7 @@ const FormReservationClient = ({
 						</Label>
 						{!editClient && (
 							<DisabledInput
-								value={countryDefault?.value ?? ''}
+								value={countryDefault?.label ?? ''}
 							/>
 						)}
 						{editClient && (
@@ -416,7 +422,12 @@ const FormReservationClient = ({
 							Estado
 						</Label>
 						{!editClient && (
-							<DisabledInput value={statesDefault?.value ?? ''} />
+							<StateInput
+								value={statesDefault}
+								handleChange={(value) => {}}
+								country={countryDefault}
+								isReadOnly={true}
+							/>
 						)}
 						{editClient && (
 							<StateInput
