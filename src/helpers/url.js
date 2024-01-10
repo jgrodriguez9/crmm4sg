@@ -54,3 +54,6 @@ export const categoryArticle = '/articleCategory';
 
 //hotel unit
 export const hotelUnit = '/hotelUnit';
+
+//sms
+export const externalSms = '/external/sendSMS';

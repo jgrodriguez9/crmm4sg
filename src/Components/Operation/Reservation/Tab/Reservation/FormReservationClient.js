@@ -171,9 +171,9 @@ const FormReservationClient = ({
 					data[key] = value;
 				}
 			});
-			if (phone1) data['phone1'] = phone1;
-			if (phone2) data['phone2'] = phone2;
-			if (mobile) data['movil'] = mobile;
+			if (phone1) data['phone1'] = values.phone1;
+			if (phone2) data['phone2'] = values.phone2;
+			if (mobile) data['movil'] = values.mobile;
 			if (email) data['email'] = email;
 			updateCient({
 				id: values.id,
@@ -496,7 +496,10 @@ const FormReservationClient = ({
 									formattedValue
 								) => {
 									setPhone1(phone);
-									formik.setFieldValue('phone1', phone);
+									formik.setFieldValue(
+										'phone1',
+										phone.slice(country.dialCode.length)
+									);
 								}}
 							/>
 						)}
@@ -539,7 +542,10 @@ const FormReservationClient = ({
 									formattedValue
 								) => {
 									setPhone2(phone);
-									formik.setFieldValue('phone2', phone);
+									formik.setFieldValue(
+										'phone2',
+										phone.slice(country.dialCode.length)
+									);
 								}}
 							/>
 						)}
@@ -582,7 +588,10 @@ const FormReservationClient = ({
 									formattedValue
 								) => {
 									setMobile(phone);
-									formik.setFieldValue('movil', phone);
+									formik.setFieldValue(
+										'movil',
+										phone.slice(country.dialCode.length)
+									);
 								}}
 							/>
 						)}

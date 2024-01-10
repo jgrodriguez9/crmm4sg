@@ -14,6 +14,10 @@ const FormReservationClient = ({ formik }) => {
 	const [statesDefault, setStatesDefault] = useState(null);
 	const [citiesDefault, setCitiesDefault] = useState(null);
 
+	const [phone1, setPhone1] = useState('');
+	const [phone2, setPhone2] = useState('');
+	const [mobile, setMobile] = useState('');
+
 	return (
 		<Row className="mb-md-3 mb-2">
 			<Col xs="12" md="4">
@@ -251,9 +255,13 @@ const FormReservationClient = ({ formik }) => {
 						preferredCountries={['mx', 'us']}
 						disableSearchIcon={true}
 						localization={es}
-						value={formik.values.customer.phone1}
-						onChange={(phone) => {
-							formik.setFieldValue('customer.phone1', phone);
+						value={phone1}
+						onChange={(phone, country) => {
+							setPhone1(phone);
+							formik.setFieldValue(
+								'customer.phone1',
+								phone.slice(country.dialCode.length)
+							);
 						}}
 					/>
 				</div>
@@ -275,9 +283,13 @@ const FormReservationClient = ({ formik }) => {
 						preferredCountries={['mx', 'us']}
 						disableSearchIcon={true}
 						localization={es}
-						value={formik.values.customer.phone2}
-						onChange={(phone) => {
-							formik.setFieldValue('customer.phone2', phone);
+						value={phone2}
+						onChange={(phone, country) => {
+							setPhone2(phone);
+							formik.setFieldValue(
+								'customer.phone2',
+								phone.slice(country.dialCode.length)
+							);
 						}}
 					/>
 				</div>
@@ -299,9 +311,13 @@ const FormReservationClient = ({ formik }) => {
 						preferredCountries={['mx', 'us']}
 						disableSearchIcon={true}
 						localization={es}
-						value={formik.values.customer.movil}
-						onChange={(phone) => {
-							formik.setFieldValue('customer.movil', phone);
+						value={mobile}
+						onChange={(phone, country) => {
+							setMobile(phone);
+							formik.setFieldValue(
+								'customer.movil',
+								phone.slice(country.dialCode.length)
+							);
 						}}
 					/>
 				</div>

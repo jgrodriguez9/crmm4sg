@@ -13,7 +13,7 @@ import { getCategoryArticlePaginate } from '../../../helpers/configuration/categ
 import { addMessage } from '../../../slices/messages/reducer';
 import {
 	ERROR_SERVER,
-	FIELD_MAX_LENGHT,
+	FIELD_MAX_LENGTH,
 	FIELD_REQUIRED,
 	SAVE_SUCCESS,
 	SELECT_OPTION,
@@ -119,7 +119,7 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 		validationSchema: Yup.object({
 			title: Yup.string().required(FIELD_REQUIRED),
 			url: Yup.string().required(FIELD_REQUIRED),
-			description: Yup.string().max(250, `${FIELD_MAX_LENGHT} 250`),
+			description: Yup.string().max(250, `${FIELD_MAX_LENGTH} 250`),
 		}),
 		onSubmit: async (values) => {
 			//submit request

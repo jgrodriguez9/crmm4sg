@@ -17,7 +17,7 @@ export default function CityInput({ value, handleChange, country, state }) {
 			onChange={(value) => handleChange(value)}
 			options={citiesOpt.map((c) => ({
 				label: c.name,
-				value: c.isoCode,
+				value: c.name,
 			}))}
 			classNamePrefix="select2-selection"
 			placeholder={SELECT_OPTION}

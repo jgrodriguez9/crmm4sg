@@ -32,6 +32,7 @@ const FormClient = ({
 	customer,
 	refetchClient,
 }) => {
+	console.log(customer);
 	const dispatch = useDispatch();
 	const [fechaNacimiento, setFechaNacimiento] = useState(
 		customer?.fechaNacimiento
@@ -40,7 +41,10 @@ const FormClient = ({
 	);
 	const [countryDefault, setCountryDefault] = useState(
 		customer?.country
-			? { label: customer?.country, value: customer?.country }
+			? {
+					label: customer?.country?.name,
+					value: customer?.country?.iso_code,
+			  }
 			: null
 	);
 	const [statesDefault, setStatesDefault] = useState(
@@ -144,9 +148,9 @@ const FormClient = ({
 					data[key] = value;
 				}
 			});
-			if (phone1) data['phone1'] = phone1;
-			if (phone2) data['phone2'] = phone2;
-			if (mobile) data['movil'] = mobile;
+			if (phone1) data['phone1'] = values.phone1;
+			if (phone2) data['phone2'] = values.phone2;
+			if (mobile) data['movil'] = values.movil;
 			if (email) data['email'] = email;
 
 			updateCient({
@@ -168,6 +172,7 @@ const FormClient = ({
 		setEditCorreo(!editCorreo);
 		formik.setFieldValue('email', '');
 	};
+	console.log(formik.values);
 	return (
 		<Form
 			className="needs-validation fs-7"
@@ -307,7 +312,6 @@ const FormClient = ({
 							classNamePrefix="select2-selection"
 							placeholder={SELECT_OPTION}
 						/>
-						{console.log(Country.getAllCountries())}
 					</div>
 				</Col>
 				<Col xs="12" md="4">
@@ -386,7 +390,10 @@ const FormClient = ({
 									formattedValue
 								) => {
 									setPhone1(phone);
-									formik.setFieldValue('phone1', phone);
+									formik.setFieldValue(
+										'phone1',
+										phone.slice(country.dialCode.length)
+									);
 								}}
 							/>
 						)}
@@ -429,7 +436,10 @@ const FormClient = ({
 									formattedValue
 								) => {
 									setPhone2(phone);
-									formik.setFieldValue('phone2', phone);
+									formik.setFieldValue(
+										'phone2',
+										phone.slice(country.dialCode.length)
+									);
 								}}
 							/>
 						)}
@@ -472,7 +482,10 @@ const FormClient = ({
 									formattedValue
 								) => {
 									setMobile(phone);
-									formik.setFieldValue('movil', phone);
+									formik.setFieldValue(
+										'movil',
+										phone.slice(country.dialCode.length)
+									);
 								}}
 							/>
 						)}

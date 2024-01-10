@@ -14,7 +14,17 @@ export default function StateInput({ value, handleChange, country }) {
 
 	return (
 		<Select
-			value={value}
+			value={
+				value
+					? {
+							value: value.value,
+							label:
+								statesOpt.find(
+									(it) => it.isoCode === value.value
+								)?.name ?? value.label,
+					  }
+					: null
+			}
 			onChange={(value) => handleChange(value)}
 			options={statesOpt.map((s) => ({
 				label: s.name,

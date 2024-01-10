@@ -212,7 +212,7 @@ const LeadProfile = () => {
 							title: 'País',
 							items: [
 								{
-									title: itemData?.data?.country,
+									title: itemData?.data?.country?.name,
 									iconClass: null,
 									action: () => {},
 								},
@@ -592,7 +592,9 @@ const LeadProfile = () => {
 											</TabPane>
 											<TabPane tabId="3">
 												{activeTab === '3' && (
-													<SMSClient />
+													<SMSClient
+														customer={itemData.data}
+													/>
 												)}
 											</TabPane>
 											<TabPane tabId="4">
