@@ -1,6 +1,6 @@
 import { Button, Col, Form, FormFeedback, Input, Label, Row } from 'reactstrap';
 import Select from 'react-select';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import 'react-phone-input-2/lib/style.css';
 import {
 	ERROR_SERVER,
@@ -67,13 +67,30 @@ const FormReservationEdit = ({
 	);
 
 	//update reservation
-	const {
-		mutate: updateItem,
-		isLoading: isUpdating,
-		isSuccess: isUpdated,
-		isError: isErrorUpdate,
-		error: errorUpdate,
-	} = useMutation(updateReservationService);
+	const { mutate: updateItem, isLoading: isUpdating } = useMutation(
+		updateReservationService,
+		{
+			onSuccess: () => {
+				dispatch(
+					addMessage({
+						type: 'success',
+						message: UPDATE_SUCCESS,
+					})
+				);
+				refetchReservation();
+			},
+			onError: (error) => {
+				let message = ERROR_SERVER;
+				message = extractMeaningfulMessage(error, message);
+				dispatch(
+					addMessage({
+						type: 'error',
+						message: message,
+					})
+				);
+			},
+		}
+	);
 
 	const formik = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
@@ -152,28 +169,7 @@ const FormReservationEdit = ({
 			});
 		},
 	});
-	useEffect(() => {
-		if (isUpdated) {
-			dispatch(
-				addMessage({
-					type: 'success',
-					message: UPDATE_SUCCESS,
-				})
-			);
-			refetchReservation();
-			//reftech reserva
-		}
-		if (isErrorUpdate) {
-			let message = ERROR_SERVER;
-			message = extractMeaningfulMessage(errorUpdate, message);
-			dispatch(
-				addMessage({
-					type: 'error',
-					message: message,
-				})
-			);
-		}
-	}, [isUpdated, isErrorUpdate]);
+	console.log(formik.values);
 	//getHotelUNitAndUnit
 	const { data: hotelUnitOpt } = useQuery(
 		['getHotelUnitByHotelPaginate', formik.values.hotel.id],
@@ -186,6 +182,7 @@ const FormReservationEdit = ({
 				data.data?.list.map((item) => ({
 					value: item.hotelUnit,
 					label: item.hotelUnit,
+					unit: item.unit,
 				})) ?? [],
 			enabled: formik.values.hotel.id !== '',
 		}
@@ -260,10 +257,7 @@ const FormReservationEdit = ({
 									'hotelUnit',
 									value?.value ?? ''
 								);
-								formik.setFieldValue(
-									'unit',
-									value?.value ?? ''
-								);
+								formik.setFieldValue('unit', value?.unit ?? '');
 							}}
 							options={hotelUnitOpt}
 							placeholder={SELECT_OPTION}

@@ -46,7 +46,6 @@ const FormReservationCero = ({ formik }) => {
 				})) ?? [],
 		}
 	);
-	console.log(formik.values.hotel.id);
 	//getHotelUNitAndUnit
 	const { data: hotelUnitOpt } = useQuery(
 		['getHotelUnitByHotelPaginate', formik.values.hotel.id],
@@ -57,8 +56,9 @@ const FormReservationCero = ({ formik }) => {
 		{
 			select: (data) =>
 				data.data?.list.map((item) => ({
-					value: item.id,
+					value: item.hotelUnit,
 					label: item.hotelUnit,
+					unit: item.unit,
 				})) ?? [],
 			enabled: formik.values.hotel.id !== '',
 		}
@@ -130,10 +130,7 @@ const FormReservationCero = ({ formik }) => {
 									'hotelUnit',
 									value?.value ?? ''
 								);
-								formik.setFieldValue(
-									'unit',
-									value?.value ?? ''
-								);
+								formik.setFieldValue('unit', value?.unit ?? '');
 							}}
 							options={hotelUnitOpt}
 							placeholder={SELECT_OPTION}
@@ -213,6 +210,11 @@ const FormReservationCero = ({ formik }) => {
 							options={callCenterOpt}
 							placeholder={SELECT_OPTION}
 						/>
+						{formik.errors.callCenter?.id && (
+							<FormFeedback type="invalid" className="d-block">
+								{formik.errors.callCenter?.id}
+							</FormFeedback>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="2">

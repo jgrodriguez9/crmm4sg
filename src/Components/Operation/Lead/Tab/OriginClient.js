@@ -14,6 +14,7 @@ const OriginClient = ({ customerId }) => {
 		error: errorItem,
 		isFetching: isFetchingItem,
 		isSuccess: isSuccesOrigin,
+		refetch: refetchOrigin,
 	} = useQuery(
 		['getOriginCustomer', customerId],
 		() => fecthOriginClients(customerId),
@@ -24,7 +25,6 @@ const OriginClient = ({ customerId }) => {
 	const toggleDialog = () => setShowModal(!showModal);
 
 	const onHandleCreateReservation = (row) => {
-		console.log(row);
 		setShowModal(true);
 	};
 
@@ -68,6 +68,7 @@ const OriginClient = ({ customerId }) => {
 							customer: { id: customerId },
 						}}
 						toggleDialog={toggleDialog}
+						refetch={refetchOrigin}
 					/>
 				}
 			/>

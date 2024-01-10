@@ -25,7 +25,7 @@ export default function StateInput({
 					style={{ minHeight: '34px', backgroundColor: '#eff2f7' }}
 				>
 					{statesOpt.find((it) => it.isoCode === value.value)?.name ??
-						value.label}
+						value?.label}
 				</div>
 			</div>
 		);

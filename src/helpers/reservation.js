@@ -13,6 +13,9 @@ const filterGlobalCustomer = (parameter) =>
 const updateReservation = (id, data) => put(`${url.reservation}/${id}`, data);
 const createReservation = (data) => post(`${url.reservation}`, data);
 
+const createReservationFromSale = (data) =>
+	post(`${url.sale}/reservation`, data);
+
 export {
 	getReservationPaginate,
 	getReservation,
@@ -22,4 +25,5 @@ export {
 	filterGlobalCustomer,
 	updateReservation,
 	createReservation,
+	createReservationFromSale,
 };
