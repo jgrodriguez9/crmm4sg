@@ -1,8 +1,9 @@
-import { Col, Row } from 'reactstrap';
+import { Button, Col, Row } from 'reactstrap';
 import { useMemo, useState } from 'react';
 import BasicModal from '../../../Common/BasicModal';
 import TableSMS from './SMSClient/TableSMS';
 import FormSMS from './SMSClient/FormSMS';
+import { addIconClass } from '../../../constants/icons';
 
 const SMSClient = ({ customer }) => {
 	const [showAddModal, setShowAddModal] = useState(false);
@@ -38,13 +39,14 @@ const SMSClient = ({ customer }) => {
 			<Row>
 				<Col>
 					<div className="d-flex align-items-center justify-content-end flex-wrap gap-2 mb-3">
-						<button
-							className="btn btn-info"
+						<Button
+							color="info"
+							size="sm"
 							onClick={() => setShowAddModal(true)}
+							className="d-flex align-items-center"
 						>
-							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
-							Crear SMS
-						</button>
+							<i className={`${addIconClass} fs-5`} /> Crear SMS
+						</Button>
 					</div>
 				</Col>
 			</Row>

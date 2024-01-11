@@ -58,5 +58,8 @@ export const hotelUnit = '/hotelUnit';
 //sms
 export const externalSms = '/external/sendSMS';
 
+//email
+export const externalEmail = '/external/sendEmail';
+
 //sale
 export const sale = '/sale';

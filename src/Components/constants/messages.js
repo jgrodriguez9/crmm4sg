@@ -15,3 +15,4 @@ export const FIELD_POSITIVE = 'Campo debe ser mayor o igual a cero';
 export const FIELD_GREATER_THAN_CERO = 'Campo debe ser mayor a cero';
 export const FIELD_MAX_LENGTH = 'Campo con longitud máxima de';
 export const SMS_SUCCESS = 'Mensaje enviado correctamente';
+export const EMAIL_SUCCESS = 'Correo electrónico enviado correctamente';

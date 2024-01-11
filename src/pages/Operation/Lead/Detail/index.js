@@ -599,7 +599,9 @@ const LeadProfile = () => {
 											</TabPane>
 											<TabPane tabId="4">
 												{activeTab === '4' && (
-													<MarketingMailClient />
+													<MarketingMailClient
+														customer={itemData.data}
+													/>
 												)}
 											</TabPane>
 											<TabPane tabId="5">
