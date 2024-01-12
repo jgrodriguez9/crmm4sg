@@ -65,7 +65,7 @@ const FormCreateReservationFromClient = ({
 			adult: 2,
 			amex: 0,
 			callCenter: { id: '' },
-			cards: '',
+			cards: 0,
 			child: 0,
 			comment: '',
 			finalDate: '',
@@ -97,6 +97,11 @@ const FormCreateReservationFromClient = ({
 				.integer(FIELD_INTEGER)
 				.typeError(FIELD_NUMERIC)
 				.required(FIELD_REQUIRED),
+			cards: Yup.number()
+				.min(0, FIELD_POSITIVE)
+				.integer(FIELD_INTEGER)
+				.typeError(FIELD_NUMERIC)
+				.required(FIELD_REQUIRED),
 			hotel: Yup.object().shape({
 				id: Yup.string().required(FIELD_REQUIRED),
 			}),
@@ -118,13 +123,10 @@ const FormCreateReservationFromClient = ({
 					data[key] = value;
 				}
 			});
-			console.log(data);
 			createItem(data);
 			// create reservation
 		},
 	});
-
-	console.log(formik.values);
 
 	return (
 		<Form

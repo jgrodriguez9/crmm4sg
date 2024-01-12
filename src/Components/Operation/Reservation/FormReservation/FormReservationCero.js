@@ -313,7 +313,7 @@ const FormReservationCero = ({ formik }) => {
 							value={formik.values.adult}
 						/>
 						{formik.errors.adult && (
-							<FormFeedback type="invalid d-block">
+							<FormFeedback type="invalid" className="d-block">
 								{formik.errors.adult}
 							</FormFeedback>
 						)}
@@ -335,7 +335,7 @@ const FormReservationCero = ({ formik }) => {
 							value={formik.values.child}
 						/>
 						{formik.errors.child && (
-							<FormFeedback type="invalid d-block">
+							<FormFeedback type="invalid" className="d-block">
 								{formik.errors.child}
 							</FormFeedback>
 						)}
@@ -357,7 +357,7 @@ const FormReservationCero = ({ formik }) => {
 							value={formik.values.infant}
 						/>
 						{formik.errors.infant && (
-							<FormFeedback type="invalid d-block">
+							<FormFeedback type="invalid" className="d-block">
 								{formik.errors.infant}
 							</FormFeedback>
 						)}
@@ -477,7 +477,7 @@ const FormReservationCero = ({ formik }) => {
 				</Col>
 				<Col xs="12" md="3">
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="comentario">
+						<Label className="form-label mb-0" htmlFor="cards">
 							Tarjetas
 						</Label>
 						<Input
@@ -488,6 +488,11 @@ const FormReservationCero = ({ formik }) => {
 							onBlur={formik.handleBlur}
 							value={formik.values.cards}
 						/>
+						{formik.errors.cards && (
+							<FormFeedback type="invalid" className="d-block">
+								{formik.errors.cards}
+							</FormFeedback>
+						)}
 					</div>
 				</Col>
 				<Col xs="12" md="5">

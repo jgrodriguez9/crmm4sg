@@ -26,7 +26,6 @@ const OriginClient = ({ customerId }) => {
 	const toggleDialog = () => setShowModal(!showModal);
 
 	const onHandleCreateReservation = (row) => {
-		console.log(row);
 		setBooking(row.original.idBooking);
 		setShowModal(true);
 	};
