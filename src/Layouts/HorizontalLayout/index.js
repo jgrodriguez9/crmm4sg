@@ -6,10 +6,11 @@ import withRouter from '../../Components/Common/withRouter';
 // Import Data
 import navdata from '../LayoutMenuData';
 //i18n
-import { withTranslation } from 'react-i18next';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 const HorizontalLayout = (props) => {
 	const [isMoreMenu, setIsMoreMenu] = useState(false);
+	const { t } = useTranslation();
 	const navData = navdata().props.children;
 	let menuItems = [];
 	let splitMenuItems = [];
@@ -131,7 +132,7 @@ const HorizontalLayout = (props) => {
 										>
 											<i className={item.icon}></i>{' '}
 											<span data-key="t-apps">
-												{props.t(item.label)}
+												{t(item.label)}
 											</span>
 										</Link>
 										<Collapse
@@ -188,13 +189,13 @@ const HorizontalLayout = (props) => {
 																								}
 																								className="nav-link"
 																							>
-																								{
+																								{t(
 																									item
 																										.subItems[
 																										key
 																									]
 																										.label
-																								}
+																								)}
 																							</Link>
 																						</li>
 																					</ul>
@@ -217,13 +218,13 @@ const HorizontalLayout = (props) => {
 																								}
 																								className="nav-link"
 																							>
-																								{
+																								{t(
 																									item
 																										.subItems[
 																										key
 																									]
 																										.label
-																								}
+																								)}
 																							</Link>
 																						</li>
 																					</ul>
@@ -261,7 +262,7 @@ const HorizontalLayout = (props) => {
 																					}
 																					className="nav-link"
 																				>
-																					{props.t(
+																					{t(
 																						subItem.label
 																					)}
 																				</Link>
@@ -277,7 +278,7 @@ const HorizontalLayout = (props) => {
 																					data-bs-toggle="collapse"
 																				>
 																					{' '}
-																					{props.t(
+																					{t(
 																						subItem.label
 																					)}
 																				</Link>
@@ -321,7 +322,7 @@ const HorizontalLayout = (props) => {
 																														}
 																														className="nav-link"
 																													>
-																														{props.t(
+																														{t(
 																															subChildItem.label
 																														)}
 																													</Link>
@@ -337,7 +338,7 @@ const HorizontalLayout = (props) => {
 																														data-bs-toggle="collapse"
 																													>
 																														{' '}
-																														{props.t(
+																														{t(
 																															subChildItem.label
 																														)}
 																													</Link>
@@ -380,7 +381,7 @@ const HorizontalLayout = (props) => {
 																																					}
 																																					className="nav-link"
 																																				>
-																																					{props.t(
+																																					{t(
 																																						subSubChildItem.label
 																																					)}
 																																				</Link>
@@ -412,14 +413,14 @@ const HorizontalLayout = (props) => {
 											to={item.link ? item.link : '/#'}
 										>
 											<i className={item.icon}></i>{' '}
-											<span>{props.t(item.label)}</span>
+											<span>{t(item.label)}</span>
 										</Link>
 									</li>
 								)
 							) : (
 								<li className="menu-title">
 									<span data-key="t-menu">
-										{props.t(item.label)}
+										{t(item.label)}
 									</span>
 								</li>
 							)}

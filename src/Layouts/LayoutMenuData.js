@@ -49,7 +49,7 @@ const Navdata = () => {
 		},
 		{
 			id: 'configuration',
-			label: 'Configuración',
+			label: 'menu.configuration',
 			icon: 'ri-settings-5-line',
 			link: '/#',
 			click: function (e) {

@@ -1,39 +1,35 @@
-import i18n from "i18next";
-import detector from "i18next-browser-languagedetector";
-import { initReactI18next } from "react-i18next";
+import i18n from 'i18next';
+import detector from 'i18next-browser-languagedetector';
+import { initReactI18next } from 'react-i18next';
 
-import translationSP from "./locales/sp.json";
-import translationENG from "./locales/en.json";
-
+import translationSP from './locales/es.json';
+import translationENG from './locales/en.json';
 
 // the translations
 const resources = {
-  sp: {
-    translation: translationSP,
-  },
-  en: {
-    translation: translationENG,
-  },
+	es: {
+		translation: translationSP,
+	},
+	en: {
+		translation: translationENG,
+	},
 };
 
-const language = localStorage.getItem("I18N_LANGUAGE");
-if (!language) {
-  localStorage.setItem("I18N_LANGUAGE", "en");
-}
+const lng = navigator.language.substring(0, 2) === 'es' ? 'es' : 'en';
 
-i18n
-  .use(detector)
-  .use(initReactI18next) // passes i18n down to react-i18next
-  .init({
-    resources,
-    lng: localStorage.getItem("I18N_LANGUAGE") || "en",
-    fallbackLng: "en", // use en if detected lng is not available
+i18n.use(detector)
+	.use(initReactI18next) // passes i18n down to react-i18next
+	.init({
+		resources,
+		lng,
+		fallbackLng: 'es', // use en if detected lng is not available
+		debug: true,
 
-    keySeparator: false, // we do not use keys in form messages.welcome
+		keySeparator: '.',
 
-    interpolation: {
-      escapeValue: false, // react already safes from xss
-    },
-  });
+		interpolation: {
+			escapeValue: false, // react already safes from xss
+		},
+	});
 
 export default i18n;
