@@ -9,6 +9,7 @@ import FormCreateReservationFromClient from './ReservationClient/FormCreateReser
 
 const OriginClient = ({ customerId }) => {
 	const [showModal, setShowModal] = useState(false);
+	const [booking, setBooking] = useState(null);
 	const {
 		data: itemData,
 		error: errorItem,
@@ -25,6 +26,8 @@ const OriginClient = ({ customerId }) => {
 	const toggleDialog = () => setShowModal(!showModal);
 
 	const onHandleCreateReservation = (row) => {
+		console.log(row);
+		setBooking(row.original.idBooking);
 		setShowModal(true);
 	};
 
@@ -66,9 +69,10 @@ const OriginClient = ({ customerId }) => {
 					<FormCreateReservationFromClient
 						reservation={{
 							customer: { id: customerId },
+							booking: booking,
 						}}
 						toggleDialog={toggleDialog}
-						refetch={refetchOrigin}
+						refetchOrigin={refetchOrigin}
 					/>
 				}
 			/>

@@ -16,7 +16,7 @@ import {
 import removetEmptyObject from '../../../../../util/removetEmptyObject';
 import moment from 'moment';
 import { createReservationFromSale } from '../../../../../helpers/reservation';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
@@ -28,6 +28,7 @@ const FormCreateReservationFromClient = ({
 }) => {
 	const dispatch = useDispatch();
 	const user = useUser();
+	const client = useQueryClient();
 
 	//create reservation
 	const { mutate: createItem, isLoading: isCreating } = useMutation(
@@ -41,6 +42,7 @@ const FormCreateReservationFromClient = ({
 					})
 				);
 				toggleDialog();
+				client.refetchQueries({ queryKey: ['getReservationPaginate'] });
 			},
 			onError: (error) => {
 				let message = ERROR_SERVER;
@@ -139,16 +141,6 @@ const FormCreateReservationFromClient = ({
 						formik={formik}
 						createFromSale={true}
 					/>
-					{/* <FormReservationEdit
-					reservation={reservation}
-					toggleDialog={toggleDialog}
-					editClient={false}
-					refetchReservation={() => {}}
-				/> */}
-					{/* <FormReservationCreate
-					reservation={reservation}
-					toggleDialog={toggleDialog}
-				/> */}
 				</Col>
 			</Row>
 			{!isCreating && (

@@ -40,6 +40,7 @@ import moment from 'moment';
 import { DATE_FORMAT } from '../../../../common/globalsProp';
 import { editIconClass } from '../../../../Components/constants/icons';
 import TooltipDescription from '../../../../Components/Common/TooltipDescription';
+import FormMaketingMailClient from '../../../../Components/Operation/Lead/Tab/MarketingMailClient/FormMaketingMailClient';
 
 const LeadProfile = () => {
 	document.title = 'Detalle del Lead | CRM - M4S';
@@ -48,6 +49,7 @@ const LeadProfile = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [activeTab, setActiveTab] = useState('6');
 	const [dataLeft, setDataLeft] = useState([]);
+	const [showEmailModal, setShowEmailModal] = useState(false);
 	const tabChange = (tab) => {
 		if (activeTab !== tab) setActiveTab(tab);
 	};
@@ -92,6 +94,7 @@ const LeadProfile = () => {
 			);
 		}
 	};
+	const onHandleShowSendEmail = () => setShowEmailModal(true);
 
 	useEffect(() => {
 		if (itemData?.data && !errorItem) {
@@ -162,7 +165,7 @@ const LeadProfile = () => {
 									title: itemData?.data?.email,
 									iconClass:
 										'fs-15 ri-mail-line text-danger cursor-pointer',
-									action: () => {},
+									action: onHandleShowSendEmail,
 									tooltip: {
 										id: 'tooltip-correo-1',
 										title: 'Enviar correo',
@@ -419,10 +422,10 @@ const LeadProfile = () => {
 																				bItIdx
 																			) => (
 																				<div
-																					className="d-flex justify-content-between align-items-center"
+																					className="d-flex justify-content-end align-items-center"
 																					key={`body-it-${bItIdx}`}
 																				>
-																					<div>
+																					<div className="me-1">
 																						{
 																							bodyItem.title
 																						}
@@ -638,6 +641,18 @@ const LeadProfile = () => {
 						textBtnSubmit="Editar"
 						customer={itemData?.data ?? null}
 						refetchClient={refetchClient}
+					/>
+				}
+			/>
+			<BasicModal
+				open={showEmailModal}
+				setOpen={setShowEmailModal}
+				title="Nuevo email"
+				size="lg"
+				children={
+					<FormMaketingMailClient
+						closeModal={() => setShowEmailModal(false)}
+						emailTo={itemData?.data?.email}
 					/>
 				}
 			/>
