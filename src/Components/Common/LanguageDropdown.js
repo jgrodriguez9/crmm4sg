@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	Dropdown,
 	DropdownItem,
@@ -12,9 +12,6 @@ import i18n from '../../i18n';
 import languages from '../../common/languages';
 
 const LanguageDropdown = () => {
-	// Declare a new state variable, which we'll call "menu"
-	console.log(i18n);
-
 	const changeLanguageAction = (lang) => {
 		//set language as i18n
 		i18n.changeLanguage(lang);

@@ -1,8 +1,10 @@
 import React from 'react';
 import withRouter from '../../Components/Common/withRouter';
 import config from '../../../package.json';
+import { useTranslation } from 'react-i18next';
 
 const ParticlesAuth = ({ children }) => {
+	const { t } = useTranslation('translation', { keyPrefix: 'pages.login' });
 	return (
 		<React.Fragment>
 			<div className="auth-page-wrapper pt-5">
@@ -34,7 +36,7 @@ const ParticlesAuth = ({ children }) => {
 								<div className="text-center">
 									<p className="mb-0 text-muted">
 										&copy; {new Date().getFullYear()}{' '}
-										Desarrollado por Byte Solutions
+										{t('developBy')}
 									</p>
 								</div>
 								<div className="text-center text-muted">

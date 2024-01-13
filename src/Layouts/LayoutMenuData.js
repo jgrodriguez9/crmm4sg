@@ -42,14 +42,14 @@ const Navdata = () => {
 	const menuItems = [
 		{
 			id: 'home',
-			label: 'Dashboard',
+			label: 'menu.dashboard',
 			icon: 'ri-dashboard-2-line',
 			link: '/dashboard',
 			show: existsRole(roles, [ROLE_AGENT]),
 		},
 		{
 			id: 'configuration',
-			label: 'menu.configuration',
+			label: 'menu.configuration.title',
 			icon: 'ri-settings-5-line',
 			link: '/#',
 			click: function (e) {
@@ -63,14 +63,14 @@ const Navdata = () => {
 			subItems: [
 				{
 					id: 'article',
-					label: 'Artículos de ayuda',
+					label: 'menu.configuration.articleOfHelp',
 					link: '/article',
 					parentId: 'configuration',
 					show: existsRole(roles, [ROLE_AGENT]),
 				},
 				{
 					id: 'catalogue',
-					label: 'Catálogos',
+					label: 'menu.configuration.catalogue',
 					link: '/#',
 					isChildItem: true,
 					click: function (e) {
@@ -83,7 +83,7 @@ const Navdata = () => {
 					childItems: [
 						{
 							id: 1,
-							label: 'Categoría de artículos',
+							label: 'menu.configuration.categoryOfArticle',
 							link: '/articleCategory',
 							show: existsRole(roles, [ROLE_AGENT]),
 						},
@@ -114,7 +114,7 @@ const Navdata = () => {
 		// },
 		{
 			id: 'operation',
-			label: 'Operación',
+			label: 'menu.operation.title',
 			icon: 'ri-pages-line',
 			link: '/#',
 			click: function (e) {
@@ -128,14 +128,14 @@ const Navdata = () => {
 			subItems: [
 				{
 					id: 'client',
-					label: 'Cliente',
+					label: 'menu.operation.client',
 					link: '/client',
 					parentId: 'operation',
 					show: existsRole(roles, [ROLE_AGENT]),
 				},
 				{
 					id: 'reservation',
-					label: 'Reservación',
+					label: 'menu.operation.reservation',
 					link: '/reservation',
 					parentId: 'operation',
 					show: existsRole(roles, [ROLE_AGENT]),

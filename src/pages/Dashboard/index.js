@@ -12,9 +12,13 @@ import Widgets from './Widgets';
 import ComingSoon from '../Utils/ComingSoon';
 import kpi from '../../assets/images/kpi.png';
 import DashboardAgent from '../../Components/Dashboard/DashboardAgent';
+import { useTranslation } from 'react-i18next';
 
 const DashboardCrm = () => {
-	document.title = 'Inicio | CRM - M4S';
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'pages.dashboard',
+	});
+	document.title = t('header');
 	return (
 		<React.Fragment>
 			<div className="page-content">

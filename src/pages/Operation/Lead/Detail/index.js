@@ -41,9 +41,13 @@ import { DATE_FORMAT } from '../../../../common/globalsProp';
 import { editIconClass } from '../../../../Components/constants/icons';
 import TooltipDescription from '../../../../Components/Common/TooltipDescription';
 import FormMaketingMailClient from '../../../../Components/Operation/Lead/Tab/MarketingMailClient/FormMaketingMailClient';
+import { useTranslation } from 'react-i18next';
 
 const LeadProfile = () => {
-	document.title = 'Detalle del Lead | CRM - M4S';
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'pages.client.detail',
+	});
+	document.title = t('header');
 	const { id } = useParams();
 	const dispatch = useDispatch();
 	const [showModal, setShowModal] = useState(false);
@@ -107,7 +111,7 @@ const LeadProfile = () => {
 					action: () => onHandleClickToCall('phone1'),
 					tooltip: {
 						id: 'tooltip-1',
-						title: 'LLamar',
+						title: t('call'),
 					},
 				};
 				telefonos.push(phone1);
@@ -120,7 +124,7 @@ const LeadProfile = () => {
 					action: () => onHandleClickToCall('phone2'),
 					tooltip: {
 						id: 'tooltip-2',
-						title: 'LLamar',
+						title: t('call'),
 					},
 				};
 				telefonos.push(phone2);
@@ -133,7 +137,7 @@ const LeadProfile = () => {
 					action: () => onHandleClickToCall('phone3'),
 					tooltip: {
 						id: 'tooltip-3',
-						title: 'LLamar',
+						title: t('call'),
 					},
 				};
 				telefonos.push(phone3);
@@ -146,7 +150,7 @@ const LeadProfile = () => {
 					action: () => onHandleClickToCall('movil'),
 					tooltip: {
 						id: 'tooltip-4',
-						title: 'LLamar',
+						title: t('call'),
 					},
 				};
 				telefonos.push(movil);
@@ -159,7 +163,7 @@ const LeadProfile = () => {
 					header: null,
 					body: [
 						{
-							title: 'Correo',
+							title: t('mail'),
 							items: [
 								{
 									title: itemData?.data?.email,
@@ -168,13 +172,13 @@ const LeadProfile = () => {
 									action: onHandleShowSendEmail,
 									tooltip: {
 										id: 'tooltip-correo-1',
-										title: 'Enviar correo',
+										title: t('sendMail'),
 									},
 								},
 							],
 						},
 						{
-							title: 'Teléfonos',
+							title: t('phones'),
 							items: [...telefonos],
 						},
 					],
@@ -182,10 +186,10 @@ const LeadProfile = () => {
 				{
 					tableClass:
 						'table table-sm align-middle pb-3 fs-7 table-borderless border-bottom w-100',
-					header: { title: 'Información principal' },
+					header: { title: t('mainInfo') },
 					body: [
 						{
-							title: 'Contrato',
+							title: t('contract'),
 							items: [
 								{
 									title: itemData?.data?.contract,
@@ -199,10 +203,10 @@ const LeadProfile = () => {
 				{
 					tableClass:
 						'table table-sm align-middle pb-3 fs-7 table-borderless w-100',
-					header: { title: 'Acerca de este cliente' },
+					header: { title: t('aboutThisClient') },
 					body: [
 						{
-							title: 'Dirección',
+							title: t('address'),
 							items: [
 								{
 									title: itemData?.data?.address,
@@ -212,7 +216,7 @@ const LeadProfile = () => {
 							],
 						},
 						{
-							title: 'País',
+							title: t('country'),
 							items: [
 								{
 									title: itemData?.data?.country?.name,
@@ -222,7 +226,7 @@ const LeadProfile = () => {
 							],
 						},
 						{
-							title: 'Estado',
+							title: t('state'),
 							items: [
 								{
 									title: itemData?.data?.state,
@@ -232,7 +236,7 @@ const LeadProfile = () => {
 							],
 						},
 						{
-							title: 'Ciudad',
+							title: t('city'),
 							items: [
 								{
 									title: itemData?.data?.city,
@@ -242,7 +246,7 @@ const LeadProfile = () => {
 							],
 						},
 						{
-							title: 'CP',
+							title: t('cp'),
 							items: [
 								{
 									title: itemData?.data?.postalCode,
@@ -252,7 +256,7 @@ const LeadProfile = () => {
 							],
 						},
 						{
-							title: 'Ingreso',
+							title: t('income'),
 							items: [
 								{
 									title: itemData?.data?.income,
@@ -262,7 +266,7 @@ const LeadProfile = () => {
 							],
 						},
 						{
-							title: 'Estado civil',
+							title: t('maritalStatus'),
 							items: [
 								{
 									title: itemData?.data?.maritalStatus,
@@ -272,7 +276,7 @@ const LeadProfile = () => {
 							],
 						},
 						{
-							title: 'Fecha nacimiento',
+							title: t('birthDay'),
 							items: [
 								{
 									title: itemData?.data?.fechaNacimiento
@@ -291,10 +295,10 @@ const LeadProfile = () => {
 				{
 					tableClass:
 						'table table-sm align-middle pb-3 fs-7 table-borderless w-100',
-					header: { title: 'Atribución de creación de este cliente' },
+					header: { title: t('clientOwnership') },
 					body: [
 						{
-							title: 'Agente asignado',
+							title: t('assignedAgent'),
 							items: [
 								{
 									title: itemData?.data?.userName,
@@ -329,8 +333,8 @@ const LeadProfile = () => {
 			<div className="page-content">
 				<Container fluid>
 					<BreadCrumb
-						title="Detalle del Cliente"
-						pageTitle="Clientes"
+						title={t('title')}
+						pageTitle={t('clients')}
 						urlPageTitle="/client"
 					/>
 
@@ -372,7 +376,7 @@ const LeadProfile = () => {
 												<i
 													className={`fs-6 ${editIconClass}`}
 												/>{' '}
-												Editar
+												{t('edit')}
 											</Button>
 										</div>
 										<div className="table-card p-3">
@@ -632,13 +636,13 @@ const LeadProfile = () => {
 			<BasicModal
 				open={showModal}
 				setOpen={setShowModal}
-				title="Editar cliente"
+				title={t('clientEdit')}
 				size="xl"
 				classBody="py-1 px-3"
 				children={
 					<FormClient
 						toggleDialog={toggleDialog}
-						textBtnSubmit="Editar"
+						textBtnSubmit={t('edit')}
 						customer={itemData?.data ?? null}
 						refetchClient={refetchClient}
 					/>
@@ -647,7 +651,7 @@ const LeadProfile = () => {
 			<BasicModal
 				open={showEmailModal}
 				setOpen={setShowEmailModal}
-				title="Nuevo email"
+				title={t('newEmail')}
 				size="lg"
 				children={
 					<FormMaketingMailClient

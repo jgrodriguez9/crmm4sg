@@ -1,11 +1,78 @@
 {
     "pages": {
-        
+        "login": {
+            "header": "Iniciar sesión | CRM - M4S",
+            "title": "Iniciar sesión para continuar",
+            "usernameRequire": "Por favor escribir su usuario",
+            "passwordRequire": "Por favor escribir su contraseña",
+            "user": "Usuario",
+            "password": "Contraseña",
+            "login": "Iniciar sesión",
+            "loading": "Loading",
+            "developBy": "Desarrollado por Byte Solutions"
+        },
+        "dashboard": {
+            "header": "Tablero | CRM - M4S"
+        },
+        "client": {
+            "list": {
+                "header": "Cliente | CRM - M4S",
+                "name": "Nombre",
+                "campaign": "Campaña",
+                "ownerAge": "Edad del titular",
+                "country": "País",
+                "saleMan": "Vendedor",
+                "status": "Estatus",
+                "saleDate": "F.Venta",
+                "createClient": "Crear cliente",
+                "client": "Cliente"
+            },
+            "detail": {
+                "header": "'Detalle del Cliente | CRM - M4S",
+                "title": "Detalle del Cliente",
+                "call": "LLamar",
+                "mail": "Correo",
+                "sendMail": "Enviar correo",
+                "phones": "Teléfonos",
+                "mainInfo": "Información principal",
+                "contract": "Contrato",
+                "aboutThisClient": "Acerca de este cliente",
+                "address": "Dirección",
+                "country": "País",
+                "state": "Estado",
+                "city": "Ciudad",
+                "cp": "CP",
+                "income": "Ingreso",
+                "maritalStatus": "Estado civil",
+                "birthDay": "Fecha nacimiento",
+                "clientOwnership": "Atribución de creación de este cliente",
+                "assignedAgent": "Agente asignado",
+                "clients": "Clientes",
+                "edit": "Editar",
+                "clientEdit": "Editar cliente",
+                "newEmail": "Nuevo correo electrónico"
+            }
+            
+        }
     },
     "components": {
 
     },
     "menu": {
-        "configuration": "Configuración"
+        "dashboard": "Tablero",
+        "configuration": {
+            "title": "Configuración",
+            "articleOfHelp": "Artículos de ayuda",
+            "catalogue": "Catálogos",
+            "categoryOfArticle": "Categoría de artículos"
+        },
+        "operation": {
+            "title": "Operación",
+            "client": "Cliente",
+            "reservation": "Reservación"
+        }
+    },
+    "messages": {
+        "wrongPassword": "Usuario o contraseña incorrectos"
     }
 }

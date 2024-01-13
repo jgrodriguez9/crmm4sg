@@ -26,6 +26,7 @@ import FilterCommandGlobal from '../../../Components/Common/FilterCommandGlobal'
 import BasicModal from '../../../Components/Common/BasicModal';
 import FormClient from '../../../Components/Operation/Lead/Tab/LeadInformation/FormClient';
 import moment from 'moment/moment';
+import { useTranslation } from 'react-i18next';
 
 const initFilter = {
 	certifiateNumber: '',
@@ -46,7 +47,10 @@ const initFilterModel = {
 };
 
 const Lead = () => {
-	document.title = 'Cliente | CRM - M4SG';
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'pages.client.list',
+	});
+	document.title = t('header');
 	const dispatch = useDispatch();
 	const [idItem, setIdItem] = useState(null);
 	const [showModal, setShowModal] = useState(false);
@@ -96,7 +100,7 @@ const Lead = () => {
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'Nombre',
+				Header: t('name'),
 				accessor: 'nombre',
 				filterable: false,
 				style: {
@@ -145,7 +149,7 @@ const Lead = () => {
 				},
 			},
 			{
-				Header: 'Campaña',
+				Header: t('campaign'),
 				accessor: 'sale.campaign.name',
 				filterable: false,
 				style: {
@@ -153,7 +157,7 @@ const Lead = () => {
 				},
 			},
 			{
-				Header: 'Edad titular',
+				Header: t('ownerAge'),
 				accessor: 'age',
 				filterable: false,
 				style: {
@@ -161,7 +165,7 @@ const Lead = () => {
 				},
 			},
 			{
-				Header: 'País',
+				Header: t('country'),
 				accessor: 'country',
 				filterable: false,
 				style: {
@@ -169,7 +173,7 @@ const Lead = () => {
 				},
 			},
 			{
-				Header: 'Vendedor',
+				Header: t('saleMan'),
 				accessor: 'userName',
 				filterable: false,
 				style: {
@@ -177,7 +181,7 @@ const Lead = () => {
 				},
 			},
 			{
-				Header: 'Estatus',
+				Header: t('status'),
 				accessor: 'sale.reservationStatus.status',
 				filterable: false,
 				style: {
@@ -185,7 +189,7 @@ const Lead = () => {
 				},
 			},
 			{
-				Header: 'F.Venta',
+				Header: t('saleDate'),
 				accessor: 'sale.saleDate',
 				filterable: false,
 				style: {
@@ -312,10 +316,10 @@ const Lead = () => {
 						<Col xxl={12}>
 							<Card className="shadow">
 								<CardHeaderGlobal
-									title={'Cliente'}
+									title={t('client')}
 									add={{
 										action: toggleDialog,
-										title: 'Crear cliente',
+										title: t('createClient'),
 									}}
 								/>
 								<CardBody className="pt-0">
@@ -384,7 +388,7 @@ const Lead = () => {
 			<BasicModal
 				open={showModal}
 				setOpen={setShowModal}
-				title="Agregar cliente"
+				title={t('createClient')}
 				size="xl"
 				classBody="py-1 px-3"
 				children={<FormClient toggleDialog={toggleDialog} />}

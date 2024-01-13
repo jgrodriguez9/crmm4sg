@@ -3,5 +3,12 @@ const ERR_NETWORK =
 	'Puede intentar más tarde por el momento no tenemos comunicación con el servidor';
 const ERR_BAD_RESPONSE = 'Mala respuesta del servidor';
 const EMPTY_LIST = 'No hay información a mostrar';
+const WRONG_CREDENTIALS = 'messages.wrongPassword';
 
-export { ERR_BAD_REQUEST, ERR_NETWORK, ERR_BAD_RESPONSE, EMPTY_LIST };
+export {
+	ERR_BAD_REQUEST,
+	ERR_NETWORK,
+	ERR_BAD_RESPONSE,
+	EMPTY_LIST,
+	WRONG_CREDENTIALS,
+};

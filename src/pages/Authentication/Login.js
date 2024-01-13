@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	Card,
 	CardBody,
@@ -26,12 +26,14 @@ import { useFormik } from 'formik';
 
 import logoLight from '../../assets/images/logo-light.png';
 import { loginUser } from '../../slices/auth/login/thunk';
+import { useTranslation } from 'react-i18next';
 //import images
 
 const Login = (props) => {
 	const dispatch = useDispatch();
-	const { user, error, loading, errorMsg } = useSelector((state) => ({
-		user: state.Login.user,
+	const { t } = useTranslation('translation', { keyPrefix: 'pages.login' });
+	const { t: tMessage } = useTranslation();
+	const { error, loading, errorMsg } = useSelector((state) => ({
 		error: state.Login.error,
 		loading: state.Login.loading,
 		errorMsg: state.Login.errorMsg,
@@ -48,8 +50,8 @@ const Login = (props) => {
 			password: 'zNiQ9i0CpR#FY2#zs',
 		},
 		validationSchema: Yup.object({
-			email: Yup.string().required('Please Enter Your Email'),
-			password: Yup.string().required('Please Enter Your Password'),
+			email: Yup.string().required(t('usernameRequire')),
+			password: Yup.string().required(t('passwordRequire')),
 		}),
 		onSubmit: (values) => {
 			//submit request
@@ -57,15 +59,7 @@ const Login = (props) => {
 		},
 	});
 
-	useEffect(() => {
-		if (errorMsg) {
-			setTimeout(() => {
-				//dispatch(resetLoginFlag());
-			}, 3000);
-		}
-	}, [dispatch, errorMsg]);
-
-	document.title = 'Iniciar sesión | CRM - M4S';
+	document.title = t('header');
 	return (
 		<React.Fragment>
 			<ParticlesAuth>
@@ -96,14 +90,12 @@ const Login = (props) => {
 									<CardBody className="p-4">
 										<div className="text-center mt-2">
 											<p className="text-muted">
-												Iniciar sesión para continuar en
-												CRM - M4S.
+												{t('title')}
 											</p>
 										</div>
-										{error && error ? (
+										{errorMsg ? (
 											<Alert color="danger">
-												{' '}
-												{error}{' '}
+												{tMessage(error)}
 											</Alert>
 										) : null}
 										<div className="p-2 mt-4">
@@ -120,7 +112,7 @@ const Login = (props) => {
 														htmlFor="email"
 														className="form-label"
 													>
-														Usuario
+														{t('user')}
 													</Label>
 													<Input
 														name="email"
@@ -163,7 +155,7 @@ const Login = (props) => {
 														className="form-label"
 														htmlFor="password-input"
 													>
-														Contraseña
+														{t('password')}
 													</Label>
 													<div className="position-relative auth-pass-inputgroup mb-3">
 														<Input
@@ -244,10 +236,11 @@ const Login = (props) => {
 																className="me-2"
 															>
 																{' '}
-																Loading...{' '}
+																{t('loading')}
+																...{' '}
 															</Spinner>
 														) : null}
-														Iniciar sesión
+														{t('login')}
 													</Button>
 												</div>
 											</Form>

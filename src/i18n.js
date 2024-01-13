@@ -22,7 +22,7 @@ i18n.use(detector)
 	.init({
 		resources,
 		lng,
-		fallbackLng: 'es', // use en if detected lng is not available
+		fallbackLng: 'en', // use en if detected lng is not available
 		debug: true,
 
 		keySeparator: '.',
