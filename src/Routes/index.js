@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 //Layouts
@@ -14,15 +14,16 @@ import { useProfile } from '../Components/Hooks/UserHooks';
 import { ROLE_AGENT } from '../Components/constants/roles';
 
 const Index = () => {
-	const [authRoutes, setAuthRoutes] = useState(protectedRoutes);
-	const { userProfile } = useProfile();
+	const { roles } = useProfile();
 
-	useMemo(() => {
-		const roles = userProfile?.user?.registrations[0]?.roles ?? [];
+	const authRoutes = useMemo(() => {
 		if (roles.includes(ROLE_AGENT)) {
-			setAuthRoutes([...agentRoutes]);
+			return agentRoutes;
+		} else {
+			return protectedRoutes;
 		}
-	}, [userProfile]);
+	}, [roles]);
+
 	return (
 		<React.Fragment>
 			<Routes>

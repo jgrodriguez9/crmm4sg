@@ -53,6 +53,40 @@
                 "newEmail": "Nuevo correo electrónico"
             }
             
+        },
+        "reservation": {
+            "list": {
+                "header": "Reservación | CRM - M4SG",
+                "title": "Reservaciones",
+                "idReservation": "ID: Reservación",
+                "idBooking": "ID: Booking",
+                "idConfirmation": "ID: Confirmación",
+                "reservationDetail": "Detalle de la reservación",
+                "hotel": "Hotel",
+                "plan": "Plan",
+                "check-in": "Fecha llegada",
+                "check-out": "Fecha salida",
+                "roomType": "Tipo de habitación",
+                "nights": "Noches",
+                "adults": "Adultos",
+                "children":"Menores",
+                "infants": "Infantes",
+                "ownerDetail": "Detalle del titular",
+                "name": "Nombre",
+                "maritalStatus": "Estado civil",
+                "income": "Ingreso",
+                "cards": "Tarjetas",
+                "others": "Otras",
+                "mood": "Estado de ánimo",
+                "operationDetail": "Detalle de la operación",
+                "segment": "Segmento",
+                "program": "Programa",
+                "confirmation": "Confirmación",
+                "shortCheckInLabel": "LLegada",
+                "shortCheckOutLabel": "Salida",
+                "status": "Estatus",
+                "createReservation": "Crear reservación"
+            }
         }
     },
     "components": {

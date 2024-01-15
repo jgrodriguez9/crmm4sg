@@ -15,7 +15,6 @@ import showFriendlyMessafe from '../../../util/showFriendlyMessafe';
 export const loginUser = (user, history) => async (dispatch) => {
 	try {
 		dispatch(proccessLogin());
-
 		const response = postLogin({
 			loginId: user.email,
 			password: user.password,
@@ -32,7 +31,8 @@ export const loginUser = (user, history) => async (dispatch) => {
 			localStorage.setItem('authenticatication-crm', encryptedData);
 			const descryptedData = decrypData(encryptedData);
 			dispatch(loginSuccess(JSON.parse(descryptedData)));
-			history('/dashboard');
+			window.location.href = '/dashboard';
+			//history('/dashboard');
 		} else {
 			dispatch(apiError(showFriendlyMessafe(result.code)));
 		}

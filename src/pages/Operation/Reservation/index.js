@@ -19,6 +19,7 @@ import BasicModal from '../../../Components/Common/BasicModal';
 import FormReservationInformation from '../../../Components/Operation/Reservation/FormReservationInformation';
 import CardHeaderGlobal from '../../../Components/Common/CardHeaderGlobal';
 import FilterCommandGlobal from '../../../Components/Common/FilterCommandGlobal';
+import { useTranslation } from 'react-i18next';
 
 const initFilter = {
 	//reserva
@@ -52,7 +53,10 @@ const initFilterModel = {
 };
 
 const Reservation = () => {
-	document.title = 'Reservación | CRM - M4SG';
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'pages.reservation.list',
+	});
+	document.title = t('header');
 	const dispatch = useDispatch();
 	const [idItem, setIdItem] = useState(null);
 	const [showModal, setShowModal] = useState(false);
@@ -93,52 +97,52 @@ const Reservation = () => {
 		//console.log(item);
 		const header = {
 			title: {
-				label: `ID: Reservación: `,
+				label: `${t('idReservation')}: `,
 				value: item.id,
 			},
 			img: null,
 			body: [
 				{
-					label: `ID: Booking: `,
+					label: `${t('idBooking')}: `,
 					value: item?.booking ?? '',
 				},
 				{
-					label: `ID: Confirmación: `,
+					label: `${t('idConfirmation')}: `,
 					value: item?.confirm ?? '',
 				},
 			],
 		};
 		const detailReservation = {
 			id: 'detailReservation',
-			title: 'Detalle de la reservación',
+			title: t('reservationDetail'),
 			collapse: false,
 			body: [
 				{
-					label: 'Hotel',
+					label: t('hotel'),
 					value: item?.hotel?.name ?? '',
 				},
 				{
-					label: 'Plan',
+					label: t('plan'),
 					value: '-',
 				},
 				{
-					label: 'Fecha llegada',
+					label: t('check-in'),
 					value: moment(item?.initialDate, 'YYYY-MM-DD').format(
 						'DD/MM/YYYY'
 					),
 				},
 				{
-					label: 'Fecha salida',
+					label: t('check-out'),
 					value: moment(item?.finalDate, 'YYYY-MM-DD').format(
 						'DD/MM/YYYY'
 					),
 				},
 				{
-					label: 'Tipo de habitación',
+					label: t('roomType'),
 					value: '',
 				},
 				{
-					label: 'Noches',
+					label: t('nights'),
 					value: diffDates(
 						item?.initialDate,
 						item?.finalDate,
@@ -146,48 +150,40 @@ const Reservation = () => {
 					),
 				},
 				{
-					label: 'Adultos',
+					label: t('adults'),
 					value: item?.adult ?? '',
 				},
 				{
-					label: 'Juniors',
-					value: '',
-				},
-				{
-					label: 'Menores gratis',
-					value: '',
-				},
-				{
-					label: 'Menores pagan',
+					label: t('children'),
 					value: item?.child ?? '',
 				},
 				{
-					label: 'Infantes',
+					label: t('infants'),
 					value: item?.infant ?? '',
 				},
 			],
 		};
 		const detailCliente = {
 			id: 'detailCliente',
-			title: 'Detalle del titular',
+			title: t('ownerDetail'),
 			collapse: true,
 			body: [
 				{
-					label: 'Nombre',
+					label: t('name'),
 					value: `${item?.customer?.firstName} ${
 						item?.customer?.lastName ?? ''
 					}`,
 				},
 				{
-					label: 'Estado civil',
+					label: t('maritalStatus'),
 					value: item?.maritalStatus ?? '',
 				},
 				{
-					label: 'Ingreso',
+					label: t('income'),
 					value: item?.income ?? '',
 				},
 				{
-					label: 'Tarjetas',
+					label: t('cards'),
 					value: item?.visa + item?.amex + item?.mc,
 				},
 				{
@@ -203,22 +199,18 @@ const Reservation = () => {
 					value: item?.amex > 0,
 				},
 				{
-					label: 'Otras',
+					label: t('others'),
 					value: false,
 				},
 				{
-					label: 'Cual?',
-					value: '',
-				},
-				{
-					label: 'Estado de ánimo',
+					label: t('mood'),
 					value: '',
 				},
 			],
 		};
 		const detailOperacion = {
 			id: 'detailOperacion',
-			title: 'Detalle de la operación',
+			title: t('operationDetail'),
 			collapse: true,
 			body: [
 				{
@@ -226,11 +218,11 @@ const Reservation = () => {
 					value: item?.callcenter?.name ?? '',
 				},
 				{
-					label: 'Segmento',
+					label: t('segment'),
 					value: item?.segment?.name ?? '',
 				},
 				{
-					label: 'Programa',
+					label: t('program'),
 					value: item?.program?.name ?? '',
 				},
 				{
@@ -240,7 +232,7 @@ const Reservation = () => {
 			],
 		};
 		const obj = {
-			title: `ID: Reservación: ${item.id}`,
+			title: `${t('idReservation')}: ${item.id}`,
 			header: header,
 			items: [detailReservation, detailCliente, detailOperacion],
 			goToView: `/reservation/${item.id}`,
@@ -286,7 +278,7 @@ const Reservation = () => {
 				),
 			},
 			{
-				Header: 'Confirmación',
+				Header: t('confirmation'),
 				accessor: 'confirm',
 				filterable: false,
 				width: '8%',
@@ -298,7 +290,7 @@ const Reservation = () => {
 				width: '7%',
 			},
 			{
-				Header: 'Nombre',
+				Header: t('name'),
 				accessor: 'customer.firstName',
 				filterable: false,
 				width: '12%',
@@ -306,19 +298,19 @@ const Reservation = () => {
 					`${value.toUpperCase()} ${row.original.customer.lastName.toUpperCase()}`,
 			},
 			{
-				Header: 'Hotel',
+				Header: t('hotel'),
 				accessor: 'hotel.name',
 				filterable: false,
 				width: '13%',
 			},
 			{
-				Header: 'Plan',
+				Header: t('plan'),
 				accessor: 'intPlan.name',
 				filterable: false,
 				width: '13%',
 			},
 			{
-				Header: 'LLegada',
+				Header: t('shortCheckInLabel'),
 				accessor: 'initialDate',
 				filterable: false,
 				width: '8%',
@@ -326,7 +318,7 @@ const Reservation = () => {
 					moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'),
 			},
 			{
-				Header: 'Salida',
+				Header: t('shortCheckOutLabel'),
 				accessor: 'finalDate',
 				filterable: false,
 				width: '8%',
@@ -340,13 +332,13 @@ const Reservation = () => {
 				width: '9%',
 			},
 			{
-				Header: 'Pax',
+				Header: t('adults'),
 				accessor: 'adult',
 				filterable: false,
 				width: '4%',
 			},
 			{
-				Header: 'Estatus',
+				Header: t('status'),
 				accessor: 'status.name',
 				filterable: false,
 				width: '7%',
@@ -420,10 +412,10 @@ const Reservation = () => {
 						<Col xxl={12}>
 							<Card className="shadow">
 								<CardHeaderGlobal
-									title={'Reservaciones'}
+									title={t('title')}
 									add={{
 										action: toggleDialog,
-										title: 'Crear reservación',
+										title: t('createReservation'),
 									}}
 								/>
 								<CardBody className="pt-0">
@@ -492,7 +484,7 @@ const Reservation = () => {
 			<BasicModal
 				open={showModal}
 				setOpen={setShowModal}
-				title="Agregar reservación"
+				title={t('createReservation')}
 				size="xl"
 				classBody="py-1 px-3"
 				children={
