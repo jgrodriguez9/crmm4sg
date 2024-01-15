@@ -4,6 +4,7 @@ import {
 	DELETE_QUESTION_CONFIRMATION,
 } from '../constants/messages';
 import ButtonsLoader from '../Loader/ButtonsLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function DeleteModal({
 	handleDelete,
@@ -11,6 +12,9 @@ export default function DeleteModal({
 	setShow,
 	isDeleting,
 }) {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.deleteModal',
+	});
 	const onCloseClick = () => {
 		setShow(false);
 	};
@@ -43,13 +47,13 @@ export default function DeleteModal({
 							<ButtonsLoader
 								buttons={[
 									{
-										text: '¡Sí, eliminarlo!',
+										text: t('yesDeleteIt'),
 										color: 'danger',
 										className: 'btn-lg ms-2',
 										loader: true,
 									},
 									{
-										text: 'Cancelar',
+										text: t('cancel'),
 										color: 'light',
 										className: 'btn-lg ms-2',
 										loader: false,
@@ -63,14 +67,14 @@ export default function DeleteModal({
 									className="btn btn-danger btn-lg ms-2"
 									onClick={handleDelete}
 								>
-									¡Sí, eliminarlo!
+									{t('yesDeleteIt')}
 								</button>
 								<button
 									type="button"
 									className="btn btn-light btn-lg ms-2"
 									onClick={onCloseClick}
 								>
-									Cancelar
+									{t('cancel')}
 								</button>
 							</div>
 						)}

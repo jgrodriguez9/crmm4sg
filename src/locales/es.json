@@ -28,7 +28,7 @@
                 "client": "Cliente"
             },
             "detail": {
-                "header": "'Detalle del Cliente | CRM - M4S",
+                "header": "Detalle del Cliente | CRM - M4S",
                 "title": "Detalle del Cliente",
                 "call": "LLamar",
                 "mail": "Correo",
@@ -86,11 +86,246 @@
                 "shortCheckOutLabel": "Salida",
                 "status": "Estatus",
                 "createReservation": "Crear reservación"
+            },
+            "detail": {
+                "header": "Detalle de de la reservación | CRM - M4S",
+                "id": "ID",
+                "plan": "Plan",
+                "nights": "Noches",
+                "adults": "Adultos",
+                "children": "Menores",
+                "infants": "Infantes",
+                "shortCheckInLabel": "LLegada",
+                "shortCheckOutLabel": "Salida"
+            }
+        },
+        "article": {
+            "list": {
+                "header": "Artículos de ayuda | CRM - M4SG",
+                "edit": "Editar",
+                "delete": "Eliminar",
+                "title": "Título",
+                "category": "Categoría",
+                "departament": "Departamentos",
+                "creationDate": "Fecha creación",
+                "article": "Artículo",
+                "createArticle": "Crear artículo",
+                "search": "Buscar",
+                "editArticle": "Editar artículo",
+                "newArticle": "Nuevo artículo"
+            }            
+        },
+        "articleCategory": {
+            "list": {
+                "header": "Categoría de artículos | CRM - M4SG",
+                "edit": "Editar",
+                "delete": "Eliminar",
+                "name": "Nombre",
+                "creationDate": "Fecha creación",
+                "articleCategory": "Categoría de Artículos",
+                "createArticleCategory": "Crear categoría de artículos",
+                "search": "Buscar",
+                "editArticleCategory": "Editar categoría de artículos",
+                "newArticleCategory": "Nueva categoría de artículos"
             }
         }
     },
     "components": {
-
+        "bannerInformation": {
+            "package": "Paquete",
+            "saleDate": "Fecha venta",
+            "noPayments": "No. pagos",
+            "balance": "Saldo",
+            "status": "Estatus"
+        },
+        "breadCrumb": {
+            "filters": "Filtros",
+            "cleanFilters": "Limpiar filtros"
+        },
+        "crmFilter": {
+            "filters": "Filtros",
+            "certificate": "Certificado",
+            "contract": "Contrato",
+            "segment": "Segmento",
+            "name": "Nombre",
+            "lastName": "Apellido",
+            "phone": "Teléfono",
+            "country": "País",
+            "state": "Estado",
+            "email": "Correo electrónico",
+            "search": "Buscar",
+            "cleanFilters": "Limpiar filtros"
+        },
+        "deleteModal": {
+            "yesDeleteIt": "¡Sí, eliminarlo!",
+            "cancel": "Cancelar"
+        },
+        "detailCanvas": {
+            "viewRegister": "Ver registro"
+        },
+        "filterCommandGlobal": {
+            "filters": "Filtros",
+            "cleanFilters": "Limpiar filtros"
+        },
+        "filters": {
+            "defaultColumnFilter": {
+                "search": "buscar"
+            },
+            "selectColumnFilter": {
+                "all": "Todos"
+            }
+        },
+        "globalFilter": {
+            "search": "Buscar"
+        },
+        "helpDropdown": {
+            "help": "Ayuda",
+            "search": "Buscar"
+        },
+        "hotelAvailability": {
+            "checkIn": "Fecha llegada",
+            "checkOut": "Fecha salida",
+            "hotel": "Hotel",
+            "search": "Buscar",
+            "selectSearchCriteria": "Por favor seleccionar criterios de búsqueda"
+        },
+        "paginationManual": {
+            "page": "Página",
+            "from": "de"
+        },
+        "profileDropdown": {
+            "welcome": "Bienvenido",
+            "signOut": "Cerrar sesión"
+        },
+        "searchOption": {
+            "search": "Buscar",
+            "recentSearch": "Búsqueda reciente",
+            "noInformationAvailable": "No hay información disponible",
+            "name": "Nombre",
+            "certificate": "Certificado",
+            "reservation": "Reservación",
+            "confirmation": "Confirmación"
+        },
+        "tableContainer": {
+            "noInformationAvailable": "No hay información disponible"
+        },
+        "formArticle": {
+            "title": "Título",
+            "category": "Categoría",
+            "departments": "Departamentos",
+            "description": "Descripción",
+            "accept": "Aceptar",
+            "cancel": "Cancelar"
+        },
+        "formCategoryArticle": {
+            "name": "Nombre",           
+            "accept": "Aceptar",
+            "cancel": "Cancelar"
+        },
+        "operation": {
+            "formClient": {
+                "name": "Nombre",
+                "lastName": "Apellido",
+                "birthDay": "Fecha nacimiento",
+                "address": "Dirección",
+                "zip": "CP",
+                "country": "País",
+                "state": "Estado",
+                "city": "Ciudad",
+                "housePhone": "Teléfono casa",
+                "workPhone": "Teléfono trabajo",
+                "mobile": "Celular",
+                "email": "Correo electrónico",
+                "maritalStatus": "Estado civil",
+                "income": "Ingreso",
+                "cancel": "Cancelar"
+            },
+            "viewLeadInformation": {
+                "name": "Nombre",
+                "lastName": "Apellido",
+                "address": "Dirección",
+                "zipCode": "Código postal",
+                "country": "País",
+                "state": "Estado",
+                "city": "Ciudad",
+                "email": "Correo electrónico",
+                "phone": "Teléfono",
+                "assignedUser": "Usuario asignado"
+            },
+            "detailMarketingMailCanvas": {
+                "conversation": "Conversación",
+                "to": "Para",
+                "accept": "Aceptar"
+            },
+            "formMaketingMailClient": {
+                "receiver": "Receptor",
+                "language": "Idioma",
+                "template": "Plantilla",
+                "send": "Enviar",
+                "cancel": "Cancelar"
+            },
+            "tableMarketingMailClient": {
+                "template": "Plantilla",
+                "topic": "Asunto",
+                "status": "Estado",
+                "date": "Fecha",
+                "search": "Buscar"
+            },
+            "formNotaCliente": {
+                "moodClient": "Estado de ánimo del cliente",
+                "type": "Tipo",
+                "fUpDate": "Fecha FUp",
+                "note": "Nota",
+                "specialReq": "Req. especial",
+                "accept": "Aceptar",
+                "cancel": "Cancelar"
+            },
+            "tableNotas": {
+                "type": "Tipo",
+                "status": "Estado",
+                "note": "Nota",
+                "specialReq": "Req. especial",
+                "creationDate": "Fecha creación",
+                "fUpDate": "Fecha FUp",
+                "agent": "Agente"
+            },
+            "tableCertificates": {
+                "hideReservation": "Ocultar Reservación",
+                "viewReservation": "Ver Reservación",
+                "package": "Paquete",
+                "shortSaleDate": "F. Venta",
+                "supervisor": "Supervisor",
+                "noPayments": "No. Pagos",
+                "balance": "Saldo",
+                "agent": "Agente",
+                "status": "Estado",
+                "createReservation": "Crear reservación",
+                "accessReservationModule": "Accesso a módulo de Reservaciones",
+                "promotionSend": "Envío de promociones",
+                "survey": "Encuesta",
+                "transferBookingToClient": "Transferencia de booking a nuevo cliente",
+                "recording": "Grabaciones",
+                "digitalFile": "Archivo digital"
+            },
+            "tablePaquete": {
+                "hideReservation": "Ocultar Reservación",
+                "viewReservation": "Ver Reservación",
+                "package": "Paquete",
+                "shortSaleDate": "F. Venta",
+                "supervisor": "Supervisor",
+                "noPayments": "No. Pagos",
+                "balance": "Saldo",
+                "agent": "Agente",
+                "status": "Estado",
+                "createReservation": "Crear reservación",
+                "accessReservationModule": "Accesso a módulo de Reservaciones",
+                "promotionSend": "Envío de promociones",
+                "survey": "Encuesta",
+                "transferBookingToClient": "Transferencia de booking a nuevo cliente",
+                "recording": "Grabaciones",
+                "digitalFile": "Archivo digital"
+            }
+        }
     },
     "menu": {
         "dashboard": "Tablero",

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Col, Label, Row } from 'reactstrap';
 
 const ViewLeadInformation = ({
@@ -6,13 +7,16 @@ const ViewLeadInformation = ({
 	data,
 	onHandleClickToCall,
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.viewLeadInformation',
+	});
 	return (
 		<>
 			<Row>
 				<Col lg={4}>
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="nombre">
-							Nombre
+							{t('name')}
 						</Label>
 						<div className="form-control">
 							{data?.firstName ?? 'No disponible'}
@@ -21,23 +25,17 @@ const ViewLeadInformation = ({
 				</Col>
 				<Col lg={4}>
 					<div className="mb-3">
-						<Label className="form-label">Apellido</Label>
+						<Label className="form-label">{t('lastName')}</Label>
 						<div className="form-control">
 							{data?.lastName ?? 'No disponible'}
 						</div>
 					</div>
 				</Col>
-				{/* <Col lg={4}>
-					<div className="mb-3">
-						<Label className="form-label">Copropietario</Label>
-						<div className="form-control">Jesus Enrique</div>
-					</div>
-				</Col> */}
 			</Row>
 			<Row>
 				<Col lg={8}>
 					<div className="mb-3">
-						<Label className="form-label">Dirección</Label>
+						<Label className="form-label">{t('address')}</Label>
 						<div className="form-control">
 							{data?.address ?? 'No disponible'}
 						</div>
@@ -45,7 +43,7 @@ const ViewLeadInformation = ({
 				</Col>
 				<Col lg={4}>
 					<div className="mb-3">
-						<Label className="form-label">Código postal</Label>
+						<Label className="form-label">{t('zipCode')}</Label>
 						<div className="form-control">
 							{data?.postalCode ?? 'No disponible'}
 						</div>
@@ -53,7 +51,7 @@ const ViewLeadInformation = ({
 				</Col>
 				<Col lg={4}>
 					<div className="mb-3">
-						<Label className="form-label">País</Label>
+						<Label className="form-label">{t('country')}</Label>
 						<div className="form-control">
 							{data?.country ?? 'No disponible'}
 						</div>
@@ -61,7 +59,7 @@ const ViewLeadInformation = ({
 				</Col>
 				<Col lg={4}>
 					<div className="mb-3">
-						<Label className="form-label">Estado</Label>
+						<Label className="form-label">{t('state')}</Label>
 						<div className="form-control">
 							{data?.state ?? 'No disponible'}
 						</div>
@@ -69,7 +67,7 @@ const ViewLeadInformation = ({
 				</Col>
 				<Col lg={4}>
 					<div className="mb-3">
-						<Label className="form-label">Ciudad</Label>
+						<Label className="form-label">{t('city')}</Label>
 						<div className="form-control">
 							{data?.city ?? 'No disponible'}
 						</div>
@@ -79,7 +77,7 @@ const ViewLeadInformation = ({
 			<Row>
 				<Col lg={4}>
 					<div className="mb-3">
-						<Label className="form-label">Correo electrónico</Label>
+						<Label className="form-label">{t('email')}</Label>
 						<div className="form-control mb-2">
 							{data?.email ?? 'No disponible'}
 						</div>
@@ -87,7 +85,7 @@ const ViewLeadInformation = ({
 				</Col>
 				<Col lg={4}>
 					<div className="mb-3">
-						<Label className="form-label">Teléfono</Label>
+						<Label className="form-label">{t('phone')}</Label>
 						<div className="form-icon right">
 							<div className="form-control mb-2">
 								{data?.phone1 ?? 'No disponible'}
@@ -118,7 +116,9 @@ const ViewLeadInformation = ({
 				</Col>
 				<Col lg={4}>
 					<div className="mb-3">
-						<Label className="form-label opacity-0">Teléfono</Label>
+						<Label className="form-label opacity-0">
+							{t('phone')}
+						</Label>
 						<div className="form-icon right">
 							<div className="form-control mb-2">
 								{data?.phone3 ?? 'No disponible'}
@@ -152,7 +152,7 @@ const ViewLeadInformation = ({
 				<Col lg={4}>
 					<div className="mb-3">
 						<Label className="form-label">
-							Usuario que lo creó
+							{t('assignedUser')}
 						</Label>
 						<div className="form-control">
 							{data?.userName ?? 'No disponible'}

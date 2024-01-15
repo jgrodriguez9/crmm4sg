@@ -9,8 +9,13 @@ import showFriendlyMessafe from '../../../../util/showFriendlyMessafe';
 import diffDates from '../../../../util/diffDates';
 import moment from 'moment';
 import TabsReservation from '../../../../Components/Operation/Reservation/TabsReservation';
+import { useTranslation } from 'react-i18next';
 
 const ReservationDetail = () => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'pages.reservation.detail',
+	});
+	document.title = t('header');
 	const { idReservation } = useParams();
 	const [dataView, setDataView] = useState(null);
 
@@ -31,12 +36,14 @@ const ReservationDetail = () => {
 		if (itemData) {
 			const { data } = itemData;
 			const bannerData = {
-				title: `ID: ${idReservation} - ${data?.hotel?.name ?? ''}`,
+				title: `${t('id')}: ${idReservation} - ${
+					data?.hotel?.name ?? ''
+				}`,
 				subTitle: `${data?.customer?.firstName ?? ''} ${
 					data?.customer?.lastName
 				}`,
 				subTitleInfo: {
-					label: 'Plan',
+					label: t('plan'),
 					value: data?.intPlan?.name ?? '-',
 					classes: 'text-muted',
 				},
@@ -53,35 +60,35 @@ const ReservationDetail = () => {
 									data?.finalDate,
 									'days'
 								),
-								title: 'Noches',
+								title: t('nights'),
 								classes: 'text-muted',
 							},
 							{
 								label: null,
 								icon: 'ri-user-2-line',
 								value: data?.adult ?? '-',
-								title: 'Adultos',
+								title: t('adults'),
 								classes: 'text-muted',
 							},
 							{
 								label: null,
 								icon: 'ri-user-follow-line',
 								value: data?.child ?? '-',
-								title: 'Menores',
+								title: t('children'),
 								classes: 'text-muted',
 							},
 							{
 								label: null,
 								icon: 'ri-emotion-happy-line',
 								value: data?.infant ?? '-',
-								title: 'Infantes',
+								title: t('infants'),
 								classes: 'text-muted',
 							},
 						],
 						classes: 'text-muted',
 					},
 					{
-						label: 'Llegada',
+						label: t('shortCheckInLabel'),
 						icon: null,
 						value: moment(data?.initialDate, 'YYYY-MM-DD').format(
 							'DD/MM/YYYY'
@@ -89,7 +96,7 @@ const ReservationDetail = () => {
 						classes: 'text-muted',
 					},
 					{
-						label: 'Salida',
+						label: t('shortCheckOutLabel'),
 						icon: null,
 						value: moment(data?.finalDate, 'YYYY-MM-DD').format(
 							'DD/MM/YYYY'
@@ -107,7 +114,7 @@ const ReservationDetail = () => {
 			};
 			setDataView(bannerData);
 		}
-	}, [idReservation, itemData]);
+	}, [idReservation, itemData, t]);
 
 	return (
 		<div className="page-content">

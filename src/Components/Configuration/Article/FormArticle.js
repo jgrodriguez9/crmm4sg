@@ -23,8 +23,12 @@ import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
 import removetEmptyObject from '../../../util/removetEmptyObject';
 import ButtonsLoader from '../../Loader/ButtonsLoader';
 import { getDepartamentList } from '../../../helpers/configuration/departament';
+import { useTranslation } from 'react-i18next';
 
 const FormArticle = ({ item = null, toggleModal, refetch }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.formArticle',
+	});
 	const dispatch = useDispatch();
 
 	const { data: categoryArticleOpt } = useQuery(
@@ -152,7 +156,7 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 				<Col lg={8}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="title">
-							Título
+							{t('title')}
 						</Label>
 						<Input
 							type="text"
@@ -174,7 +178,7 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 				<Col lg={4}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="category">
-							Categoría
+							{t('category')}
 						</Label>
 						<Select
 							id="category"
@@ -230,7 +234,7 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 							className="form-label mb-0"
 							htmlFor="departments"
 						>
-							Departamentos
+							{t('departments')}
 						</Label>
 						<Select
 							id="category"
@@ -257,7 +261,7 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 				<Col lg={12}>
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="description">
-							Descripción
+							{t('description')}
 						</Label>
 						<textarea
 							id="description"
@@ -287,13 +291,13 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 					<ButtonsLoader
 						buttons={[
 							{
-								text: 'Aceptar',
+								text: t('accept'),
 								color: 'primary',
 								className: 'me-2',
 								loader: true,
 							},
 							{
-								text: 'Cancelar',
+								text: t('cancel'),
 								color: 'danger',
 								className: 'btn-soft-danger',
 								loader: false,
@@ -304,7 +308,7 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 			) : (
 				<div className="d-flex my-3">
 					<Button type="submit" color="primary" className="me-2">
-						Aceptar
+						{t('accept')}
 					</Button>
 					<Button
 						type="button"
@@ -312,7 +316,7 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 						className="btn-soft-danger"
 						onClick={toggleModal ? toggleModal : () => {}}
 					>
-						Cancelar
+						{t('cancel')}
 					</Button>
 				</div>
 			)}

@@ -25,6 +25,7 @@ import { fetchMaritalStatus } from '../../../../../services/maritalStatus';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 import { updateClientService } from '../../../../../services/client';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
+import { useTranslation } from 'react-i18next';
 
 const FormClient = ({
 	toggleDialog,
@@ -32,7 +33,9 @@ const FormClient = ({
 	customer,
 	refetchClient,
 }) => {
-	console.log(customer);
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formClient',
+	});
 	const dispatch = useDispatch();
 	const [fechaNacimiento, setFechaNacimiento] = useState(
 		customer?.fechaNacimiento
@@ -172,7 +175,6 @@ const FormClient = ({
 		setEditCorreo(!editCorreo);
 		formik.setFieldValue('email', '');
 	};
-	console.log(formik.values);
 	return (
 		<Form
 			className="needs-validation fs-7"
@@ -186,7 +188,7 @@ const FormClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="firstName">
-							Nombre
+							{t('name')}
 						</Label>
 						<Input
 							type="text"
@@ -208,7 +210,7 @@ const FormClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="lastName">
-							Apellido
+							{t('lastName')}
 						</Label>
 						<Input
 							type="text"
@@ -233,7 +235,7 @@ const FormClient = ({
 							className="form-label mb-0"
 							htmlFor="fechaLlegada"
 						>
-							Fecha nacimiento
+							{t('birthDay')}
 						</Label>
 						<DatePicker
 							id="fechaLlegada"
@@ -258,7 +260,7 @@ const FormClient = ({
 				<Col xs="12" md="8">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="address">
-							Dirección
+							{t('address')}
 						</Label>
 						<Input
 							type="text"
@@ -275,7 +277,7 @@ const FormClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="postalCode">
-							CP
+							{t('zip')}
 						</Label>
 						<Input
 							type="text"
@@ -290,7 +292,7 @@ const FormClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="country">
-							País
+							{t('country')}
 						</Label>
 						<Select
 							value={countryDefault}
@@ -317,7 +319,7 @@ const FormClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="country">
-							Estado
+							{t('state')}
 						</Label>
 						<StateInput
 							value={statesDefault}
@@ -337,7 +339,7 @@ const FormClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="country">
-							Ciudad
+							{t('city')}
 						</Label>
 						<CityInput
 							value={citiesDefault}
@@ -356,7 +358,7 @@ const FormClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="phone1">
-							Teléfono casa
+							{t('housePhone')}
 						</Label>
 						{!editPhone1 ? (
 							<DisabledInput
@@ -402,7 +404,7 @@ const FormClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="phone1">
-							Teléfono trabajo
+							{t('workPhone')}
 						</Label>
 						{!editPhone2 ? (
 							<DisabledInput
@@ -448,7 +450,7 @@ const FormClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="movil">
-							Celular
+							{t('mobile')}
 						</Label>
 						{!editMobile ? (
 							<DisabledInput
@@ -494,7 +496,7 @@ const FormClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="email">
-							Correo electrónico
+							{t('email')}
 						</Label>
 						{!editCorreo ? (
 							<DisabledInput
@@ -523,7 +525,7 @@ const FormClient = ({
 							className="form-label mb-0"
 							htmlFor="estadoCivil"
 						>
-							Estado civil
+							{t('maritalStatus')}
 						</Label>
 						<Select
 							id="estadoCivil"
@@ -557,7 +559,7 @@ const FormClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="income+">
-							Ingreso
+							{t('income')}
 						</Label>
 						<Input
 							type="text"
@@ -584,7 +586,7 @@ const FormClient = ({
 								loader: true,
 							},
 							{
-								text: 'Cancelar',
+								text: t('cancel'),
 								color: 'danger',
 								className: 'btn-soft-danger',
 								loader: false,
@@ -603,7 +605,7 @@ const FormClient = ({
 						className="btn-soft-danger"
 						onClick={toggleDialog ? toggleDialog : () => {}}
 					>
-						Cancelar
+						{t('cancel')}
 					</Button>
 				</div>
 			)}

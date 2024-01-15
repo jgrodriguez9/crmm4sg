@@ -12,6 +12,7 @@ import {
 import SelectAsync from './SelectAsync';
 import { getSegmentPaginate } from '../../helpers/catalogues/segment';
 import { getCallCenterPaginate } from '../../helpers/catalogues/call_center';
+import { useTranslation } from 'react-i18next';
 
 const CrmFilter = ({
 	show,
@@ -23,6 +24,9 @@ const CrmFilter = ({
 	setDataSelect,
 	onCleanFilter,
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.crmFilter',
+	});
 	const [selectCountry, setselectCountry] = useState(null);
 
 	const handleselectCountry = (selectCountry) => {
@@ -38,7 +42,7 @@ const CrmFilter = ({
 			scrollable={true}
 		>
 			<OffcanvasHeader className="bg-light" toggle={onCloseClick}>
-				Filtros
+				{t('filters')}
 			</OffcanvasHeader>
 			<div className="d-flex flex-column justify-content-end h-100">
 				<OffcanvasBody className="mb-6">
@@ -71,7 +75,7 @@ const CrmFilter = ({
 									htmlFor="certifiateNumber"
 									className="form-label text-muted mb-0"
 								>
-									Certificado
+									{t('certificate')}
 								</Label>
 								<Input
 									className="form-control"
@@ -93,7 +97,7 @@ const CrmFilter = ({
 									htmlFor="contract"
 									className="form-label text-muted text-uppercase fw-semibold mb-0"
 								>
-									Contrato
+									{t('contract')}
 								</Label>
 								<Input
 									className="form-control"
@@ -143,7 +147,7 @@ const CrmFilter = ({
 									htmlFor="segmento-select"
 									className="form-label text-muted text-uppercase fw-semibold mb-0"
 								>
-									Segmento
+									{t('segment')}
 								</Label>
 								<SelectAsync
 									fnFilter={getSegmentPaginate}
@@ -172,7 +176,7 @@ const CrmFilter = ({
 									htmlFor="nombre"
 									className="form-label text-muted text-uppercase fw-semibold mb-0"
 								>
-									Nombre
+									{t('name')}
 								</Label>
 								<Input
 									className="form-control"
@@ -194,7 +198,7 @@ const CrmFilter = ({
 									htmlFor="apellido"
 									className="form-label text-muted mb-0"
 								>
-									Apellido
+									{t('lastName')}
 								</Label>
 								<Input
 									className="form-control"
@@ -216,7 +220,7 @@ const CrmFilter = ({
 									htmlFor="telefono"
 									className="form-label text-muted text-uppercase fw-semibold mb-0"
 								>
-									Teléfono
+									{t('phone')}
 								</Label>
 								<Input
 									className="form-control"
@@ -238,7 +242,7 @@ const CrmFilter = ({
 									htmlFor="pais"
 									className="form-label text-muted text-uppercase fw-semibold mb-0"
 								>
-									País
+									{t('country')}
 								</Label>
 								<Input
 									className="form-control"
@@ -260,7 +264,7 @@ const CrmFilter = ({
 									htmlFor="estado"
 									className="form-label text-muted text-uppercase fw-semibold mb-0"
 								>
-									Estado
+									{t('state')}
 								</Label>
 								<Input
 									className="form-control"
@@ -282,7 +286,7 @@ const CrmFilter = ({
 									htmlFor="telefono"
 									className="form-label text-muted text-uppercase fw-semibold mb-0"
 								>
-									Email
+									{t('email')}
 								</Label>
 								<Input
 									className="form-control"
@@ -310,7 +314,7 @@ const CrmFilter = ({
 								className="fw-500"
 								onClick={buscar}
 							>
-								Buscar
+								{t('search')}
 							</Button>
 						</div>
 						<div>
@@ -322,7 +326,7 @@ const CrmFilter = ({
 								className="fw-500"
 								onClick={onCleanFilter}
 							>
-								Limpiar filtros
+								{t('cleanFilters')}
 							</Button>
 						</div>
 					</div>

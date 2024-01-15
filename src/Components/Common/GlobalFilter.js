@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAsyncDebounce } from 'react-table';
 import { Input } from 'reactstrap';
 
@@ -9,6 +10,9 @@ export default function GlobalFilter({
 	globalFilter,
 	setGlobalFilter,
 }) {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.globalFilter',
+	});
 	const [value, setValue] = useState(globalFilter);
 	const onChange = useAsyncDebounce((value) => {
 		setGlobalFilter(value || undefined);
@@ -19,7 +23,7 @@ export default function GlobalFilter({
 			<Input
 				type="text"
 				className="form-control"
-				placeholder="Buscar..."
+				placeholder={`${t('search')}...`}
 				id="search-options"
 				value={value ?? ''}
 				onChange={(e) => {

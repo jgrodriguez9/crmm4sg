@@ -11,8 +11,12 @@ import {
 import avatar1 from '../../assets/images/users/avatar-1.jpg';
 import { getDataAgent } from '../../util/getDataAgent';
 import useUser from '../../hooks/useUser';
+import { useTranslation } from 'react-i18next';
 
 const ProfileDropdown = () => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.profileDropdown',
+	});
 	const user = useUser();
 
 	//Dropdown Toggle
@@ -43,7 +47,7 @@ const ProfileDropdown = () => {
 				</DropdownToggle>
 				<DropdownMenu className="dropdown-menu-end">
 					<h6 className="dropdown-header">
-						Bienvenido {user?.firstName}!
+						{t('welcome')} {user?.firstName}!
 					</h6>
 					<DropdownItem className="p-0">
 						<div className="dropdown-item">
@@ -72,7 +76,7 @@ const ProfileDropdown = () => {
 						<Link to="/logout" className="dropdown-item">
 							<i className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>{' '}
 							<span className="align-middle" data-key="t-logout">
-								Cerrar sesión
+								{t('signOut')}
 							</span>
 						</Link>
 					</DropdownItem>

@@ -7,7 +7,6 @@ import {
 	Input,
 	Row,
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
 
 //SimpleBar
 import SimpleBar from 'simplebar-react';
@@ -20,8 +19,12 @@ import showFriendlyMessafe from '../../util/showFriendlyMessafe';
 import Loader from './Loader';
 import moment from 'moment';
 import { DATE_FORMAT } from '../../common/globalsProp';
+import { useTranslation } from 'react-i18next';
 
 const HelpDropdown = () => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.helpDropdown',
+	});
 	const user = useUser();
 	let timer = useRef();
 	//Dropdown Toggle
@@ -86,7 +89,7 @@ const HelpDropdown = () => {
 								<Col>
 									<h6 className="m-0 fs-16 fw-semibold text-white">
 										{' '}
-										Ayuda{' '}
+										{t('help')}{' '}
 									</h6>
 								</Col>
 							</Row>
@@ -96,7 +99,7 @@ const HelpDropdown = () => {
 							<Input
 								className="form-control rounded-0"
 								type="text"
-								placeholder="Buscar..."
+								placeholder={`${t('search')}...`}
 								value={searchInput}
 								onChange={(e) => setSearchInput(e.target.value)}
 							/>
@@ -111,7 +114,6 @@ const HelpDropdown = () => {
 							{!isRefetching && isError && (
 								<p className="text-danger">
 									{showFriendlyMessafe(errorItemsQuery?.code)}
-									d
 								</p>
 							)}
 							{!isRefetching &&

@@ -8,8 +8,12 @@ import Select from 'react-select';
 import { SELECT_OPTION } from '../constants/messages';
 import useAvailability from '../../hooks/useAvailability';
 import Loader from './Loader';
+import { useTranslation } from 'react-i18next';
 
 function HotelAvailability({ initialDate, finalDate, hotel }) {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.hotelAvailability',
+	});
 	const [loading, setLoading] = useState(false);
 	const { url, setUrl, setDateEnd, setDateStart, setHotelId } =
 		useAvailability();
@@ -42,7 +46,9 @@ function HotelAvailability({ initialDate, finalDate, hotel }) {
 			<Col xs="12" md="12">
 				<div className="d-flex flex-column flex-md-row mb-2">
 					<div className="me-1">
-						<Label className="form-label mb-0">Fecha llegada</Label>
+						<Label className="form-label mb-0">
+							{t('checkIn')}
+						</Label>
 						<DatePicker
 							date={iDate}
 							onChangeDate={(value) => {
@@ -51,7 +57,9 @@ function HotelAvailability({ initialDate, finalDate, hotel }) {
 						/>
 					</div>
 					<div className="me-1">
-						<Label className="form-label mb-0">Fecha salida</Label>
+						<Label className="form-label mb-0">
+							{t('checkOut')}
+						</Label>
 						<DatePicker
 							date={eDate}
 							onChangeDate={(value) => {
@@ -61,7 +69,7 @@ function HotelAvailability({ initialDate, finalDate, hotel }) {
 					</div>
 					<div className="me-1 flex-grow-1">
 						<Label className="form-label mb-0" htmlFor="hotel">
-							Hotel
+							{t('hotel')}
 						</Label>
 						<Select
 							id="hotel"
@@ -88,7 +96,7 @@ function HotelAvailability({ initialDate, finalDate, hotel }) {
 					</div>
 					<div className="align-self-end">
 						<Button color="primary" type="button" onClick={buscar}>
-							Buscar
+							{t('search')}
 						</Button>
 					</div>
 				</div>
@@ -97,7 +105,7 @@ function HotelAvailability({ initialDate, finalDate, hotel }) {
 			{!url && !loading && (
 				<Col xs="12" md="12" className="mt-3">
 					<Alert color="secondary" className="border-0 border-0">
-						Por favor seleccionar criterios de búsqueda
+						{t('selectSearchCriteria')}
 					</Alert>
 				</Col>
 			)}

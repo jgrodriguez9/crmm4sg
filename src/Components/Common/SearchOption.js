@@ -6,8 +6,12 @@ import SimpleBar from 'simplebar-react';
 import Loader from './Loader';
 import showFriendlyMessafe from '../../util/showFriendlyMessafe';
 import { filterGlobalCustomer } from '../../helpers/reservation';
+import { useTranslation } from 'react-i18next';
 
 const SearchOption = () => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.searchOption',
+	});
 	const [value, setValue] = useState('');
 	let timer = useRef();
 	const navigate = useNavigate();
@@ -22,7 +26,6 @@ const SearchOption = () => {
 		['filterGlobalCustomer', value],
 		async () => {
 			const response = await filterGlobalCustomer(value);
-			console.log(response);
 			return response;
 		},
 		{
@@ -78,7 +81,7 @@ const SearchOption = () => {
 					<Input
 						type="text"
 						className="form-control"
-						placeholder="Buscar..."
+						placeholder={`${t('search')}...`}
 						id="search-options"
 						value={value}
 						onChange={(e) => {
@@ -100,7 +103,7 @@ const SearchOption = () => {
 					<SimpleBar style={{ height: '420px' }}>
 						<div className="dropdown-header">
 							<h6 className="text-overflow text-muted mb-2 text-uppercase">
-								Recent Searches
+								{t('recentSearch')}
 							</h6>
 						</div>
 
@@ -115,7 +118,7 @@ const SearchOption = () => {
 							{!isLoading &&
 								!errorItemsQuery &&
 								itemsData?.data?.list.length === 0 && (
-									<p>No hay información disponible</p>
+									<p>{t('noInformationAvailable')}</p>
 								)}
 							{!isLoading &&
 								!errorItemsQuery &&
@@ -127,22 +130,22 @@ const SearchOption = () => {
 													<th
 														style={{ width: '55%' }}
 													>
-														Nombre
+														{t('name')}
 													</th>
 													<th
 														style={{ width: '15%' }}
 													>
-														Certificado
+														{t('certificate')}
 													</th>
 													<th
 														style={{ width: '15%' }}
 													>
-														Reservación
+														{t('reservation')}
 													</th>
 													<th
 														style={{ width: '15%' }}
 													>
-														Confirmación
+														{t('confirmation')}
 													</th>
 												</tr>
 											</thead>

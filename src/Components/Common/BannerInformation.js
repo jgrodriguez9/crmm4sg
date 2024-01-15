@@ -2,8 +2,12 @@ import { Card, CardBody, Col, Row } from 'reactstrap';
 import { Fragment } from 'react';
 import moment from 'moment';
 import jsFormatNumber from '../../util/jsFormatNumber';
+import { useTranslation } from 'react-i18next';
 
 const BannerInformation = ({ data, showBreadcrumb = true }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.bannerInformation',
+	});
 	return (
 		<Col lg={12}>
 			<Card className="mt-n4 mx-n4 mb-n5">
@@ -156,7 +160,7 @@ const BannerInformation = ({ data, showBreadcrumb = true }) => {
 											<div className="vr mx-2" />
 											<div className="lh-sm">
 												<span className="d-block fw-bold">
-													Paquete
+													{t('package')}
 												</span>
 												<span className="fs-7">
 													{data?.sale?.campaign
@@ -166,7 +170,7 @@ const BannerInformation = ({ data, showBreadcrumb = true }) => {
 											<div className="vr mx-2" />
 											<div className="lh-sm">
 												<span className="d-block fw-bold">
-													Fecha venta
+													{t('saleDate')}
 												</span>
 												<span className="fs-7">
 													{data?.sale?.saleDate
@@ -181,7 +185,7 @@ const BannerInformation = ({ data, showBreadcrumb = true }) => {
 											<div className="vr mx-2" />
 											<div className="lh-sm">
 												<span className="d-block fw-bold">
-													No. pagos
+													{t('noPayments')}
 												</span>
 												<span className="fs-7">
 													{data?.sale
@@ -192,7 +196,7 @@ const BannerInformation = ({ data, showBreadcrumb = true }) => {
 											<div className="vr mx-2" />
 											<div className="lh-sm">
 												<span className="d-block fw-bold">
-													Saldo
+													{t('balance')}
 												</span>
 												<span className="fs-7">
 													{jsFormatNumber(
@@ -203,7 +207,7 @@ const BannerInformation = ({ data, showBreadcrumb = true }) => {
 											<div className="vr mx-2" />
 											<div className="lh-sm">
 												<span className="d-block fw-bold">
-													Estatus
+													{t('status')}
 												</span>
 												<span className="fs-7">
 													{data?.sale

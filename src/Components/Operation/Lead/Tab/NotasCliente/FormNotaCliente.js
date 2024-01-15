@@ -30,8 +30,12 @@ import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 import useUser from '../../../../../hooks/useUser';
+import { useTranslation } from 'react-i18next';
 
 const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formNotaCliente',
+	});
 	const user = useUser();
 	const dispatch = useDispatch();
 	const [animo, setAnimo] = useState('');
@@ -161,7 +165,6 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 				}
 			});
 			data['noteType'] = values.noteTypeId;
-			console.log(data);
 			if (data.noteId) {
 				updateItem({
 					customerId: customerId,
@@ -192,7 +195,7 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 									className="form-label mb-0"
 									htmlFor="tipo"
 								>
-									Estado de ánimo del cliente
+									{t('moodClient')}
 									{animo ? (
 										<span
 											style={{
@@ -247,7 +250,7 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 				<Col lg={8}>
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="tipo">
-							Tipo
+							{t('type')}
 						</Label>
 						<Select
 							id="tipo"
@@ -279,7 +282,7 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 				<Col lg={4}>
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="contactDate">
-							Fecha FUp
+							{t('fUpDate')}
 						</Label>
 						<DatePicker
 							id="contactDate"
@@ -301,7 +304,7 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 				<Col lg={12}>
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="note">
-							Nota
+							{t('note')}
 						</Label>
 						<textarea
 							id="note"
@@ -325,7 +328,7 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 				<Col lg={12}>
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="specialReq">
-							Req. especial
+							{t('specialReq')}
 						</Label>
 						<textarea
 							id="specialReq"
@@ -348,13 +351,13 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 					<ButtonsLoader
 						buttons={[
 							{
-								text: 'Aceptar',
+								text: t('accept'),
 								color: 'primary',
 								className: 'me-2',
 								loader: true,
 							},
 							{
-								text: 'Cancelar',
+								text: t('cancel'),
 								color: 'danger',
 								className: 'btn-soft-danger',
 								loader: false,
@@ -365,7 +368,7 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 			) : (
 				<div className="d-flex my-3">
 					<Button type="submit" color="primary" className="me-2">
-						Aceptar
+						{t('accept')}
 					</Button>
 					<Button
 						type="button"
@@ -373,7 +376,7 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 						className="btn-soft-danger"
 						onClick={toggleModal ? toggleModal : () => {}}
 					>
-						Cancelar
+						{t('cancel')}
 					</Button>
 				</div>
 			)}

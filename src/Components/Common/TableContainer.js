@@ -8,6 +8,7 @@ import {
 } from 'react-table';
 import { Table } from 'reactstrap';
 import GlobalFilter from './GlobalFilter';
+import { useTranslation } from 'react-i18next';
 
 const TableContainer = ({
 	columns,
@@ -29,6 +30,9 @@ const TableContainer = ({
 	tableTitle = null,
 	glFilter = false,
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.tableContainer',
+	});
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -161,7 +165,7 @@ const TableContainer = ({
 						) : (
 							<tr>
 								<td colSpan={columns.length}>
-									No hay información disponible
+									{t('noInformationAvailable')}
 								</td>
 							</tr>
 						)}

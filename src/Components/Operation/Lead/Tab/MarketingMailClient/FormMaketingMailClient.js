@@ -7,6 +7,7 @@ import {
 	EMAIL_SUCCESS,
 	ERROR_SERVER,
 	FIELD_REQUIRED,
+	SELECT_OPTION,
 } from '../../../../constants/messages';
 import { useMutation } from 'react-query';
 import { sendExternalEmail } from '../../../../../helpers/external/email';
@@ -14,8 +15,12 @@ import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
+import { useTranslation } from 'react-i18next';
 
 const FormMaketingMailClient = ({ closeModal, emailTo }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formMaketingMailClient',
+	});
 	const dispatch = useDispatch();
 	//send sms
 	const { mutate: sendEmail, isLoading: isSendingEmail } = useMutation(
@@ -73,7 +78,7 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 				<Col lg={12}>
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="tipo">
-							Receptor
+							{t('receiver')}
 						</Label>
 						<Input
 							className="form-control"
@@ -94,7 +99,7 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 				<Col lg={4}>
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="motivo">
-							Idioma
+							{t('language')}
 						</Label>
 						<Select
 							id="motivo"
@@ -109,7 +114,7 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 				<Col lg={8}>
 					<div className="mb-3">
 						<Label className="form-label" htmlFor="motivo">
-							Template
+							{t('template')}
 						</Label>
 						<Select
 							id="motivo"
@@ -134,7 +139,7 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 									template: template,
 								},
 							]}
-							placeholder="Seleccionar opción"
+							placeholder={SELECT_OPTION}
 						/>
 						{formik.errors.subject && (
 							<FormFeedback type="invalid" className="d-block">
@@ -158,13 +163,13 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 					<ButtonsLoader
 						buttons={[
 							{
-								text: 'Enviar',
+								text: t('send'),
 								color: 'primary',
 								className: 'me-2',
 								loader: true,
 							},
 							{
-								text: 'Cancelar',
+								text: t('cancel'),
 								color: 'danger',
 								className: 'btn-soft-danger',
 								loader: false,
@@ -175,7 +180,7 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 			) : (
 				<div className="d-flex mt-3">
 					<Button type="submit" color="primary" className="me-2">
-						Enviar
+						{t('send')}
 					</Button>
 					<Button
 						type="button"
@@ -183,7 +188,7 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 						className="btn-soft-danger"
 						onClick={() => {}}
 					>
-						Cancelar
+						{t('cancel')}
 					</Button>
 				</div>
 			)}

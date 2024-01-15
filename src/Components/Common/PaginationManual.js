@@ -1,7 +1,11 @@
 import { Button, Col, Input, Row } from 'reactstrap';
 import parseObjectToQueryUrl from '../../util/parseObjectToQueryUrl';
+import { useTranslation } from 'react-i18next';
 
 const PaginationManual = ({ query, setQuery, setQueryFilter, totalPages }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.paginationManual',
+	});
 	const onChangeInInput = (event) => {
 		const page = event.target.value ? Number(event.target.value) : 1;
 		const copyQuery = { ...query };
@@ -39,9 +43,9 @@ const PaginationManual = ({ query, setQuery, setQueryFilter, totalPages }) => {
 				</div>
 			</Col>
 			<Col className="col-md-auto d-none d-md-block">
-				Página{' '}
+				{t('page')}{' '}
 				<strong>
-					{query.page} de {totalPages}
+					{query.page} {t('from')} {totalPages}
 				</strong>
 			</Col>
 			<Col className="col-md-auto">

@@ -31,13 +31,17 @@ import DeleteModal from '../../../../Components/Common/DeleteModal';
 import BasicModal from '../../../../Components/Common/BasicModal';
 import TableContainer from '../../../../Components/Common/TableContainer';
 import Loader from '../../../../Components/Common/Loader';
+import { useTranslation } from 'react-i18next';
 
 const initFilter = {
 	name: '',
 };
 
 const ArticleCategory = () => {
-	document.title = 'Artículos de ayuda | CRM - M4SG';
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'pages.articleCategory.list',
+	});
+	document.title = t('header');
 	const dispatch = useDispatch();
 	const [item, setItem] = useState(null);
 	const [showModal, setShowModal] = useState(false);
@@ -101,19 +105,19 @@ const ArticleCategory = () => {
 		{
 			iconClass: `${editIconClass} fs-5 text-primary`,
 			click: editItem,
-			labelTooltip: 'Editar',
+			labelTooltip: t('edit'),
 		},
 		{
 			iconClass: `${deleteIconClass} fs-5 text-danger`,
 			click: showDialogDelete,
-			labelTooltip: 'Eliminar',
+			labelTooltip: t('delete'),
 		},
 	];
 
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'Nombre',
+				Header: t('name'),
 				accessor: 'name',
 				filterable: false,
 				style: {
@@ -121,7 +125,7 @@ const ArticleCategory = () => {
 				},
 			},
 			{
-				Header: 'Fecha creación',
+				Header: t('creationDate'),
 				accessor: 'dateCreated',
 				filterable: false,
 				style: {
@@ -140,7 +144,7 @@ const ArticleCategory = () => {
 				},
 			},
 		],
-		[]
+		[t]
 	);
 
 	const toggleDialog = () => {
@@ -195,10 +199,10 @@ const ArticleCategory = () => {
 						<Col xxl={12}>
 							<Card className="shadow">
 								<CardHeaderGlobal
-									title={'Categoría de Artículos'}
+									title={t('articleCategory')}
 									add={{
 										action: createItem,
-										title: 'Crear categoría de artículos',
+										title: t('createArticleCategory'),
 									}}
 								/>
 								<CardBody className="pt-0">
@@ -207,7 +211,9 @@ const ArticleCategory = () => {
 											<Input
 												type="text"
 												className="form-control me-1"
-												placeholder="Buscar..."
+												placeholder={`${t(
+													'search'
+												)}...`}
 												id="search-options"
 												value={parameter}
 												onChange={(e) =>
@@ -220,7 +226,7 @@ const ArticleCategory = () => {
 											onClick={buscar}
 										>
 											<i className="mdi mdi-magnify"></i>{' '}
-											Buscar
+											{t('search')}
 										</button>
 									</div>
 									<div>
@@ -273,8 +279,8 @@ const ArticleCategory = () => {
 				setOpen={setShowModal}
 				title={`${
 					item?.id
-						? 'Editar categoría de artículos'
-						: 'Nuevo categoría de artículos'
+						? t('editArticleCategory')
+						: t('newArticleCategory')
 				}`}
 				size="lg"
 				children={

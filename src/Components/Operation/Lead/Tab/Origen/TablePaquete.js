@@ -12,6 +12,7 @@ import {
 import showFriendlyMessafe from '../../../../../util/showFriendlyMessafe';
 import TableReservation from '../ReservationClient/TableReservation';
 import jsFormatNumber from '../../../../../util/jsFormatNumber';
+import { useTranslation } from 'react-i18next';
 
 const TablePaquete = ({
 	tableTitle = null,
@@ -21,6 +22,9 @@ const TablePaquete = ({
 	isSuccess,
 	onHandleCreateReservation,
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.tablePaquete',
+	});
 	const columns = useMemo(
 		() => [
 			{
@@ -35,13 +39,13 @@ const TablePaquete = ({
 								<i
 									className="mdi mdi-chevron-up-circle text-primary fs-4 cursor-pointer"
 									onClick={() => row.toggleRowExpanded()}
-									title="Ocultar Reservación"
+									title={t('hideReservation')}
 								/>
 							) : (
 								<i
 									className="mdi mdi-chevron-down-circle text-primary fs-4 cursor-pointer"
 									onClick={() => row.toggleRowExpanded()}
-									title="Ver Reservación"
+									title={t('viewReservation')}
 								/>
 							)}
 						</div>
@@ -56,14 +60,14 @@ const TablePaquete = ({
 				},
 			},
 			{
-				Header: 'Paquete',
+				Header: t('package'),
 				accessor: 'campaign.name',
 				style: {
 					width: '26%',
 				},
 			},
 			{
-				Header: 'F. Venta',
+				Header: t('shortSaleDate'),
 				accessor: 'saleDate',
 				Cell: ({ value }) =>
 					value
@@ -74,21 +78,21 @@ const TablePaquete = ({
 				},
 			},
 			{
-				Header: 'Supervisor',
+				Header: t('supervisor'),
 				accessor: 'supervisor',
 				style: {
 					width: '10%',
 				},
 			},
 			{
-				Header: 'No. Pagos',
+				Header: t('noPayments'),
 				accessor: 'numberOfPayments',
 				style: {
 					width: '6%',
 				},
 			},
 			{
-				Header: 'Saldo',
+				Header: t('balance'),
 				accessor: 'balance',
 				style: {
 					width: '8%',
@@ -96,14 +100,14 @@ const TablePaquete = ({
 				Cell: ({ value }) => jsFormatNumber(value),
 			},
 			{
-				Header: 'Usuario',
+				Header: t('agent'),
 				accessor: 'user',
 				style: {
 					width: '10%',
 				},
 			},
 			{
-				Header: 'Estatus',
+				Header: t('status'),
 				accessor: 'reservationStatus.status',
 				style: {
 					width: '10%',
@@ -119,14 +123,14 @@ const TablePaquete = ({
 						<div className="me-1">
 							<i
 								className="mdi mdi-database-plus fs-4 cursor-pointer text-success"
-								title="Crear reservación"
+								title={t('createReservation')}
 								onClick={() => onHandleCreateReservation(row)}
 							/>
 						</div>
 						<div className="me-1">
 							<i
 								className="mdi mdi-calendar-cursor fs-4 cursor-pointer text-info"
-								title="Accesso a modulo de Reservaciones"
+								title={t('accessReservationModule')}
 							/>
 						</div>
 						<div>
@@ -140,19 +144,19 @@ const TablePaquete = ({
 								</DropdownToggle>
 								<DropdownMenu className="dropdown-menu-end">
 									<DropdownItem onClick={() => {}}>
-										Envío de promociones
+										{t('promotionSend')}
 									</DropdownItem>
 									<DropdownItem onClick={() => {}}>
-										Survey
+										{t('survey')}
 									</DropdownItem>
 									<DropdownItem onClick={() => {}}>
-										Transferencia de booking a nuevo cliente
+										{t('transferBookingToClient')}
 									</DropdownItem>
 									<DropdownItem onClick={() => {}}>
-										Grabaciones
+										{t('recording')}
 									</DropdownItem>
 									<DropdownItem onClick={() => {}}>
-										Archivo digital
+										{t('digitalFile')}
 									</DropdownItem>
 								</DropdownMenu>
 							</UncontrolledDropdown>
@@ -161,7 +165,7 @@ const TablePaquete = ({
 				),
 			},
 		],
-		[]
+		[t]
 	);
 
 	return (

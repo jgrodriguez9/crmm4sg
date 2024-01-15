@@ -6,12 +6,16 @@ import CellActions from '../../../../Common/CellActions';
 import { getEmoticonsClass } from '../../../../../util/getEmoticonsClass';
 import TooltipDescription from '../../../../Common/TooltipDescription';
 import { DATE_TIME_FORMAT } from '../../../../../common/globalsProp';
+import { useTranslation } from 'react-i18next';
 
 const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.tableNotas',
+	});
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'Tipo',
+				Header: t('type'),
 				accessor: 'noteType.type',
 				filterable: false,
 				style: {
@@ -19,7 +23,7 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 				},
 			},
 			{
-				Header: 'Estado',
+				Header: t('status'),
 				accessor: 'status.mood',
 				filterable: false,
 				style: {
@@ -43,7 +47,7 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 				},
 			},
 			{
-				Header: 'Nota',
+				Header: t('note'),
 				accessor: 'note',
 				filterable: false,
 				style: {
@@ -51,7 +55,7 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 				},
 			},
 			{
-				Header: 'Req. especial',
+				Header: t('specialReq'),
 				accessor: 'specialReq',
 				filterable: false,
 				style: {
@@ -59,7 +63,7 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 				},
 			},
 			{
-				Header: 'Fecha creación',
+				Header: t('creationDate'),
 				accessor: 'date',
 				filterable: false,
 				style: {
@@ -73,7 +77,7 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 						: '',
 			},
 			{
-				Header: 'Fecha FUp',
+				Header: t('fUpDate'),
 				accessor: 'contactDate',
 				filterable: false,
 				style: {
@@ -85,7 +89,7 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 						: '',
 			},
 			{
-				Header: 'Usuario',
+				Header: t('agent'),
 				accessor: 'user',
 				filterable: false,
 				style: {
@@ -100,7 +104,7 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 				},
 			},
 		],
-		[]
+		[t]
 	);
 	return (
 		<div>

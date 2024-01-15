@@ -12,6 +12,7 @@ import {
 import { Link } from 'react-router-dom';
 import Loader from './Loader';
 import showFriendlyMessafe from '../../util/showFriendlyMessafe';
+import { useTranslation } from 'react-i18next';
 
 const DetailCanvas = ({
 	show,
@@ -20,6 +21,9 @@ const DetailCanvas = ({
 	error,
 	isLoading,
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.detailCanvas',
+	});
 	const [info, setInfo] = useState(data);
 	const openAccordion = (idItem, valorElemento) => {
 		const copyItems = [...info.items]; //.map((it) => ({ ...it, collapse: true }));
@@ -205,7 +209,7 @@ const DetailCanvas = ({
 								to={info?.goToView}
 								className="fw-normal btn btn-success btn-sm"
 							>
-								Ver registro
+								{t('viewRegister')}
 							</Link>
 						)}
 					</div>

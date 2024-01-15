@@ -31,13 +31,17 @@ import {
 	ERROR_SERVER,
 } from '../../../Components/constants/messages';
 import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
+import { useTranslation } from 'react-i18next';
 
 const initFilter = {
 	parameter: '',
 };
 
 const Article = () => {
-	document.title = 'Artículos de ayuda | CRM - M4SG';
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'pages.article.list',
+	});
+	document.title = t('header');
 	const dispatch = useDispatch();
 	const [item, setItem] = useState(null);
 	const [showModal, setShowModal] = useState(false);
@@ -105,19 +109,19 @@ const Article = () => {
 		{
 			iconClass: `${editIconClass} fs-5 text-primary`,
 			click: editPax,
-			labelTooltip: 'Editar',
+			labelTooltip: t('edit'),
 		},
 		{
 			iconClass: `${deleteIconClass} fs-5 text-danger`,
 			click: showDialogDelete,
-			labelTooltip: 'Eliminar',
+			labelTooltip: t('delete'),
 		},
 	];
 
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'Título',
+				Header: t('title'),
 				accessor: 'title',
 				filterable: false,
 				style: {
@@ -125,7 +129,7 @@ const Article = () => {
 				},
 			},
 			{
-				Header: 'Categoría',
+				Header: t('category'),
 				accessor: 'category.name',
 				filterable: false,
 				style: {
@@ -133,7 +137,7 @@ const Article = () => {
 				},
 			},
 			{
-				Header: 'Departamentos',
+				Header: t('departament'),
 				accessor: 'departments',
 				filterable: false,
 				style: {
@@ -154,7 +158,7 @@ const Article = () => {
 				),
 			},
 			{
-				Header: 'Fecha creación',
+				Header: t('creationDate'),
 				accessor: 'dateCreated',
 				filterable: false,
 				style: {
@@ -173,7 +177,7 @@ const Article = () => {
 				},
 			},
 		],
-		[]
+		[t]
 	);
 
 	const toggleDialog = () => {
@@ -228,10 +232,10 @@ const Article = () => {
 						<Col xxl={12}>
 							<Card className="shadow">
 								<CardHeaderGlobal
-									title={'Artículo'}
+									title={t('article')}
 									add={{
 										action: crearArticulo,
-										title: 'Crear artículo',
+										title: t('createArticle'),
 									}}
 								/>
 								<CardBody className="pt-0">
@@ -240,7 +244,9 @@ const Article = () => {
 											<Input
 												type="text"
 												className="form-control me-1"
-												placeholder="Buscar..."
+												placeholder={`${t(
+													'search'
+												)}...`}
 												id="search-options"
 												value={parameter}
 												onChange={(e) =>
@@ -253,7 +259,7 @@ const Article = () => {
 											onClick={buscar}
 										>
 											<i className="mdi mdi-magnify"></i>{' '}
-											Buscar
+											{t('search')}
 										</button>
 									</div>
 									<div>
@@ -304,7 +310,7 @@ const Article = () => {
 			<BasicModal
 				open={showModal}
 				setOpen={setShowModal}
-				title={`${item?.id ? 'Editar artículo' : 'Nuevo artículo'}`}
+				title={`${item?.id ? t('editArticle') : t('newArticle')}`}
 				size="lg"
 				children={
 					<FormArticle
