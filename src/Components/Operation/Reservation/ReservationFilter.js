@@ -18,6 +18,7 @@ import { getReservationStatusPaginate } from '../../../helpers/catalogues/reserv
 import React from 'react';
 import moment from 'moment';
 import { getCampaingPaginate } from '../../../helpers/catalogues/campaign';
+import { useTranslation } from 'react-i18next';
 
 const ReservationFilter = ({
 	show,
@@ -29,6 +30,9 @@ const ReservationFilter = ({
 	setDataSelect,
 	onCleanFilter,
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.reservationFilter',
+	});
 	return (
 		<Offcanvas
 			direction="end"
@@ -38,7 +42,7 @@ const ReservationFilter = ({
 			scrollable={true}
 		>
 			<OffcanvasHeader className="bg-light" toggle={onCloseClick}>
-				Filtros
+				{t('filters')}
 			</OffcanvasHeader>
 			<div className="d-flex flex-column justify-content-end h-100">
 				<OffcanvasBody className="mb-6">
@@ -49,7 +53,7 @@ const ReservationFilter = ({
 									htmlFor="reserva"
 									className="form-label text-muted mb-0"
 								>
-									Id
+									{t('id')}
 								</Label>
 								<Input
 									className="form-control"
@@ -93,7 +97,7 @@ const ReservationFilter = ({
 									htmlFor="confirmacion"
 									className="form-label text-muted mb-0"
 								>
-									Confirmación
+									{t('confirmation')}
 								</Label>
 								<Input
 									className="form-control"
@@ -108,7 +112,7 @@ const ReservationFilter = ({
 									htmlFor="certificado"
 									className="form-label text-muted mb-0"
 								>
-									Certificado
+									{t('certificate')}
 								</Label>
 								<Input
 									className="form-control"
@@ -132,7 +136,7 @@ const ReservationFilter = ({
 									htmlFor="llegada"
 									className="form-label text-muted mb-0"
 								>
-									Llegada Desde
+									{t('checkInFrom')}
 								</Label>
 								<DatePicker
 									id="llegada"
@@ -168,7 +172,7 @@ const ReservationFilter = ({
 									htmlFor="salida"
 									className="form-label text-muted mb-0"
 								>
-									Hasta
+									{t('to')}
 								</Label>
 								<DatePicker
 									id="salida"
@@ -204,7 +208,7 @@ const ReservationFilter = ({
 									htmlFor="ingresada"
 									className="form-label text-muted mb-0"
 								>
-									Ingresada Desde
+									{t('enteredFrom')}
 								</Label>
 								<DatePicker
 									id="ingresada"
@@ -240,7 +244,7 @@ const ReservationFilter = ({
 									htmlFor="ingresada-hasta"
 									className="form-label text-muted mb-0"
 								>
-									Hasta
+									{t('enteredTo')}
 								</Label>
 								<DatePicker
 									id="ingresada-hasta"
@@ -278,7 +282,7 @@ const ReservationFilter = ({
 									htmlFor="hotel"
 									className="form-label text-muted mb-0"
 								>
-									Hotel
+									{t('hotel')}
 								</Label>
 								<SelectAsync
 									fnFilter={getHotelPaginate}
@@ -304,7 +308,7 @@ const ReservationFilter = ({
 									htmlFor="segmento"
 									className="form-label text-muted mb-0"
 								>
-									Segmento
+									{t('segment')}
 								</Label>
 								<SelectAsync
 									fnFilter={getSegmentPaginate}
@@ -330,7 +334,7 @@ const ReservationFilter = ({
 									htmlFor="estatus"
 									className="form-label text-muted mb-0"
 								>
-									Estatus
+									{t('status')}
 								</Label>
 								<SelectAsync
 									fnFilter={getReservationStatusPaginate}
@@ -385,7 +389,7 @@ const ReservationFilter = ({
 									htmlFor="campana"
 									className="form-label text-muted mb-0"
 								>
-									Campaña
+									{t('campaign')}
 								</Label>
 								<SelectAsync
 									fnFilter={getCampaingPaginate}
@@ -411,7 +415,7 @@ const ReservationFilter = ({
 									htmlFor="programa"
 									className="form-label text-muted mb-0"
 								>
-									Programa
+									{t('program')}
 								</Label>
 								<SelectAsync
 									fnFilter={getProgramPaginate}
@@ -442,7 +446,7 @@ const ReservationFilter = ({
 									htmlFor="nombre"
 									className="form-label text-muted mb-0"
 								>
-									Nombre
+									{t('name')}
 								</Label>
 								<Input
 									className="form-control"
@@ -464,7 +468,7 @@ const ReservationFilter = ({
 									htmlFor="apellido"
 									className="form-label text-muted mb-0"
 								>
-									Apellido
+									{t('lastName')}
 								</Label>
 								<Input
 									className="form-control"
@@ -486,7 +490,7 @@ const ReservationFilter = ({
 									htmlFor="pais"
 									className="form-label text-muted mb-0"
 								>
-									País
+									{t('country')}
 								</Label>
 								<Input
 									className="form-control"
@@ -508,7 +512,7 @@ const ReservationFilter = ({
 									htmlFor="estado"
 									className="form-label text-muted mb-0"
 								>
-									Estado
+									{t('state')}
 								</Label>
 								<Input
 									className="form-control"
@@ -533,7 +537,7 @@ const ReservationFilter = ({
 									htmlFor="telefono"
 									className="form-label text-muted mb-0"
 								>
-									Teléfono
+									{t('phone')}
 								</Label>
 								<Input
 									className="form-control"
@@ -555,7 +559,7 @@ const ReservationFilter = ({
 									htmlFor="correo-electronico"
 									className="form-label text-muted mb-0"
 								>
-									Correo electrónico
+									{t('email')}
 								</Label>
 								<Input
 									className="form-control"
@@ -583,7 +587,7 @@ const ReservationFilter = ({
 								className="fw-500"
 								onClick={buscar}
 							>
-								Buscar
+								{t('search')}
 							</Button>
 						</div>
 						<div>
@@ -595,7 +599,7 @@ const ReservationFilter = ({
 								className="fw-500"
 								onClick={onCleanFilter}
 							>
-								Limpiar filtros
+								{t('cleanFilter')}
 							</Button>
 						</div>
 					</div>

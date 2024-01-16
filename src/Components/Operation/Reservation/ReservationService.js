@@ -19,8 +19,12 @@ import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../slices/messages/reducer';
 import { DELETE_SUCCESS, ERROR_SERVER } from '../../constants/messages';
 import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
+import { useTranslation } from 'react-i18next';
 
 const ReservationService = ({ ReservationId, reservation }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.reservationService',
+	});
 	const dispatch = useDispatch();
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [serviceSelected, setServiceSelected] = useState(null);
@@ -44,7 +48,6 @@ const ReservationService = ({ ReservationId, reservation }) => {
 	);
 	const editRow = (row) => {
 		const { original } = row;
-		console.log(original);
 		setServiceSelected({
 			idService: original?.idService ?? '',
 			subService: original?.subService ?? '',
@@ -76,56 +79,56 @@ const ReservationService = ({ ReservationId, reservation }) => {
 		{
 			iconClass: `${editIconClass} fs-5 text-primary`,
 			click: editRow,
-			labelTooltip: 'Editar',
+			labelTooltip: t('edit'),
 		},
 		{
 			iconClass: `${deleteIconClass} fs-5 text-danger`,
 			click: showDialogDelete,
-			labelTooltip: 'Eliminar',
+			labelTooltip: t('delete'),
 		},
 	];
 
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'Servicio',
+				Header: t('service'),
 				accessor: 'subService.name',
 				filterable: false,
 				width: '28%',
 			},
 			{
-				Header: 'Nota',
+				Header: t('note'),
 				accessor: 'description',
 				filterable: false,
 				width: '24%',
 			},
 			{
-				Header: 'Adultos',
+				Header: t('adults'),
 				accessor: 'pax',
 				filterable: false,
 				width: '7%',
 			},
 			{
-				Header: 'Menores',
+				Header: t('children'),
 				accessor: 'childs',
 				filterable: false,
 				width: '7%',
 			},
 			{
-				Header: 'Monto',
+				Header: t('amount'),
 				accessor: 'amount',
 				filterable: false,
 				width: '10%',
 				Cell: ({ value }) => jsFormatNumber(value),
 			},
 			{
-				Header: 'User',
+				Header: t('user'),
 				accessor: 'user',
 				filterable: false,
 				width: '10%',
 			},
 			{
-				Header: 'Fecha creación',
+				Header: t('creationDate'),
 				accessor: 'insertdate',
 				filterable: false,
 				width: '10%',
@@ -142,7 +145,7 @@ const ReservationService = ({ ReservationId, reservation }) => {
 				},
 			},
 		],
-		[]
+		[t]
 	);
 
 	//delete service
@@ -206,7 +209,7 @@ const ReservationService = ({ ReservationId, reservation }) => {
 							}}
 						>
 							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
-							Nuevo servicio
+							{t('newService')}
 						</button>
 					</div>
 				</Col>
@@ -231,7 +234,7 @@ const ReservationService = ({ ReservationId, reservation }) => {
 			<BasicModal
 				open={showModal}
 				setOpen={setShowModal}
-				title="Agregar Servicio"
+				title={t('addService')}
 				size="lg"
 				classBody="py-2 px-3"
 				children={

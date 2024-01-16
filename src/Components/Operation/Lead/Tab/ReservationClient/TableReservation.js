@@ -19,6 +19,7 @@ import PaginationManual from '../../../../Common/PaginationManual';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import { useDispatch } from 'react-redux';
 import TabsReservation from '../../../Reservation/TabsReservation';
+import { useTranslation } from 'react-i18next';
 
 const TableReservation = ({
 	booking,
@@ -28,6 +29,9 @@ const TableReservation = ({
 	hover = true,
 	theadClass = 'table-light',
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.tablePaquete',
+	});
 	const dispatch = useDispatch();
 	const [query, setQuery] = useState({
 		max: 10,
@@ -66,31 +70,31 @@ const TableReservation = ({
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'Id',
+				Header: t('id'),
 				accessor: 'id',
 				filterable: false,
 				width: '10%',
 			},
 			{
-				Header: 'Confirmación',
+				Header: t('confirmation'),
 				accessor: 'confirm',
 				filterable: false,
 				width: '10%',
 			},
 			{
-				Header: 'Hotel',
+				Header: t('hotel'),
 				accessor: 'hotel.name',
 				filterable: false,
 				width: '20%',
 			},
 			{
-				Header: 'Plan',
+				Header: t('plan'),
 				accessor: 'intPlan.name',
 				filterable: false,
 				width: '16%',
 			},
 			{
-				Header: 'LLegada',
+				Header: t('shortCheckInLabel'),
 				accessor: 'initialDate',
 				filterable: false,
 				width: '8%',
@@ -98,7 +102,7 @@ const TableReservation = ({
 					moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY'),
 			},
 			{
-				Header: 'Salida',
+				Header: t('shortCheckOutLabel'),
 				accessor: 'finalDate',
 				filterable: false,
 				width: '8%',
@@ -112,13 +116,13 @@ const TableReservation = ({
 				width: '11%',
 			},
 			{
-				Header: 'Pax',
+				Header: t('adults'),
 				accessor: 'adult',
 				filterable: false,
 				width: '4%',
 			},
 			{
-				Header: 'Estatus',
+				Header: t('status'),
 				accessor: 'status.name',
 				filterable: false,
 				width: '8%',
@@ -133,7 +137,7 @@ const TableReservation = ({
 						<ul className="list-inline hstack gap-2 mb-0">
 							<li
 								className="list-inline-item edit"
-								title="Vista previa"
+								title={t('preview')}
 							>
 								<Link
 									to="#"
@@ -176,7 +180,7 @@ const TableReservation = ({
 		if (itemData) {
 			const { data } = itemData;
 			const bannerData = {
-				title: `ID: ${idItem} - ${data?.hotel?.name ?? ''}`,
+				title: `${t('id')}: ${idItem} - ${data?.hotel?.name ?? ''}`,
 				subTitle: `${data?.customer?.firstName ?? ''} ${
 					data?.customer?.lastName
 				}`,
@@ -193,55 +197,41 @@ const TableReservation = ({
 									data?.finalDate,
 									'days'
 								),
-								title: 'Noches',
+								title: t('nights'),
 								classes: 'text-muted',
 							},
 							{
 								label: null,
 								icon: 'ri-user-2-line',
 								value: data?.adult ?? '-',
-								title: 'Adultos',
-								classes: 'text-muted',
-							},
-							{
-								label: null,
-								icon: 'ri-user-3-line',
-								value: '-',
-								title: 'Juniors',
-								classes: 'text-muted',
-							},
-							{
-								label: null,
-								icon: 'ri-user-unfollow-line',
-								value: '-',
-								title: 'Menores que no pagan',
+								title: t('adults'),
 								classes: 'text-muted',
 							},
 							{
 								label: null,
 								icon: 'ri-user-follow-line',
 								value: data?.child ?? '-',
-								title: 'Menores que pagan',
+								title: t('children'),
 								classes: 'text-muted',
 							},
 							{
 								label: null,
 								icon: 'ri-emotion-happy-line',
 								value: data?.infant ?? '-',
-								title: 'Infantes',
+								title: t('infants'),
 								classes: 'text-muted',
 							},
 						],
 						classes: 'text-muted',
 					},
 					{
-						label: 'Plan',
+						label: t('plan'),
 						icon: null,
 						value: '-',
 						classes: 'text-muted',
 					},
 					{
-						label: 'Llegada',
+						label: t('shortCheckInLabel'),
 						icon: null,
 						value: data?.initialDate
 							? moment(data?.initialDate, 'YYYY-MM-DD').format(
@@ -251,7 +241,7 @@ const TableReservation = ({
 						classes: 'text-muted',
 					},
 					{
-						label: 'Salida',
+						label: t('shortCheckOutLabel'),
 						icon: null,
 						value: data?.finalDate
 							? moment(data?.finalDate, 'YYYY-MM-DD').format(
@@ -332,7 +322,7 @@ const TableReservation = ({
 				onCloseClick={() => {
 					setShowCanvas(false);
 				}}
-				title={'Reservación'}
+				title={t('reservation')}
 				children={childrenContent}
 				fullWidth={true}
 			/>

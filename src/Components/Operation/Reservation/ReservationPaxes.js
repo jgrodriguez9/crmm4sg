@@ -18,8 +18,12 @@ import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
 import { getRelationship } from '../../../helpers/pax';
+import { useTranslation } from 'react-i18next';
 
 const ReservationPaxes = ({ reservationId }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.reservationPaxes',
+	});
 	const [showModal, setShowModal] = useState(false);
 	const [pax, setPax] = useState(null);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -104,19 +108,19 @@ const ReservationPaxes = ({ reservationId }) => {
 		{
 			iconClass: `${editIconClass} fs-5 text-primary`,
 			click: editPax,
-			labelTooltip: 'Editar',
+			labelTooltip: t('edit'),
 		},
 		{
 			iconClass: `${deleteIconClass} fs-5 text-danger`,
 			click: showDialogDelete,
-			labelTooltip: 'Eliminar',
+			labelTooltip: t('delete'),
 		},
 	];
 
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'Nombre',
+				Header: t('name'),
 				accessor: 'firstName',
 				filterable: false,
 				width: '40%',
@@ -124,7 +128,7 @@ const ReservationPaxes = ({ reservationId }) => {
 					`${value?.toUpperCase()} ${row.original.lastName?.toUpperCase()}`,
 			},
 			{
-				Header: 'Relación',
+				Header: t('relationship'),
 				accessor: 'relation',
 				filterable: false,
 				width: '20%',
@@ -133,13 +137,13 @@ const ReservationPaxes = ({ reservationId }) => {
 						?.label ?? value,
 			},
 			{
-				Header: 'Ocupación',
+				Header: t('occupation'),
 				accessor: 'occupation',
 				filterable: false,
 				width: '15%',
 			},
 			{
-				Header: 'Fecha nacimiento',
+				Header: t('birthDay'),
 				accessor: 'fechadnacimiento',
 				filterable: false,
 				width: '15%',
@@ -156,7 +160,7 @@ const ReservationPaxes = ({ reservationId }) => {
 				},
 			},
 		],
-		[dataRelationships]
+		[dataRelationships, t]
 	);
 
 	const toggleDialog = () => setShowModal(!showModal);
@@ -191,7 +195,7 @@ const ReservationPaxes = ({ reservationId }) => {
 							}}
 						>
 							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
-							Nuevo acompañante
+							{t('newPax')}
 						</button>
 					</div>
 				</Col>
@@ -216,7 +220,7 @@ const ReservationPaxes = ({ reservationId }) => {
 			<BasicModal
 				open={showModal}
 				setOpen={setShowModal}
-				title={`${pax ? 'Editar Acompañante' : 'Agregar Acompañante'}`}
+				title={`${pax ? t('editPax') : t('addPax')}`}
 				size="md"
 				children={
 					<FormPaxes

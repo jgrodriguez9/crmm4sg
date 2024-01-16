@@ -24,8 +24,12 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
+import { useTranslation } from 'react-i18next';
 
 const FormReservationInformation = ({ toggleDialog, refetch }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formReservationInformation',
+	});
 	const dispatch = useDispatch();
 	const user = useUser();
 
@@ -121,7 +125,6 @@ const FormReservationInformation = ({ toggleDialog, refetch }) => {
 					data[key] = value;
 				}
 			});
-			console.log(data);
 			createItem(data);
 			// create reservation
 		},
@@ -159,17 +162,17 @@ const FormReservationInformation = ({ toggleDialog, refetch }) => {
 				return false;
 			}}
 		>
-			<h5 className="mt-3 text-primary">Detalle del titular</h5>
+			<h5 className="mt-3 text-primary">{t('ownerDetail')}</h5>
 			<hr />
 			<FormReservationClient formik={formik} />
-			<h5 className="text-primary">Detalle de la reservación</h5>
+			<h5 className="text-primary">{t('reservationDetail')}</h5>
 			<hr />
 			<FormReservationCero formik={formik} />
 			<FormReservationPaxes formik={formik} />
 			{!isCreating && (
 				<div className="d-flex my-3">
 					<Button type="submit" color="primary" className="me-2">
-						Aceptar
+						{t('accept')}
 					</Button>
 					<Button
 						type="button"
@@ -177,7 +180,7 @@ const FormReservationInformation = ({ toggleDialog, refetch }) => {
 						className="btn-soft-danger"
 						onClick={toggleDialog ? toggleDialog : () => {}}
 					>
-						Cancelar
+						{t('cancel')}
 					</Button>
 				</div>
 			)}
@@ -187,13 +190,13 @@ const FormReservationInformation = ({ toggleDialog, refetch }) => {
 					<ButtonsLoader
 						buttons={[
 							{
-								text: 'Aceptar',
+								text: t('accept'),
 								color: 'primary',
 								className: 'me-2',
 								loader: true,
 							},
 							{
-								text: 'Cancelar',
+								text: t('cancel'),
 								color: 'danger',
 								className: 'btn-soft-danger',
 								loader: false,

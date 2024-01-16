@@ -8,8 +8,12 @@ import { Country } from 'country-state-city';
 import { SELECT_OPTION } from '../../../constants/messages';
 import CityInput from '../../../Controller/CityInput';
 import { incomeOpt } from '../../../constants/utils';
+import { useTranslation } from 'react-i18next';
 
 const FormReservationClient = ({ formik }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formReservationClient',
+	});
 	const [countryDefault, setCountryDefault] = useState(null);
 	const [statesDefault, setStatesDefault] = useState(null);
 	const [citiesDefault, setCitiesDefault] = useState(null);
@@ -26,7 +30,7 @@ const FormReservationClient = ({ formik }) => {
 						className="form-label mb-0"
 						htmlFor="customer.firstName"
 					>
-						Nombre
+						{t('name')}
 					</Label>
 					<Input
 						type="text"
@@ -53,7 +57,7 @@ const FormReservationClient = ({ formik }) => {
 						className="form-label mb-0"
 						htmlFor="customer.lastName"
 					>
-						Apellido
+						{t('lastName')}
 					</Label>
 					<Input
 						type="text"
@@ -75,7 +79,7 @@ const FormReservationClient = ({ formik }) => {
 			<Col xs="12" md="4">
 				<div className="mb-2">
 					<Label className="form-label mb-0" htmlFor="customer.email">
-						Correo electrónico
+						{t('email')}
 					</Label>
 					<Input
 						type="text"
@@ -100,7 +104,7 @@ const FormReservationClient = ({ formik }) => {
 						className="form-label mb-0"
 						htmlFor="customer.address"
 					>
-						Dirección
+						{t('address')}
 					</Label>
 					<Input
 						type="text"
@@ -120,7 +124,7 @@ const FormReservationClient = ({ formik }) => {
 						className="form-label mb-0"
 						htmlFor="customer.postalCode"
 					>
-						CP
+						{t('zip')}
 					</Label>
 					<Input
 						type="text"
@@ -138,7 +142,7 @@ const FormReservationClient = ({ formik }) => {
 						className="form-label mb-0"
 						htmlFor="customer.srcIncome"
 					>
-						Ingreso
+						{t('income')}
 					</Label>
 					<Select
 						id="customer.srcIncome"
@@ -174,7 +178,7 @@ const FormReservationClient = ({ formik }) => {
 						className="form-label mb-0"
 						htmlFor="customer.country"
 					>
-						País
+						{t('country')}
 					</Label>
 					<Select
 						id="customer.country"
@@ -202,7 +206,7 @@ const FormReservationClient = ({ formik }) => {
 			<Col xs="12" md="4">
 				<div className="mb-2">
 					<Label className="form-label mb-0" htmlFor="customer.state">
-						Estado
+						{t('state')}
 					</Label>
 					<StateInput
 						value={statesDefault}
@@ -222,7 +226,7 @@ const FormReservationClient = ({ formik }) => {
 			<Col xs="12" md="4">
 				<div className="mb-2">
 					<Label className="form-label mb-0" htmlFor="customer.city">
-						Ciudad
+						{t('city')}
 					</Label>
 					<CityInput
 						value={citiesDefault}
@@ -241,7 +245,7 @@ const FormReservationClient = ({ formik }) => {
 			<Col xs="12" md="4">
 				<div className="mb-2">
 					<Label className="form-label mb-0" htmlFor="phone1">
-						Teléfono casa
+						{t('housePhone')}
 					</Label>
 					<PhoneInput
 						inputClass={`form-control w-100`}
@@ -269,7 +273,7 @@ const FormReservationClient = ({ formik }) => {
 			<Col xs="12" md="4">
 				<div className="mb-2">
 					<Label className="form-label mb-0" htmlFor="phone2">
-						Teléfono trabajo
+						{t('workPhone')}
 					</Label>
 					<PhoneInput
 						inputClass={`form-control w-100`}
@@ -297,7 +301,7 @@ const FormReservationClient = ({ formik }) => {
 			<Col xs="12" md="4">
 				<div className="mb-2">
 					<Label className="form-label mb-0" htmlFor="movil">
-						Celular
+						{t('mobile')}
 					</Label>
 					<PhoneInput
 						inputClass={`form-control w-100`}

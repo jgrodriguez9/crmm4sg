@@ -5,8 +5,12 @@ import FormMaketingMailClient from './MarketingMailClient/FormMaketingMailClient
 import BasicModal from '../../../Common/BasicModal';
 import DetailmarketingMailCanvas from './MarketingMailClient/DetailmarketingMailCanvas';
 import { addIconClass } from '../../../constants/icons';
+import { useTranslation } from 'react-i18next';
 
 const MarketingMailClient = ({ customer }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.marketingMailClient',
+	});
 	const [showAddModal, setShowAddModal] = useState(false);
 	//detail canva
 	const [showDetail, setShowDetail] = useState(false);
@@ -28,8 +32,8 @@ const MarketingMailClient = ({ customer }) => {
 							onClick={() => setShowAddModal(true)}
 							className="d-flex align-items-center"
 						>
-							<i className={`${addIconClass} fs-5`} /> Crear
-							correo
+							<i className={`${addIconClass} fs-5`} />{' '}
+							{t('createMail')}
 						</Button>
 					</div>
 				</Col>
@@ -38,7 +42,7 @@ const MarketingMailClient = ({ customer }) => {
 			<BasicModal
 				open={showAddModal}
 				setOpen={setShowAddModal}
-				title="Nuevo email"
+				title={t('newEmail')}
 				size="lg"
 				children={
 					<FormMaketingMailClient

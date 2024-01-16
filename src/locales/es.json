@@ -22,7 +22,7 @@
                 "ownerAge": "Edad del titular",
                 "country": "País",
                 "saleMan": "Vendedor",
-                "status": "Estatus",
+                "status": "Estado",
                 "saleDate": "F.Venta",
                 "createClient": "Crear cliente",
                 "client": "Cliente"
@@ -84,7 +84,7 @@
                 "confirmation": "Confirmación",
                 "shortCheckInLabel": "LLegada",
                 "shortCheckOutLabel": "Salida",
-                "status": "Estatus",
+                "status": "Estado",
                 "createReservation": "Crear reservación"
             },
             "detail": {
@@ -136,7 +136,7 @@
             "saleDate": "Fecha venta",
             "noPayments": "No. pagos",
             "balance": "Saldo",
-            "status": "Estatus"
+            "status": "Estado"
         },
         "breadCrumb": {
             "filters": "Filtros",
@@ -324,6 +324,254 @@
                 "transferBookingToClient": "Transferencia de booking a nuevo cliente",
                 "recording": "Grabaciones",
                 "digitalFile": "Archivo digital"
+            },
+            "formCreateReservationFromClient": {
+                "accept": "Aceptar",
+                "cancel": "Cancelar"
+            },
+            "tableReservation": {
+                "id": "Id",
+                "confirmation": "Confirmación",
+                "hotel": "Hotel",
+                "plan": "Plan",
+                "shortCheckInLabel": "LLegada",
+                "shortCheckOutLabel": "Salida",
+                "adults": "Adultos",
+                "status": "Estado",
+                "preview": "Vista previa",
+                "nights": "Noches",
+                "children": "Menores",
+                "infants": "Infantes",
+                "reservation": "Reservación"
+            },
+            "formSms": {
+                "number":"Número",
+                "message": "Mensaje",
+                "send": "Enviar",
+                "cancel": "Cancelar"
+            },
+            "marketingMailClient": {
+                "createMail": "Crear correo",
+                "newEmail": "Nuevo correo electrónico"
+            },
+            "notasCliente": {
+                "add": "Agregar",
+                "editNote": "Editar nota",
+                "createNote": "Crear nota"
+            },
+            "originClient": {
+                "packages": "Paquetes",
+                "certificates": "Certificados",
+                "createReservation":"Crear reservación"
+            },
+            "smsClient": {
+                "createSms": "Crear SMS"
+            },
+            "formReservationCero": {
+                "hotel": "Hotel",
+                "hotelUnit": "Unidad hotelera",
+                "plan": "Plan",
+                "checkIn": "Fecha llegada",
+                "checkOut": "Fecha salida",
+                "nights": "Noches",
+                "adults": "Adultos",
+                "children": "Menores",
+                "infants": "Infantes",
+                "others": "Otras",
+                "cards": "Tarjetas",
+                "comment": "Comentario"
+            },
+            "formReservationClient": {
+                "name": "Nombre",
+                "lastName": "Apellido",
+                "email": "Correo electrónico",
+                "address": "Dirección",
+                "zip": "CP",
+                "income": "Ingreso",
+                "country": "País",
+                "state": "Estado",
+                "city": "Ciudad",
+                "housePhone": "Teléfono casa",
+                "workPhone": "Teléfono trabajo",
+                "mobile": "Celular",
+                "accept":"Aceptar",
+                "cancel":"Cancelar"
+            },
+            "formReservationPaxes": {
+                "paxes": "Acompañantes",
+                "add": "Agregar",
+                "name": "Nombre",
+                "lastName": "Apellidos",
+                "birthDay": "Fecha nacimiento",
+                "age": "Edad",
+                "occupation": "Ocupación",
+                "relationship": "Relación"
+            },
+            "formReservationInformation": {
+                "ownerDetail": "Detalle del titular",
+                "reservationDetail": "Detalle de la reservación",
+                "accept": "Aceptar",
+                "cancel": "Cancelar"
+            },
+            "reservationFilter": {
+                "filters": "Filtros",
+                "id": "Id",
+                "confirmation": "Confirmación",
+                "certificate": "Certificado",
+                "checkInFrom": "Llegada desde",
+                "to": "Hasta",
+                "enteredFrom": "Ingresada Desde",
+                "enteredTo": "Hasta",
+                "hotel": "Hotel",
+                "segment": "Segmento",
+                "status": "Estatus",
+                "campaign": "Campaña",
+                "program": "Programa",
+                "name": "Nombre",
+                "lastName": "Apellido",
+                "country": "País",
+                "state": "Estado",
+                "phone": "Teléfono",
+                "email":"Correo electrónico",
+                "search": "Buscar",
+                "cleanFilter": "Limpiar filtros"
+            },
+            "reservationNotas": {
+                "edit": "Editar",
+                "delete":"Eliminar",
+                "newNote": "Nueva nota",
+                "editNote": "Editar nota",
+                "createNote": "Crear nota"
+            },
+            "reservationPaxes": {
+                "edit": "Editar",
+                "delete":"Eliminar",
+                "name":"Nombre",
+                "relationship": "Relación",
+                "occupation": "Ocupación",
+                "birthDay":"Fecha nacimiento",
+                "newPax": "Nuevo acompañante",
+                "editPax": "Editar Acompañante",
+                "addPax": "Agregar Acompañante"
+            },
+            "reservationPayment": {
+                "id": "ID",
+                "authorization": "Autorización",
+                "bank": "Banco",
+                "noPayment":"No. Pagos",
+                "paymentType": "Tipo pago",
+                "amount": "Monto",
+                "currency": "Moneda",
+                "exchange": "Tipo cambio",
+                "user": "Usuario",
+                "department": "Departamento",
+                "creationDate":"Fecha creación",
+                "newPayment":"Nuevo pago",
+                "addPayment": "Agregar pago"
+            },
+            "reservationService": {
+                "edit": "Editar",
+                "delete":"Eliminar",
+                "service": "Servicio",
+                "note":"Nota",
+                "adults":"Adultos",
+                "children":"Menores",
+                "amount":"Monto",
+                "user": "Usuario",
+                "creationDate":"Fecha creación",
+                "newService": "Nuevo servicio",
+                "addService": "Agregar Servicio"
+            },
+            "reservationTransportation": {
+                "edit": "Editar",
+                "delete":"Eliminar",
+                "name":"Nombre",
+                "relationship": "Relación",
+                "occupation": "Ocupación",
+                "birthDay":"Fecha nacimiento",
+                "newTransportation": "Nueva Transportación",
+                "editTransportation": "Editar Transportación",
+                "addTransportation": "Agregar Transportación"
+            },
+            "tabsReservation": {
+                "reservationDetail":"Detalle de la reservación",
+                "payments": "Pagos",
+                "services":"Servicios",
+                "transportation": "Transportación",
+                "notes":"Notas"
+            },
+            "viewReservationInformation": {
+                "editReservation": "Editar reservación",
+                "viewReservation": "Ver disponibilidad",
+                "noConfirmation": "No. confirmación",
+                "hotel":"Hotel",
+                "hotelUnit":"Unidad hotelera",
+                "plan": "Plan",
+                "checkIn": "Fecha llegada",
+                "checkOut": "Fecha salida",
+                "nights": "Noches",
+                "adults": "Adultos",
+                "children":"Menores",
+                "infants":"Infantes",
+                "others":"Otras",
+                "whichOne": "Cuál",
+                "cards": "Tarjetas",
+                "ownerDetail": "Detalle del titular",
+                "name":"Nombre",
+                "lastName":"Apellidos",
+                "maritalStatus": "Estado civil",
+                "income": "Ingreso",
+                "operationDetail": "Detalle de la operación",
+                "segment":"Segmento",
+                "program": "Programa",
+                "availability":"Disponibilidad"
+            },
+            "formPaxes": {
+                "name":"Nombre",
+                "lastName":"Apellidos",
+                "birthDay":"Fecha nacimiento",
+                "age": "Edad",
+                "occupation":"Ocupación",
+                "relationship":"Relación",
+                "accept":"Aceptar",
+                "cancel":"Cancelar"
+            },
+            "formPaymentClient": {
+                "name":"Nombre",
+                "lastName": "Apellidos",
+                "card": "Tarjeta",
+                "expirationDate": "Fecha expiración",
+                "cardType": "Tipo de tarjeta",
+                "terminalType": "Tipo de terminal",
+                "membership": "Afiliación",
+                "noAuthorization": "No. autorización",
+                "invoice": "Factura",
+                "paymentDate": "Fecha pago",
+                "currency": "Moneda",
+                "amount":"Importe",
+                "accept":"Aceptar",
+                "cancel":"Cancelar"
+            },
+            "formReservation": {
+                "owner": "Titular",
+                "edit": "Editar"
+            },
+            "formReservationEdit": {
+                "reservationDetail":"Detalle de la reservación",
+                "hotel":"Hotel",
+                "hotelUnit":"Unidad hotelera",
+                "plan":"Plan",
+                "checkIn": "Fecha llegada",
+                "checkOut": "Fecha salida",
+                "nights": "Noches",
+                "adults":"Adultos",
+                "children":"Menores",
+                "infants":"Infantes",
+                "others":"Otras",
+                "cards":"Tarjetas",
+                "comment":"Comentario",
+                "accept":"Aceptar",
+                "cancel":"Cancelar"
             }
         }
     },

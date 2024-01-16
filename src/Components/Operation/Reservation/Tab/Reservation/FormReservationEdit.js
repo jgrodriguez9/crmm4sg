@@ -27,6 +27,7 @@ import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import { getHotelUnitByHotelPaginate } from '../../../../../helpers/catalogues/hotel_unit';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
+import { useTranslation } from 'react-i18next';
 
 const FormReservationEdit = ({
 	reservation = null,
@@ -34,6 +35,9 @@ const FormReservationEdit = ({
 	editClient,
 	refetchReservation,
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formReservationEdit',
+	});
 	const dispatch = useDispatch();
 	const [initialDate, setInitialDate] = useState(
 		reservation?.initialDate
@@ -196,13 +200,13 @@ const FormReservationEdit = ({
 				return false;
 			}}
 		>
-			<h5 className="text-primary">Detalle de la reservación</h5>
+			<h5 className="text-primary">{t('reservationDetail')}</h5>
 			<hr />
 			<Row>
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="hotel">
-							Hotel
+							{t('hotel')}
 						</Label>
 						<Select
 							id="hotel"
@@ -234,7 +238,7 @@ const FormReservationEdit = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="hotelUnit">
-							Unidad hotelera
+							{t('hotelUnit')}
 						</Label>
 						<Select
 							id="hotelUnit"
@@ -272,7 +276,7 @@ const FormReservationEdit = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="plan">
-							Plan
+							{t('plan')}
 						</Label>
 						<Select
 							id="hotel"
@@ -312,7 +316,7 @@ const FormReservationEdit = ({
 							className="form-label mb-0"
 							htmlFor="fechaLlegada"
 						>
-							Fecha llegada
+							{t('checkIn')}
 						</Label>
 						<DatePicker
 							id="initialDate"
@@ -334,7 +338,7 @@ const FormReservationEdit = ({
 				<Col xs="12" md="2">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="finalDate">
-							Fecha salida
+							{t('checkOut')}
 						</Label>
 						<DatePicker
 							id="finalDate"
@@ -353,7 +357,7 @@ const FormReservationEdit = ({
 				<Col xs="12" md="2">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="noches">
-							Noches
+							{t('nights')}
 						</Label>
 						<DisabledInput
 							value={diffDates(
@@ -367,7 +371,7 @@ const FormReservationEdit = ({
 				<Col xs="12" md="2">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="adult">
-							Adultos
+							{t('adults')}
 						</Label>
 						<Input
 							type="text"
@@ -382,7 +386,7 @@ const FormReservationEdit = ({
 				<Col xs="12" md="2">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="child">
-							Menores
+							{t('children')}
 						</Label>
 						<Input
 							type="text"
@@ -397,7 +401,7 @@ const FormReservationEdit = ({
 				<Col xs="12" md="2">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="infant">
-							Infantes
+							{t('infants')}
 						</Label>
 						<Input
 							type="text"
@@ -514,7 +518,7 @@ const FormReservationEdit = ({
 										className="form-check-label"
 										htmlFor="other"
 									>
-										Otras
+										{t('others')}
 									</Label>
 								</div>
 							</Col>
@@ -524,7 +528,7 @@ const FormReservationEdit = ({
 				<Col xs="12" md="3">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="comentario">
-							Tarjetas
+							{t('cards')}
 						</Label>
 						<Input
 							type="text"
@@ -539,7 +543,7 @@ const FormReservationEdit = ({
 				<Col xs="12" md="5">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="comentario">
-							Comentario
+							{t('comment')}
 						</Label>
 						<textarea
 							id="comentario"
@@ -559,7 +563,7 @@ const FormReservationEdit = ({
 						className="me-2"
 						disabled={editClient}
 					>
-						Aceptar
+						{t('accept')}
 					</Button>
 					<Button
 						type="button"
@@ -568,7 +572,7 @@ const FormReservationEdit = ({
 						onClick={toggleDialog ? toggleDialog : () => {}}
 						disabled={editClient}
 					>
-						Cancelar
+						{t('cancel')}
 					</Button>
 				</div>
 			)}
@@ -578,13 +582,13 @@ const FormReservationEdit = ({
 					<ButtonsLoader
 						buttons={[
 							{
-								text: 'Aceptar',
+								text: t('accept'),
 								color: 'primary',
 								className: 'me-2',
 								loader: true,
 							},
 							{
-								text: 'Cancelar',
+								text: t('cancel'),
 								color: 'danger',
 								className: 'btn-soft-danger',
 								loader: false,

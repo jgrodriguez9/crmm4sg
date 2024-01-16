@@ -24,6 +24,7 @@ import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import calcAge from '../../../../../util/calcAge';
 import DisabledInput from '../../../../Controller/DisabledInput';
 import Select from 'react-select';
+import { useTranslation } from 'react-i18next';
 
 const FormPaxes = ({
 	toggleDialog,
@@ -32,6 +33,9 @@ const FormPaxes = ({
 	refetchPaxs,
 	dataRelationships,
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formPaxes',
+	});
 	const dispatch = useDispatch();
 	const [fechaNacimiento, setFechaNacimiento] = useState(
 		pax?.fechadnacimiento
@@ -160,7 +164,7 @@ const FormPaxes = ({
 				<Col lg={12}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="firstName">
-							Nombre
+							{t('name')}
 						</Label>
 						<Input
 							type="text"
@@ -182,7 +186,7 @@ const FormPaxes = ({
 				<Col lg={12}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="nombre">
-							Apellidos
+							{t('lastName')}
 						</Label>
 						<Input
 							type="text"
@@ -204,7 +208,7 @@ const FormPaxes = ({
 				<Col lg={8}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="nombre">
-							Fecha nacimiento
+							{t('birthDay')}
 						</Label>
 						<DatePicker
 							id="fechaLlegada"
@@ -234,7 +238,7 @@ const FormPaxes = ({
 				<Col lg={4}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="age">
-							Edad
+							{t('age')}
 						</Label>
 						<DisabledInput value={formik.values.age} />
 					</div>
@@ -242,7 +246,7 @@ const FormPaxes = ({
 				<Col lg={12}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="occupation">
-							Ocupación
+							{t('occupation')}
 						</Label>
 						<Input
 							type="text"
@@ -259,7 +263,7 @@ const FormPaxes = ({
 				<Col lg={12}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="relation">
-							Relación
+							{t('relationship')}
 						</Label>
 						<Select
 							value={
@@ -291,13 +295,13 @@ const FormPaxes = ({
 					<ButtonsLoader
 						buttons={[
 							{
-								text: 'Aceptar',
+								text: t('accept'),
 								color: 'primary',
 								className: 'me-2',
 								loader: true,
 							},
 							{
-								text: 'Cancelar',
+								text: t('cancel'),
 								color: 'danger',
 								className: 'btn-soft-danger',
 								loader: false,
@@ -308,7 +312,7 @@ const FormPaxes = ({
 			) : (
 				<div className="d-flex mt-3">
 					<Button type="submit" color="primary" className="me-2">
-						Aceptar
+						{t('accept')}
 					</Button>
 					<Button
 						type="button"
@@ -316,7 +320,7 @@ const FormPaxes = ({
 						className="btn-soft-danger"
 						onClick={toggleDialog ? toggleDialog : () => {}}
 					>
-						Cancelar
+						{t('cancel')}
 					</Button>
 				</div>
 			)}

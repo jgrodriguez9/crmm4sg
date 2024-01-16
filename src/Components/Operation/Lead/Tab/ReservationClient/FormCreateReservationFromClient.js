@@ -20,12 +20,16 @@ import { useMutation, useQueryClient } from 'react-query';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
+import { useTranslation } from 'react-i18next';
 
 const FormCreateReservationFromClient = ({
 	reservation = null,
 	toggleDialog,
 	refetch,
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formCreateReservationFromClient',
+	});
 	const dispatch = useDispatch();
 	const user = useUser();
 	const client = useQueryClient();
@@ -148,7 +152,7 @@ const FormCreateReservationFromClient = ({
 			{!isCreating && (
 				<div className="d-flex my-3">
 					<Button type="submit" color="primary" className="me-2">
-						Aceptar
+						{t('accept')}
 					</Button>
 					<Button
 						type="button"
@@ -156,7 +160,7 @@ const FormCreateReservationFromClient = ({
 						className="btn-soft-danger"
 						onClick={toggleDialog ? toggleDialog : () => {}}
 					>
-						Cancelar
+						{t('cancel')}
 					</Button>
 				</div>
 			)}
@@ -166,13 +170,13 @@ const FormCreateReservationFromClient = ({
 					<ButtonsLoader
 						buttons={[
 							{
-								text: 'Aceptar',
+								text: t('accept'),
 								color: 'primary',
 								className: 'me-2',
 								loader: true,
 							},
 							{
-								text: 'Cancelar',
+								text: t('cancel'),
 								color: 'danger',
 								className: 'btn-soft-danger',
 								loader: false,

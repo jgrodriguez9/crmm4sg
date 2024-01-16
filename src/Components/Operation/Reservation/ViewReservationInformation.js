@@ -8,6 +8,7 @@ import { useQuery } from 'react-query';
 import { fetchMaritalStatus } from '../../../services/maritalStatus';
 import HotelAvailability from '../../Common/HotelAvailability';
 import { editIconClass } from '../../constants/icons';
+import { useTranslation } from 'react-i18next';
 
 const ViewReservationInformation = ({
 	editMode = false,
@@ -15,6 +16,9 @@ const ViewReservationInformation = ({
 	data,
 	refetchReservation,
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.viewReservationInformation',
+	});
 	const [showModal, setShowModal] = useState(false);
 	const [showModalAvailability, setShowModalAvailability] = useState(false);
 
@@ -45,14 +49,14 @@ const ViewReservationInformation = ({
 							<i
 								className={`${editIconClass} mb-1 align-bottom`}
 							></i>{' '}
-							Editar reservación
+							{t('editReservation')}
 						</button>
 						<button
 							className="btn btn-warning btn-sm"
 							onClick={() => setShowModalAvailability(true)}
 						>
 							<i className="ri-calendar-2-line align-bottom"></i>{' '}
-							Ver disponibilidad
+							{t('viewReservation')}
 						</button>
 					</div>
 				</Col>
@@ -64,7 +68,7 @@ const ViewReservationInformation = ({
 							className="form-label mb-0"
 							htmlFor="confirmacion"
 						>
-							No. confirmación
+							{t('noConfirmation')}
 						</Label>
 						<div className="form-control" id="confirmacion">
 							{data?.confirm ?? '-'}
@@ -74,7 +78,7 @@ const ViewReservationInformation = ({
 				<Col lg={2}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="booking">
-							Id booking
+							Booking
 						</Label>
 						<div className="form-control" id="booking">
 							{data?.booking ?? '-'}
@@ -84,7 +88,7 @@ const ViewReservationInformation = ({
 				<Col lg={3}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="hotel">
-							Hotel
+							{t('hotel')}
 						</Label>
 						<div className="form-control" id="hotel">
 							{data?.hotel?.name ?? '-'}
@@ -97,7 +101,7 @@ const ViewReservationInformation = ({
 							className="form-label mb-0"
 							htmlFor="tipoHabitacion"
 						>
-							Unidad hotelera
+							{t('hotelUnit')}
 						</Label>
 						<div className="form-control" id="tipoHabitacion">
 							{data?.hotelUnit ?? '-'}
@@ -107,7 +111,7 @@ const ViewReservationInformation = ({
 				<Col lg={3}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="plan">
-							Plan
+							{t('plan')}
 						</Label>
 						<div className="form-control" id="plan">
 							{data?.intPlan?.name ?? '-'}
@@ -120,7 +124,7 @@ const ViewReservationInformation = ({
 							className="form-label mb-0"
 							htmlFor="fechaLlegada"
 						>
-							Fecha llegada
+							{t('checkIn')}
 						</Label>
 						<div className="form-control" id="fechaLlegada">
 							{moment(data.initialDate, 'YYYY-MM-DD').format(
@@ -135,7 +139,7 @@ const ViewReservationInformation = ({
 							className="form-label mb-0"
 							htmlFor="fechaSalida"
 						>
-							Fecha salida
+							{t('checkOut')}
 						</Label>
 						<div className="form-control" id="fechaSalida">
 							{moment(data.finalDate, 'YYYY-MM-DD').format(
@@ -147,7 +151,7 @@ const ViewReservationInformation = ({
 				<Col lg={1}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="noches">
-							Noches
+							{t('nights')}
 						</Label>
 						<div className="form-control" id="noches">
 							{diffDates(
@@ -161,7 +165,7 @@ const ViewReservationInformation = ({
 				<Col lg={1}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="adultos">
-							Adultos
+							{t('adults')}
 						</Label>
 						<div className="form-control" id="adultos">
 							{data?.adult ?? '-'}
@@ -174,7 +178,7 @@ const ViewReservationInformation = ({
 							className="form-label mb-0"
 							htmlFor="menoresPagan"
 						>
-							Menores
+							{t('children')}
 						</Label>
 						<div className="form-control" id="menoresPagan">
 							{data?.child ?? '-'}
@@ -184,7 +188,7 @@ const ViewReservationInformation = ({
 				<Col lg={1}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="infantes">
-							Infantes
+							{t('infants')}
 						</Label>
 						<div className="form-control" id="infantes">
 							{data?.infant ?? '-'}
@@ -277,14 +281,14 @@ const ViewReservationInformation = ({
 							id="otras"
 						/>
 						<Label className="form-check-label" htmlFor="otras">
-							Otras
+							{t('others')}
 						</Label>
 					</div>
 				</Col>
 				<Col lg={2}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="cual">
-							Cual
+							{t('whichOne')}
 						</Label>
 						<div className="form-control" id="cual">
 							{data?.cotra ?? '-'}
@@ -294,7 +298,7 @@ const ViewReservationInformation = ({
 				<Col lg={2}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="tarjetas">
-							Tarjetas
+							{t('cards')}
 						</Label>
 						<div className="form-control" id="tarjetas">
 							{data?.cards ?? '-'}
@@ -302,7 +306,7 @@ const ViewReservationInformation = ({
 					</div>
 				</Col>
 			</Row>
-			<h6 className="mt-3 text-primary">Detalle del titular</h6>
+			<h6 className="mt-3 text-primary">{t('ownerDetail')}</h6>
 			<hr />
 			<Row className="fs-7">
 				<Col lg={2}>
@@ -311,7 +315,7 @@ const ViewReservationInformation = ({
 							className="form-label mb-0"
 							htmlFor="estadoCivil"
 						>
-							Nombre
+							{t('name')}
 						</Label>
 						<div className="form-control" id="estadoCivil">
 							{data?.customer?.firstName ?? '-'}
@@ -324,7 +328,7 @@ const ViewReservationInformation = ({
 							className="form-label mb-0"
 							htmlFor="estadoCivil"
 						>
-							Apellidos
+							{t('lastName')}
 						</Label>
 						<div className="form-control" id="estadoCivil">
 							{data?.customer?.lastName ?? '-'}
@@ -337,7 +341,7 @@ const ViewReservationInformation = ({
 							className="form-label mb-0"
 							htmlFor="estadoCivil"
 						>
-							Estado civil
+							{t('maritalStatus')}
 						</Label>
 						<div className="form-control" id="estadoCivil">
 							{maritalStatusOpt?.find(
@@ -349,7 +353,7 @@ const ViewReservationInformation = ({
 				<Col lg={2}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="ingreso">
-							Ingreso
+							{t('income')}
 						</Label>
 						<div className="form-control" id="ingreso">
 							{data?.income ?? '-'}
@@ -357,7 +361,7 @@ const ViewReservationInformation = ({
 					</div>
 				</Col>
 			</Row>
-			<h6 className="mt-3 text-primary">Detalle de la operación</h6>
+			<h6 className="mt-3 text-primary">{t('operationDetail')}</h6>
 			<hr />
 			<Row className="fs-7">
 				<Col lg={3}>
@@ -376,7 +380,7 @@ const ViewReservationInformation = ({
 				<Col lg={3}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="proveedor">
-							Segmento
+							{t('segment')}
 						</Label>
 						<div className="form-control" id="proveedor">
 							{data?.segment?.name ?? '-'}
@@ -386,7 +390,7 @@ const ViewReservationInformation = ({
 				<Col lg={3}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="precall">
-							Programa
+							{t('program')}
 						</Label>
 						<div className="form-control" id="precall">
 							{data?.program?.name ?? '-'}
@@ -414,7 +418,7 @@ const ViewReservationInformation = ({
 			<BasicModal
 				open={showModal}
 				setOpen={setShowModal}
-				title="Editar reservación"
+				title={t('editReservation')}
 				size="xl"
 				classBody="py-1 px-3"
 				children={
@@ -428,7 +432,7 @@ const ViewReservationInformation = ({
 			<BasicModal
 				open={showModalAvailability}
 				setOpen={setShowModalAvailability}
-				title="Disponibilidad"
+				title={t('availability')}
 				size="lg"
 				classBody="py-1 px-3"
 				children={

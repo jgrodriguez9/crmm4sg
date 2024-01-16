@@ -17,8 +17,12 @@ import ReservationService from './ReservationService';
 import ReservationPayment from './ReservationPayment';
 import ReservationTransportation from './ReservationTransportation';
 import ReservationNotas from './ReservationNotas';
+import { useTranslation } from 'react-i18next';
 
 const TabsReservation = ({ itemData, refetchReservation }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.tabsReservation',
+	});
 	const [activeTab, setActiveTab] = useState('1');
 	const [editMode, setEditMode] = useState(false);
 
@@ -45,7 +49,7 @@ const TabsReservation = ({ itemData, refetchReservation }) => {
 							type="button"
 						>
 							<h6 className="text-primary">
-								Detalle de la reservación
+								{t('reservationDetail')}
 							</h6>
 						</NavLink>
 					</NavItem>
@@ -74,7 +78,7 @@ const TabsReservation = ({ itemData, refetchReservation }) => {
 							}}
 							type="button"
 						>
-							<h6 className="text-primary">Pagos</h6>
+							<h6 className="text-primary">{t('payments')}</h6>
 						</NavLink>
 					</NavItem>
 					<NavItem>
@@ -88,7 +92,7 @@ const TabsReservation = ({ itemData, refetchReservation }) => {
 							}}
 							type="button"
 						>
-							<h6 className="text-primary">Servicios</h6>
+							<h6 className="text-primary">{t('services')}</h6>
 						</NavLink>
 					</NavItem>
 					<NavItem>
@@ -102,7 +106,9 @@ const TabsReservation = ({ itemData, refetchReservation }) => {
 							}}
 							type="button"
 						>
-							<h6 className="text-primary">Transportación</h6>
+							<h6 className="text-primary">
+								{t('transportation')}
+							</h6>
 						</NavLink>
 					</NavItem>
 					<NavItem>
@@ -116,7 +122,7 @@ const TabsReservation = ({ itemData, refetchReservation }) => {
 							}}
 							type="button"
 						>
-							<h6 className="text-primary">Notas</h6>
+							<h6 className="text-primary">{t('notes')}</h6>
 						</NavLink>
 					</NavItem>
 				</Nav>

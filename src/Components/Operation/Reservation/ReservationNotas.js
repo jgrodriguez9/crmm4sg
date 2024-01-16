@@ -11,8 +11,12 @@ import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../slices/messages/reducer';
 import { DELETE_SUCCESS, ERROR_SERVER } from '../../constants/messages';
 import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
+import { useTranslation } from 'react-i18next';
 
 const ReservationNotas = ({ ReservationId, customerId }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.reservationNotas',
+	});
 	const dispatch = useDispatch();
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -42,12 +46,12 @@ const ReservationNotas = ({ ReservationId, customerId }) => {
 		{
 			iconClass: `${editIconClass} fs-5 text-primary`,
 			click: editRow,
-			labelTooltip: 'Editar',
+			labelTooltip: t('edit'),
 		},
 		{
 			iconClass: `${deleteIconClass} fs-5 text-danger`,
 			click: showDialogDelete,
-			labelTooltip: 'Eliminar',
+			labelTooltip: t('delete'),
 		},
 	];
 	//delete item
@@ -100,7 +104,7 @@ const ReservationNotas = ({ ReservationId, customerId }) => {
 							}}
 						>
 							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
-							Nueva nota
+							{t('newNote')}
 						</button>
 					</div>
 				</Col>
@@ -115,7 +119,7 @@ const ReservationNotas = ({ ReservationId, customerId }) => {
 			<BasicModal
 				open={showAddModal}
 				setOpen={setShowAddModal}
-				title={note ? 'Editar nota' : 'Crear nota'}
+				title={note ? t('editNote') : t('createNote')}
 				size="lg"
 				children={
 					<FormNotaCliente

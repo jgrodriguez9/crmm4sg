@@ -11,8 +11,12 @@ import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../../slices/messages/reducer';
 import { DELETE_SUCCESS, ERROR_SERVER } from '../../../constants/messages';
 import extractMeaningfulMessage from '../../../../util/extractMeaningfulMessage';
+import { useTranslation } from 'react-i18next';
 
 const NotasCliente = ({ customerId }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.notasCliente',
+	});
 	const dispatch = useDispatch();
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -100,7 +104,7 @@ const NotasCliente = ({ customerId }) => {
 							}}
 						>
 							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
-							Agregar
+							{t('add')}
 						</button>
 					</div>
 				</Col>
@@ -115,7 +119,7 @@ const NotasCliente = ({ customerId }) => {
 			<BasicModal
 				open={showAddModal}
 				setOpen={setShowAddModal}
-				title={note ? 'Editar nota' : 'Crear nota'}
+				title={note ? t('editNote') : t('createNote')}
 				size="lg"
 				children={
 					<FormNotaCliente

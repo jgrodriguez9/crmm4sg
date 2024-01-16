@@ -8,8 +8,12 @@ import CellActions from '../../Common/CellActions';
 import { deleteIconClass, editIconClass } from '../../constants/icons';
 import { useDispatch } from 'react-redux';
 import FormTransportacion from './Tab/Transportation/FormTransportacion';
+import { useTranslation } from 'react-i18next';
 
 const ReservationTransportation = ({ reservationId }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.reservationTransportation',
+	});
 	const [showModal, setShowModal] = useState(false);
 	const [item, setItem] = useState(null);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -75,19 +79,19 @@ const ReservationTransportation = ({ reservationId }) => {
 		{
 			iconClass: `${editIconClass} fs-5 text-primary`,
 			click: editPax,
-			labelTooltip: 'Editar',
+			labelTooltip: t('edit'),
 		},
 		{
 			iconClass: `${deleteIconClass} fs-5 text-danger`,
 			click: showDialogDelete,
-			labelTooltip: 'Eliminar',
+			labelTooltip: t('delete'),
 		},
 	];
 
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'Nombre',
+				Header: t('name'),
 				accessor: 'firstName',
 				filterable: false,
 				width: '40%',
@@ -95,19 +99,19 @@ const ReservationTransportation = ({ reservationId }) => {
 					`${value.toUpperCase()} ${row.original.lastName.toUpperCase()}`,
 			},
 			{
-				Header: 'Relación',
+				Header: t('relationship'),
 				accessor: 'relation',
 				filterable: false,
 				width: '20%',
 			},
 			{
-				Header: 'Ocupación',
+				Header: t('occupation'),
 				accessor: 'occupation',
 				filterable: false,
 				width: '15%',
 			},
 			{
-				Header: 'Fecha nacimiento',
+				Header: t('birthDay'),
 				accessor: 'fechadnacimiento',
 				filterable: false,
 				width: '15%',
@@ -159,7 +163,7 @@ const ReservationTransportation = ({ reservationId }) => {
 							}}
 						>
 							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
-							Nuevo Transportación
+							{t('newTransportation')}
 						</button>
 					</div>
 				</Col>
@@ -192,7 +196,7 @@ const ReservationTransportation = ({ reservationId }) => {
 				open={showModal}
 				setOpen={setShowModal}
 				title={`${
-					item ? 'Editar Transportación' : 'Agregar Transportación'
+					item ? t('editTransportation') : t('addTransportation')
 				}`}
 				size="lg"
 				children={

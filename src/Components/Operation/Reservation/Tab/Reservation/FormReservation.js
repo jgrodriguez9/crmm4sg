@@ -11,12 +11,16 @@ import FormReservationEdit from './FormReservationEdit';
 import { useState } from 'react';
 import classNames from 'classnames';
 import { editIconClass } from '../../../../constants/icons';
+import { useTranslation } from 'react-i18next';
 
 const FormReservation = ({
 	reservation = null,
 	toggleDialog,
 	refetchReservation,
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formReservation',
+	});
 	const [editClient, setEditClient] = useState(false);
 	const [openClient, setOpenClient] = useState(false);
 
@@ -40,7 +44,7 @@ const FormReservation = ({
 								<div className="d-flex flex-grow-1">
 									<div className="d-flex flex-column me-auto">
 										<h5 className="text-primary m-0">
-											Titular
+											{t('owner')}
 										</h5>
 										<p className="m-0">{`${reservation.customer.firstName} ${reservation.customer.lastName}`}</p>
 									</div>
@@ -58,7 +62,7 @@ const FormReservation = ({
 											disabled={editClient}
 										>
 											<i className={editIconClass} />{' '}
-											Editar
+											{t('edit')}
 										</Button>
 									)}
 								</div>

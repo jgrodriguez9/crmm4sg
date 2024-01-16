@@ -17,8 +17,12 @@ import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
+import { useTranslation } from 'react-i18next';
 
 const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.tablePaquete',
+	});
 	const dispatch = useDispatch();
 	const user = useUser();
 	const [smsPredefined, setSmsPredefined] = useState(null);
@@ -82,7 +86,7 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 				<Col lg={12}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="nota">
-							Número
+							{t('number')}
 						</Label>
 						<Select
 							id="phone"
@@ -129,7 +133,7 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 							className="form-label mb-0"
 							htmlFor="smsPredefined"
 						>
-							Mensaje
+							{t('message')}
 						</Label>
 						<Select
 							id="smsPredefined"
@@ -187,13 +191,13 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 					<ButtonsLoader
 						buttons={[
 							{
-								text: 'Enviar',
+								text: t('send'),
 								color: 'primary',
 								className: 'me-2',
 								loader: true,
 							},
 							{
-								text: 'Cancelar',
+								text: t('cancel'),
 								color: 'danger',
 								className: 'btn-soft-danger',
 								loader: false,
@@ -204,7 +208,7 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 			) : (
 				<div className="d-flex mt-3">
 					<Button type="submit" color="primary" className="me-2">
-						Enviar
+						{t('send')}
 					</Button>
 					<Button
 						type="button"
@@ -212,7 +216,7 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 						className="btn-soft-danger"
 						onClick={() => {}}
 					>
-						Cancelar
+						{t('cancel')}
 					</Button>
 				</div>
 			)}

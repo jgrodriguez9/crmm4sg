@@ -6,8 +6,12 @@ import { fecthOriginClients } from '../../../../pages/Operation/Lead/Util/servic
 import BasicModal from '../../../Common/BasicModal';
 import { useState } from 'react';
 import FormCreateReservationFromClient from './ReservationClient/FormCreateReservationFromClient';
+import { useTranslation } from 'react-i18next';
 
 const OriginClient = ({ customerId }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.originClient',
+	});
 	const [showModal, setShowModal] = useState(false);
 	const [booking, setBooking] = useState(null);
 	const {
@@ -35,7 +39,7 @@ const OriginClient = ({ customerId }) => {
 			<Row>
 				<Col>
 					<TablePaquete
-						tableTitle="Paquetes"
+						tableTitle={t('packages')}
 						itemData={itemData}
 						errorItem={errorItem}
 						isFetchingItem={isFetchingItem}
@@ -48,7 +52,7 @@ const OriginClient = ({ customerId }) => {
 			<Row>
 				<Col>
 					<TableCerificates
-						tableTitle="Certificados"
+						tableTitle={t('certificates')}
 						itemData={itemData}
 						errorItem={errorItem}
 						isFetchingItem={isFetchingItem}
@@ -61,7 +65,7 @@ const OriginClient = ({ customerId }) => {
 			<BasicModal
 				open={showModal}
 				setOpen={setShowModal}
-				title="Agregar reservación"
+				title={t('createReservation')}
 				size="xl"
 				classBody="py-1 px-3"
 				children={

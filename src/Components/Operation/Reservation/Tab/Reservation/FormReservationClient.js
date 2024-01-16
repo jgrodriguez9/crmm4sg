@@ -27,6 +27,7 @@ import StateInput from '../../../../Controller/StateInput';
 import CityInput from '../../../../Controller/CityInput';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import { incomeOpt } from '../../../../constants/utils';
+import { useTranslation } from 'react-i18next';
 
 const FormReservationClient = ({
 	reservation = null,
@@ -34,6 +35,9 @@ const FormReservationClient = ({
 	editClient,
 	setOpenClient,
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formReservationClient',
+	});
 	const dispatch = useDispatch();
 	//service to get the client
 	const {
@@ -216,7 +220,7 @@ const FormReservationClient = ({
 							className="form-label mb-0"
 							htmlFor="customer.firstName"
 						>
-							Nombre
+							{t('name')}
 						</Label>
 						{!editClient && (
 							<DisabledInput value={formik.values.firstName} />
@@ -246,7 +250,7 @@ const FormReservationClient = ({
 							className="form-label mb-0"
 							htmlFor="customer.lastName"
 						>
-							Apellidos
+							{t('lastName')}
 						</Label>
 						{!editClient && (
 							<DisabledInput value={formik.values.lastName} />
@@ -274,7 +278,7 @@ const FormReservationClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="email">
-							Correo electrónico
+							{t('email')}
 						</Label>
 						{!editCorreo ? (
 							<DisabledInput
@@ -300,7 +304,7 @@ const FormReservationClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="address">
-							Dirección
+							{t('address')}
 						</Label>
 						{!editClient && (
 							<DisabledInput value={formik.values.address} />
@@ -322,7 +326,7 @@ const FormReservationClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="postalCode">
-							CP
+							{t('zip')}
 						</Label>
 						{!editClient && (
 							<DisabledInput value={formik.values.postalCode} />
@@ -345,7 +349,7 @@ const FormReservationClient = ({
 							className="form-label mb-0"
 							htmlFor="customer.srcIncome"
 						>
-							Ingreso
+							{t('income')}
 						</Label>
 						{!editClient && (
 							<DisabledInput value={formik.values.srcIncome} />
@@ -383,7 +387,7 @@ const FormReservationClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="country">
-							País
+							{t('country')}
 						</Label>
 						{!editClient && (
 							<DisabledInput
@@ -419,7 +423,7 @@ const FormReservationClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="country">
-							Estado
+							{t('state')}
 						</Label>
 						{!editClient && (
 							<StateInput
@@ -449,7 +453,7 @@ const FormReservationClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="country">
-							Ciudad
+							{t('city')}
 						</Label>
 						{!editClient && (
 							<DisabledInput value={citiesDefault?.value ?? ''} />
@@ -473,7 +477,7 @@ const FormReservationClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="phone1">
-							Teléfono casa
+							{t('housePhone')}
 						</Label>
 						{!editPhone1 ? (
 							<DisabledInput
@@ -519,7 +523,7 @@ const FormReservationClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="phone1">
-							Teléfono trabajo
+							{t('workPhone')}
 						</Label>
 						{!editPhone2 ? (
 							<DisabledInput
@@ -565,7 +569,7 @@ const FormReservationClient = ({
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="phone1">
-							Celular
+							{t('mobile')}
 						</Label>
 						{!editMobile ? (
 							<DisabledInput
@@ -663,7 +667,7 @@ const FormReservationClient = ({
 			{!isLoading && editClient && (
 				<div className="d-flex my-3">
 					<Button type="submit" color="primary" className="me-2">
-						Aceptar
+						{t('accept')}
 					</Button>
 					<Button
 						type="button"
@@ -674,7 +678,7 @@ const FormReservationClient = ({
 							setOpenClient(false);
 						}}
 					>
-						Cancelar
+						{t('cancel')}
 					</Button>
 				</div>
 			)}
@@ -684,13 +688,13 @@ const FormReservationClient = ({
 					<ButtonsLoader
 						buttons={[
 							{
-								text: 'Aceptar',
+								text: t('accept'),
 								color: 'primary',
 								className: 'me-2',
 								loader: true,
 							},
 							{
-								text: 'Cancelar',
+								text: t('cancel'),
 								color: 'danger',
 								className: 'btn-soft-danger',
 								loader: false,

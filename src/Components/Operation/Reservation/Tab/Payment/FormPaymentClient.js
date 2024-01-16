@@ -2,15 +2,19 @@ import { Button, Col, Form, Input, Label, Row } from 'reactstrap';
 import InputMask from 'react-input-mask';
 import Select from 'react-select';
 import DatePicker from '../../../../Common/DatePicker';
+import { useTranslation } from 'react-i18next';
 
 const FormPaymentClient = ({ toggleDialog }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formPaymentClient',
+	});
 	return (
 		<Form>
 			<Row>
 				<Col lg={6}>
 					<div className="mb-2">
 						<Label className="form-label mb-1" htmlFor="nombre">
-							Nombre
+							{t('name')}
 						</Label>
 						<Input id="nombre" />
 					</div>
@@ -18,7 +22,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 				<Col lg={6}>
 					<div className="mb-2">
 						<Label className="form-label mb-1" htmlFor="nombre">
-							Apellidos
+							{t('lastName')}
 						</Label>
 						<Input id="nombre" />
 					</div>
@@ -29,7 +33,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 							className="form-label mb-1"
 							htmlFor="cleave-ccard"
 						>
-							Tarjeta
+							{t('card')}
 						</Label>
 						<InputMask
 							className="form-control"
@@ -45,7 +49,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 							className="form-label mb-1"
 							htmlFor="cleave-ccard"
 						>
-							Fecha expiración
+							{t('expirationDate')}
 						</Label>
 						<InputMask
 							className="form-control"
@@ -77,7 +81,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 							className="form-label mb-1"
 							htmlFor="cleave-ccard"
 						>
-							Tipo de tarjeta
+							{t('cardType')}
 						</Label>
 						<Select
 							value={null}
@@ -95,7 +99,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 							className="form-label mb-1"
 							htmlFor="cleave-ccard"
 						>
-							Tipo de terminal
+							{t('terminalType')}
 						</Label>
 						<Select
 							value={null}
@@ -112,7 +116,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 							className="form-label mb-1"
 							htmlFor="cleave-ccard"
 						>
-							Afiliación
+							{t('membership')}
 						</Label>
 						<Select
 							value={null}
@@ -126,7 +130,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 				<Col lg={4}>
 					<div className="mb-2">
 						<Label className="form-label mb-1" htmlFor="nombre">
-							No. autorización
+							{t('noAuthorization')}
 						</Label>
 						<Input id="nombre" />
 					</div>
@@ -134,7 +138,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 				<Col lg={4}>
 					<div className="mb-2">
 						<Label className="form-label mb-1" htmlFor="nombre">
-							Invoice
+							{t('invoice')}
 						</Label>
 						<Input id="nombre" />
 					</div>
@@ -142,7 +146,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 				<Col lg={4}>
 					<div className="mb-2">
 						<Label className="form-label mb-1" htmlFor="nombre">
-							Fecha pago
+							{t('paymentDate')}
 						</Label>
 						<DatePicker
 							id="fechaLlegada"
@@ -158,7 +162,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 							className="form-label mb-1"
 							htmlFor="cleave-ccard"
 						>
-							Moneda
+							{t('currency')}
 						</Label>
 						<Select
 							value={null}
@@ -172,7 +176,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 				<Col lg={4}>
 					<div className="mb-2">
 						<Label className="form-label mb-1" htmlFor="total">
-							Importe
+							{t('amount')}
 						</Label>
 						<Input id="total" />
 					</div>
@@ -180,7 +184,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 				<Col lg={4}>
 					<div className="mb-2">
 						<Label className="form-label mb-1" htmlFor="total">
-							Importe (USD)
+							{t('amount')} (USD)
 						</Label>
 						<Input id="total" />
 					</div>
@@ -189,7 +193,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 
 			<div className="d-flex mt-3">
 				<Button type="submit" color="primary" className="me-2">
-					Aceptar
+					{t('accept')}
 				</Button>
 				<Button
 					type="button"
@@ -197,7 +201,7 @@ const FormPaymentClient = ({ toggleDialog }) => {
 					className="btn-soft-danger"
 					onClick={toggleDialog ? toggleDialog : () => {}}
 				>
-					Cancelar
+					{t('cancel')}
 				</Button>
 			</div>
 		</Form>

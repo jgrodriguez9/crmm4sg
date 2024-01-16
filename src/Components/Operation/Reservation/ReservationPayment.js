@@ -1,8 +1,5 @@
 import { useQuery } from 'react-query';
-import {
-	fecthPaxesByReservation,
-	fecthPaymentByReservation,
-} from '../../../pages/Operation/Reservation/Util/services';
+import { fecthPaymentByReservation } from '../../../pages/Operation/Reservation/Util/services';
 import { useMemo, useState } from 'react';
 import jsFormatNumber from '../../../util/jsFormatNumber';
 import moment from 'moment';
@@ -12,8 +9,12 @@ import TableContainer from '../../Common/TableContainer';
 import Loader from '../../Common/Loader';
 import BasicModal from '../../Common/BasicModal';
 import FormPaymentClient from './Tab/Payment/FormPaymentClient';
+import { useTranslation } from 'react-i18next';
 
 const ReservationPayment = ({ ReservationId, reservation }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.reservationPayment',
+	});
 	const [showModal, setShowModal] = useState(false);
 	const { data, error, isLoading, isSuccess } = useQuery(
 		['getPaymentByReservation', reservation.booking],
@@ -28,68 +29,68 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'ID',
+				Header: t('id'),
 				accessor: 'idPayment',
 				filterable: false,
 				width: '10%',
 			},
 			{
-				Header: 'Autorización',
+				Header: t('authorization'),
 				accessor: 'autorization',
 				filterable: false,
 				width: '10%',
 			},
 			{
-				Header: 'Banco',
+				Header: t('bank'),
 				accessor: 'bank',
 				filterable: false,
 				width: '10%',
 			},
 			{
-				Header: 'No. Pagos',
+				Header: t('noPayment'),
 				accessor: 'numPayment',
 				filterable: false,
 				width: '5%',
 			},
 			{
-				Header: 'Tipo pago',
+				Header: t('paymentType'),
 				accessor: 'paymentType',
 				filterable: false,
 				width: '10%',
 			},
 			{
-				Header: 'Monto',
+				Header: t('amount'),
 				accessor: 'amount',
 				filterable: false,
 				width: '8%',
 				Cell: ({ value }) => jsFormatNumber(value),
 			},
 			{
-				Header: 'Moneda',
+				Header: t('currency'),
 				accessor: 'currency',
 				filterable: false,
 				width: '8%',
 			},
 			{
-				Header: 'Tipo cambio',
+				Header: t('exchange'),
 				accessor: 'exchangeRate',
 				filterable: false,
 				width: '9%',
 			},
 			{
-				Header: 'User',
+				Header: t('user'),
 				accessor: 'user',
 				filterable: false,
 				width: '10%',
 			},
 			{
-				Header: 'Departamento',
+				Header: t('department'),
 				accessor: 'depto',
 				filterable: false,
 				width: '10%',
 			},
 			{
-				Header: 'Fecha creación',
+				Header: t('creationDate'),
 				accessor: 'insertDate',
 				filterable: false,
 				width: '10%',
@@ -99,9 +100,8 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 						: '',
 			},
 		],
-		[]
+		[t]
 	);
-	console.log(data);
 
 	const toggleDialog = () => setShowModal(!showModal);
 
@@ -124,7 +124,7 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 							onClick={toggleDialog}
 						>
 							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
-							Nuevo pago
+							{t('newPayment')}
 						</button>
 					</div>
 				</Col>
@@ -148,7 +148,7 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 				<BasicModal
 					open={showModal}
 					setOpen={setShowModal}
-					title="Agregar pago"
+					title={t('addPayment')}
 					size="lg"
 					children={<FormPaymentClient toggleDialog={toggleDialog} />}
 				/>

@@ -10,8 +10,12 @@ import DisabledInput from '../../../Controller/DisabledInput';
 import diffDates from '../../../../util/diffDates';
 import { getCallCenterByUser } from '../../../../helpers/catalogues/call_center';
 import { getHotelUnitByHotelPaginate } from '../../../../helpers/catalogues/hotel_unit';
+import { useTranslation } from 'react-i18next';
 
 const FormReservationCero = ({ formik }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formReservationCero',
+	});
 	const [initialDate, setInitialDate] = useState(null);
 	const [finalDate, setFinalDate] = useState(null);
 	//getHotel
@@ -70,7 +74,7 @@ const FormReservationCero = ({ formik }) => {
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="hotel">
-							Hotel
+							{t('hotel')}
 						</Label>
 						<Select
 							id="hotel"
@@ -107,7 +111,7 @@ const FormReservationCero = ({ formik }) => {
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="hotelUnit">
-							Unidad hotelera
+							{t('hotelUnit')}
 						</Label>
 						<Select
 							id="hotelUnit"
@@ -145,7 +149,7 @@ const FormReservationCero = ({ formik }) => {
 				<Col xs="12" md="4">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="plan">
-							Plan
+							{t('plan')}
 						</Label>
 						<Select
 							id="hotel"
@@ -223,7 +227,7 @@ const FormReservationCero = ({ formik }) => {
 							className="form-label mb-0"
 							htmlFor="fechaLlegada"
 						>
-							Fecha llegada
+							{t('checkIn')}
 						</Label>
 						<DatePicker
 							id="initialDate"
@@ -245,7 +249,7 @@ const FormReservationCero = ({ formik }) => {
 				<Col xs="12" md="2">
 					<div className="mb-3">
 						<Label className="form-label mb-0" htmlFor="finalDate">
-							Fecha salida
+							{t('checkOut')}
 						</Label>
 						<DatePicker
 							id="finalDate"
@@ -264,7 +268,7 @@ const FormReservationCero = ({ formik }) => {
 				<Col xs="12" md="2">
 					<div className="mb-3">
 						<Label className="form-label mb-0" htmlFor="noches">
-							Noches
+							{t('nights')}
 						</Label>
 						<DisabledInput
 							value={diffDates(
@@ -299,7 +303,7 @@ const FormReservationCero = ({ formik }) => {
 				<Col xs="12" md="4">
 					<div className="mb-3">
 						<Label className="form-label mb-0" htmlFor="adult">
-							Adultos
+							{t('adults')}
 						</Label>
 						<Input
 							type="text"
@@ -322,7 +326,7 @@ const FormReservationCero = ({ formik }) => {
 				<Col xs="12" md="4">
 					<div className="mb-3">
 						<Label className="form-label mb-0" htmlFor="child">
-							Menores
+							{t('children')}
 						</Label>
 						<Input
 							type="text"
@@ -344,7 +348,7 @@ const FormReservationCero = ({ formik }) => {
 				<Col xs="12" md="4">
 					<div className="mb-3">
 						<Label className="form-label mb-0" htmlFor="infant">
-							Infantes
+							{t('infants')}
 						</Label>
 						<Input
 							type="text"
@@ -468,7 +472,7 @@ const FormReservationCero = ({ formik }) => {
 										className="form-check-label"
 										htmlFor="other"
 									>
-										Otras
+										{t('others')}
 									</Label>
 								</div>
 							</Col>
@@ -478,7 +482,7 @@ const FormReservationCero = ({ formik }) => {
 				<Col xs="12" md="3">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="cards">
-							Tarjetas
+							{t('cards')}
 						</Label>
 						<Input
 							type="text"
@@ -498,7 +502,7 @@ const FormReservationCero = ({ formik }) => {
 				<Col xs="12" md="5">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="comentario">
-							Comentario
+							{t('comment')}
 						</Label>
 						<textarea
 							id="comentario"

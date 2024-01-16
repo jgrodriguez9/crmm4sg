@@ -4,8 +4,12 @@ import BasicModal from '../../../Common/BasicModal';
 import TableSMS from './SMSClient/TableSMS';
 import FormSMS from './SMSClient/FormSMS';
 import { addIconClass } from '../../../constants/icons';
+import { useTranslation } from 'react-i18next';
 
 const SMSClient = ({ customer }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.smsClient',
+	});
 	const [showAddModal, setShowAddModal] = useState(false);
 	const phonesOpt = useMemo(() => {
 		if (customer?.id) {
@@ -45,7 +49,8 @@ const SMSClient = ({ customer }) => {
 							onClick={() => setShowAddModal(true)}
 							className="d-flex align-items-center"
 						>
-							<i className={`${addIconClass} fs-5`} /> Crear SMS
+							<i className={`${addIconClass} fs-5`} />{' '}
+							{t('createSms')}
 						</Button>
 					</div>
 				</Col>
@@ -54,7 +59,7 @@ const SMSClient = ({ customer }) => {
 			<BasicModal
 				open={showAddModal}
 				setOpen={setShowAddModal}
-				title="Crear SMS"
+				title={t('createSms')}
 				size="md"
 				children={
 					<FormSMS

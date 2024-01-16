@@ -6,8 +6,12 @@ import { useQuery } from 'react-query';
 import { getRelationship } from '../../../../helpers/pax';
 import Select from 'react-select';
 import { SELECT_OPTION } from '../../../constants/messages';
+import { useTranslation } from 'react-i18next';
 
 const FormReservationPaxes = ({ formik }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formReservationPaxes',
+	});
 	//query to get relationship
 	const { data: dataRelationships } = useQuery(
 		'getRelationship',
@@ -35,7 +39,7 @@ const FormReservationPaxes = ({ formik }) => {
 						<Col xs="12" md="12" className="mb-2">
 							<div className="d-flex align-items-center">
 								<h5 className="text-primary m-0 me-1">
-									Acompañantes
+									{t('paxes')}
 								</h5>
 								<Button
 									color="light"
@@ -53,7 +57,7 @@ const FormReservationPaxes = ({ formik }) => {
 									}}
 								>
 									<i className={`fs-5 ${addIconClass}`} />{' '}
-									Agregar
+									{t('add')}
 								</Button>
 							</div>
 						</Col>
@@ -64,22 +68,22 @@ const FormReservationPaxes = ({ formik }) => {
 									<thead>
 										<tr>
 											<th style={{ width: '13%' }}>
-												Nombre
+												{t('name')}
 											</th>
 											<th style={{ width: '22%' }}>
-												Apellidos
+												{t('lastName')}
 											</th>
 											<th style={{ width: '14%' }}>
-												Fecha nacimiento
+												{t('birthDay')}
 											</th>
 											<th style={{ width: '10%' }}>
-												Edad
+												{t('age')}
 											</th>
 											<th style={{ width: '18%' }}>
-												Ocupación
+												{t('occupation')}
 											</th>
 											<th style={{ width: '18%' }}>
-												Relación
+												{t('relationship')}
 											</th>
 											<th style={{ width: '5%' }}></th>
 										</tr>
