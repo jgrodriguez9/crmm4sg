@@ -66,7 +66,7 @@
                 "plan": "Plan",
                 "check-in": "Check-in",
                 "check-out": "Check-out",
-                "roomType": "roomType",
+                "roomType": "Room type",
                 "nights": "Nights",
                 "adults": "Adults",
                 "children":"Children",
@@ -501,7 +501,7 @@
                 "notes":"Notes"
             },
             "viewReservationInformation": {
-                "editReservation": "Edit reservación",
+                "editReservation": "Edit reservation",
                 "viewReservation": "View availabilities",
                 "noConfirmation": "No. Confirmation",
                 "hotel":"Hotel",
