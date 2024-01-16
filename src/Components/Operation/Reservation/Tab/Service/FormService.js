@@ -6,10 +6,8 @@ import {
 	Collapse,
 	Form,
 	FormFeedback,
-	Input,
 	Label,
 	Row,
-	Table,
 } from 'reactstrap';
 import Select from 'react-select';
 import {

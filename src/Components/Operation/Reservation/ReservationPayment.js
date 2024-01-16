@@ -1,6 +1,6 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { fecthPaymentByReservation } from '../../../pages/Operation/Reservation/Util/services';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import jsFormatNumber from '../../../util/jsFormatNumber';
 import moment from 'moment';
 import { Alert, Col, Row } from 'reactstrap';
@@ -10,21 +10,67 @@ import Loader from '../../Common/Loader';
 import BasicModal from '../../Common/BasicModal';
 import FormPaymentClient from './Tab/Payment/FormPaymentClient';
 import { useTranslation } from 'react-i18next';
+import parseObjectToQueryUrl from '../../../util/parseObjectToQueryUrl';
+import PaginationManual from '../../Common/PaginationManual';
+import {
+	deletePayment,
+	getPaymentsByReservation,
+} from '../../../helpers/payments';
+import CellActions from '../../Common/CellActions';
+import { deleteIconClass, editIconClass } from '../../constants/icons';
+import DeleteModal from '../../Common/DeleteModal';
+import { useDispatch } from 'react-redux';
+import { addMessage } from '../../../slices/messages/reducer';
+import { DELETE_SUCCESS, ERROR_SERVER } from '../../constants/messages';
+import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
 
 const ReservationPayment = ({ ReservationId, reservation }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.reservationPayment',
 	});
+	const dispatch = useDispatch();
+	const [itemSelected, setItemSelected] = useState(null);
+	const [query, setQuery] = useState({
+		max: 10,
+		page: 1,
+		idReservation: ReservationId,
+	});
+	const [queryFilter, setQueryFilter] = useState(
+		parseObjectToQueryUrl(query)
+	);
+	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [showModal, setShowModal] = useState(false);
-	const { data, error, isLoading, isSuccess } = useQuery(
-		['getPaymentByReservation', reservation.booking],
-		() => fecthPaymentByReservation(reservation.booking),
+	const { data, error, isLoading, isSuccess, refetch } = useQuery(
+		['getPaymentsByReservation', queryFilter],
+		() => getPaymentsByReservation(queryFilter),
 		{
-			enabled:
-				reservation?.booking !== null &&
-				reservation?.booking !== undefined,
+			keepPreviousData: true,
 		}
 	);
+	console.log(data);
+
+	const editRow = useCallback((row) => {
+		console.log(row);
+	}, []);
+	const showDialogDelete = useCallback((row) => {
+		const { original } = row;
+		console.log(original);
+		setItemSelected(original);
+		setShowDeleteDialog(true);
+	}, []);
+
+	const actions = [
+		{
+			iconClass: `${editIconClass} fs-5 text-primary`,
+			click: editRow,
+			labelTooltip: t('edit'),
+		},
+		{
+			iconClass: `${deleteIconClass} fs-5 text-danger`,
+			click: showDialogDelete,
+			labelTooltip: t('delete'),
+		},
+	];
 
 	const columns = useMemo(
 		() => [
@@ -32,31 +78,25 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 				Header: t('id'),
 				accessor: 'idPayment',
 				filterable: false,
-				width: '10%',
+				width: '7%',
 			},
 			{
 				Header: t('authorization'),
-				accessor: 'autorization',
+				accessor: 'authorization',
 				filterable: false,
 				width: '10%',
 			},
 			{
 				Header: t('bank'),
-				accessor: 'bank',
+				accessor: 'bank.name',
 				filterable: false,
 				width: '10%',
-			},
-			{
-				Header: t('noPayment'),
-				accessor: 'numPayment',
-				filterable: false,
-				width: '5%',
 			},
 			{
 				Header: t('paymentType'),
-				accessor: 'paymentType',
+				accessor: 'type',
 				filterable: false,
-				width: '10%',
+				width: '8%',
 			},
 			{
 				Header: t('amount'),
@@ -75,7 +115,14 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 				Header: t('exchange'),
 				accessor: 'exchangeRate',
 				filterable: false,
-				width: '9%',
+				width: '6%',
+			},
+			{
+				Header: `${t('amount')} (MXN)`,
+				accessor: 'amountMXN',
+				filterable: false,
+				width: '8%',
+				Cell: ({ value }) => jsFormatNumber(value),
 			},
 			{
 				Header: t('user'),
@@ -85,13 +132,13 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 			},
 			{
 				Header: t('department'),
-				accessor: 'depto',
+				accessor: 'department',
 				filterable: false,
 				width: '10%',
 			},
 			{
 				Header: t('creationDate'),
-				accessor: 'insertDate',
+				accessor: 'paymentDate',
 				filterable: false,
 				width: '10%',
 				Cell: ({ value }) =>
@@ -99,11 +146,53 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 						? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY')
 						: '',
 			},
+			{
+				id: 'action',
+				width: '5%',
+				Cell: ({ row }) => {
+					return <CellActions actions={actions} row={row} />;
+				},
+			},
 		],
 		[t]
 	);
 
 	const toggleDialog = () => setShowModal(!showModal);
+
+	//delete item
+	const { mutate: deleteItem, isLoading: isDeleting } = useMutation(
+		deletePayment,
+		{
+			onSuccess: () => {
+				refetch();
+				setShowDeleteDialog(false);
+				dispatch(
+					addMessage({
+						message: DELETE_SUCCESS,
+						type: 'success',
+					})
+				);
+			},
+			onError: (error) => {
+				let message = ERROR_SERVER;
+				message = extractMeaningfulMessage(error, message);
+				dispatch(
+					addMessage({
+						message: message,
+						type: 'error',
+					})
+				);
+			},
+		}
+	);
+
+	const handleDelete = async () => {
+		const dataToDelete = {
+			idReservation: ReservationId,
+			idPayment: itemSelected.idPayment,
+		};
+		deleteItem(dataToDelete);
+	};
 
 	return (
 		<>
@@ -121,7 +210,10 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 					<div className="d-flex align-items-center justify-content-end flex-wrap gap-2 mb-2">
 						<button
 							className="btn btn-info btn-sm"
-							onClick={toggleDialog}
+							onClick={() => {
+								setItemSelected(null);
+								toggleDialog();
+							}}
 						>
 							<i className="ri-add-fill me-1 align-bottom"></i>{' '}
 							{t('newPayment')}
@@ -134,10 +226,20 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 							<>
 								<TableContainer
 									columns={columns}
-									data={isSuccess ? data.data.list : []}
+									data={
+										isSuccess ? data?.data?.list ?? [] : []
+									}
 									className="custom-header-css"
 									divClass="mb-3"
 									tableClass="align-middle table-wrap"
+								/>
+								<PaginationManual
+									query={query}
+									setQuery={setQuery}
+									setQueryFilter={setQueryFilter}
+									totalPages={
+										data?.data?.pagination?.totalPages ?? 1
+									}
 								/>
 							</>
 						) : (
@@ -150,9 +252,21 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 					setOpen={setShowModal}
 					title={t('addPayment')}
 					size="lg"
-					children={<FormPaymentClient toggleDialog={toggleDialog} />}
+					children={
+						<FormPaymentClient
+							toggleDialog={toggleDialog}
+							reservation={reservation}
+							payment={itemSelected}
+						/>
+					}
 				/>
 			</Row>
+			<DeleteModal
+				handleDelete={handleDelete}
+				show={showDeleteDialog}
+				setShow={setShowDeleteDialog}
+				isDeleting={isDeleting}
+			/>
 		</>
 	);
 };

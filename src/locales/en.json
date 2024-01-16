@@ -467,7 +467,9 @@
                 "department": "Department",
                 "creationDate":"Creation date",
                 "newPayment":"New payment",
-                "addPayment": "Add payment"
+                "addPayment": "Add payment",
+                "edit": "Edit",
+                "delete": "Delete"
             },
             "reservationService": {
                 "edit": "Edit",

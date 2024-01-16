@@ -11,7 +11,7 @@ import {
 	SMS_SUCCESS,
 } from '../../../../constants/messages';
 import useUser from '../../../../../hooks/useUser';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { sendExternalSms } from '../../../../../helpers/external/sms';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../../../slices/messages/reducer';
@@ -21,8 +21,9 @@ import { useTranslation } from 'react-i18next';
 
 const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 	const { t } = useTranslation('translation', {
-		keyPrefix: 'components.operation.tablePaquete',
+		keyPrefix: 'components.operation.formSms',
 	});
+	const queryClient = useQueryClient();
 	const dispatch = useDispatch();
 	const user = useUser();
 	const [smsPredefined, setSmsPredefined] = useState(null);
@@ -32,6 +33,9 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 		sendExternalSms,
 		{
 			onSuccess: () => {
+				queryClient.refetchQueries({
+					queryKey: ['getSmsListByCustomer'],
+				});
 				dispatch(
 					addMessage({
 						type: 'success',

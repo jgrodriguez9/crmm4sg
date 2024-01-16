@@ -57,9 +57,13 @@ export const hotelUnit = '/hotelUnit';
 
 //sms
 export const externalSms = '/external/sendSMS';
+export const externalListSms = '/external/listSMS';
 
 //email
 export const externalEmail = '/external/sendEmail';
 
 //sale
 export const sale = '/sale';
+
+//card types
+export const cardType = '/cardType';

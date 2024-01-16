@@ -117,7 +117,7 @@ const FormClient = ({
 			fechaNacimiento: customer?.fechaNacimiento ?? '',
 			address: customer?.address ?? '',
 			postalCode: customer?.postalCode ?? '',
-			country: customer?.country ?? '',
+			country: customer?.country?.iso_code ?? '',
 			state: customer?.state ?? '',
 			city: customer?.city ?? '',
 			phone1: customer?.phone1 ?? '',
@@ -175,6 +175,7 @@ const FormClient = ({
 		setEditCorreo(!editCorreo);
 		formik.setFieldValue('email', '');
 	};
+	console.log(formik.values.country);
 	return (
 		<Form
 			className="needs-validation fs-7"

@@ -5,6 +5,11 @@ import TableSMS from './SMSClient/TableSMS';
 import FormSMS from './SMSClient/FormSMS';
 import { addIconClass } from '../../../constants/icons';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
+import { getSmsListByCustomer } from '../../../../helpers/external/sms';
+import Loader from '../../../Common/Loader';
+import showFriendlyMessafe from '../../../../util/showFriendlyMessafe';
+import AlertMessage from '../../../Common/AlertMessage';
 
 const SMSClient = ({ customer }) => {
 	const { t } = useTranslation('translation', {
@@ -37,6 +42,20 @@ const SMSClient = ({ customer }) => {
 		customer.movil,
 	]);
 
+	const {
+		data: smsList,
+		isLoading,
+		error: errorItemsQuery,
+		isSuccess,
+		isError,
+	} = useQuery(
+		['getSmsListByCustomer'],
+		() => getSmsListByCustomer({ customer: customer.id }),
+		{
+			select: (result) => result.elements ?? [],
+		}
+	);
+
 	const closeModal = () => setShowAddModal(false);
 	return (
 		<>
@@ -55,7 +74,13 @@ const SMSClient = ({ customer }) => {
 					</div>
 				</Col>
 			</Row>
-			<TableSMS />
+			{isLoading && <Loader />}
+			{!isLoading && isError && (
+				<AlertMessage
+					message={showFriendlyMessafe(errorItemsQuery?.code)}
+				/>
+			)}
+			{!isLoading && isSuccess && <TableSMS items={smsList} />}
 			<BasicModal
 				open={showAddModal}
 				setOpen={setShowAddModal}

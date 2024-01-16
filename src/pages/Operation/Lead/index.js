@@ -166,7 +166,7 @@ const Lead = () => {
 			},
 			{
 				Header: t('country'),
-				accessor: 'country',
+				accessor: 'country.name_esp',
 				filterable: false,
 				style: {
 					width: '9%',
