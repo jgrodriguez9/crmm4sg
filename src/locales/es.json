@@ -8,7 +8,7 @@
             "user": "Usuario",
             "password": "Contraseña",
             "login": "Iniciar sesión",
-            "loading": "Loading",
+            "loading": "Cargando",
             "developBy": "Desarrollado por Byte Solutions"
         },
         "dashboard": {
@@ -572,6 +572,20 @@
                 "comment":"Comentario",
                 "accept":"Aceptar",
                 "cancel":"Cancelar"
+            },
+            "formService": {
+                "add":"Agregar",
+                "type": "Tipo",
+                "days": "Días",
+                "adults":"Adultos",
+                "children":"Menores",
+                "amount":"Importe",
+                "promotion": "Promoción",
+                "useDate": "Fecha de uso",
+                "note":"Nota",
+                "accept":"Aceptar",
+                "cancel":"Cancelar",
+                "addAnother": "Agregar otro"
             }
         }
     },

@@ -42,6 +42,7 @@ import useUser from '../../../../../hooks/useUser';
 import moment from 'moment';
 import classNames from 'classnames';
 import { addIconClass } from '../../../../constants/icons';
+import { useTranslation } from 'react-i18next';
 
 const FormService = ({
 	toggleDialog,
@@ -50,6 +51,9 @@ const FormService = ({
 	reservation,
 	refetchServices,
 }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.formService',
+	});
 	const user = useUser();
 	const dispatch = useDispatch();
 	const [openAccordion, setOpenAccordion] = useState('-1');
@@ -269,7 +273,7 @@ const FormService = ({
 							className="d-flex align-items-center"
 							onClick={addService}
 						>
-							<i className={`fs-5 ${addIconClass}`} /> Agregar
+							<i className={`fs-5 ${addIconClass}`} /> {t('add')}
 						</Button>
 					</div>
 				</Col>
@@ -386,7 +390,7 @@ const FormService = ({
 																className="form-label mb-0"
 																htmlFor="service"
 															>
-																Tipo
+																{t('type')}
 															</Label>
 															<Select
 																value={
@@ -475,7 +479,7 @@ const FormService = ({
 																className="form-label mb-0"
 																htmlFor="nights"
 															>
-																Días
+																{t('days')}
 															</Label>
 															<Field
 																className={`form-control ${
@@ -520,7 +524,7 @@ const FormService = ({
 																className="form-label mb-0"
 																htmlFor="nombre"
 															>
-																Adultos
+																{t('adults')}
 															</Label>
 															<Field
 																className={`form-control ${
@@ -565,7 +569,7 @@ const FormService = ({
 																className="form-label mb-0"
 																htmlFor="nombre"
 															>
-																Menores
+																{t('children')}
 															</Label>
 															<Field
 																className={`form-control ${
@@ -610,7 +614,7 @@ const FormService = ({
 																className="form-label mb-0"
 																htmlFor="nombre"
 															>
-																Importe
+																{t('amount')}
 															</Label>
 															<Field
 																className={`form-control ${
@@ -655,7 +659,7 @@ const FormService = ({
 																className="form-label mb-0"
 																htmlFor="nombre"
 															>
-																Promoción
+																{t('promotion')}
 															</Label>
 															<Select
 																value={null}
@@ -672,7 +676,7 @@ const FormService = ({
 																className="form-label mb-0"
 																htmlFor="activation"
 															>
-																Fecha de uso
+																{t('useDate')}
 															</Label>
 															<DatePicker
 																id="activation"
@@ -713,7 +717,7 @@ const FormService = ({
 																className="form-label mb-0"
 																htmlFor="nombre"
 															>
-																Nota
+																{t('note')}
 															</Label>
 															<textarea
 																id="description"
@@ -748,13 +752,13 @@ const FormService = ({
 										<ButtonsLoader
 											buttons={[
 												{
-													text: 'Aceptar',
+													text: t('accept'),
 													color: 'primary',
 													className: 'me-2',
 													loader: true,
 												},
 												{
-													text: 'Cancelar',
+													text: t('cancel'),
 													color: 'danger',
 													className:
 														'btn-soft-danger',
@@ -770,7 +774,7 @@ const FormService = ({
 											color="primary"
 											className="me-2"
 										>
-											Aceptar
+											{t('accept')}
 										</Button>
 										{!service?.idService && (
 											<Button
@@ -800,7 +804,7 @@ const FormService = ({
 													});
 												}}
 											>
-												Agregar otro
+												{t('addAnother')}
 											</Button>
 										)}
 										<Button
@@ -813,7 +817,7 @@ const FormService = ({
 													: () => {}
 											}
 										>
-											Cancelar
+											{t('cancel')}
 										</Button>
 									</div>
 								)}

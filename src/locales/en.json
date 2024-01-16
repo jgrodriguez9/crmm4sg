@@ -1,11 +1,609 @@
 {
     "pages": {
-        
+        "login": {
+            "header": "Login | CRM - M4S",
+            "title": "Login to continue",
+            "usernameRequire": "Please type your username",
+            "passwordRequire": "Please type your password",
+            "user": "Username",
+            "password": "Password",
+            "login": "Login",
+            "loading": "Loading",
+            "developBy": "Develop by Byte Solutions"
+        },
+        "dashboard": {
+            "header": "Dashboard | CRM - M4S"
+        },
+        "client": {
+            "list": {
+                "header": "Client | CRM - M4S",
+                "name": "Name",
+                "campaign": "Campaign",
+                "ownerAge": "Owner's age",
+                "country": "Country",
+                "saleMan": "Seller",
+                "status": "Status",
+                "saleDate": "Sale Date",
+                "createClient": "Create client",
+                "client": "Client"
+            },
+            "detail": {
+                "header": "Client Detail | CRM - M4S",
+                "title": "Client Detail",
+                "call": "Call",
+                "mail": "Email",
+                "sendMail": "Send email",
+                "phones": "phones",
+                "mainInfo": "Main information",
+                "contract": "Contract",
+                "aboutThisClient": "About this client",
+                "address": "Address",
+                "country": "Country",
+                "state": "State",
+                "city": "City",
+                "cp": "ZIP",
+                "income": "Income",
+                "maritalStatus": "Marital status",
+                "birthDay": "Birthday",
+                "clientOwnership": "Creation attribution for this client",
+                "assignedAgent": "Assigned agent",
+                "clients": "Clients",
+                "edit": "Edit",
+                "clientEdit": "Edit client",
+                "newEmail": "New email"
+            }
+            
+        },
+        "reservation": {
+            "list": {
+                "header": "Reservation | CRM - M4SG",
+                "title": "Reservations",
+                "idReservation": "Reservation ID",
+                "idBooking": "Booking ID",
+                "idConfirmation": "Confirmation ID",
+                "reservationDetail": "Reservation detail",
+                "hotel": "Hotel",
+                "plan": "Plan",
+                "check-in": "Check-in",
+                "check-out": "Check-out",
+                "roomType": "roomType",
+                "nights": "Nights",
+                "adults": "Adults",
+                "children":"Children",
+                "infants": "Infants",
+                "ownerDetail": "Owner detail",
+                "name": "Name",
+                "maritalStatus": "Marital status",
+                "income": "Income",
+                "cards": "Cards",
+                "others": "Others",
+                "mood": "Mood",
+                "operationDetail": "Operation detail",
+                "segment": "Segment",
+                "program": "Program",
+                "confirmation": "Confirmation",
+                "shortCheckInLabel": "Check-in",
+                "shortCheckOutLabel": "Check-out",
+                "status": "Status",
+                "createReservation": "Create reservation"
+            },
+            "detail": {
+                "header": "Reservation details | CRM - M4S",
+                "id": "ID",
+                "plan": "Plan",
+                "nights": "Nights",
+                "adults": "Adults",
+                "children": "Children",
+                "infants": "Infants",
+                "shortCheckInLabel": "Check-in",
+                "shortCheckOutLabel": "Check-out"
+            }
+        },
+        "article": {
+            "list": {
+                "header": "Help articles | CRM - M4SG",
+                "edit": "Edit",
+                "delete": "Delete",
+                "title": "Title",
+                "category": "Category",
+                "departament": "Departments",
+                "creationDate": "Creation date",
+                "article": "Article",
+                "createArticle": "Create article",
+                "search": "Search",
+                "editArticle": "Edit article",
+                "newArticle": "New article"
+            }            
+        },
+        "articleCategory": {
+            "list": {
+                "header": "Article Category | CRM - M4SG",
+                "edit": "Edit",
+                "delete": "Delete",
+                "name": "Name",
+                "creationDate": "Creation date",
+                "articleCategory": "Article Category",
+                "createArticleCategory": "Create article Category",
+                "search": "Search",
+                "editArticleCategory": "Edit article Category",
+                "newArticleCategory": "New article Category"
+            }
+        }
     },
     "components": {
-
+        "bannerInformation": {
+            "package": "Package",
+            "saleDate": "Sale date",
+            "noPayments": "No. payments",
+            "balance": "Balance",
+            "status": "Status"
+        },
+        "breadCrumb": {
+            "filters": "Filters",
+            "cleanFilters": "Clean filters"
+        },
+        "crmFilter": {
+            "filters": "Filters",
+            "certificate": "Certificate",
+            "contract": "Contract",
+            "segment": "Segment",
+            "name": "Name",
+            "lastName": "Last name",
+            "phone": "Phone",
+            "country": "Country",
+            "state": "State",
+            "email": "Email",
+            "search": "Search",
+            "cleanFilters": "Clean filters"
+        },
+        "deleteModal": {
+            "yesDeleteIt": "¡Yes, delete it!",
+            "cancel": "Cancel"
+        },
+        "detailCanvas": {
+            "viewRegister": "See register"
+        },
+        "filterCommandGlobal": {
+            "filters": "Filters",
+            "cleanFilters": "Clean filters"
+        },
+        "filters": {
+            "defaultColumnFilter": {
+                "search": "Search"
+            },
+            "selectColumnFilter": {
+                "all": "All"
+            }
+        },
+        "globalFilter": {
+            "search": "Search"
+        },
+        "helpDropdown": {
+            "help": "Help",
+            "search": "Search"
+        },
+        "hotelAvailability": {
+            "checkIn": "Check-in",
+            "checkOut": "Check-out",
+            "hotel": "Hotel",
+            "search": "Search",
+            "selectSearchCriteria": "Please select search criteria"
+        },
+        "paginationManual": {
+            "page": "Page",
+            "from": "from"
+        },
+        "profileDropdown": {
+            "welcome": "Welcome",
+            "signOut": "Logout"
+        },
+        "searchOption": {
+            "search": "Search",
+            "recentSearch": "Recent search",
+            "noInformationAvailable": "No information available",
+            "name": "Name",
+            "certificate": "Certificate",
+            "reservation": "Reservation",
+            "confirmation": "Confirmation"
+        },
+        "tableContainer": {
+            "noInformationAvailable": "No information available"
+        },
+        "formArticle": {
+            "title": "Title",
+            "category": "Category",
+            "departments": "Departments",
+            "description": "Description",
+            "accept": "Ok",
+            "cancel": "Cancel"
+        },
+        "formCategoryArticle": {
+            "name": "Name",           
+            "accept": "Ok",
+            "cancel": "Cancel"
+        },
+        "operation": {
+            "formClient": {
+                "name": "Name",
+                "lastName": "Last name",
+                "birthDay": "Birthday",
+                "address": "Direction",
+                "zip": "zip",
+                "country": "Country",
+                "state": "State",
+                "city": "City",
+                "housePhone": "Home phone",
+                "workPhone": "Work phone",
+                "mobile": "Mobile",
+                "email": "Email",
+                "maritalStatus": "Marital status",
+                "income": "Income",
+                "cancel": "Cancel"
+            },
+            "viewLeadInformation": {
+                "name": "Name",
+                "lastName": "Last name",
+                "address": "Direction",
+                "zipCode": "zip code",
+                "country": "Country",
+                "state": "State",
+                "city": "City",
+                "email": "Email",
+                "phone": "Phone",
+                "assignedUser": "Assigned user"
+            },
+            "detailMarketingMailCanvas": {
+                "conversation": "Conversation",
+                "to": "To",
+                "accept": "Ok"
+            },
+            "formMaketingMailClient": {
+                "receiver": "Receiver",
+                "language": "Language",
+                "template": "Template",
+                "send": "Send",
+                "cancel": "Cancel"
+            },
+            "tableMarketingMailClient": {
+                "template": "Template",
+                "topic": "Topic",
+                "status": "Status",
+                "date": "Date",
+                "search": "Search"
+            },
+            "formNotaCliente": {
+                "moodClient": "Client mood",
+                "type": "Type",
+                "fUpDate": "Date FUp",
+                "note": "Note",
+                "specialReq": "Special req.",
+                "accept": "Ok",
+                "cancel": "Cancel"
+            },
+            "tableNotas": {
+                "type": "Type",
+                "status": "Status",
+                "note": "Note",
+                "specialReq": "Special req.",
+                "creationDate": "Creation date",
+                "fUpDate": "Date FUp",
+                "agent": "Agent"
+            },
+            "tableCertificates": {
+                "hideReservation": "Hide reservation",
+                "viewReservation": "View reservation",
+                "package": "Package",
+                "shortSaleDate": "Sale Date",
+                "supervisor": "Supervisor",
+                "noPayments": "No. Payments",
+                "balance": "Balance",
+                "agent": "Agent",
+                "status": "Status",
+                "createReservation": "Create reservation",
+                "accessReservationModule": "Access to reservations module",
+                "promotionSend": "Sending promotions",
+                "survey": "Survey",
+                "transferBookingToClient": "Booking transfer to new client",
+                "recording": "Recording",
+                "digitalFile": "Digital file"
+            },
+            "tablePaquete": {
+                "hideReservation": "Hide reservation",
+                "viewReservation": "View Reservation",
+                "package": "Package",
+                "shortSaleDate": "F. Venta",
+                "supervisor": "Supervisor",
+                "noPayments": "No. Payments",
+                "balance": "Balance",
+                "agent": "Agent",
+                "status": "Status",
+                "createReservation": "Create reservation",
+                "accessReservationModule": "Access to reservations module",
+                "promotionSend": "Sending promotions",
+                "survey": "Survey",
+                "transferBookingToClient": "Booking transfer to new client",
+                "recording": "Recording",
+                "digitalFile": "Digital file"
+            },
+            "formCreateReservationFromClient": {
+                "accept": "Ok",
+                "cancel": "Cancel"
+            },
+            "tableReservation": {
+                "id": "Id",
+                "confirmation": "Confirmation",
+                "hotel": "Hotel",
+                "plan": "Plan",
+                "shortCheckInLabel": "Check-in",
+                "shortCheckOutLabel": "Check-out",
+                "adults": "Adults",
+                "status": "Status",
+                "preview": "Preview",
+                "nights": "Nights",
+                "children": "Children",
+                "infants": "Infants",
+                "reservation": "Reservation"
+            },
+            "formSms": {
+                "number":"Number",
+                "message": "Message",
+                "send": "Send",
+                "cancel": "Cancel"
+            },
+            "marketingMailClient": {
+                "createMail": "Create email",
+                "newEmail": "New email"
+            },
+            "notasCliente": {
+                "add": "Add",
+                "editNote": "Edit nota",
+                "createNote": "Create nota"
+            },
+            "originClient": {
+                "packages": "Packages",
+                "certificates": "Certificates",
+                "createReservation":"Create reservation"
+            },
+            "smsClient": {
+                "createSms": "Create SMS"
+            },
+            "formReservationCero": {
+                "hotel": "Hotel",
+                "hotelUnit": "Hotel unit",
+                "plan": "Plan",
+                "checkIn": "Check-in",
+                "checkOut": "Check-out",
+                "nights": "Nights",
+                "adults": "Adults",
+                "children": "Children",
+                "infants": "Infants",
+                "others": "Others",
+                "cards": "Cards",
+                "comment": "Comment"
+            },
+            "formReservationClient": {
+                "name": "Name",
+                "lastName": "Last name",
+                "email": "Email",
+                "address": "Direction",
+                "zip": "zip",
+                "income": "Income",
+                "country": "Country",
+                "state": "State",
+                "city": "City",
+                "housePhone": "Home phone",
+                "workPhone": "Work phone",
+                "mobile": "Mobile",
+                "accept":"Ok",
+                "cancel":"Cancel"
+            },
+            "formReservationPaxes": {
+                "paxes": "Paxes",
+                "add": "Add",
+                "name": "Name",
+                "lastName": "Last name",
+                "birthDay": "Birthday",
+                "age": "Age",
+                "occupation": "Occupation",
+                "relationship": "Relationship"
+            },
+            "formReservationInformation": {
+                "ownerDetail": "Owner detail",
+                "reservationDetail": "Reservation details",
+                "accept": "Ok",
+                "cancel": "Cancel"
+            },
+            "reservationFilter": {
+                "filters": "Filters",
+                "id": "Id",
+                "confirmation": "Confirmation",
+                "certificate": "Certificate",
+                "checkInFrom": "Check-in",
+                "to": "Check-out",
+                "enteredFrom": "Entered from",
+                "enteredTo": "Entered to",
+                "hotel": "Hotel",
+                "segment": "Segment",
+                "status": "Status",
+                "campaign": "Campaign",
+                "program": "Program",
+                "name": "Name",
+                "lastName": "Last name",
+                "country": "Country",
+                "state": "State",
+                "phone": "Phone",
+                "email":"Email",
+                "search": "Search",
+                "cleanFilter": "Clean filters"
+            },
+            "reservationNotas": {
+                "edit": "Edit",
+                "delete":"Delete",
+                "newNote": "New note",
+                "editNote": "Edit note",
+                "createNote": "Create note"
+            },
+            "reservationPaxes": {
+                "edit": "Edit",
+                "delete":"Delete",
+                "name":"Name",
+                "relationship": "Relationship",
+                "occupation": "Occupation",
+                "birthDay":"Birthday",
+                "newPax": "New pax",
+                "editPax": "Edit pax",
+                "addPax": "Add pax"
+            },
+            "reservationPayment": {
+                "id": "ID",
+                "authorization": "Authorization",
+                "bank": "Bank",
+                "noPayment":"No. Payments",
+                "paymentType": "Payment type",
+                "amount": "Amount",
+                "currency": "Currency",
+                "exchange": "Exchange",
+                "user": "User",
+                "department": "Department",
+                "creationDate":"Creation date",
+                "newPayment":"New payment",
+                "addPayment": "Add payment"
+            },
+            "reservationService": {
+                "edit": "Edit",
+                "delete":"Delete",
+                "service": "Service",
+                "note":"Note",
+                "adults":"Adults",
+                "children":"Children",
+                "amount":"Amount",
+                "user": "User",
+                "creationDate":"Creation date",
+                "newService": "New servicio",
+                "addService": "Add service"
+            },
+            "reservationTransportation": {
+                "edit": "Edit",
+                "delete":"Delete",
+                "name":"Name",
+                "relationship": "Relationship",
+                "occupation": "Occupation",
+                "birthDay":"Birthday",
+                "newTransportation": "New transportation",
+                "editTransportation": "Edit transportation",
+                "addTransportation": "Add transportation"
+            },
+            "tabsReservation": {
+                "reservationDetail":"Reservation details",
+                "payments": "Payments",
+                "services":"Services",
+                "transportation": "Transportation",
+                "notes":"Notes"
+            },
+            "viewReservationInformation": {
+                "editReservation": "Edit reservación",
+                "viewReservation": "View availabilities",
+                "noConfirmation": "No. Confirmation",
+                "hotel":"Hotel",
+                "hotelUnit":"Hotel unit",
+                "plan": "Plan",
+                "checkIn": "Check-in",
+                "checkOut": "Check-out",
+                "nights": "Nights",
+                "adults": "Adults",
+                "children":"Children",
+                "infants":"Infants",
+                "others":"Others",
+                "whichOne": "Which one",
+                "cards": "Cards",
+                "ownerDetail": "Owner detail",
+                "name":"Name",
+                "lastName":"Last name",
+                "maritalStatus": "Marital status",
+                "income": "Income",
+                "operationDetail": "Operation detail",
+                "segment":"Segment",
+                "program": "Program",
+                "availability":"Availability"
+            },
+            "formPaxes": {
+                "name":"Name",
+                "lastName":"Last name",
+                "birthDay":"Birthday",
+                "age": "Age",
+                "occupation":"Occupation",
+                "relationship":"Relationship",
+                "accept":"Ok",
+                "cancel":"Cancel"
+            },
+            "formPaymentClient": {
+                "name":"Name",
+                "lastName": "Last name",
+                "card": "Card",
+                "expirationDate": "Expiration Date",
+                "cardType": "Card type",
+                "terminalType": "Terminal type",
+                "membership": "Membership",
+                "noAuthorization": "No. authorization",
+                "invoice": "Invoice",
+                "paymentDate": "Payment date",
+                "currency": "Currency",
+                "amount":"Amount",
+                "accept":"Ok",
+                "cancel":"Cancel"
+            },
+            "formReservation": {
+                "owner": "Titular",
+                "edit": "Edit"
+            },
+            "formReservationEdit": {
+                "reservationDetail":"Reservation details",
+                "hotel":"Hotel",
+                "hotelUnit":"Hotel unit",
+                "plan":"Plan",
+                "checkIn": "Check-in",
+                "checkOut": "Check-out",
+                "nights": "Nights",
+                "adults":"Adults",
+                "children":"Children",
+                "infants":"Infants",
+                "others":"Others",
+                "cards":"Cards",
+                "comment":"Comment",
+                "accept":"Ok",
+                "cancel":"Cancel"
+            },
+            "formService": {
+                "add":"Add",
+                "type": "Type",
+                "days": "Days",
+                "adults":"Adults",
+                "children":"Children",
+                "amount":"Amount",
+                "promotion": "Promotion",
+                "useDate": "Date of use",
+                "note":"Note",
+                "accept":"Ok",
+                "cancel":"Cancel",
+                "addAnother": "Add another"
+            }
+        }
     },
     "menu": {
-        "configuration": "Configuration"
+        "dashboard": "Dashboard",
+        "configuration": {
+            "title": "Configuration",
+            "articleOfHelp": "Help articles",
+            "catalogue": "Catalogs",
+            "categoryOfArticle": "Article Category"
+        },
+        "operation": {
+            "title": "Operation",
+            "client": "Client",
+            "reservation": "Reservation"
+        }
+    },
+    "messages": {
+        "wrongPassword": "Wrong user or password"
     }
 }
