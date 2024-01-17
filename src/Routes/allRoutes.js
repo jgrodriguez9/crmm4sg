@@ -44,7 +44,15 @@ const catalogueRoute = [
 ];
 
 // roles
-const agentRoutes = [
+const agentRoutes = [...protectedRoutes, ...clientRoute, ...reservationRoute];
+const supervisorRoutes = [
+	...protectedRoutes,
+	...clientRoute,
+	...reservationRoute,
+	...articleRoute,
+	...catalogueRoute,
+];
+const managerRoutes = [
 	...protectedRoutes,
 	...clientRoute,
 	...reservationRoute,
@@ -54,4 +62,10 @@ const agentRoutes = [
 
 const publicRoutes = [{ path: '/login', component: <Login /> }];
 
-export { publicRoutes, protectedRoutes, agentRoutes };
+export {
+	publicRoutes,
+	protectedRoutes,
+	agentRoutes,
+	supervisorRoutes,
+	managerRoutes,
+};

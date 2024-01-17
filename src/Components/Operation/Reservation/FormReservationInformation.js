@@ -65,7 +65,7 @@ const FormReservationInformation = ({ toggleDialog, refetch }) => {
 				email: '',
 				fax: '',
 				srcIncome: '',
-				userName: user?.username ?? '',
+				userName: user?.usuario ?? '',
 			},
 			//reservation
 			adult: 2,
@@ -84,7 +84,7 @@ const FormReservationInformation = ({ toggleDialog, refetch }) => {
 			other: 0,
 			pickup: 'NP',
 			unit: '',
-			userName: user?.username ?? '',
+			userName: user?.usuario ?? '',
 			visa: 0,
 			//paxes
 			paxes: [],

@@ -85,7 +85,7 @@ const FormCreateReservationFromClient = ({
 			other: 0,
 			pickup: 'NP',
 			unit: '',
-			userName: user?.username ?? '',
+			userName: user?.usuario ?? '',
 			visa: 0,
 		},
 		validationSchema: Yup.object({

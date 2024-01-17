@@ -10,7 +10,7 @@ const useUser = () => {
 				localStorage.getItem('authenticatication-crm')
 			);
 			const obj = JSON.parse(decryptedData);
-			setUser(obj.user);
+			setUser(obj);
 		}
 	}, []);
 

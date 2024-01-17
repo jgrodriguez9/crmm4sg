@@ -1,3 +1,5 @@
-const ROLE_AGENT = 'user';
+const ROLE_AGENT = 'AUXILIAR';
+const ROLE_SUPERVISOR = 'SUPERVISOR';
+const ROLE_MANAGER = 'Gerente';
 
-export { ROLE_AGENT };
+export { ROLE_AGENT, ROLE_SUPERVISOR, ROLE_MANAGER };

@@ -25,7 +25,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 
 import logoLight from '../../assets/images/logo-light.png';
-import { loginUser } from '../../slices/auth/login/thunk';
+import { authentication, loginUser } from '../../slices/auth/login/thunk';
 import { useTranslation } from 'react-i18next';
 //import images
 
@@ -46,8 +46,8 @@ const Login = (props) => {
 		enableReinitialize: true,
 
 		initialValues: {
-			email: 'anescolarde',
-			password: 'zNiQ9i0CpR#FY2#zs',
+			email: 'AGENTE_RVAS', //'anescolarde',
+			password: 'he4ZfRc@IGA8#', //'zNiQ9i0CpR#FY2#zs',
 		},
 		validationSchema: Yup.object({
 			email: Yup.string().required(t('usernameRequire')),
@@ -55,7 +55,8 @@ const Login = (props) => {
 		}),
 		onSubmit: (values) => {
 			//submit request
-			dispatch(loginUser(values, props.router.navigate));
+			//dispatch(loginUser(values, props.router.navigate));
+			dispatch(authentication(values, props.router.navigate));
 		},
 	});
 

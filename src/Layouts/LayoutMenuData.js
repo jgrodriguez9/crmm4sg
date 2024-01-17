@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { existsRole } from '../util/existsRole';
 import { useProfile } from '../Components/Hooks/UserHooks';
-import { ROLE_AGENT } from '../Components/constants/roles';
+import {
+	ROLE_AGENT,
+	ROLE_MANAGER,
+	ROLE_SUPERVISOR,
+} from '../Components/constants/roles';
 
 const Navdata = () => {
 	const history = useNavigate();
@@ -45,7 +49,11 @@ const Navdata = () => {
 			label: 'menu.dashboard',
 			icon: 'ri-dashboard-2-line',
 			link: '/dashboard',
-			show: existsRole(roles, [ROLE_AGENT]),
+			show: existsRole(roles, [
+				ROLE_AGENT,
+				ROLE_MANAGER,
+				ROLE_SUPERVISOR,
+			]),
 		},
 		{
 			id: 'configuration',
@@ -59,14 +67,14 @@ const Navdata = () => {
 				updateIconSidebar(e);
 			},
 			stateVariables: isConfiguration,
-			show: existsRole(roles, [ROLE_AGENT]),
+			show: existsRole(roles, [ROLE_MANAGER, ROLE_SUPERVISOR]),
 			subItems: [
 				{
 					id: 'article',
 					label: 'menu.configuration.articleOfHelp',
 					link: '/article',
 					parentId: 'configuration',
-					show: existsRole(roles, [ROLE_AGENT]),
+					show: existsRole(roles, [ROLE_MANAGER, ROLE_SUPERVISOR]),
 				},
 				{
 					id: 'catalogue',
@@ -78,14 +86,17 @@ const Navdata = () => {
 						setIsCatalogue(!isCatalogue);
 					},
 					parentId: 'configuration',
-					show: existsRole(roles, [ROLE_AGENT]),
+					show: existsRole(roles, [ROLE_MANAGER, ROLE_SUPERVISOR]),
 					stateVariables: isCatalogue,
 					childItems: [
 						{
 							id: 1,
 							label: 'menu.configuration.categoryOfArticle',
 							link: '/articleCategory',
-							show: existsRole(roles, [ROLE_AGENT]),
+							show: existsRole(roles, [
+								ROLE_MANAGER,
+								ROLE_SUPERVISOR,
+							]),
 						},
 					],
 				},
@@ -124,21 +135,33 @@ const Navdata = () => {
 				updateIconSidebar(e);
 			},
 			stateVariables: isOperation,
-			show: existsRole(roles, [ROLE_AGENT]),
+			show: existsRole(roles, [
+				ROLE_AGENT,
+				ROLE_MANAGER,
+				ROLE_SUPERVISOR,
+			]),
 			subItems: [
 				{
 					id: 'client',
 					label: 'menu.operation.client',
 					link: '/client',
 					parentId: 'operation',
-					show: existsRole(roles, [ROLE_AGENT]),
+					show: existsRole(roles, [
+						ROLE_AGENT,
+						ROLE_MANAGER,
+						ROLE_SUPERVISOR,
+					]),
 				},
 				{
 					id: 'reservation',
 					label: 'menu.operation.reservation',
 					link: '/reservation',
 					parentId: 'operation',
-					show: existsRole(roles, [ROLE_AGENT]),
+					show: existsRole(roles, [
+						ROLE_AGENT,
+						ROLE_MANAGER,
+						ROLE_SUPERVISOR,
+					]),
 				},
 			],
 		},

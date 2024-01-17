@@ -13,6 +13,7 @@ import ComingSoon from '../Utils/ComingSoon';
 import kpi from '../../assets/images/kpi.png';
 import DashboardAgent from '../../Components/Dashboard/DashboardAgent';
 import { useTranslation } from 'react-i18next';
+import DashboardSupervisor from '../../Components/Dashboard/DashboadSupervisor';
 
 const DashboardCrm = () => {
 	const { t } = useTranslation('translation', {
@@ -30,7 +31,11 @@ const DashboardCrm = () => {
 					/> */}
 					<Row>
 						{/*Dashboard agente*/}
-						<DashboardAgent />
+						{/* <DashboardAgent /> */}
+						{/*Dashboard supervisor*/}
+						<DashboardSupervisor />
+						{/*Dashboard manager*/}
+						{/* <DashboardAgent /> */}
 
 						<Col>
 							<img src={kpi} className="w-100" alt="" />

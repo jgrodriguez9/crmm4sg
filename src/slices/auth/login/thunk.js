@@ -1,6 +1,6 @@
 //Include Both Helper File with needed methods
 import { authData } from '../../../common/authData';
-import { postLogin } from '../../../helpers/auth';
+import { loginService, postLogin } from '../../../helpers/auth';
 import { decrypData, encryptData } from '../../../util/crypto';
 
 import {
@@ -11,6 +11,34 @@ import {
 	proccessLogin,
 } from './reducer';
 import showFriendlyMessafe from '../../../util/showFriendlyMessafe';
+
+export const authentication = (user, history) => async (dispatch) => {
+	try {
+		dispatch(proccessLogin());
+		const response = loginService({
+			username: user.email,
+			password: user.password,
+		});
+
+		var data = await response;
+		const result = await data.json();
+		console.log(result);
+		if (result.activo) {
+			//test until api is working good
+			//const encryptedData = encryptData(JSON.stringify(authData));
+			const encryptedData = encryptData(JSON.stringify(result));
+			localStorage.setItem('authenticatication-crm', encryptedData);
+			const descryptedData = decrypData(encryptedData);
+			dispatch(loginSuccess(JSON.parse(descryptedData)));
+			window.location.href = '/dashboard';
+			//history('/dashboard');
+		} else {
+			dispatch(apiError(showFriendlyMessafe(result.message)));
+		}
+	} catch (error) {
+		dispatch(apiError(error));
+	}
+};
 
 export const loginUser = (user, history) => async (dispatch) => {
 	try {

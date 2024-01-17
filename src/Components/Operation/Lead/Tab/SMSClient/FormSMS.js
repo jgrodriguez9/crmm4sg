@@ -66,7 +66,7 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 		initialValues: {
 			customer: customerId,
 			message: '',
-			user: 'AGENTE_RVAS', // user?.username ?? '',
+			user: user?.usuario ?? '',
 			phone: '',
 		},
 		validationSchema: Yup.object({

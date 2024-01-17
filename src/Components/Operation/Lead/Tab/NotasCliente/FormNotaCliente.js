@@ -146,7 +146,7 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 		enableReinitialize: true,
 		initialValues: {
 			noteId: note?.noteId ?? '',
-			user: note?.user ?? user?.username,
+			user: note?.user ?? user?.usuario,
 			contactDate: note?.contactDate ?? null,
 			customerId: customerId,
 			note: note?.note ?? '',

@@ -1,15 +1,23 @@
-import * as url from "./url";
+import * as url from './url';
 
+const postLogin = (data) =>
+	fetch(url.POST_LOGIN, {
+		method: 'POST',
+		headers: {
+			'Content-type': 'application/json',
+			Authorization:
+				'Basic Y3JtX3Jlc2VydmFjaW9uZXM6NGFhZGI0NzljYzc5ZmY4ODBjY2YxMThmZmQxNzk3ZmM=',
+		},
+		body: JSON.stringify(data),
+	});
 
-const postLogin = data => fetch(url.POST_LOGIN, {
-    method: "POST",
-    headers: {
-        "Content-type": "application/json",
-        "Authorization": "Basic Y3JtX3Jlc2VydmFjaW9uZXM6NGFhZGI0NzljYzc5ZmY4ODBjY2YxMThmZmQxNzk3ZmM=",
-    },
-    body: JSON.stringify(data)
-});
+const loginService = (data) =>
+	fetch(url.LOGIN, {
+		method: 'POST',
+		headers: {
+			'Content-type': 'application/json',
+		},
+		body: JSON.stringify(data),
+	});
 
-export {
-    postLogin
-};
+export { postLogin, loginService };

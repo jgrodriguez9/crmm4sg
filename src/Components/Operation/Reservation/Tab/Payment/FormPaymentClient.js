@@ -81,7 +81,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 			cardType: payment?.cardType ?? '',
 			expiration: payment?.expiration ?? '',
 			autorization: payment?.autorization ?? '',
-			user: payment?.user ?? user?.username,
+			user: payment?.user ?? user?.usuario,
 			department: payment?.department ?? '',
 			multi: payment?.multi ?? '',
 			exchangeRateTC: payment?.exchangeRateTC ?? '',

@@ -18,7 +18,6 @@ const ProfileDropdown = () => {
 		keyPrefix: 'components.profileDropdown',
 	});
 	const user = useUser();
-
 	//Dropdown Toggle
 	const [isProfileDropdown, setIsProfileDropdown] = useState(false);
 	const toggleProfileDropdown = () => {
@@ -40,14 +39,14 @@ const ProfileDropdown = () => {
 						/>
 						<span className="text-start ms-xl-2">
 							<span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
-								{user?.username}
+								{user?.usuario}
 							</span>
 						</span>
 					</span>
 				</DropdownToggle>
 				<DropdownMenu className="dropdown-menu-end">
 					<h6 className="dropdown-header">
-						{t('welcome')} {user?.firstName}!
+						{t('welcome')} {user?.nombre}!
 					</h6>
 					<DropdownItem className="p-0">
 						<div className="dropdown-item">
@@ -57,17 +56,17 @@ const ProfileDropdown = () => {
 					</DropdownItem>
 					<DropdownItem className="p-0">
 						<div className="dropdown-item">
-							<i className="mdi mdi-google-translate text-muted fs-16 align-middle me-1"></i>
+							<i className="mdi mdi-security text-muted fs-16 align-middle me-1"></i>
 							<span className="align-middle">
-								{getDataAgent(user, 'lang')}
+								{getDataAgent(user, 'department')}
 							</span>
 						</div>
 					</DropdownItem>
 					<DropdownItem className="p-0">
 						<div className="dropdown-item">
-							<i className="mdi mdi-security text-muted fs-16 align-middle me-1"></i>
+							<i className="mdi mdi-card-account-phone-outline text-muted fs-16 align-middle me-1"></i>
 							<span className="align-middle">
-								{getDataAgent(user, 'role')}
+								{getDataAgent(user, 'ext')}
 							</span>
 						</div>
 					</DropdownItem>

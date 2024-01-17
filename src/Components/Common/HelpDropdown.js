@@ -39,7 +39,7 @@ const HelpDropdown = () => {
 			timer.current = setTimeout(() => {
 				setQueryFilter(
 					parseObjectToQueryUrl({
-						user: user.username,
+						user: user.usuario,
 						parameter: searchInput,
 					})
 				);
