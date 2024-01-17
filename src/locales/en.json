@@ -628,6 +628,10 @@
         "FIELD_GREATER_THAN_CERO": "Field must be greater than zero",
         "FIELD_MAX_LENGTH": "Field with maximum length of",
         "SMS_SUCCESS": "Message sent correctly",
-        "EMAIL_SUCCESS": "Email sent correctly"
+        "EMAIL_SUCCESS": "Email sent correctly",
+        "ERR_BAD_REQUEST": "Incorrect request for information",
+        "ERR_NETWORK": "You can try later at the moment we do not have communication with the server",
+        "ERR_BAD_RESPONSE": "Error bad response",
+        "EMPTY_LIST": "There is no information to display"
     }
 }

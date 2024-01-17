@@ -1,8 +1,7 @@
-const ERR_BAD_REQUEST = 'Solicitud incorrecta de la información';
-const ERR_NETWORK =
-	'Puede intentar más tarde por el momento no tenemos comunicación con el servidor';
-const ERR_BAD_RESPONSE = 'Mala respuesta del servidor';
-const EMPTY_LIST = 'No hay información a mostrar';
+const ERR_BAD_REQUEST = 'messages.ERR_BAD_REQUEST';
+const ERR_NETWORK = 'messages.ERR_NETWORK';
+const ERR_BAD_RESPONSE = 'messages.ERR_BAD_RESPONSE';
+const EMPTY_LIST = 'messages.EMPTY_LIST';
 const WRONG_CREDENTIALS = 'messages.wrongPassword';
 
 export {
