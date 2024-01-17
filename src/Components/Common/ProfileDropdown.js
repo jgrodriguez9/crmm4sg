@@ -11,6 +11,7 @@ import { getDataAgent } from '../../util/getDataAgent';
 import useUser from '../../hooks/useUser';
 import { useTranslation } from 'react-i18next';
 import { encryptData } from '../../util/crypto';
+import { editIconClass } from '../constants/icons';
 
 const ProfileDropdown = () => {
 	const { t } = useTranslation('translation', {
@@ -20,6 +21,7 @@ const ProfileDropdown = () => {
 	const [extension, setExtension] = useState('');
 	const [extensionInput, setExtensionInput] = useState('');
 	const [toggleExt, setToggleExt] = useState(false);
+	const [isHover, setHover] = useState(false);
 	useEffect(() => {
 		if (user) {
 			setExtension(getDataAgent(user, 'ext'));
@@ -85,14 +87,25 @@ const ProfileDropdown = () => {
 					</DropdownItem>
 					<DropdownItem className="p-0" text>
 						{!toggleExt && (
-							<div className="dropdown-item">
-								<i className="mdi mdi-card-account-phone-outline text-muted fs-16 align-middle me-1"></i>
-								<span
-									className="align-middle"
-									onClick={() => setToggleExt(true)}
-								>
-									{extension}
-								</span>
+							<div
+								className="dropdown-item d-flex justify-content-between align-items-center"
+								onMouseOver={() => setHover(true)}
+								onMouseOut={() => setHover(false)}
+								onClick={() => setToggleExt(true)}
+							>
+								<div>
+									<i className="mdi mdi-card-account-phone-outline text-muted fs-16 align-middle me-1"></i>
+									<span className="align-middle">
+										{extension}
+									</span>
+								</div>
+								{isHover && (
+									<div>
+										<i
+											className={`${editIconClass} fs-5 text-primary`}
+										/>
+									</div>
+								)}
 							</div>
 						)}
 						{toggleExt && (
