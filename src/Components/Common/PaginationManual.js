@@ -67,7 +67,7 @@ const PaginationManual = ({
 					max={totalPages}
 					defaultValue={query.page}
 					onChange={onChangeInInput}
-					bsSize="sm"
+					size="sm"
 				/>
 			</Col>
 

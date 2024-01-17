@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
 	Dropdown,
 	DropdownItem,
 	DropdownMenu,
 	DropdownToggle,
+	Input,
 } from 'reactstrap';
 
 //import images
@@ -12,16 +13,37 @@ import avatar1 from '../../assets/images/users/avatar-1.jpg';
 import { getDataAgent } from '../../util/getDataAgent';
 import useUser from '../../hooks/useUser';
 import { useTranslation } from 'react-i18next';
+import { encryptData } from '../../util/crypto';
 
 const ProfileDropdown = () => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.profileDropdown',
 	});
 	const user = useUser();
+	const [extension, setExtension] = useState('');
+	const [extensionInput, setExtensionInput] = useState('');
+	const [toggleExt, setToggleExt] = useState(false);
+	useEffect(() => {
+		if (user) {
+			setExtension(getDataAgent(user, 'ext'));
+			setExtensionInput(getDataAgent(user, 'ext'));
+		}
+	}, [user]);
 	//Dropdown Toggle
 	const [isProfileDropdown, setIsProfileDropdown] = useState(false);
 	const toggleProfileDropdown = () => {
 		setIsProfileDropdown(!isProfileDropdown);
+	};
+	const updateExtension = () => {
+		if (!extensionInput) return;
+		//copy del object
+		const copyUser = { ...user };
+		copyUser.extension = extensionInput;
+		setExtension(extensionInput);
+		//encrypt data again
+		const encryptedData = encryptData(JSON.stringify(copyUser));
+		localStorage.setItem('authenticatication-crm', encryptedData);
+		setToggleExt(false);
 	};
 	return (
 		<React.Fragment>
@@ -62,13 +84,51 @@ const ProfileDropdown = () => {
 							</span>
 						</div>
 					</DropdownItem>
-					<DropdownItem className="p-0">
-						<div className="dropdown-item">
-							<i className="mdi mdi-card-account-phone-outline text-muted fs-16 align-middle me-1"></i>
-							<span className="align-middle">
-								{getDataAgent(user, 'ext')}
-							</span>
-						</div>
+					<DropdownItem className="p-0" text>
+						{!toggleExt && (
+							<div className="dropdown-item">
+								<i className="mdi mdi-card-account-phone-outline text-muted fs-16 align-middle me-1"></i>
+								<span
+									className="align-middle"
+									onClick={() => setToggleExt(true)}
+								>
+									{extension}
+								</span>
+							</div>
+						)}
+						{toggleExt && (
+							<div className="dropdown-item d-flex align-items-center">
+								<i className="mdi mdi-card-account-phone-outline text-muted fs-16 align-middle me-1"></i>
+								<div className="input-group">
+									<Input
+										size={'sm'}
+										value={extensionInput}
+										onChange={(e) =>
+											setExtensionInput(e.target.value)
+										}
+									/>
+									<button
+										className="btn btn-success btn-sm"
+										type="button"
+										onClick={updateExtension}
+									>
+										<i className="ri-check-line" />
+									</button>
+									<button
+										className="btn btn-danger btn-sm"
+										type="button"
+										onClick={() => {
+											setToggleExt(false);
+											setExtensionInput(
+												getDataAgent(user, 'ext')
+											);
+										}}
+									>
+										<i className="ri-close-line" />
+									</button>
+								</div>
+							</div>
+						)}
 					</DropdownItem>
 					<div className="dropdown-divider"></div>
 					<DropdownItem className="p-0">
