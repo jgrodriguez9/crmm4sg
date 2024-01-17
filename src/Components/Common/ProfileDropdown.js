@@ -7,9 +7,6 @@ import {
 	DropdownToggle,
 	Input,
 } from 'reactstrap';
-
-//import images
-import avatar1 from '../../assets/images/users/avatar-1.jpg';
 import { getDataAgent } from '../../util/getDataAgent';
 import useUser from '../../hooks/useUser';
 import { useTranslation } from 'react-i18next';
@@ -54,11 +51,13 @@ const ProfileDropdown = () => {
 			>
 				<DropdownToggle tag="button" type="button" className="btn">
 					<span className="d-flex align-items-center">
-						<img
-							className="rounded-circle header-profile-user"
-							src={avatar1}
-							alt="Header Avatar"
-						/>
+						<div className="position-relative d-inline-block">
+							<div className="avatar-xs rounded-circle img-thumbnail">
+								<div className="avatar-title bg-soft-secondary text-secondary rounded-circle fs-6">
+									{user?.nombre.charAt(0)}
+								</div>
+							</div>
+						</div>
 						<span className="text-start ms-xl-2">
 							<span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
 								{user?.usuario}
