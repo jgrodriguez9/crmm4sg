@@ -11,6 +11,9 @@ import { incomeOpt } from '../../../constants/utils';
 import { useTranslation } from 'react-i18next';
 
 const FormReservationClient = ({ formik }) => {
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formReservationClient',
 	});
@@ -199,7 +202,7 @@ const FormReservationClient = ({ formik }) => {
 							value: it.isoCode,
 						}))}
 						classNamePrefix="select2-selection"
-						placeholder={SELECT_OPTION}
+						placeholder={tMessage(SELECT_OPTION)}
 					/>
 				</div>
 			</Col>

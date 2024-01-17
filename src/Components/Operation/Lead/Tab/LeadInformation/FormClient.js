@@ -36,6 +36,9 @@ const FormClient = ({
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formClient',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const dispatch = useDispatch();
 	const [fechaNacimiento, setFechaNacimiento] = useState(
 		customer?.fechaNacimiento
@@ -90,13 +93,13 @@ const FormClient = ({
 			dispatch(
 				addMessage({
 					type: 'success',
-					message: UPDATE_SUCCESS,
+					message: tMessage(UPDATE_SUCCESS),
 				})
 			);
 			toggleDialog();
 			refetchClient();
 		} else if (isError) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			message = extractMeaningfulMessage(error, message);
 			dispatch(
 				addMessage({
@@ -130,8 +133,8 @@ const FormClient = ({
 				)?.value ?? '',
 		},
 		validationSchema: Yup.object({
-			firstName: Yup.string().required(FIELD_REQUIRED),
-			lastName: Yup.string().required(FIELD_REQUIRED),
+			firstName: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			lastName: Yup.string().required(tMessage(FIELD_REQUIRED)),
 		}),
 		onSubmit: async (values) => {
 			//submit request
@@ -313,7 +316,7 @@ const FormClient = ({
 								value: it.isoCode,
 							}))}
 							classNamePrefix="select2-selection"
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>

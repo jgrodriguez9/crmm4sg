@@ -1,29 +1,15 @@
 import { Button, Col, Form, FormFeedback, Input, Label, Row } from 'reactstrap';
 import DatePicker from '../../../../Common/DatePicker';
-import {
-	ERROR_SERVER,
-	FIELD_REQUIRED,
-	SAVE_SUCCESS,
-	SELECT_OPTION,
-	UPDATE_SUCCESS,
-} from '../../../../constants/messages';
+import { SELECT_OPTION } from '../../../../constants/messages';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import removetEmptyObject from '../../../../../util/removetEmptyObject';
 import moment from 'moment';
-import { addMessage } from '../../../../../slices/messages/reducer';
-import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
-import { useEffect, useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
-import {
-	createPaxService,
-	updatePaxService,
-} from '../../../../../services/pax';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import calcAge from '../../../../../util/calcAge';
-import DisabledInput from '../../../../Controller/DisabledInput';
 import Select from 'react-select';
+import { useTranslation } from 'react-i18next';
 
 const FormTransportacion = ({
 	toggleDialog,
@@ -31,6 +17,9 @@ const FormTransportacion = ({
 	reservationId,
 	refetch,
 }) => {
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const dispatch = useDispatch();
 
 	//create transportation
@@ -85,7 +74,7 @@ const FormTransportacion = ({
 							}}
 							options={[]}
 							classNamePrefix="select2-selection"
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>
@@ -104,7 +93,7 @@ const FormTransportacion = ({
 							}}
 							options={[]}
 							classNamePrefix="select2-selection"
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>
@@ -231,7 +220,7 @@ const FormTransportacion = ({
 							}}
 							options={[]}
 							classNamePrefix="select2-selection"
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>
@@ -301,7 +290,7 @@ const FormTransportacion = ({
 							}}
 							options={[]}
 							classNamePrefix="select2-selection"
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>
@@ -337,7 +326,7 @@ const FormTransportacion = ({
 							}}
 							options={[]}
 							classNamePrefix="select2-selection"
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>

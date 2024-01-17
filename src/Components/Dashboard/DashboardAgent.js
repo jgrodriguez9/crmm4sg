@@ -5,6 +5,7 @@ import BasicLineCharts from '../Charts/BasicLineCharts';
 import DatePicker from '../Common/DatePicker';
 import Select from 'react-select';
 import { SELECT_OPTION } from '../constants/messages';
+import { useTranslation } from 'react-i18next';
 
 const options = [
 	{
@@ -22,6 +23,9 @@ const options = [
 ];
 
 const DashboardAgent = () => {
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	return (
 		<>
 			<Row className="justify-content-end mb-3" style={{ zIndex: 2 }}>
@@ -48,7 +52,7 @@ const DashboardAgent = () => {
 								value={null}
 								onChange={(e) => {}}
 								options={options}
-								placeholder={SELECT_OPTION}
+								placeholder={tMessage(SELECT_OPTION)}
 								className="shadow-sm"
 							></Select>
 						</div>

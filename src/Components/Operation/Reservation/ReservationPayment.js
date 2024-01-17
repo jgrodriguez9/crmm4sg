@@ -28,6 +28,9 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.reservationPayment',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const dispatch = useDispatch();
 	const [itemSelected, setItemSelected] = useState(null);
 	const [query, setQuery] = useState({
@@ -168,13 +171,13 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 				setShowDeleteDialog(false);
 				dispatch(
 					addMessage({
-						message: DELETE_SUCCESS,
+						message: tMessage(DELETE_SUCCESS),
 						type: 'success',
 					})
 				);
 			},
 			onError: (error) => {
-				let message = ERROR_SERVER;
+				let message = tMessage(ERROR_SERVER);
 				message = extractMeaningfulMessage(error, message);
 				dispatch(
 					addMessage({

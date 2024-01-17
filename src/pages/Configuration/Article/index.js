@@ -41,6 +41,9 @@ const Article = () => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'pages.article.list',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	document.title = t('header');
 	const dispatch = useDispatch();
 	const [item, setItem] = useState(null);
@@ -201,12 +204,12 @@ const Article = () => {
 			setShowDeleteDialog(false);
 			dispatch(
 				addMessage({
-					message: DELETE_SUCCESS,
+					message: tMessage(DELETE_SUCCESS),
 					type: 'success',
 				})
 			);
 		} else if (isErrorDelete) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			message = extractMeaningfulMessage(errorDelete, message);
 			dispatch(
 				addMessage({

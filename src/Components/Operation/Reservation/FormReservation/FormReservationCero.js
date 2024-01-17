@@ -13,6 +13,9 @@ import { getHotelUnitByHotelPaginate } from '../../../../helpers/catalogues/hote
 import { useTranslation } from 'react-i18next';
 
 const FormReservationCero = ({ formik }) => {
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formReservationCero',
 	});
@@ -99,7 +102,7 @@ const FormReservationCero = ({ formik }) => {
 								);
 							}}
 							options={hotelOpt}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 						{formik.errors.hotel?.id && (
 							<FormFeedback type="invalid" className="d-block">
@@ -137,7 +140,7 @@ const FormReservationCero = ({ formik }) => {
 								formik.setFieldValue('unit', value?.unit ?? '');
 							}}
 							options={hotelUnitOpt}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 						{formik.errors.hotelUnit && (
 							<FormFeedback type="invalid" className="d-block">
@@ -179,7 +182,7 @@ const FormReservationCero = ({ formik }) => {
 								);
 							}}
 							options={mealPlanOpt}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>
@@ -212,7 +215,7 @@ const FormReservationCero = ({ formik }) => {
 								);
 							}}
 							options={callCenterOpt}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 						{formik.errors.callCenter?.id && (
 							<FormFeedback type="invalid" className="d-block">

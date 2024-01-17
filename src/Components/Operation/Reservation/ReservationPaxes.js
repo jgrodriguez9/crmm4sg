@@ -24,6 +24,9 @@ const ReservationPaxes = ({ reservationId }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.reservationPaxes',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const [showModal, setShowModal] = useState(false);
 	const [pax, setPax] = useState(null);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -88,12 +91,12 @@ const ReservationPaxes = ({ reservationId }) => {
 			setShowDeleteDialog(false);
 			dispatch(
 				addMessage({
-					message: DELETE_SUCCESS,
+					message: tMessage(DELETE_SUCCESS),
 					type: 'success',
 				})
 			);
 		} else if (isError) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			message = extractMeaningfulMessage(errorDel, message);
 			dispatch(
 				addMessage({

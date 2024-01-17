@@ -50,6 +50,9 @@ const Lead = () => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'pages.client.list',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	document.title = t('header');
 	const dispatch = useDispatch();
 	const [idItem, setIdItem] = useState(null);
@@ -283,7 +286,7 @@ const Lead = () => {
 			});
 			console.log(response);
 		} catch (error) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			message = extractMeaningfulMessage(error, message);
 			dispatch(
 				addMessage({

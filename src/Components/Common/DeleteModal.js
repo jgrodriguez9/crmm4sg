@@ -15,6 +15,9 @@ export default function DeleteModal({
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.deleteModal',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const onCloseClick = () => {
 		setShow(false);
 	};
@@ -36,8 +39,8 @@ export default function DeleteModal({
 								className="mdi mdi-alert-circle-outline"
 								style={{ fontSize: '9em', color: 'orange' }}
 							/>
-							<h2>{DELETE_QUESTION}</h2>
-							<h4>{DELETE_QUESTION_CONFIRMATION}</h4>
+							<h2>{tMessage(DELETE_QUESTION)}</h2>
+							<h4>{tMessage(DELETE_QUESTION_CONFIRMATION)}</h4>
 						</div>
 					</Col>
 				</Row>

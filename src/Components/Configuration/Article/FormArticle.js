@@ -29,6 +29,9 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.formArticle',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const dispatch = useDispatch();
 
 	const { data: categoryArticleOpt } = useQuery(
@@ -84,13 +87,15 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 			dispatch(
 				addMessage({
 					type: 'success',
-					message: isCreated ? SAVE_SUCCESS : UPDATE_SUCCESS,
+					message: isCreated
+						? tMessage(SAVE_SUCCESS)
+						: tMessage(UPDATE_SUCCESS),
 				})
 			);
 			toggleModal();
 			refetch();
 		} else if (isErrorCreate || isErrorUpdate) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			let serverError = isErrorCreate ? errorCreate : errorUpdate;
 			message = extractMeaningfulMessage(serverError, message);
 			dispatch(
@@ -121,9 +126,12 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 			departments: item?.departments ?? [],
 		},
 		validationSchema: Yup.object({
-			title: Yup.string().required(FIELD_REQUIRED),
-			url: Yup.string().required(FIELD_REQUIRED),
-			description: Yup.string().max(250, `${FIELD_MAX_LENGTH} 250`),
+			title: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			url: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			description: Yup.string().max(
+				250,
+				`${tMessage(FIELD_MAX_LENGTH)} 250`
+			),
 		}),
 		onSubmit: async (values) => {
 			//submit request
@@ -202,7 +210,7 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 								);
 							}}
 							options={categoryArticleOpt}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>
@@ -254,7 +262,7 @@ const FormArticle = ({ item = null, toggleModal, refetch }) => {
 							}}
 							options={departmentsOpt}
 							isMulti={true}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>

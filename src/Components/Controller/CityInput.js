@@ -2,8 +2,12 @@ import { useMemo } from 'react';
 import { SELECT_OPTION } from '../constants/messages';
 import { City } from 'country-state-city';
 import Select from 'react-select';
+import { useTranslation } from 'react-i18next';
 
 export default function CityInput({ value, handleChange, country, state }) {
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const citiesOpt = useMemo(() => {
 		if (country && state) {
 			return City.getCitiesOfState(country.value, state.value);
@@ -20,7 +24,7 @@ export default function CityInput({ value, handleChange, country, state }) {
 				value: c.name,
 			}))}
 			classNamePrefix="select2-selection"
-			placeholder={SELECT_OPTION}
+			placeholder={tMessage(SELECT_OPTION)}
 		/>
 	);
 }

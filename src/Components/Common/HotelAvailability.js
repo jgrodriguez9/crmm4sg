@@ -14,6 +14,9 @@ function HotelAvailability({ initialDate, finalDate, hotel }) {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.hotelAvailability',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const [loading, setLoading] = useState(false);
 	const { url, setUrl, setDateEnd, setDateStart, setHotelId } =
 		useAvailability();
@@ -91,7 +94,7 @@ function HotelAvailability({ initialDate, finalDate, hotel }) {
 								setSHotel(value);
 							}}
 							options={hotelOpt}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 					<div className="align-self-end">

@@ -36,6 +36,9 @@ const FormPaxes = ({
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formPaxes',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const dispatch = useDispatch();
 	const [fechaNacimiento, setFechaNacimiento] = useState(
 		pax?.fechadnacimiento
@@ -57,13 +60,13 @@ const FormPaxes = ({
 			dispatch(
 				addMessage({
 					type: 'success',
-					message: SAVE_SUCCESS,
+					message: tMessage(SAVE_SUCCESS),
 				})
 			);
 			toggleDialog();
 			refetchPaxs();
 		} else if (isErrorCreating) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			message = extractMeaningfulMessage(errorCreating, message);
 			dispatch(
 				addMessage({
@@ -88,13 +91,13 @@ const FormPaxes = ({
 			dispatch(
 				addMessage({
 					type: 'success',
-					message: UPDATE_SUCCESS,
+					message: tMessage(UPDATE_SUCCESS),
 				})
 			);
 			toggleDialog();
 			refetchPaxs();
 		} else if (isErrorUpdating) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			message = extractMeaningfulMessage(errorUpdating, message);
 			dispatch(
 				addMessage({
@@ -122,8 +125,8 @@ const FormPaxes = ({
 			reservation: reservationId,
 		},
 		validationSchema: Yup.object({
-			firstName: Yup.string().required(FIELD_REQUIRED),
-			lastName: Yup.string().required(FIELD_REQUIRED),
+			firstName: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			lastName: Yup.string().required(tMessage(FIELD_REQUIRED)),
 		}),
 		onSubmit: async (values) => {
 			//submit request
@@ -284,7 +287,7 @@ const FormPaxes = ({
 							}}
 							options={dataRelationships}
 							classNamePrefix="select2-selection"
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>

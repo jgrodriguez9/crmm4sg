@@ -15,21 +15,21 @@ import {
 import { useFormik } from 'formik';
 import useUser from '../../../../../hooks/useUser';
 import * as Yup from 'yup';
-import moment from 'moment';
 import { useState } from 'react';
 import { currenciesOpt } from '../../../../constants/currencies';
+import { getServicesByReservation } from '../../../../../helpers/reservation';
+import { addIconClass, deleteIconClass } from '../../../../constants/icons';
+import jsFormatNumber from '../../../../../util/jsFormatNumber';
 
 const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formPaymentClient',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const user = useUser();
-	const [paymentDate, setPaymentdate] = useState(
-		payment?.paymentDate
-			? moment(payment?.paymentDate, 'YYYY-MM-DD').toDate()
-			: null
-	);
-
+	const [service, setService] = useState(null);
 	const { data: cardTypesOpt } = useQuery(
 		['getCardTypesAll'],
 		async () => {
@@ -47,56 +47,74 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 		}
 	);
 
+	//services
+	const { data: servicesOpt } = useQuery(
+		['getServiceByReservation', reservation.id],
+		async () => {
+			const response = await getServicesByReservation(reservation.id);
+			return response;
+		},
+		{
+			keepPreviousData: true,
+			select: (response) =>
+				response.data.list.map((it) => ({
+					value: it.idService,
+					label: it.description,
+					booking: it.idBooking,
+					amount: it.amount,
+				})),
+		}
+	);
+
 	const formik = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
 		enableReinitialize: true,
-		initialValues: payment?.idPayment
-			? {
-					idReservation: payment?.idReservation ?? reservation.id,
-					cardHolderName: payment?.cardHolderName ?? '',
-					cardHolderLastName: payment?.cardHolderLastName ?? '',
-					bank: payment?.bank?.id ?? '',
-					type: payment?.type ?? '',
-					amount: payment?.amount ?? '',
-					currency: payment?.currency ?? '',
-					creditCard: '',
-					cardType: payment?.cardType ?? '',
-					expiration: payment?.expiration ?? '',
-					autorization: payment?.autorization ?? '',
-					user: payment?.user ?? user?.username,
-					department: payment?.department ?? '',
-					multi: payment?.multi ?? '',
-					exchangeRateTC: payment?.exchangeRateTC ?? '',
-					amountMXN: payment?.amountMXN ?? '',
-					exchangeRate: payment?.exchangeRate ?? '',
-					paymentDate: payment?.paymentDate ?? '',
-					contractedServices: payment?.contractedServices ?? [],
-					//temp
-					cvv: '',
-			  }
-			: {
-					services: [],
-			  },
+		initialValues: {
+			idReservation: payment?.idReservation ?? reservation.id,
+			cardHolderName: payment?.cardHolderName ?? '',
+			cardHolderLastName: payment?.cardHolderLastName ?? '',
+			bank: payment?.bank?.id ?? '',
+			type: payment?.type ?? '',
+			amount: payment?.amount ?? '',
+			currency: payment?.currency ?? '',
+			creditCard: '',
+			cardType: payment?.cardType ?? '',
+			expiration: payment?.expiration ?? '',
+			autorization: payment?.autorization ?? '',
+			user: payment?.user ?? user?.username,
+			department: payment?.department ?? '',
+			multi: payment?.multi ?? '',
+			exchangeRateTC: payment?.exchangeRateTC ?? '',
+			amountMXN: payment?.amountMXN ?? '',
+			exchangeRate: payment?.exchangeRate ?? '',
+			paymentDate: payment?.paymentDate ?? '',
+			contractedServices: payment?.contractedServices ?? [],
+			//temp
+			cvv: '',
+		},
 		validationSchema: Yup.object({
-			cardHolderName: Yup.string().required(FIELD_REQUIRED),
-			cardHolderLastName: Yup.string().required(FIELD_REQUIRED),
-			bank: Yup.string().required(FIELD_REQUIRED),
-			creditCard: Yup.string().required(FIELD_REQUIRED),
-			expiration: Yup.string().required(FIELD_REQUIRED),
-			cardType: Yup.string().required(FIELD_REQUIRED),
-			autorization: Yup.string().required(FIELD_REQUIRED),
-			paymentDate: Yup.string().required(FIELD_REQUIRED),
-			currency: Yup.string().required(FIELD_REQUIRED),
+			cardHolderName: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			cardHolderLastName: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			creditCard: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			expiration: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			cardType: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			autorization: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			paymentDate: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			currency: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			amount: Yup.number()
-				.min(0, FIELD_POSITIVE)
-				.integer(FIELD_INTEGER)
-				.typeError(FIELD_NUMERIC)
-				.required(FIELD_REQUIRED),
+				.min(0, tMessage(FIELD_POSITIVE))
+				.integer(tMessage(FIELD_INTEGER))
+				.typeError(tMessage(FIELD_NUMERIC))
+				.required(tMessage(FIELD_REQUIRED)),
 			amountMXN: Yup.number()
-				.min(0, FIELD_POSITIVE)
-				.integer(FIELD_INTEGER)
-				.typeError(FIELD_NUMERIC)
-				.required(FIELD_REQUIRED),
+				.min(0, tMessage(FIELD_POSITIVE))
+				.integer(tMessage(FIELD_INTEGER))
+				.typeError(tMessage(FIELD_NUMERIC))
+				.required(tMessage(FIELD_REQUIRED)),
+			contractedServices: Yup.array().min(
+				1,
+				'Al menos debes seleccionar 1 servicio'
+			),
 		}),
 		onSubmit: async (values) => {
 			//submit request
@@ -116,6 +134,22 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 		},
 	});
 
+	const addService = () => {
+		const copyServices = [...formik.values.contractedServices];
+		copyServices.push({
+			idBooking: service.booking,
+			idService: service.value,
+			label: service.label,
+			amount: service.amount,
+		});
+		formik.setFieldValue('contractedServices', copyServices);
+		setService(null);
+	};
+	const removeService = (index) => {
+		const copyServices = [...formik.values.contractedServices];
+		copyServices.splice(index, 1);
+		formik.setFieldValue('contractedServices', copyServices);
+	};
 	return (
 		<Form
 			className="needs-validation fs-7"
@@ -125,6 +159,60 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 				return false;
 			}}
 		>
+			<Row className="align-items-end">
+				<Col xs="10">
+					<Label className="form-label mb-1" htmlFor="cardType">
+						Servicios
+					</Label>
+					<Select
+						value={service}
+						onChange={(value) => setService(value)}
+						options={servicesOpt}
+						name="choices-single-default"
+						placeholder={tMessage(SELECT_OPTION)}
+						id="cardType"
+					/>
+				</Col>
+				<Col xs="2">
+					<Button
+						color="info"
+						onClick={addService}
+						disabled={!service}
+						type="button"
+					>
+						<i className={`${addIconClass} fs-5`} />
+					</Button>
+				</Col>
+				<Col xs="12">
+					{formik.errors.contractedServices && (
+						<FormFeedback type="invalid" className="d-block">
+							{formik.errors.contractedServices}
+						</FormFeedback>
+					)}
+				</Col>
+			</Row>
+			{formik.values.contractedServices.map((it, idx) => (
+				<Row
+					key={`service-${idx}`}
+					className={`align-items-center ${
+						idx === 0 ? 'mt-3' : 'mt-1'
+					}`}
+				>
+					<Col xs="8">{it.label}</Col>
+					<Col xs="2">{jsFormatNumber(it.amount)}</Col>
+					<Col xs="2">
+						<Button
+							type="button"
+							color="danger"
+							size="sm"
+							onClick={() => removeService(idx)}
+						>
+							<i className={`${deleteIconClass} fs-5`} />
+						</Button>
+					</Col>
+				</Row>
+			))}
+			{formik.values.contractedServices.length > 0 && <hr />}
 			<Row>
 				<Col lg={6}>
 					<div className="mb-2">
@@ -195,10 +283,8 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 							placeholder="xxxx xxxx xxxx xxxx"
 							value={formik.values.creditCard}
 							onChange={(e) => {
-								formik.setFieldValue(
-									'creditCard',
-									e.target.value
-								);
+								let val = e.target.value.replace(/[^0-9]/g, '');
+								formik.setFieldValue('creditCard', val);
 							}}
 						/>
 						{formik.errors.creditCard && (
@@ -285,7 +371,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 							}}
 							options={cardTypesOpt}
 							name="choices-single-default"
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 							id="cardType"
 						/>
 						{formik.errors.cardType && (

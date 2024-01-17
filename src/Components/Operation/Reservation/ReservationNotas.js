@@ -17,6 +17,9 @@ const ReservationNotas = ({ ReservationId, customerId }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.reservationNotas',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const dispatch = useDispatch();
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -75,12 +78,12 @@ const ReservationNotas = ({ ReservationId, customerId }) => {
 			setShowDeleteDialog(false);
 			dispatch(
 				addMessage({
-					message: DELETE_SUCCESS,
+					message: tMessage(DELETE_SUCCESS),
 					type: 'success',
 				})
 			);
 		} else if (isErrorDelete) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			message = extractMeaningfulMessage(errorDelete, message);
 			dispatch(
 				addMessage({

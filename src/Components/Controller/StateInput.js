@@ -2,6 +2,7 @@ import { State } from 'country-state-city';
 import { useMemo } from 'react';
 import { SELECT_OPTION } from '../constants/messages';
 import Select from 'react-select';
+import { useTranslation } from 'react-i18next';
 
 export default function StateInput({
 	value,
@@ -9,6 +10,9 @@ export default function StateInput({
 	country,
 	isReadOnly = false,
 }) {
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const statesOpt = useMemo(() => {
 		if (country) {
 			return State.getStatesOfCountry(country.value);
@@ -50,7 +54,7 @@ export default function StateInput({
 				value: s.isoCode,
 			}))}
 			classNamePrefix="select2-selection"
-			placeholder={SELECT_OPTION}
+			placeholder={tMessage(SELECT_OPTION)}
 		/>
 	);
 }

@@ -36,6 +36,9 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formNotaCliente',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const user = useUser();
 	const dispatch = useDispatch();
 	const [animo, setAnimo] = useState('');
@@ -102,13 +105,15 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 			dispatch(
 				addMessage({
 					type: 'success',
-					message: isCreated ? SAVE_SUCCESS : UPDATE_SUCCESS,
+					message: isCreated
+						? tMessage(SAVE_SUCCESS)
+						: tMessage(UPDATE_SUCCESS),
 				})
 			);
 			toggleModal();
 			refetch();
 		} else if (isErrorCreate || isErrorUpdate) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			let serverError = isErrorCreate ? errorCreate : errorUpdate;
 			message = extractMeaningfulMessage(serverError, message);
 			dispatch(
@@ -150,8 +155,8 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 			noteTypeId: note?.noteType?.id ?? '',
 		},
 		validationSchema: Yup.object({
-			note: Yup.string().required(FIELD_REQUIRED),
-			noteTypeId: Yup.string().required(FIELD_REQUIRED),
+			note: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			noteTypeId: Yup.string().required(tMessage(FIELD_REQUIRED)),
 		}),
 		onSubmit: async (values) => {
 			//submit request
@@ -275,7 +280,7 @@ const FormNotaCliente = ({ note = null, toggleModal, customerId, refetch }) => {
 								);
 							}}
 							options={noteTypeOpt}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>

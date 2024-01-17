@@ -8,8 +8,12 @@ import {
 } from '../../../../../util/getClassSMSStatus';
 import moment from 'moment';
 import { DATE_TIME_FORMAT } from '../../../../../common/globalsProp';
+import { useTranslation } from 'react-i18next';
 
 const TableSMS = ({ items }) => {
+	const { t } = useTranslation('translation', {
+		keyPrefix: 'components.operation.tableSMS',
+	});
 	return (
 		<Row>
 			<Col>
@@ -17,7 +21,7 @@ const TableSMS = ({ items }) => {
 					<div className="acitivity-timeline acitivity-main">
 						{items.length === 0 && (
 							<AlertMessage
-								message={'No hay información disponible'}
+								message={t('noInformationAvailable')}
 								color="info"
 								textColor=""
 							/>

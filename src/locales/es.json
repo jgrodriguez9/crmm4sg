@@ -50,7 +50,9 @@
                 "clients": "Clientes",
                 "edit": "Editar",
                 "clientEdit": "Editar cliente",
-                "newEmail": "Nuevo correo electrónico"
+                "newEmail": "Nuevo correo electrónico",
+                "origin": "Origen",
+                "notes":"Notas"
             }
             
         },
@@ -588,6 +590,9 @@
                 "accept":"Aceptar",
                 "cancel":"Cancelar",
                 "addAnother": "Agregar otro"
+            },
+            "tableSMS": {
+                "noInformationAvailable": "No hay información disponible"
             }
         }
     },
@@ -606,6 +611,23 @@
         }
     },
     "messages": {
-        "wrongPassword": "Usuario o contraseña incorrectos"
+        "wrongPassword": "Usuario o contraseña incorrectos",
+        "SAVE_SUCCESS": "Salvado correctamente",
+        "UPDATE_SUCCESS": "Actualizado correctamente",
+        "ERROR_SERVER": "No podemos establecer conexión con el servidor",
+        "FIELD_REQUIRED": "Campo requerido",
+        "SELECT_OPTION": "Seleccionar opción",
+        "DELETE_SUCCESS": "Eliminado correctamente",
+        "CANCEL_RESERVATION_SUCCESS": "Reservación cancelada correctamente",
+        "DELETE_QUESTION": "¿Estas seguro?",
+        "DELETE_QUESTION_CONFIRMATION": "¡Esta acción no es reversible!",
+        "FIELD_NUMERIC": "Campo numérico",
+        "CORREO_VALID": "Correo electrónico inválido",
+        "FIELD_INTEGER": "Campo numérico entero",
+        "FIELD_POSITIVE":  "Campo debe ser mayor o igual a cero",
+        "FIELD_GREATER_THAN_CERO": "Campo debe ser mayor a cero",
+        "FIELD_MAX_LENGTH": "Campo con longitud máxima de",
+        "SMS_SUCCESS": "Mensaje enviado correctamente",
+        "EMAIL_SUCCESS": "Correo electrónico enviado correctamente"
     }
 }

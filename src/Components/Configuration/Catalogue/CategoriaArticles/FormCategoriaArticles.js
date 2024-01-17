@@ -24,6 +24,9 @@ const FormCategoriaArticles = ({ item = null, toggleModal, refetch }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.formCategoryArticle',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const dispatch = useDispatch();
 
 	//create note
@@ -49,13 +52,15 @@ const FormCategoriaArticles = ({ item = null, toggleModal, refetch }) => {
 			dispatch(
 				addMessage({
 					type: 'success',
-					message: isCreated ? SAVE_SUCCESS : UPDATE_SUCCESS,
+					message: isCreated
+						? tMessage(SAVE_SUCCESS)
+						: tMessage(UPDATE_SUCCESS),
 				})
 			);
 			toggleModal();
 			refetch();
 		} else if (isErrorCreate || isErrorUpdate) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			let serverError = isErrorCreate ? errorCreate : errorUpdate;
 			message = extractMeaningfulMessage(serverError, message);
 			dispatch(
@@ -82,7 +87,7 @@ const FormCategoriaArticles = ({ item = null, toggleModal, refetch }) => {
 			name: item?.name ?? '',
 		},
 		validationSchema: Yup.object({
-			name: Yup.string().required(FIELD_REQUIRED),
+			name: Yup.string().required(tMessage(FIELD_REQUIRED)),
 		}),
 		onSubmit: async (values) => {
 			//submit request

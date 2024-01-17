@@ -47,6 +47,9 @@ const LeadProfile = () => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'pages.client.detail',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	document.title = t('header');
 	const { id } = useParams();
 	const dispatch = useDispatch();
@@ -88,7 +91,7 @@ const LeadProfile = () => {
 			});
 			console.log(response);
 		} catch (error) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			message = extractMeaningfulMessage(error, message);
 			dispatch(
 				addMessage({
@@ -513,7 +516,7 @@ const LeadProfile = () => {
 													}}
 													type="button"
 												>
-													Origen
+													{t('origin')}
 												</NavLink>
 											</NavItem>
 											<NavItem>
@@ -528,7 +531,7 @@ const LeadProfile = () => {
 													}}
 													type="button"
 												>
-													Notas
+													{t('notes')}
 												</NavLink>
 											</NavItem>
 											<NavItem>

@@ -30,6 +30,9 @@ const FormReservationInformation = ({ toggleDialog, refetch }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formReservationInformation',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const dispatch = useDispatch();
 	const user = useUser();
 
@@ -88,29 +91,29 @@ const FormReservationInformation = ({ toggleDialog, refetch }) => {
 		},
 		validationSchema: Yup.object({
 			customer: Yup.object().shape({
-				firstName: Yup.string().required(FIELD_REQUIRED),
-				lastName: Yup.string().required(FIELD_REQUIRED),
-				email: Yup.string().email(CORREO_VALID),
+				firstName: Yup.string().required(tMessage(FIELD_REQUIRED)),
+				lastName: Yup.string().required(tMessage(FIELD_REQUIRED)),
+				email: Yup.string().email(tMessage(CORREO_VALID)),
 			}),
 			adult: Yup.number()
-				.min(1, FIELD_GREATER_THAN_CERO)
-				.integer(FIELD_INTEGER)
-				.typeError(FIELD_NUMERIC)
-				.required(FIELD_REQUIRED),
+				.min(1, tMessage(FIELD_GREATER_THAN_CERO))
+				.integer(tMessage(FIELD_INTEGER))
+				.typeError(tMessage(FIELD_NUMERIC))
+				.required(tMessage(FIELD_REQUIRED)),
 			child: Yup.number()
-				.min(0, FIELD_POSITIVE)
-				.integer(FIELD_INTEGER)
-				.typeError(FIELD_NUMERIC)
-				.required(FIELD_REQUIRED),
+				.min(0, tMessage(FIELD_POSITIVE))
+				.integer(tMessage(FIELD_INTEGER))
+				.typeError(tMessage(FIELD_NUMERIC))
+				.required(tMessage(FIELD_REQUIRED)),
 			infant: Yup.number()
-				.min(0, FIELD_POSITIVE)
-				.integer(FIELD_INTEGER)
-				.typeError(FIELD_NUMERIC)
-				.required(FIELD_REQUIRED),
+				.min(0, tMessage(FIELD_POSITIVE))
+				.integer(tMessage(FIELD_INTEGER))
+				.typeError(tMessage(FIELD_NUMERIC))
+				.required(tMessage(FIELD_REQUIRED)),
 			hotel: Yup.object().shape({
-				id: Yup.string().required(FIELD_REQUIRED),
+				id: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			}),
-			hotelUnit: Yup.string().required(FIELD_REQUIRED),
+			hotelUnit: Yup.string().required(tMessage(FIELD_REQUIRED)),
 		}),
 		onSubmit: async (values) => {
 			//submit request
@@ -135,13 +138,13 @@ const FormReservationInformation = ({ toggleDialog, refetch }) => {
 			dispatch(
 				addMessage({
 					type: 'success',
-					message: SAVE_SUCCESS,
+					message: tMessage(SAVE_SUCCESS),
 				})
 			);
 			refetch();
 			toggleDialog();
 		} else if (isErrorCreate) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			let serverError = errorCreate;
 			message = extractMeaningfulMessage(serverError, message);
 			dispatch(

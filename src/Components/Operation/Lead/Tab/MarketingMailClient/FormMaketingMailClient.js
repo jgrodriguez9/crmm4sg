@@ -21,6 +21,9 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formMaketingMailClient',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const dispatch = useDispatch();
 	//send sms
 	const { mutate: sendEmail, isLoading: isSendingEmail } = useMutation(
@@ -30,13 +33,13 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 				dispatch(
 					addMessage({
 						type: 'success',
-						message: EMAIL_SUCCESS,
+						message: tMessage(EMAIL_SUCCESS),
 					})
 				);
 				closeModal();
 			},
 			onError: (error) => {
-				let message = ERROR_SERVER;
+				let message = tMessage(ERROR_SERVER);
 				message = extractMeaningfulMessage(error, message);
 				dispatch(
 					addMessage({
@@ -57,9 +60,9 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 			message: '',
 		},
 		validationSchema: Yup.object({
-			to: Yup.string().required(FIELD_REQUIRED),
-			subject: Yup.string().required(FIELD_REQUIRED),
-			message: Yup.string().required(FIELD_REQUIRED),
+			to: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			subject: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			message: Yup.string().required(tMessage(FIELD_REQUIRED)),
 		}),
 		onSubmit: async (values) => {
 			sendEmail(values);
@@ -139,7 +142,7 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 									template: template,
 								},
 							]}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 						{formik.errors.subject && (
 							<FormFeedback type="invalid" className="d-block">

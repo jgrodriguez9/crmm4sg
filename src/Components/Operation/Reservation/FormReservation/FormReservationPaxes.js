@@ -12,6 +12,9 @@ const FormReservationPaxes = ({ formik }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formReservationPaxes',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	//query to get relationship
 	const { data: dataRelationships } = useQuery(
 		'getRelationship',
@@ -183,9 +186,9 @@ const FormReservationPaxes = ({ formik }) => {
 															dataRelationships
 														}
 														classNamePrefix="select2-selection"
-														placeholder={
+														placeholder={tMessage(
 															SELECT_OPTION
-														}
+														)}
 													/>
 												</td>
 												<td className="text-center">

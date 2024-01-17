@@ -52,6 +52,9 @@ const FormService = ({
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formService',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const user = useUser();
 	const dispatch = useDispatch();
 	const [openAccordion, setOpenAccordion] = useState('-1');
@@ -124,27 +127,29 @@ const FormService = ({
 			services: Yup.array()
 				.of(
 					Yup.object().shape({
-						subService: Yup.string().required(FIELD_REQUIRED),
+						subService: Yup.string().required(
+							tMessage(FIELD_REQUIRED)
+						),
 						pax: Yup.number()
-							.min(1, FIELD_GREATER_THAN_CERO)
-							.integer(FIELD_INTEGER)
-							.typeError(FIELD_NUMERIC)
-							.required(FIELD_REQUIRED),
+							.min(1, tMessage(FIELD_GREATER_THAN_CERO))
+							.integer(tMessage(FIELD_INTEGER))
+							.typeError(tMessage(FIELD_NUMERIC))
+							.required(tMessage(FIELD_REQUIRED)),
 						nights: Yup.number()
-							.min(1, FIELD_GREATER_THAN_CERO)
-							.integer(FIELD_INTEGER)
-							.typeError(FIELD_NUMERIC)
-							.required(FIELD_REQUIRED),
+							.min(1, tMessage(FIELD_GREATER_THAN_CERO))
+							.integer(tMessage(FIELD_INTEGER))
+							.typeError(tMessage(FIELD_NUMERIC))
+							.required(tMessage(FIELD_REQUIRED)),
 						childs: Yup.number()
-							.min(0, FIELD_POSITIVE)
-							.integer(FIELD_INTEGER)
-							.typeError(FIELD_NUMERIC)
-							.required(FIELD_REQUIRED),
+							.min(0, tMessage(FIELD_POSITIVE))
+							.integer(tMessage(FIELD_INTEGER))
+							.typeError(tMessage(FIELD_NUMERIC))
+							.required(tMessage(FIELD_REQUIRED)),
 						amount: Yup.number()
-							.min(0, FIELD_POSITIVE)
-							.integer(FIELD_INTEGER)
-							.typeError(FIELD_NUMERIC)
-							.required(FIELD_REQUIRED),
+							.min(0, tMessage(FIELD_POSITIVE))
+							.integer(tMessage(FIELD_INTEGER))
+							.typeError(tMessage(FIELD_NUMERIC))
+							.required(tMessage(FIELD_REQUIRED)),
 					})
 				)
 				.min(1, 'Al menos debes crear 1 servicio'),
@@ -186,13 +191,15 @@ const FormService = ({
 			dispatch(
 				addMessage({
 					type: 'success',
-					message: isSuccessCreating ? SAVE_SUCCESS : UPDATE_SUCCESS,
+					message: isSuccessCreating
+						? tMessage(SAVE_SUCCESS)
+						: tMessage(UPDATE_SUCCESS),
 				})
 			);
 			toggleDialog();
 			refetchServices();
 		} else if (isErrorCreating || isErrorUpdating) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			let serverError = isErrorCreating ? errorCreating : errorUpdating;
 			message = extractMeaningfulMessage(serverError, message);
 			dispatch(
@@ -444,9 +451,9 @@ const FormService = ({
 																	})
 																)}
 																classNamePrefix="select2-selection"
-																placeholder={
+																placeholder={tMessage(
 																	SELECT_OPTION
-																}
+																)}
 															/>
 															{formik.errors
 																.services &&

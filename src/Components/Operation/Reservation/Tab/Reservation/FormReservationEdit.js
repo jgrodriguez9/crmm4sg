@@ -38,6 +38,9 @@ const FormReservationEdit = ({
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formReservationEdit',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const dispatch = useDispatch();
 	const [initialDate, setInitialDate] = useState(
 		reservation?.initialDate
@@ -78,13 +81,13 @@ const FormReservationEdit = ({
 				dispatch(
 					addMessage({
 						type: 'success',
-						message: UPDATE_SUCCESS,
+						message: tMessage(UPDATE_SUCCESS),
 					})
 				);
 				refetchReservation();
 			},
 			onError: (error) => {
-				let message = ERROR_SERVER;
+				let message = tMessage(ERROR_SERVER);
 				message = extractMeaningfulMessage(error, message);
 				dispatch(
 					addMessage({
@@ -130,29 +133,29 @@ const FormReservationEdit = ({
 			unit: reservation?.unit ?? '',
 		},
 		validationSchema: Yup.object({
-			dateRequest: Yup.string().required(FIELD_REQUIRED),
-			intPlan: Yup.string().required(FIELD_REQUIRED),
+			dateRequest: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			intPlan: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			adult: Yup.number()
-				.min(0, FIELD_POSITIVE)
-				.integer(FIELD_INTEGER)
-				.typeError(FIELD_NUMERIC)
-				.required(FIELD_REQUIRED),
+				.min(0, tMessage(FIELD_POSITIVE))
+				.integer(tMessage(FIELD_INTEGER))
+				.typeError(tMessage(FIELD_NUMERIC))
+				.required(tMessage(FIELD_REQUIRED)),
 			child: Yup.number()
-				.min(0, FIELD_POSITIVE)
-				.integer(FIELD_INTEGER)
-				.typeError(FIELD_NUMERIC)
-				.required(FIELD_REQUIRED),
-			cards: Yup.string().required(FIELD_REQUIRED),
+				.min(0, tMessage(FIELD_POSITIVE))
+				.integer(tMessage(FIELD_INTEGER))
+				.typeError(tMessage(FIELD_NUMERIC))
+				.required(tMessage(FIELD_REQUIRED)),
+			cards: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			callCenter: Yup.object().shape({
-				id: Yup.string().required(FIELD_REQUIRED),
+				id: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			}),
 			status: Yup.object().shape({
-				id: Yup.string().required(FIELD_REQUIRED),
+				id: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			}),
 			customer: Yup.object().shape({
-				id: Yup.string().required(FIELD_REQUIRED),
+				id: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			}),
-			hotelUnit: Yup.string().required(FIELD_REQUIRED),
+			hotelUnit: Yup.string().required(tMessage(FIELD_REQUIRED)),
 		}),
 		onSubmit: async (values) => {
 			//submit request
@@ -231,7 +234,7 @@ const FormReservationEdit = ({
 								);
 							}}
 							options={hotelOpt}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>
@@ -264,7 +267,7 @@ const FormReservationEdit = ({
 								formik.setFieldValue('unit', value?.unit ?? '');
 							}}
 							options={hotelUnitOpt}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 						{formik.errors.hotelUnit && (
 							<FormFeedback type="invalid" className="d-block">
@@ -306,7 +309,7 @@ const FormReservationEdit = ({
 								);
 							}}
 							options={mealPlanOpt}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>

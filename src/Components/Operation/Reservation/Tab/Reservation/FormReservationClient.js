@@ -38,6 +38,9 @@ const FormReservationClient = ({
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formReservationClient',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const dispatch = useDispatch();
 	//service to get the client
 	const {
@@ -123,14 +126,14 @@ const FormReservationClient = ({
 			dispatch(
 				addMessage({
 					type: 'success',
-					message: UPDATE_SUCCESS,
+					message: tMessage(UPDATE_SUCCESS),
 				})
 			);
 			setEditClient(false);
 			setOpenClient(false);
 		}
 		if (isError) {
-			let message = ERROR_SERVER;
+			let message = tMessage(ERROR_SERVER);
 			message = extractMeaningfulMessage(error, message);
 			dispatch(
 				addMessage({
@@ -164,8 +167,8 @@ const FormReservationClient = ({
 			srcIncome: customer?.srcIncome ?? '',
 		},
 		validationSchema: Yup.object({
-			firstName: Yup.string().required(FIELD_REQUIRED),
-			lastName: Yup.string().required(FIELD_REQUIRED),
+			firstName: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			lastName: Yup.string().required(tMessage(FIELD_REQUIRED)),
 		}),
 		onSubmit: async (values) => {
 			//submit request
@@ -415,7 +418,7 @@ const FormReservationClient = ({
 									})
 								)}
 								classNamePrefix="select2-selection"
-								placeholder={SELECT_OPTION}
+								placeholder={tMessage(SELECT_OPTION)}
 							/>
 						)}
 					</div>

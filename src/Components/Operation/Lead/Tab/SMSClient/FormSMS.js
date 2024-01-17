@@ -23,6 +23,9 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formSms',
 	});
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
 	const queryClient = useQueryClient();
 	const dispatch = useDispatch();
 	const user = useUser();
@@ -39,13 +42,13 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 				dispatch(
 					addMessage({
 						type: 'success',
-						message: SMS_SUCCESS,
+						message: tMessage(SMS_SUCCESS),
 					})
 				);
 				closeModal();
 			},
 			onError: (error) => {
-				let message = ERROR_SERVER;
+				let message = tMessage(ERROR_SERVER);
 				message = extractMeaningfulMessage(error, message);
 				dispatch(
 					addMessage({
@@ -67,11 +70,11 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 			phone: '',
 		},
 		validationSchema: Yup.object({
-			customer: Yup.string().required(FIELD_REQUIRED),
+			customer: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			message: Yup.string()
-				.max(160, `${FIELD_MAX_LENGTH} 160`)
-				.required(FIELD_REQUIRED),
-			user: Yup.string().required(FIELD_REQUIRED),
+				.max(160, `${tMessage(FIELD_MAX_LENGTH)} 160`)
+				.required(tMessage(FIELD_REQUIRED)),
+			user: Yup.string().required(tMessage(FIELD_REQUIRED)),
 		}),
 		onSubmit: async (values) => {
 			sendSms(values);
@@ -112,7 +115,7 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 								formik.setFieldValue('phone', value.value)
 							}
 							options={phonesOpt}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>
@@ -165,7 +168,7 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 									message: 'Oferta Verano 60% message',
 								},
 							]}
-							placeholder={SELECT_OPTION}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>
