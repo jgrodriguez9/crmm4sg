@@ -71,6 +71,7 @@ const Lead = () => {
 		error: errorItemsQuery,
 		isLoading,
 		isSuccess,
+		isFetching,
 	} = useQuery(
 		['getCustomerPaginate', queryFilter],
 		() => fecthItems(queryFilter),
@@ -357,6 +358,7 @@ const Lead = () => {
 															?.pagination
 															?.totalPages ?? 1
 													}
+													isLoading={isFetching}
 												/>
 											</>
 										) : (

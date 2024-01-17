@@ -46,6 +46,7 @@ const TableReservation = ({
 		error: errorReservationQuery,
 		isLoading,
 		isSuccess,
+		isFetching,
 	} = useQuery(
 		['getReservationPaginate', queryFilter],
 		() => fecthReservation(queryFilter),
@@ -312,6 +313,7 @@ const TableReservation = ({
 						totalPages={
 							reservationData?.data?.pagination?.totalPages ?? 1
 						}
+						isLoading={isFetching}
 					/>
 				</>
 			) : (

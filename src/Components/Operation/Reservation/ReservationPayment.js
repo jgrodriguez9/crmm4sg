@@ -43,7 +43,7 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 	);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [showModal, setShowModal] = useState(false);
-	const { data, error, isLoading, isSuccess, refetch } = useQuery(
+	const { data, error, isLoading, isSuccess, refetch, isFetching } = useQuery(
 		['getPaymentsByReservation', queryFilter],
 		() => getPaymentsByReservation(queryFilter),
 		{
@@ -243,6 +243,7 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 									totalPages={
 										data?.data?.pagination?.totalPages ?? 1
 									}
+									isLoading={isFetching}
 								/>
 							</>
 						) : (

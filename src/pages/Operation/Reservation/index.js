@@ -75,6 +75,7 @@ const Reservation = () => {
 		isLoading,
 		isSuccess,
 		refetch,
+		isFetching,
 	} = useQuery(
 		['getReservationPaginate', queryFilter],
 		() => fecthReservation(queryFilter),
@@ -82,7 +83,6 @@ const Reservation = () => {
 			keepPreviousData: true,
 		}
 	);
-
 	const [filterDialog, setFilterDialog] = useState(false);
 	const [dataSelect, setDataSelect] = useState(initFilterModel);
 	//detail canva
@@ -450,6 +450,7 @@ const Reservation = () => {
 															?.pagination
 															?.totalPages ?? 1
 													}
+													isLoading={isFetching}
 												/>
 											</>
 										) : (

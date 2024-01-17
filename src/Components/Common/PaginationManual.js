@@ -1,8 +1,14 @@
-import { Button, Col, Input, Row } from 'reactstrap';
+import { Button, Col, Input, Row, Spinner } from 'reactstrap';
 import parseObjectToQueryUrl from '../../util/parseObjectToQueryUrl';
 import { useTranslation } from 'react-i18next';
 
-const PaginationManual = ({ query, setQuery, setQueryFilter, totalPages }) => {
+const PaginationManual = ({
+	query,
+	setQuery,
+	setQueryFilter,
+	totalPages,
+	isLoading = false,
+}) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.paginationManual',
 	});
@@ -30,6 +36,11 @@ const PaginationManual = ({ query, setQuery, setQueryFilter, totalPages }) => {
 
 	return (
 		<Row className="justify-content-md-end justify-content-center align-items-center p-1 fs-7">
+			{isLoading && (
+				<Col className="col-md-auto">
+					<Spinner color="primary"> Loading... </Spinner>
+				</Col>
+			)}
 			<Col className="col-md-auto">
 				<div className="d-flex gap-1">
 					<Button
