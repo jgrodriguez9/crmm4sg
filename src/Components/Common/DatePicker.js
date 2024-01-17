@@ -1,5 +1,7 @@
 import Flatpickr from 'react-flatpickr';
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
+import { English } from 'flatpickr/dist/l10n/default.js';
+import { useTranslation } from 'react-i18next';
 
 const DatePicker = ({
 	date,
@@ -13,6 +15,7 @@ const DatePicker = ({
 	onOpen = () => {},
 	onClose = () => {},
 }) => {
+	const { i18n } = useTranslation();
 	return (
 		<Flatpickr
 			name={name}
@@ -24,7 +27,8 @@ const DatePicker = ({
 				altInput: true,
 				altFormat: dateFormat,
 				dateFormat: dateFormat,
-				locale: Spanish,
+				locale: i18n.language === 'es' ? Spanish : English,
+				allowInput: true,
 			}}
 			value={date}
 			onChange={(date) => onChangeDate(date, element)}
