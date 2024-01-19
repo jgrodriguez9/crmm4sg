@@ -4,7 +4,8 @@ import * as url from './url';
 const getSubServicesByReservation = (id) =>
 	get(`${url.contractService}/subserviceList?reservationId=${id}`);
 
-const createContractService = (data) => post(`${url.contractService}`, data);
+const createContractService = (data) =>
+	post(`${url.contractService}/saveList`, data);
 
 const updateService = (data) =>
 	put(

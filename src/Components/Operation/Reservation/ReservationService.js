@@ -109,7 +109,7 @@ const ReservationService = ({ ReservationId, reservation }) => {
 				Header: t('adults'),
 				accessor: 'pax',
 				filterable: false,
-				width: '7%',
+				width: '6%',
 			},
 			{
 				Header: t('children'),
@@ -121,7 +121,7 @@ const ReservationService = ({ ReservationId, reservation }) => {
 				Header: t('amount'),
 				accessor: 'amount',
 				filterable: false,
-				width: '10%',
+				width: '8%',
 				Cell: ({ value }) => jsFormatNumber(value),
 			},
 			{
@@ -134,11 +134,23 @@ const ReservationService = ({ ReservationId, reservation }) => {
 				Header: t('creationDate'),
 				accessor: 'insertdate',
 				filterable: false,
-				width: '10%',
+				width: '8%',
 				Cell: ({ value }) =>
 					value
 						? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY')
 						: '',
+			},
+			{
+				Header: 'Pagado',
+				accessor: 'isPaid',
+				filterable: false,
+				width: '5%',
+				Cell: ({ value }) =>
+					value ? (
+						<i className="ri-check-line bg-soft-success text-success p-1 rounded-circle" />
+					) : (
+						<i className="ri-close-line  bg-soft-danger text-danger p-1 rounded-circle" />
+					),
 			},
 			{
 				id: 'action',

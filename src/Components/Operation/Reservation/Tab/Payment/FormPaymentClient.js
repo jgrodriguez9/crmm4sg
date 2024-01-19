@@ -3,23 +3,31 @@ import InputMask from 'react-input-mask';
 import Select from 'react-select';
 import DatePicker from '../../../../Common/DatePicker';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { getCardTypesAll } from '../../../../../helpers/catalogues/cardType';
 import {
 	FIELD_INTEGER,
 	FIELD_NUMERIC,
 	FIELD_POSITIVE,
 	FIELD_REQUIRED,
+	SAVE_SUCCESS,
 	SELECT_OPTION,
 } from '../../../../constants/messages';
 import { useFormik } from 'formik';
 import useUser from '../../../../../hooks/useUser';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { currenciesOpt } from '../../../../constants/currencies';
 import { getServicesByReservation } from '../../../../../helpers/reservation';
 import { addIconClass, deleteIconClass } from '../../../../constants/icons';
 import jsFormatNumber from '../../../../../util/jsFormatNumber';
+import { getCurrencyAll } from '../../../../../helpers/catalogues/currencyType';
+import { getAffiliationAll } from '../../../../../helpers/catalogues/affiliation';
+import removetEmptyObject from '../../../../../util/removetEmptyObject';
+import moment from 'moment';
+import { createPayment } from '../../../../../helpers/payments';
+import { useDispatch } from 'react-redux';
+import { addMessage } from '../../../../../slices/messages/reducer';
+import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 
 const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 	const { t } = useTranslation('translation', {
@@ -28,7 +36,9 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 	const { t: tMessage } = useTranslation('translation', {
 		keyPrefix: 'messages',
 	});
+	const dispatch = useDispatch();
 	const user = useUser();
+	const queryClient = useQueryClient();
 	const [service, setService] = useState(null);
 	const { data: cardTypesOpt } = useQuery(
 		['getCardTypesAll'],
@@ -46,7 +56,6 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 				})),
 		}
 	);
-
 	//services
 	const { data: servicesOpt } = useQuery(
 		['getServiceByReservation', reservation.id],
@@ -57,12 +66,64 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 		{
 			keepPreviousData: true,
 			select: (response) =>
+				response.data.list
+					.filter((it) => !it.isPaid)
+					.map((it) => ({
+						value: it.idService,
+						label: it.subService?.name ?? it.description,
+						booking: it.idBooking,
+						amount: it.amount,
+					})),
+		}
+	);
+	//curencies
+	const { data: currencyOpt } = useQuery(
+		['getCurrencyAll'],
+		async () => {
+			const response = await getCurrencyAll();
+			return response;
+		},
+		{
+			select: (response) =>
 				response.data.list.map((it) => ({
-					value: it.idService,
-					label: it.description,
-					booking: it.idBooking,
-					amount: it.amount,
+					value: it.id,
+					label: `(${it.isoCode}) ${it.currency}`,
+					exchangeRate: it.exchangeRate,
+					isoCode: it.isoCode,
 				})),
+		}
+	);
+	//affiliation
+	const { data: affiliationOpt } = useQuery(
+		['getAffiliationAll'],
+		async () => {
+			const response = await getAffiliationAll();
+			return response;
+		},
+		{
+			select: (response) =>
+				response.data.map((it) => ({
+					value: it.id,
+					label: it.affiliationDescription,
+				})),
+		}
+	);
+
+	//create payment
+	const { mutate: create, isLoading: isCreating } = useMutation(
+		createPayment,
+		{
+			onSuccess: () => {
+				dispatch(
+					addMessage({
+						type: 'success',
+						message: tMessage(SAVE_SUCCESS),
+					})
+				);
+				queryClient.refetchQueries({
+					queryKey: ['getPaymentsByReservation'],
+				});
+			},
 		}
 	);
 
@@ -76,19 +137,21 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 			bank: payment?.bank?.id ?? '',
 			type: payment?.type ?? '',
 			amount: payment?.amount ?? '',
-			currency: payment?.currency ?? '',
+			currency: payment?.currency ?? { id: '' },
 			creditCard: '',
 			cardType: payment?.cardType ?? '',
 			expiration: payment?.expiration ?? '',
 			autorization: payment?.autorization ?? '',
 			user: payment?.user ?? user?.usuario,
-			department: payment?.department ?? '',
+			department: payment?.department ?? { id: user?.deptoid },
 			multi: payment?.multi ?? '',
 			exchangeRateTC: payment?.exchangeRateTC ?? '',
 			amountMXN: payment?.amountMXN ?? '',
 			exchangeRate: payment?.exchangeRate ?? '',
 			paymentDate: payment?.paymentDate ?? '',
 			contractedServices: payment?.contractedServices ?? [],
+			idInvoice: payment?.idInvoice ?? '',
+			affiliation: payment?.affiliation ?? { id: '' },
 			//temp
 			cvv: '',
 		},
@@ -100,7 +163,9 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 			cardType: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			autorization: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			paymentDate: Yup.string().required(tMessage(FIELD_REQUIRED)),
-			currency: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			currency: Yup.object().shape({
+				id: Yup.number().required(tMessage(FIELD_REQUIRED)),
+			}),
 			amount: Yup.number()
 				.min(0, tMessage(FIELD_POSITIVE))
 				.integer(tMessage(FIELD_INTEGER))
@@ -120,6 +185,17 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 			//submit request
 			const parsedServices = [];
 			console.log(values);
+			const data = {};
+			Object.entries(removetEmptyObject(values)).forEach((entry) => {
+				const [key, value] = entry;
+				if (key === 'paymentDate') {
+					data[key] = moment(values.paymentDate).format('YYYY-MM-DD');
+				} else {
+					data[key] = value;
+				}
+			});
+			console.log(data);
+			create(data);
 			// if (values.idService) {
 			// 	//updating existing one
 			// 	updateItem({
@@ -133,6 +209,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 			// }
 		},
 	});
+	console.log(formik.values);
 
 	const addService = () => {
 		const copyServices = [...formik.values.contractedServices];
@@ -143,6 +220,12 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 			amount: service.amount,
 		});
 		formik.setFieldValue('contractedServices', copyServices);
+		const totalAmount = copyServices.reduce(
+			(acc, curr) => acc + curr.amount,
+			0
+		);
+		formik.setFieldValue('amountMXN', totalAmount);
+		formik.setFieldValue('amount', totalAmount);
 		setService(null);
 	};
 	const removeService = (index) => {
@@ -408,9 +491,27 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 							{t('membership')}
 						</Label>
 						<Select
-							value={null}
-							onChange={() => {}}
-							options={[]}
+							value={
+								formik.values.affiliation?.id
+									? {
+											value: formik.values.affiliation.id,
+											label:
+												affiliationOpt.find(
+													(it) =>
+														it.value ===
+														formik.values
+															.affiliation.id
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'affiliation.id',
+									value?.value ?? ''
+								);
+							}}
+							options={affiliationOpt}
 							name="choices-single-default"
 							id="idStatus"
 						></Select>
@@ -444,14 +545,6 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 				</Col>
 				<Col lg={4}>
 					<div className="mb-2">
-						<Label className="form-label mb-1" htmlFor="nombre">
-							{t('invoice')}
-						</Label>
-						<Input id="nombre" />
-					</div>
-				</Col>
-				<Col lg={4}>
-					<div className="mb-2">
 						<Label
 							className="form-label mb-1"
 							htmlFor="paymentDate"
@@ -479,32 +572,6 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 						)}
 					</div>
 				</Col>
-				<Col md={4}>
-					<div className="mb-2">
-						<Label
-							className="form-label mb-1"
-							htmlFor="exchangeRateTC"
-						>
-							Tipo de cambio
-						</Label>
-						<Input
-							type="text"
-							className={`form-control ${
-								formik.errors.exchangeRateTC ? 'is-invalid' : ''
-							}`}
-							id="exchangeRateTC"
-							name="exchangeRateTC"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.exchangeRateTC}
-						/>
-						{formik.errors.exchangeRateTC && (
-							<FormFeedback type="invalid" className="d-block">
-								{formik.errors.exchangeRateTC}
-							</FormFeedback>
-						)}
-					</div>
-				</Col>
 				<Col xs={12} md={4}>
 					<div className="mb-2">
 						<Label className="form-label mb-1" htmlFor="currency">
@@ -512,28 +579,95 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 						</Label>
 						<Select
 							value={
-								formik.values.currency
+								formik.values.currency?.id
 									? {
-											value: formik.values.currency,
-											label: formik.values.currency,
+											value: formik.values.currency.id,
+											label:
+												currencyOpt.find(
+													(it) =>
+														it.value ===
+														formik.values.currency
+															.id
+												)?.label ?? '',
 									  }
 									: null
 							}
 							onChange={(value) => {
 								formik.setFieldValue(
-									'currency',
+									'currency.id',
 									value?.value ?? ''
 								);
+								formik.setFieldValue(
+									'exchangeRate',
+									value.exchangeRate
+								);
+								formik.setFieldValue(
+									'exchangeRateTC',
+									value.exchangeRate
+								);
 							}}
-							options={currenciesOpt}
+							options={currencyOpt}
 							name="choices-single-default"
 							id="currency"
 						/>
-						{formik.errors.currency && (
+						{formik.errors.currency?.id && (
 							<FormFeedback type="invalid" className="d-block">
-								{formik.errors.currency}
+								{formik.errors.currency.id}
 							</FormFeedback>
 						)}
+					</div>
+				</Col>
+				<Col md={4}>
+					<div className="mb-2">
+						<Label
+							className="form-label mb-1"
+							htmlFor="exchangeRate"
+						>
+							Tipo de cambio
+						</Label>
+						<Input
+							type="text"
+							className={`form-control ${
+								formik.errors.exchangeRate ? 'is-invalid' : ''
+							}`}
+							id="exchangeRate"
+							name="exchangeRate"
+							onChange={(e) => {
+								formik.setFieldValue(
+									'exchangeRate',
+									e.target.value
+								);
+								formik.setFieldValue(
+									'exchangeRateTC',
+									e.target.value
+								);
+							}}
+							onBlur={formik.handleBlur}
+							value={formik.values.exchangeRate}
+						/>
+						{formik.errors.exchangeRate && (
+							<FormFeedback type="invalid" className="d-block">
+								{formik.errors.exchangeRate}
+							</FormFeedback>
+						)}
+					</div>
+				</Col>
+				<Col lg={4}>
+					<div className="mb-2">
+						<Label className="form-label mb-1" htmlFor="idInvoice">
+							{t('invoice')}
+						</Label>
+						<Input
+							type="text"
+							className={`form-control ${
+								formik.errors.idInvoice ? 'is-invalid' : ''
+							}`}
+							id="idInvoice"
+							name="idInvoice"
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.idInvoice}
+						/>
 					</div>
 				</Col>
 				<Col lg={4}>
@@ -584,19 +718,42 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 				</Col>
 			</Row>
 
-			<div className="d-flex mt-3">
-				<Button type="submit" color="primary" className="me-2">
-					{t('accept')}
-				</Button>
-				<Button
-					type="button"
-					color="danger"
-					className="btn-soft-danger"
-					onClick={toggleDialog ? toggleDialog : () => {}}
-				>
-					{t('cancel')}
-				</Button>
-			</div>
+			{isCreating && (
+				<div className="d-flex my-3">
+					<ButtonsLoader
+						buttons={[
+							{
+								text: t('accept'),
+								color: 'primary',
+								className: 'me-2',
+								loader: true,
+							},
+							{
+								text: t('cancel'),
+								color: 'danger',
+								className: 'btn-soft-danger',
+								loader: false,
+							},
+						]}
+					/>
+				</div>
+			)}
+
+			{!isCreating && (
+				<div className="d-flex my-3">
+					<Button type="submit" color="primary" className="me-2">
+						{t('accept')}
+					</Button>
+					<Button
+						type="button"
+						color="danger"
+						className="btn-soft-danger"
+						onClick={toggleDialog ? toggleDialog : () => {}}
+					>
+						{t('cancel')}
+					</Button>
+				</div>
+			)}
 		</Form>
 	);
 };

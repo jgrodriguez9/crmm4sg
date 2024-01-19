@@ -68,3 +68,9 @@ export const sale = '/sale';
 
 //card types
 export const cardType = '/cardType';
+
+//currency Type
+export const currencyType = '/currencyType';
+
+//affiliation
+export const affiliation = '/affiliation';

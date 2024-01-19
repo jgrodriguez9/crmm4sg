@@ -110,7 +110,7 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 			},
 			{
 				Header: t('currency'),
-				accessor: 'currency',
+				accessor: 'currency.currency',
 				filterable: false,
 				width: '8%',
 			},
@@ -135,7 +135,7 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 			},
 			{
 				Header: t('department'),
-				accessor: 'department',
+				accessor: 'department.name',
 				filterable: false,
 				width: '10%',
 			},

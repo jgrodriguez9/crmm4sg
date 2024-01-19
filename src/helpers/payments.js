@@ -7,5 +7,6 @@ const deletePayment = (dataToDelete) =>
 	del(
 		`${url.payment}/reservation/${dataToDelete.idReservation}/${dataToDelete.idPayment}`
 	);
+const createPayment = (data) => post(`${url.payment}/reservation`, data);
 
-export { getPaymentsByReservation, deletePayment };
+export { getPaymentsByReservation, deletePayment, createPayment };

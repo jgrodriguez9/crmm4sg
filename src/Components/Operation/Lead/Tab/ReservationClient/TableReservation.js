@@ -30,7 +30,7 @@ const TableReservation = ({
 	theadClass = 'table-light',
 }) => {
 	const { t } = useTranslation('translation', {
-		keyPrefix: 'components.operation.tablePaquete',
+		keyPrefix: 'components.operation.tableReservation',
 	});
 	const dispatch = useDispatch();
 	const [query, setQuery] = useState({
