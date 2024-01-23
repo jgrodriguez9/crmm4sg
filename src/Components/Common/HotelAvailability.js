@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, Button, Col, Label, Row } from 'reactstrap';
 import DatePicker from './DatePicker';
 import { useQuery } from 'react-query';
@@ -43,6 +43,12 @@ function HotelAvailability({ initialDate, finalDate, hotel }) {
 			setLoading(false);
 		}, 2000);
 	};
+
+	useEffect(() => {
+		if (url) {
+			document.getElementById('availability').src = url;
+		}
+	}, [url]);
 
 	return (
 		<Row>
@@ -138,7 +144,6 @@ function HotelAvailability({ initialDate, finalDate, hotel }) {
 								id="availability"
 								title="Disponibilidad de hotel"
 								loading="lazy"
-								src={url}
 								style={{
 									width: '1px',
 									minWidth: '100%',

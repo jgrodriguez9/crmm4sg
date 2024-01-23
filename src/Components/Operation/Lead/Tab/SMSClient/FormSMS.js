@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Select from 'react-select';
 import { Button, Col, Form, FormFeedback, Label, Row } from 'reactstrap';
 import * as Yup from 'yup';
@@ -11,13 +11,15 @@ import {
 	SMS_SUCCESS,
 } from '../../../../constants/messages';
 import useUser from '../../../../../hooks/useUser';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { sendExternalSms } from '../../../../../helpers/external/sms';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import { useTranslation } from 'react-i18next';
+import { languageOpt } from '../../../../constants/utils';
+import { getTemplateSmsByUser } from '../../../../../helpers/configuration/templateSms';
 
 const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 	const { t } = useTranslation('translation', {
@@ -26,10 +28,25 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 	const { t: tMessage } = useTranslation('translation', {
 		keyPrefix: 'messages',
 	});
+	const { t: tMConstant } = useTranslation('translation', {
+		keyPrefix: 'constants.language',
+	});
 	const queryClient = useQueryClient();
 	const dispatch = useDispatch();
 	const user = useUser();
 	const [smsPredefined, setSmsPredefined] = useState(null);
+	const [language, setLanguage] = useState('');
+	console.log(user?.usuario);
+	//getting all sms templates
+	const { data: templatesSms } = useQuery(
+		['getTemplateSmsByUser'],
+		() => getTemplateSmsByUser(user.usuario),
+		{
+			enabled: user?.usuario !== undefined,
+			select: (result) => result.data.list,
+		}
+	);
+	//console.log(templatesSms);
 
 	//send sms
 	const { mutate: sendSms, isLoading: isSendingSms } = useMutation(
@@ -80,6 +97,17 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 			sendSms(values);
 		},
 	});
+	const templatesOpt = useMemo(() => {
+		if (language === '') return [];
+		const messages = templatesSms
+			.filter((it) => it.language === language)
+			.map((it) => ({
+				value: it.id,
+				label: it.name,
+				template: it.template,
+			}));
+		return messages;
+	}, [language, templatesSms]);
 	return (
 		<Form
 			className="needs-validation fs-7"
@@ -119,21 +147,38 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 						/>
 					</div>
 				</Col>
-				{/* <Col lg={12}>
+				<Col lg={12}>
 					<div className="mb-3">
-						<Label className="form-label" htmlFor="motivo">
-							Idioma
+						<Label className="form-label mb-0" htmlFor="language">
+							{t('language')}
 						</Label>
 						<Select
-							id="motivo"
+							id="language"
 							className="mb-0"
-							value={{ value: 'ES', label: 'Español' }}
-							onChange={() => {}}
-							options={[{ value: 'ES', label: 'Español' }]}
-							placeholder="Seleccionar opción"
+							value={
+								language
+									? {
+											value: language,
+											label: tMConstant(
+												languageOpt.find(
+													(it) =>
+														it.value === language
+												)?.label ?? ''
+											),
+									  }
+									: null
+							}
+							onChange={(value) => {
+								setLanguage(value?.value ?? '');
+							}}
+							options={languageOpt.map((it) => ({
+								...it,
+								label: tMConstant(it.label),
+							}))}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
-				</Col> */}
+				</Col>
 				<Col lg={12}>
 					<div className="mb-2">
 						<Label
@@ -151,23 +196,12 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 								if (value)
 									formik.setFieldValue(
 										'message',
-										value.message
+										value.template
 									);
 								else formik.setFieldValue('message', '');
 							}}
 							isClearable
-							options={[
-								{
-									value: '1',
-									label: 'Black Friday',
-									message: 'Black Friday message',
-								},
-								{
-									value: '2',
-									label: 'Oferta Verano 60%',
-									message: 'Oferta Verano 60% message',
-								},
-							]}
+							options={templatesOpt}
 							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>

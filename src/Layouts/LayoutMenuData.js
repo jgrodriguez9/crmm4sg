@@ -100,6 +100,13 @@ const Navdata = () => {
 						},
 					],
 				},
+				{
+					id: 'templateSms',
+					label: 'menu.configuration.templateSms',
+					link: '/templateSms',
+					parentId: 'configuration',
+					show: existsRole(roles, [ROLE_MANAGER, ROLE_SUPERVISOR]),
+				},
 			],
 		},
 		// {

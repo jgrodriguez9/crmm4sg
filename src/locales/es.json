@@ -130,6 +130,26 @@
                 "editArticleCategory": "Editar categoría de artículos",
                 "newArticleCategory": "Nueva categoría de artículos"
             }
+        },
+        "templateSms": {
+            "list": {
+                "header": "Plantillas SMS | CRM - M4SG",
+                "edit": "Editar",
+                "delete": "Eliminar",
+                "title": "Título",
+                "language": "Lenguaje",
+                "template": "Plantilla",
+                "departament": "Departamentos",
+                "creationDate": "Fecha creación",
+                "templateSms": "Plantillas SMS",
+                "createTemplateSms": "Crear plantilla sms",
+                "search": "Buscar",
+                "editTemplateSms": "Editar plantilla sms",
+                "newTemplateSms": "Nuevo plantilla sms",
+                "active": "Activo",
+                "searchByName": "Buscar por nombre",
+                "searchByDepartment": "Buscar por departamento"
+            }            
         }
     },
     "components": {
@@ -223,6 +243,16 @@
             "name": "Nombre",           
             "accept": "Aceptar",
             "cancel": "Cancelar"
+        },
+        "formTemplateSMS": {
+            "title": "Título",
+            "language": "Lenguaje",
+            "departments": "Departamentos",
+            "description": "Descripción",
+            "accept": "Aceptar",
+            "cancel": "Cancelar",
+            "active": "Activo",
+            "message": "Mensaje"
         },
         "operation": {
             "formClient": {
@@ -350,7 +380,8 @@
                 "number":"Número",
                 "message": "Mensaje",
                 "send": "Enviar",
-                "cancel": "Cancelar"
+                "cancel": "Cancelar",
+                "language": "Idioma"
             },
             "marketingMailClient": {
                 "createMail": "Crear correo",
@@ -602,7 +633,8 @@
             "title": "Configuración",
             "articleOfHelp": "Artículos de ayuda",
             "catalogue": "Catálogos",
-            "categoryOfArticle": "Categoría de artículos"
+            "categoryOfArticle": "Categoría de artículos",
+            "templateSms": "Plantillas SMS"
         },
         "operation": {
             "title": "Operación",
@@ -632,6 +664,13 @@
         "ERR_BAD_REQUEST": "Solicitud incorrecta de la información",
         "ERR_NETWORK": "Puede intentar más tarde por el momento no tenemos comunicación con el servidor",
         "ERR_BAD_RESPONSE": "Incorrecta respuesta del servidor",
-        "EMPTY_LIST": "No hay información a mostrar"
+        "EMPTY_LIST": "No hay información a mostrar",
+        "ONE_OPTION_REQUIRED": "Al menos debes seleccionar una opción"
+    },
+    "constants": {
+        "language": {
+            "es": "Español",
+            "en": "Inglés"
+        }
     }
 }

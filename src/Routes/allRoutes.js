@@ -13,6 +13,7 @@ import Reservation from '../pages/Operation/Reservation';
 import ReservationDetail from '../pages/Operation/Reservation/Detail';
 import Article from '../pages/Configuration/Article';
 import ArticleCategory from '../pages/Configuration/Catalogues/ArticleCategory';
+import TemplateSms from '../pages/Configuration/TemplateSms';
 
 const protectedRoutes = [
 	{ path: '/dashboard', component: <Dashboard /> },
@@ -43,6 +44,10 @@ const catalogueRoute = [
 	{ path: '/articleCategory', component: <ArticleCategory /> },
 ];
 
+const templatesSmsRoute = [
+	{ path: '/templateSms', component: <TemplateSms /> },
+];
+
 // roles
 const agentRoutes = [...protectedRoutes, ...clientRoute, ...reservationRoute];
 const supervisorRoutes = [
@@ -51,6 +56,7 @@ const supervisorRoutes = [
 	...reservationRoute,
 	...articleRoute,
 	...catalogueRoute,
+	...templatesSmsRoute,
 ];
 const managerRoutes = [
 	...protectedRoutes,
@@ -58,6 +64,7 @@ const managerRoutes = [
 	...reservationRoute,
 	...articleRoute,
 	...catalogueRoute,
+	...templatesSmsRoute,
 ];
 
 const publicRoutes = [{ path: '/login', component: <Login /> }];

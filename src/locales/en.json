@@ -130,6 +130,26 @@
                 "editArticleCategory": "Edit article Category",
                 "newArticleCategory": "New article Category"
             }
+        },
+        "templateSms": {
+            "list": {
+                "header": "SMS Templates | CRM - M4SG",
+                "edit": "Edit",
+                "delete": "Delete",
+                "title": "Title",
+                "language": "Language",
+                "template": "Template",
+                "departament": "Departments",
+                "creationDate": "Creation date",
+                "templateSms": "SMS Templates",
+                "createTemplateSms": "Create sms template",
+                "search": "Search",
+                "editTemplateSms": "Edit sms template",
+                "newTemplateSms": "New sms template",
+                "active": "Active",
+                "searchByName": "Search by name",
+                "searchByDepartment": "Search by departament"
+            }            
         }
     },
     "components": {
@@ -223,6 +243,16 @@
             "name": "Name",           
             "accept": "Ok",
             "cancel": "Cancel"
+        },
+        "formTemplateSMS": {
+            "title": "Title",
+            "language": "Language",
+            "departments": "Departments",
+            "description": "Description",
+            "accept": "Ok",
+            "cancel": "Cancel",
+            "active": "Active",
+            "message": "Message"
         },
         "operation": {
             "formClient": {
@@ -350,7 +380,8 @@
                 "number":"Number",
                 "message": "Message",
                 "send": "Send",
-                "cancel": "Cancel"
+                "cancel": "Cancel",
+                "language": "Language"
             },
             "marketingMailClient": {
                 "createMail": "Create email",
@@ -602,7 +633,8 @@
             "title": "Configuration",
             "articleOfHelp": "Help articles",
             "catalogue": "Catalogs",
-            "categoryOfArticle": "Article Category"
+            "categoryOfArticle": "Article Category",
+            "templateSms": "SMS Templates"
         },
         "operation": {
             "title": "Operation",
@@ -632,6 +664,13 @@
         "ERR_BAD_REQUEST": "Incorrect request for information",
         "ERR_NETWORK": "You can try later at the moment we do not have communication with the server",
         "ERR_BAD_RESPONSE": "Error bad response",
-        "EMPTY_LIST": "There is no information to display"
+        "EMPTY_LIST": "There is no information to display",
+        "ONE_OPTION_REQUIRED": "You need to select at least one option"
+    },
+    "constants": {
+        "language": {
+            "es": "Spanish",
+            "en": "English"
+        }
     }
 }

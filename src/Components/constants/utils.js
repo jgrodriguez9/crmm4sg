@@ -15,4 +15,9 @@ const incomeOpt = [
 	{ label: '+ 10000', value: '10100' },
 ];
 
-export { maritalStatusOpt, incomeOpt };
+const languageOpt = [
+	{ label: 'es', value: 'es' },
+	{ label: 'en', value: 'en' },
+];
+
+export { maritalStatusOpt, incomeOpt, languageOpt };

@@ -74,3 +74,6 @@ export const currencyType = '/currencyType';
 
 //affiliation
 export const affiliation = '/affiliation';
+
+//template sms
+export const templateSms = '/smsTemplate';
