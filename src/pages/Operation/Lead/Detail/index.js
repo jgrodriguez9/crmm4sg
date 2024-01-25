@@ -325,7 +325,7 @@ const LeadProfile = () => {
 			];
 			setDataLeft(parseInfoLeft);
 		}
-	}, [itemData?.data, errorItem]);
+	}, [itemData?.data, errorItem, t]);
 
 	const toggleDialog = () => {
 		setShowModal(!showModal);

@@ -665,7 +665,8 @@
         "ERR_NETWORK": "Puede intentar más tarde por el momento no tenemos comunicación con el servidor",
         "ERR_BAD_RESPONSE": "Incorrecta respuesta del servidor",
         "EMPTY_LIST": "No hay información a mostrar",
-        "ONE_OPTION_REQUIRED": "Al menos debes seleccionar una opción"
+        "ONE_OPTION_REQUIRED": "Al menos debes seleccionar una opción",
+        "unauthorized": "Sin autorización"
     },
     "constants": {
         "language": {

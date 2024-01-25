@@ -36,7 +36,6 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 	const user = useUser();
 	const [smsPredefined, setSmsPredefined] = useState(null);
 	const [language, setLanguage] = useState('');
-	console.log(user?.usuario);
 	//getting all sms templates
 	const { data: templatesSms } = useQuery(
 		['getTemplateSmsByUser'],
@@ -46,7 +45,6 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 			select: (result) => result.data.list,
 		}
 	);
-	//console.log(templatesSms);
 
 	//send sms
 	const { mutate: sendSms, isLoading: isSendingSms } = useMutation(
@@ -255,7 +253,7 @@ const FormSMS = ({ phonesOpt, customerId, closeModal }) => {
 						type="button"
 						color="danger"
 						className="btn-soft-danger"
-						onClick={() => {}}
+						onClick={closeModal}
 					>
 						{t('cancel')}
 					</Button>

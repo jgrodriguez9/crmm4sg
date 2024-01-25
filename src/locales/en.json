@@ -33,7 +33,7 @@
                 "call": "Call",
                 "mail": "Email",
                 "sendMail": "Send email",
-                "phones": "phones",
+                "phones": "Phones",
                 "mainInfo": "Main information",
                 "contract": "Contract",
                 "aboutThisClient": "About this client",
@@ -665,7 +665,8 @@
         "ERR_NETWORK": "You can try later at the moment we do not have communication with the server",
         "ERR_BAD_RESPONSE": "Error bad response",
         "EMPTY_LIST": "There is no information to display",
-        "ONE_OPTION_REQUIRED": "You need to select at least one option"
+        "ONE_OPTION_REQUIRED": "You need to select at least one option",
+        "unauthorized": "Unauthorized"
     },
     "constants": {
         "language": {
