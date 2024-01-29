@@ -9,6 +9,7 @@ export default function StateInput({
 	handleChange,
 	country,
 	isReadOnly = false,
+	isClearable = false,
 }) {
 	const { t: tMessage } = useTranslation('translation', {
 		keyPrefix: 'messages',
@@ -54,6 +55,7 @@ export default function StateInput({
 				value: s.isoCode,
 			}))}
 			classNamePrefix="select2-selection"
+			isClearable={isClearable}
 			placeholder={tMessage(SELECT_OPTION)}
 		/>
 	);

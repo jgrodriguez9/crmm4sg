@@ -1,18 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { decrypData } from '../util/crypto';
 
 const useUser = () => {
-	const [user, setUser] = useState(null);
+	//const [user, setUser] = useState(null);
 
-	useEffect(() => {
-		if (localStorage.getItem('authenticatication-crm')) {
+	const encode = localStorage.getItem('authenticatication-crm');
+	const user = useMemo(() => {
+		if (encode) {
 			const decryptedData = decrypData(
 				localStorage.getItem('authenticatication-crm')
 			);
 			const obj = JSON.parse(decryptedData);
-			setUser(obj);
+			return obj;
+			//setUser(obj);
 		}
-	}, []);
+	}, [encode]);
+
+	// useEffect(() => {
+	// 	if (localStorage.getItem('authenticatication-crm')) {
+	// 		const decryptedData = decrypData(
+	// 			localStorage.getItem('authenticatication-crm')
+	// 		);
+	// 		const obj = JSON.parse(decryptedData);
+	// 		setUser(obj);
+	// 	}
+	// }, []);
 
 	return user;
 };

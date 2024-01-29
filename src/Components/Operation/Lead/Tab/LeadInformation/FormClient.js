@@ -178,7 +178,6 @@ const FormClient = ({
 		setEditCorreo(!editCorreo);
 		formik.setFieldValue('email', '');
 	};
-	console.log(formik.values.country);
 	return (
 		<Form
 			className="needs-validation fs-7"

@@ -3,7 +3,7 @@ import * as url from '../url';
 
 const getCallCenterAll = () => get(`${url.callCenter}/all`);
 const getCallCenterPaginate = (query) => get(`${url.callCenter}${query}`);
-const getCallCenterByUser = () =>
-	get(`${url.callCenter}/listUserCallcenters?id=ASANTOYO`);
+const getCallCenterByUser = (userName) =>
+	get(`${url.callCenter}/listUserCallcenters?id=${userName}`);
 
 export { getCallCenterAll, getCallCenterPaginate, getCallCenterByUser };

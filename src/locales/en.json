@@ -21,7 +21,7 @@
                 "campaign": "Campaign",
                 "ownerAge": "Owner's age",
                 "country": "Country",
-                "saleMan": "Seller",
+                "saleMan": "Agent",
                 "status": "Status",
                 "saleDate": "Sale Date",
                 "createClient": "Create client",

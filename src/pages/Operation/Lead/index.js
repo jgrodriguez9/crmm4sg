@@ -27,6 +27,8 @@ import BasicModal from '../../../Components/Common/BasicModal';
 import FormClient from '../../../Components/Operation/Lead/Tab/LeadInformation/FormClient';
 import moment from 'moment/moment';
 import { useTranslation } from 'react-i18next';
+import CellAgent from '../../../Components/Operation/Lead/Table/CellAgent';
+import useRole from '../../../hooks/useRole';
 
 const initFilter = {
 	certifiateNumber: '',
@@ -44,6 +46,8 @@ const initFilter = {
 const initFilterModel = {
 	callCenterModel: null,
 	segmentModel: null,
+	countryModel: null,
+	stateModel: null,
 };
 
 const Lead = () => {
@@ -54,6 +58,7 @@ const Lead = () => {
 		keyPrefix: 'messages',
 	});
 	document.title = t('header');
+	const { isSupervisor, isManager } = useRole();
 	const dispatch = useDispatch();
 	const [idItem, setIdItem] = useState(null);
 	const [showModal, setShowModal] = useState(false);
@@ -101,7 +106,7 @@ const Lead = () => {
 		setFilterDialog(!filterDialog);
 	};
 
-	const columns = useMemo(
+	const defaultColumns = useMemo(
 		() => [
 			{
 				Header: t('name'),
@@ -177,19 +182,11 @@ const Lead = () => {
 				},
 			},
 			{
-				Header: t('saleMan'),
-				accessor: 'userName',
-				filterable: false,
-				style: {
-					width: '9%',
-				},
-			},
-			{
 				Header: t('status'),
 				accessor: 'sale.reservationStatus.status',
 				filterable: false,
 				style: {
-					width: '10%',
+					width: '8%',
 				},
 			},
 			{
@@ -197,7 +194,7 @@ const Lead = () => {
 				accessor: 'sale.saleDate',
 				filterable: false,
 				style: {
-					width: '10%',
+					width: '8%',
 				},
 				Cell: ({ value }) =>
 					value
@@ -209,7 +206,7 @@ const Lead = () => {
 			{
 				id: 'action',
 				style: {
-					width: '6%',
+					width: '4%',
 				},
 				Cell: (cellProps) => {
 					return (
@@ -238,8 +235,25 @@ const Lead = () => {
 				},
 			},
 		],
-		[]
+		[t]
 	);
+
+	const columns = useMemo(() => {
+		if (isSupervisor || isManager) {
+			defaultColumns.splice(7, 0, {
+				Header: t('saleMan'),
+				accessor: 'userName',
+				filterable: false,
+				style: {
+					width: '15%',
+				},
+				Cell: CellAgent,
+			});
+			return defaultColumns;
+		} else {
+			return defaultColumns;
+		}
+	}, [isSupervisor, defaultColumns, t, isManager]);
 
 	const buscar = () => {
 		setFilterDialog(false);

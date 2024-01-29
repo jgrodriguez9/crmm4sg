@@ -11,6 +11,7 @@ import diffDates from '../../../../util/diffDates';
 import { getCallCenterByUser } from '../../../../helpers/catalogues/call_center';
 import { getHotelUnitByHotelPaginate } from '../../../../helpers/catalogues/hotel_unit';
 import { useTranslation } from 'react-i18next';
+import useUser from '../../../../hooks/useUser';
 
 const FormReservationCero = ({ formik }) => {
 	const { t: tMessage } = useTranslation('translation', {
@@ -19,6 +20,7 @@ const FormReservationCero = ({ formik }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formReservationCero',
 	});
+	const user = useUser();
 	const [initialDate, setInitialDate] = useState(null);
 	const [finalDate, setFinalDate] = useState(null);
 	//getHotel
@@ -44,8 +46,9 @@ const FormReservationCero = ({ formik }) => {
 	//getCallCenter
 	const { data: callCenterOpt } = useQuery(
 		['getCallCenterByUser'],
-		() => getCallCenterByUser(),
+		() => getCallCenterByUser(user?.usuario),
 		{
+			enabled: user?.usuario !== undefined,
 			select: (data) =>
 				data.data?.list.map((item) => ({
 					value: item.id,

@@ -11,8 +11,14 @@ import {
 } from 'reactstrap';
 import SelectAsync from './SelectAsync';
 import { getSegmentPaginate } from '../../helpers/catalogues/segment';
-import { getCallCenterPaginate } from '../../helpers/catalogues/call_center';
+import { getCallCenterByUser } from '../../helpers/catalogues/call_center';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
+import useUser from '../../hooks/useUser';
+import Select from 'react-select';
+import { SELECT_OPTION } from '../constants/messages';
+import { Country } from 'country-state-city';
+import StateInput from '../Controller/StateInput';
 
 const CrmFilter = ({
 	show,
@@ -27,11 +33,23 @@ const CrmFilter = ({
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.crmFilter',
 	});
-	const [selectCountry, setselectCountry] = useState(null);
-
-	const handleselectCountry = (selectCountry) => {
-		setselectCountry(selectCountry);
-	};
+	const { t: tMessage } = useTranslation('translation', {
+		keyPrefix: 'messages',
+	});
+	const user = useUser();
+	//getCallCenter
+	const { data: callCenterOpt } = useQuery(
+		['getCallCenterByUser'],
+		() => getCallCenterByUser(user?.usuario),
+		{
+			enabled: user?.usuario !== undefined,
+			select: (data) =>
+				data.data?.list.map((item) => ({
+					value: item.id,
+					label: item.name,
+				})) ?? [],
+		}
+	);
 
 	return (
 		<Offcanvas
@@ -123,10 +141,9 @@ const CrmFilter = ({
 								>
 									Call Center
 								</Label>
-								<SelectAsync
-									fnFilter={getCallCenterPaginate}
-									query={'?page=1&max=10'}
-									keyCompare={'name'}
+								<Select
+									id="hotel"
+									className="mb-0"
 									value={dataSelect.callCenterModel}
 									onChange={(value) => {
 										setQuery((prev) => ({
@@ -138,6 +155,8 @@ const CrmFilter = ({
 											callCenterModel: value,
 										}));
 									}}
+									options={callCenterOpt}
+									placeholder={tMessage(SELECT_OPTION)}
 								/>
 							</div>
 						</Col>
@@ -244,17 +263,36 @@ const CrmFilter = ({
 								>
 									{t('country')}
 								</Label>
-								<Input
-									className="form-control"
-									type="text"
-									id="pais"
-									value={query.country}
-									onChange={(e) =>
+								<Select
+									value={dataSelect.countryModel}
+									onChange={(value) => {
 										setQuery((prev) => ({
 											...prev,
-											country: e.target.value,
-										}))
-									}
+											country: value?.value ?? '',
+										}));
+										setDataSelect((prev) => ({
+											...prev,
+											countryModel: value,
+										}));
+
+										setQuery((prev) => ({
+											...prev,
+											state: '',
+										}));
+										setDataSelect((prev) => ({
+											...prev,
+											stateModel: null,
+										}));
+									}}
+									options={Country.getAllCountries().map(
+										(it) => ({
+											label: it.name,
+											value: it.isoCode,
+										})
+									)}
+									isClearable
+									classNamePrefix="select2-selection"
+									placeholder={tMessage(SELECT_OPTION)}
 								/>
 							</div>
 						</Col>
@@ -266,17 +304,20 @@ const CrmFilter = ({
 								>
 									{t('state')}
 								</Label>
-								<Input
-									className="form-control"
-									type="text"
-									id="estado"
-									value={query.state}
-									onChange={(e) =>
+								<StateInput
+									value={dataSelect.stateModel}
+									handleChange={(value) => {
 										setQuery((prev) => ({
 											...prev,
-											state: e.target.value,
-										}))
-									}
+											state: value?.value ?? '',
+										}));
+										setDataSelect((prev) => ({
+											...prev,
+											stateModel: value,
+										}));
+									}}
+									isClearable
+									country={dataSelect.countryModel}
 								/>
 							</div>
 						</Col>
