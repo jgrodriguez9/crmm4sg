@@ -658,6 +658,7 @@ const LeadProfile = () => {
 				size="lg"
 				children={
 					<FormMaketingMailClient
+						customerId={itemData?.data?.id}
 						closeModal={() => setShowEmailModal(false)}
 						emailTo={itemData?.data?.email}
 					/>

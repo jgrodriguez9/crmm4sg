@@ -29,6 +29,7 @@ import moment from 'moment/moment';
 import { useTranslation } from 'react-i18next';
 import CellAgent from '../../../Components/Operation/Lead/Table/CellAgent';
 import useRole from '../../../hooks/useRole';
+import useUser from '../../../hooks/useUser';
 
 const initFilter = {
 	certifiateNumber: '',
@@ -42,12 +43,14 @@ const initFilter = {
 	contract: '',
 	segment: '',
 	booking: '',
+	onlyDepartmentUser: '',
 };
 const initFilterModel = {
 	callCenterModel: null,
 	segmentModel: null,
 	countryModel: null,
 	stateModel: null,
+	agentModel: null,
 };
 
 const Lead = () => {
@@ -58,13 +61,15 @@ const Lead = () => {
 		keyPrefix: 'messages',
 	});
 	document.title = t('header');
-	const { isSupervisor, isManager } = useRole();
+	const { isSupervisor, isManager, isAgent } = useRole();
+	const user = useUser();
 	const dispatch = useDispatch();
 	const [idItem, setIdItem] = useState(null);
 	const [showModal, setShowModal] = useState(false);
 	const [query, setQuery] = useState({
 		max: 10,
 		page: 1,
+		userName: isAgent ? user.usuario : '',
 		...initFilter,
 	});
 	const [queryFilter, setQueryFilter] = useState(
@@ -264,7 +269,12 @@ const Lead = () => {
 
 	const onCleanFilter = () => {
 		setFilterDialog(false);
-		const copyQuery = { max: 10, page: 1, ...initFilter };
+		const copyQuery = {
+			max: 10,
+			page: 1,
+			userName: isAgent ? user.usuario : '',
+			...initFilter,
+		};
 		setQueryFilter(parseObjectToQueryUrl(copyQuery));
 		setQuery(copyQuery);
 		setDataSelect(initFilterModel);
@@ -335,10 +345,10 @@ const Lead = () => {
 							<Card className="shadow">
 								<CardHeaderGlobal
 									title={t('client')}
-									add={{
-										action: toggleDialog,
-										title: t('createClient'),
-									}}
+									// add={{
+									// 	action: toggleDialog,
+									// 	title: t('createClient'),
+									// }}
 								/>
 								<CardBody className="pt-0">
 									<FilterCommandGlobal
@@ -404,14 +414,14 @@ const Lead = () => {
 				error={errrorItem}
 				isLoading={isFetchingItem}
 			/>
-			<BasicModal
+			{/* <BasicModal
 				open={showModal}
 				setOpen={setShowModal}
 				title={t('createClient')}
 				size="xl"
 				classBody="py-1 px-3"
 				children={<FormClient toggleDialog={toggleDialog} />}
-			/>
+			/> */}
 		</>
 	);
 };

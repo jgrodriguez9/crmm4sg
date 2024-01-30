@@ -48,6 +48,7 @@ const MarketingMailClient = ({ customer }) => {
 					<FormMaketingMailClient
 						closeModal={closeModal}
 						emailTo={customer.email}
+						customerId={customer.id}
 					/>
 				}
 			/>

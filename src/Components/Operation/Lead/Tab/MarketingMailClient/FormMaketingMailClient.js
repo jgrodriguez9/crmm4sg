@@ -9,15 +9,19 @@ import {
 	FIELD_REQUIRED,
 	SELECT_OPTION,
 } from '../../../../constants/messages';
-import { useMutation } from 'react-query';
-import { sendExternalEmail } from '../../../../../helpers/external/email';
+import { useMutation, useQuery } from 'react-query';
+import {
+	getTemplateEmailByUser,
+	sendExternalEmail,
+} from '../../../../../helpers/external/email';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import { useTranslation } from 'react-i18next';
+import useUser from '../../../../../hooks/useUser';
 
-const FormMaketingMailClient = ({ closeModal, emailTo }) => {
+const FormMaketingMailClient = ({ customerId, closeModal, emailTo }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formMaketingMailClient',
 	});
@@ -25,6 +29,15 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 		keyPrefix: 'messages',
 	});
 	const dispatch = useDispatch();
+	const user = useUser();
+	// const { data: templatesOpt } = useQuery(
+	// 	['getTemplateEmailByUser'],
+	// 	() => getTemplateEmailByUser({ user: user.usuario }),
+	// 	{
+	// 		enabled: user !== undefined,
+	// 	}
+	// );
+	// console.log(templatesOpt);
 	//send sms
 	const { mutate: sendEmail, isLoading: isSendingEmail } = useMutation(
 		sendExternalEmail,
@@ -55,7 +68,7 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 		enableReinitialize: true,
 		initialValues: {
 			to: emailTo,
-			subjectId: '',
+			customer: customerId,
 			subject: '',
 			message: '',
 		},
@@ -131,7 +144,6 @@ const FormMaketingMailClient = ({ closeModal, emailTo }) => {
 									: null
 							}
 							onChange={(value) => {
-								formik.setFieldValue('subjectId', value.value);
 								formik.setFieldValue('subject', value.label);
 								formik.setFieldValue('message', value.template);
 							}}

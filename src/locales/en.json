@@ -176,7 +176,9 @@
             "state": "State",
             "email": "Email",
             "search": "Search",
-            "cleanFilters": "Clean filters"
+            "cleanFilters": "Clean filters",
+            "onlyDepartmentUser": "Only clients from my department",
+            "agent": "Agent"
         },
         "deleteModal": {
             "yesDeleteIt": "¡Yes, delete it!",

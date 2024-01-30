@@ -26,6 +26,7 @@ import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessa
 import { updateClientService } from '../../../../../services/client';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import { useTranslation } from 'react-i18next';
+import useUser from '../../../../../hooks/useUser';
 
 const FormClient = ({
 	toggleDialog,
@@ -39,6 +40,7 @@ const FormClient = ({
 	const { t: tMessage } = useTranslation('translation', {
 		keyPrefix: 'messages',
 	});
+	const user = useUser();
 	const dispatch = useDispatch();
 	const [fechaNacimiento, setFechaNacimiento] = useState(
 		customer?.fechaNacimiento
@@ -127,6 +129,7 @@ const FormClient = ({
 			phone2: customer?.phone2 ?? '',
 			movil: customer?.movil ?? '',
 			email: customer?.email ?? '',
+			userName: customer?.userName ?? user.usuario,
 			maritalStatusKey:
 				maritalStatusOpt?.find(
 					(it) => it.label === customer?.maritalStatus

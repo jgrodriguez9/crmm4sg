@@ -19,6 +19,7 @@ import Select from 'react-select';
 import { SELECT_OPTION } from '../constants/messages';
 import { Country } from 'country-state-city';
 import StateInput from '../Controller/StateInput';
+import useRole from '../../hooks/useRole';
 
 const CrmFilter = ({
 	show,
@@ -37,6 +38,7 @@ const CrmFilter = ({
 		keyPrefix: 'messages',
 	});
 	const user = useUser();
+	const { isSupervisor, isManager } = useRole();
 	//getCallCenter
 	const { data: callCenterOpt } = useQuery(
 		['getCallCenterByUser'],
@@ -50,6 +52,7 @@ const CrmFilter = ({
 				})) ?? [],
 		}
 	);
+	console.log(query);
 
 	return (
 		<Offcanvas
@@ -344,6 +347,69 @@ const CrmFilter = ({
 							</div>
 						</Col>
 					</Row>
+					{(isSupervisor || isManager) && (
+						<Row>
+							<Col xs="12" md="4">
+								<div className="mb-3">
+									<Label
+										htmlFor="agent"
+										className="form-label text-muted text-uppercase fw-semibold mb-0"
+									>
+										{t('agent')}
+									</Label>
+									<Select
+										value={dataSelect.agentModel}
+										onChange={(value) => {
+											setQuery((prev) => ({
+												...prev,
+												userName: value?.value ?? '',
+											}));
+											setDataSelect((prev) => ({
+												...prev,
+												agentModel: value,
+											}));
+										}}
+										options={[]}
+										isClearable
+										classNamePrefix="select2-selection"
+										placeholder={tMessage(SELECT_OPTION)}
+									/>
+								</div>
+							</Col>
+							<Col xs="12" md="4">
+								<div className="form-check mt-3">
+									<Input
+										className="form-check-input"
+										type="checkbox"
+										id="onlyDepartmentUser"
+										checked={
+											query.onlyDepartmentUser !== ''
+										}
+										onChange={(evt) => {
+											if (evt.target.checked) {
+												setQuery((prev) => ({
+													...prev,
+													onlyDepartmentUser:
+														user.usuario,
+												}));
+											} else {
+												setQuery((prev) => ({
+													...prev,
+													onlyDepartmentUser: '',
+												}));
+											}
+										}}
+									/>
+									<Label
+										className="form-check-label"
+										htmlFor="onlyDepartmentUser"
+									>
+										{t('onlyDepartmentUser')}
+									</Label>
+								</div>
+							</Col>
+						</Row>
+					)}
 				</OffcanvasBody>
 				<div className="py-3 px-3 border position-sticky bottom-0 w-100 bg-light ">
 					<div className="d-flex align-items-center">

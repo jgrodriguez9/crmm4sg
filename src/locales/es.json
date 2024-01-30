@@ -176,7 +176,9 @@
             "state": "Estado",
             "email": "Correo electrónico",
             "search": "Buscar",
-            "cleanFilters": "Limpiar filtros"
+            "cleanFilters": "Limpiar filtros",
+            "onlyDepartmentUser": "Solo clientes de mi departamento",
+            "agent": "Agente"
         },
         "deleteModal": {
             "yesDeleteIt": "¡Sí, eliminarlo!",

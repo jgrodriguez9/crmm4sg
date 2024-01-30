@@ -62,6 +62,7 @@ export const externalListSms = '/external/listSMS';
 
 //email
 export const externalEmail = '/external/sendEmail';
+export const externalEmailTemplate = '/external/listTemplateEmails';
 
 //sale
 export const sale = '/sale';
