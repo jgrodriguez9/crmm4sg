@@ -9,9 +9,9 @@ const DatePicker = ({
 	onChangeDate,
 	dateFormat = 'd/m/Y',
 	options,
-	placeholder = '',
+	placeholder = 'dd/MM/YYYY',
 	className = 'form-control',
-	element,
+	element = '',
 	onOpen = () => {},
 	onClose = () => {},
 }) => {
@@ -21,10 +21,10 @@ const DatePicker = ({
 			name={name}
 			id="datepicker-publish-input"
 			className={className}
-			placeholder={placeholder ? placeholder : 'dd/MM/YYYY'}
+			placeholder={placeholder}
 			options={{
 				...options,
-				altInput: true,
+				altInput: false,
 				altFormat: dateFormat,
 				dateFormat: dateFormat,
 				locale: i18n.language === 'es' ? Spanish : English,

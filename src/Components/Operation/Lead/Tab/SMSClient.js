@@ -10,6 +10,8 @@ import { getSmsListByCustomer } from '../../../../helpers/external/sms';
 import Loader from '../../../Common/Loader';
 import showFriendlyMessafe from '../../../../util/showFriendlyMessafe';
 import AlertMessage from '../../../Common/AlertMessage';
+import DatePicker from '../../../Common/DatePicker';
+import isInRange from '../../../../util/isInRange';
 
 const SMSClient = ({ customer }) => {
 	const { t } = useTranslation('translation', {
@@ -41,7 +43,7 @@ const SMSClient = ({ customer }) => {
 		customer.phone3,
 		customer.movil,
 	]);
-
+	const [date, setDate] = useState([]);
 	const {
 		data: smsList,
 		isLoading,
@@ -55,13 +57,45 @@ const SMSClient = ({ customer }) => {
 			select: (result) => result.elements ?? [],
 		}
 	);
-
 	const closeModal = () => setShowAddModal(false);
+	const smsFiltered = useMemo(() => {
+		if (smsList) {
+			if (date.length > 1) {
+				const smsInRangeList = smsList.filter((it) =>
+					isInRange(it.fechaCreacion, date[0], date[1])
+				);
+				return smsInRangeList;
+			}
+			return smsList;
+		}
+	}, [smsList, date]);
+
 	return (
 		<>
-			<Row>
-				<Col>
-					<div className="d-flex align-items-center justify-content-end flex-wrap gap-2 mb-3">
+			<Row className="mb-3 align-items-center">
+				<Col xs="12" md={4}>
+					<div className="input-group">
+						<DatePicker
+							id="rangeDate"
+							className="form-control"
+							options={{
+								mode: 'range',
+							}}
+							date={date}
+							onChangeDate={(e) => setDate(e)}
+							placeholder={t('filterByDateRange')}
+							onClose={(selectedDates) => {
+								if (selectedDates.length === 0) setDate([]);
+							}}
+						/>
+						<div className="input-group-text bg-light text-dark">
+							<i className="ri-calendar-2-line"></i>
+						</div>
+					</div>
+				</Col>
+				<Col xs="12" md={6}></Col>
+				<Col xs="12" md={2}>
+					<div className="d-flex align-items-center justify-content-end gap-2">
 						<Button
 							color="info"
 							size="sm"
@@ -74,13 +108,14 @@ const SMSClient = ({ customer }) => {
 					</div>
 				</Col>
 			</Row>
+			<hr />
 			{isLoading && <Loader />}
 			{!isLoading && isError && (
 				<AlertMessage
 					message={showFriendlyMessafe(errorItemsQuery?.code)}
 				/>
 			)}
-			{!isLoading && isSuccess && <TableSMS items={smsList} />}
+			{!isLoading && isSuccess && <TableSMS items={smsFiltered} />}
 			<BasicModal
 				open={showAddModal}
 				setOpen={setShowAddModal}

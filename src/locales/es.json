@@ -398,7 +398,8 @@
                 "createReservation":"Crear reservación"
             },
             "smsClient": {
-                "createSms": "Crear SMS"
+                "createSms": "Crear SMS",
+                "filterByDateRange": "Filtrar por rango de fecha"
             },
             "formReservationCero": {
                 "hotel": "Hotel",
