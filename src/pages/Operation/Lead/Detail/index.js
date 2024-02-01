@@ -330,7 +330,6 @@ const LeadProfile = () => {
 	const toggleDialog = () => {
 		setShowModal(!showModal);
 	};
-
 	return (
 		<>
 			<div className="page-content">
@@ -661,6 +660,7 @@ const LeadProfile = () => {
 						customerId={itemData?.data?.id}
 						closeModal={() => setShowEmailModal(false)}
 						emailTo={itemData?.data?.email}
+						booking={itemData?.data?.sale?.booking ?? null}
 					/>
 				}
 			/>

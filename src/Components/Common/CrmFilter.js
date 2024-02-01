@@ -52,7 +52,6 @@ const CrmFilter = ({
 				})) ?? [],
 		}
 	);
-	console.log(query);
 
 	return (
 		<Offcanvas

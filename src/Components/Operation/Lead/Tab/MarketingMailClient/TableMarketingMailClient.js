@@ -1,8 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import TableContainer from '../../../../Common/TableContainer';
-import Loader from '../../../../Common/Loader';
-import { useEffect } from 'react';
-import { mailbox } from '../../../../../common/data';
 import { Link } from 'react-router-dom';
 import {
 	classBadgeStatusEmail,
@@ -13,12 +10,6 @@ import { useTranslation } from 'react-i18next';
 const TableMarketingMailClient = ({ builtInfo }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.tableMarketingMailClient',
-	});
-	const [item, setItems] = useState({
-		loading: true,
-		data: [],
-		isSuccess: false,
-		error: null,
 	});
 
 	const columns = useMemo(
@@ -95,37 +86,21 @@ const TableMarketingMailClient = ({ builtInfo }) => {
 		[]
 	);
 
-	//test
-	useEffect(() => {
-		setTimeout(() => {
-			setItems((prev) => ({
-				...prev,
-				loading: false,
-				isSuccess: true,
-				data: mailbox,
-			}));
-		}, 2000);
-	}, []);
-
 	return (
 		<div>
-			{item.isSuccess || !item.loading ? (
-				<TableContainer
-					columns={columns}
-					data={item.data}
-					isGlobalFilter={false}
-					isAddUserList={false}
-					customPageSize={8}
-					className="custom-header-css"
-					divClass="table-responsive table-card mb-3"
-					tableClass="align-middle table-nowrap"
-					theadClass="table-light"
-					isContactsFilter={true}
-					SearchPlaceholder={`${t('search')}...`}
-				/>
-			) : (
-				<Loader error={item.error} />
-			)}
+			<TableContainer
+				columns={columns}
+				data={[]}
+				isGlobalFilter={false}
+				isAddUserList={false}
+				customPageSize={8}
+				className="custom-header-css"
+				divClass="table-responsive table-card mb-3"
+				tableClass="align-middle table-nowrap"
+				theadClass="table-light"
+				isContactsFilter={true}
+				SearchPlaceholder={`${t('search')}...`}
+			/>
 		</div>
 	);
 };

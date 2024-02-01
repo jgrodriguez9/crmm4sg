@@ -19,7 +19,6 @@ const MarketingMailClient = ({ customer }) => {
 		setShowDetail(true);
 		setInfo(itemData);
 	};
-
 	const closeModal = () => setShowAddModal(false);
 	return (
 		<>
@@ -49,6 +48,7 @@ const MarketingMailClient = ({ customer }) => {
 						closeModal={closeModal}
 						emailTo={customer.email}
 						customerId={customer.id}
+						booking={customer.sale?.booking ?? null}
 					/>
 				}
 			/>

@@ -1,4 +1,4 @@
-import { Card, CardBody, Col, Container, Row } from 'reactstrap';
+import { Button, Card, CardBody, Col, Container, Row } from 'reactstrap';
 import CrmFilter from '../../../Components/Common/CrmFilter';
 import { useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
@@ -30,6 +30,8 @@ import { useTranslation } from 'react-i18next';
 import CellAgent from '../../../Components/Operation/Lead/Table/CellAgent';
 import useRole from '../../../hooks/useRole';
 import useUser from '../../../hooks/useUser';
+import { assignIconClass } from '../../../Components/constants/icons';
+import FormClientAssignment from '../../../Components/Operation/Lead/Assignment/FormClientAssignment';
 
 const initFilter = {
 	certifiateNumber: '',
@@ -66,10 +68,11 @@ const Lead = () => {
 	const dispatch = useDispatch();
 	const [idItem, setIdItem] = useState(null);
 	const [showModal, setShowModal] = useState(false);
+	const [showModalAssignment, setShowModalAssignment] = useState(false);
 	const [query, setQuery] = useState({
 		max: 10,
 		page: 1,
-		userName: isAgent ? user.usuario : '',
+		userName: '', //isAgent ? user.usuario : '',
 		...initFilter,
 	});
 	const [queryFilter, setQueryFilter] = useState(
@@ -336,6 +339,24 @@ const Lead = () => {
 		setShowModal(!showModal);
 	};
 
+	const toggleDialogAssignment = () =>
+		setShowModalAssignment(!showAssignDialog);
+
+	const showAssignDialog = () => setShowModalAssignment(true);
+
+	const assignAction = (
+		<div className="d-flex gap-2 flex-wrap">
+			<Button
+				color="primary"
+				className="d-flex align-items-center"
+				onClick={showAssignDialog}
+			>
+				<i className={`${assignIconClass} me-1 align-bottom`} />
+				Asignación de cliente
+			</Button>
+		</div>
+	);
+
 	return (
 		<>
 			<div className="page-content">
@@ -345,6 +366,9 @@ const Lead = () => {
 							<Card className="shadow">
 								<CardHeaderGlobal
 									title={t('client')}
+									extraActions={[
+										{ id: 1, children: assignAction },
+									]}
 									// add={{
 									// 	action: toggleDialog,
 									// 	title: t('createClient'),
@@ -422,6 +446,18 @@ const Lead = () => {
 				classBody="py-1 px-3"
 				children={<FormClient toggleDialog={toggleDialog} />}
 			/> */}
+			<BasicModal
+				open={showModalAssignment}
+				setOpen={setShowModalAssignment}
+				title={'Asignar clientes'}
+				size="xl"
+				classBody="py-1 px-3"
+				children={
+					<FormClientAssignment
+						toggleDialog={toggleDialogAssignment}
+					/>
+				}
+			/>
 		</>
 	);
 };

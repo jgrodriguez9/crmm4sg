@@ -11,6 +11,7 @@ import {
 } from '../../../../constants/messages';
 import { useMutation, useQuery } from 'react-query';
 import {
+	getPreviewEmailTemplate,
 	getTemplateEmailByUser,
 	sendExternalEmail,
 } from '../../../../../helpers/external/email';
@@ -20,24 +21,73 @@ import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessa
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import { useTranslation } from 'react-i18next';
 import useUser from '../../../../../hooks/useUser';
+import { useEffect, useMemo, useState } from 'react';
+import { languageOpt } from '../../../../constants/utils';
+import Loader from '../../../../Common/Loader';
+import AlertMessage from '../../../../Common/AlertMessage';
 
-const FormMaketingMailClient = ({ customerId, closeModal, emailTo }) => {
+const FormMaketingMailClient = ({
+	customerId,
+	closeModal,
+	emailTo,
+	booking,
+}) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.operation.formMaketingMailClient',
 	});
 	const { t: tMessage } = useTranslation('translation', {
 		keyPrefix: 'messages',
 	});
+	const { t: tMConstant } = useTranslation('translation', {
+		keyPrefix: 'constants.language',
+	});
 	const dispatch = useDispatch();
 	const user = useUser();
-	// const { data: templatesOpt } = useQuery(
-	// 	['getTemplateEmailByUser'],
-	// 	() => getTemplateEmailByUser({ user: user.usuario }),
-	// 	{
-	// 		enabled: user !== undefined,
-	// 	}
-	// );
-	// console.log(templatesOpt);
+	const [templatesOpt, setTemplatesOpt] = useState([]);
+	const [lang, setLang] = useState(null);
+	const [templateSelected, setTemplateSelected] = useState(null);
+	const [previewTemplate, setPreviewTemplate] = useState(null);
+	const { mutate: getTemplates } = useMutation(getTemplateEmailByUser, {
+		onSuccess: (result) => {
+			setTemplatesOpt(result);
+		},
+		onError: (error) => {
+			setTemplatesOpt([]);
+		},
+	});
+	useEffect(() => {
+		if (user?.usuario) {
+			getTemplates({ user: user.usuario });
+		}
+	}, [user?.usuario]);
+
+	const templatesFiltered = useMemo(() => {
+		if (templatesOpt.length > 0 && lang) {
+			return templatesOpt
+				.filter((it) => it.lenguaje === lang.value)
+				.map((it) => ({
+					value: it.plantillaid,
+					label: it.plantillaname,
+					...it,
+				}));
+		}
+		return [];
+	}, [templatesOpt, lang]);
+
+	//preview temlpate
+	const {
+		mutate: getPreviewTemplate,
+		isLoading: isPreviewing,
+		isError: isErrorPreview,
+	} = useMutation(getPreviewEmailTemplate, {
+		onSuccess: (result) => {
+			setPreviewTemplate(result);
+			formik.setFieldValue('message', result);
+		},
+		onError: (error) => {
+			setPreviewTemplate(null);
+		},
+	});
 	//send sms
 	const { mutate: sendEmail, isLoading: isSendingEmail } = useMutation(
 		sendExternalEmail,
@@ -90,6 +140,15 @@ const FormMaketingMailClient = ({ customerId, closeModal, emailTo }) => {
 				return false;
 			}}
 		>
+			{!booking && (
+				<AlertMessage
+					color="warning"
+					textColor="text-warning"
+					message={
+						'No se puede enviar correo porque este cliente no tiene booking'
+					}
+				/>
+			)}
 			<Row>
 				<Col lg={12}>
 					<div className="mb-3">
@@ -120,10 +179,13 @@ const FormMaketingMailClient = ({ customerId, closeModal, emailTo }) => {
 						<Select
 							id="motivo"
 							className="mb-0"
-							value={null}
-							onChange={() => {}}
-							options={[{ value: 'ES', label: 'Español' }]}
-							placeholder="Seleccionar opción"
+							value={lang}
+							onChange={(value) => setLang(value)}
+							options={languageOpt.map((it) => ({
+								...it,
+								label: tMConstant(it.label),
+							}))}
+							placeholder={tMessage(SELECT_OPTION)}
 						/>
 					</div>
 				</Col>
@@ -135,25 +197,19 @@ const FormMaketingMailClient = ({ customerId, closeModal, emailTo }) => {
 						<Select
 							id="motivo"
 							className="mb-0"
-							value={
-								formik.values.subjectId
-									? {
-											value: formik.values.subjectId,
-											label: 'Paquete Cancún EP 5/4 ES',
-									  }
-									: null
-							}
+							value={templateSelected}
 							onChange={(value) => {
+								setTemplateSelected(value);
 								formik.setFieldValue('subject', value.label);
-								formik.setFieldValue('message', value.template);
+								const body = {
+									sale: booking,
+									template: value.value,
+									customer: customerId,
+									user: user.usuario,
+								};
+								getPreviewTemplate(body);
 							}}
-							options={[
-								{
-									value: '1',
-									label: 'Paquete Cancún EP 5/4 ES',
-									template: template,
-								},
-							]}
+							options={templatesFiltered}
 							placeholder={tMessage(SELECT_OPTION)}
 						/>
 						{formik.errors.subject && (
@@ -166,11 +222,32 @@ const FormMaketingMailClient = ({ customerId, closeModal, emailTo }) => {
 			</Row>
 			<Row>
 				<Col>
-					<div style={{ maxHeight: '500px', overflowY: 'auto' }}>
-						<div
-							dangerouslySetInnerHTML={{ __html: template }}
-						></div>
-					</div>
+					{isPreviewing && <Loader />}
+					{!isPreviewing && previewTemplate && (
+						<div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+							<div
+								dangerouslySetInnerHTML={{
+									__html: previewTemplate,
+								}}
+							></div>
+						</div>
+					)}
+					{!isPreviewing && isErrorPreview && (
+						<AlertMessage
+							color="danger"
+							textColor="text-danger"
+							message={'No se pudo cargar la plantilla'}
+						/>
+					)}
+					{!isPreviewing && !isErrorPreview && !previewTemplate && (
+						<AlertMessage
+							color="info"
+							textColor="text-info text-center"
+							message={
+								'Seleccionar una plantilla para previsualizarla'
+							}
+						/>
+					)}
 				</Col>
 			</Row>
 			{isSendingEmail ? (
@@ -194,7 +271,12 @@ const FormMaketingMailClient = ({ customerId, closeModal, emailTo }) => {
 				</div>
 			) : (
 				<div className="d-flex mt-3">
-					<Button type="submit" color="primary" className="me-2">
+					<Button
+						type="submit"
+						color="primary"
+						className="me-2"
+						disabled={!booking}
+					>
 						{t('send')}
 					</Button>
 					<Button
