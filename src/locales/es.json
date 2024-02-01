@@ -296,7 +296,10 @@
                 "language": "Idioma",
                 "template": "Plantilla",
                 "send": "Enviar",
-                "cancel": "Cancelar"
+                "cancel": "Cancelar",
+                "missingBooking": "No se puede enviar correo electrónico porque el booking no se ha encontrado",
+                "failLoadTemplate": "No se pudo cargar la plantilla",
+                "selectTemplate": "Debes seleccionar una plantilla para previsualizar"
             },
             "tableMarketingMailClient": {
                 "template": "Plantilla",

@@ -8,6 +8,10 @@ const clickToCall = (data, config) =>
 const getOriginsByCustomer = (id) =>
 	get(`${url.customer}/getAllCustomerOrigins/${id}`);
 const updateCustomer = (id, data) => put(`${url.customer}/${id}`, data);
+const updateAgentToClient = (data) =>
+	put(`${url.customer}/chaneSalesOwner/${data.id}`, data.body);
+const getAgentsBySupervisor = (user) =>
+	get(`${url.customer}/listSalesAgents/${user}`);
 
 export {
 	getCustomerPaginate,
@@ -15,4 +19,6 @@ export {
 	clickToCall,
 	getOriginsByCustomer,
 	updateCustomer,
+	updateAgentToClient,
+	getAgentsBySupervisor,
 };

@@ -24,7 +24,6 @@ import ClickToCallAlert from '../../../Components/Operation/Lead/ClickToCall/Cli
 import CardHeaderGlobal from '../../../Components/Common/CardHeaderGlobal';
 import FilterCommandGlobal from '../../../Components/Common/FilterCommandGlobal';
 import BasicModal from '../../../Components/Common/BasicModal';
-import FormClient from '../../../Components/Operation/Lead/Tab/LeadInformation/FormClient';
 import moment from 'moment/moment';
 import { useTranslation } from 'react-i18next';
 import CellAgent from '../../../Components/Operation/Lead/Table/CellAgent';
@@ -72,7 +71,7 @@ const Lead = () => {
 	const [query, setQuery] = useState({
 		max: 10,
 		page: 1,
-		userName: '', //isAgent ? user.usuario : '',
+		userName: isAgent ? user.usuario : '',
 		...initFilter,
 	});
 	const [queryFilter, setQueryFilter] = useState(

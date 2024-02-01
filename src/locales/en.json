@@ -296,7 +296,10 @@
                 "language": "Language",
                 "template": "Template",
                 "send": "Send",
-                "cancel": "Cancel"
+                "cancel": "Cancel",
+                "missingBooking": "Cannot send email because booking not found",
+                "failLoadTemplate": "Template could not be loaded",
+                "selectTemplate": "You should select a template to preview"
             },
             "tableMarketingMailClient": {
                 "template": "Template",

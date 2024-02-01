@@ -144,9 +144,7 @@ const FormMaketingMailClient = ({
 				<AlertMessage
 					color="warning"
 					textColor="text-warning"
-					message={
-						'No se puede enviar correo porque este cliente no tiene booking'
-					}
+					message={t('missingBooking')}
 				/>
 			)}
 			<Row>
@@ -236,16 +234,14 @@ const FormMaketingMailClient = ({
 						<AlertMessage
 							color="danger"
 							textColor="text-danger"
-							message={'No se pudo cargar la plantilla'}
+							message={t('failLoadTemplate')}
 						/>
 					)}
 					{!isPreviewing && !isErrorPreview && !previewTemplate && (
 						<AlertMessage
 							color="info"
 							textColor="text-info text-center"
-							message={
-								'Seleccionar una plantilla para previsualizarla'
-							}
+							message={t('selectTemplate')}
 						/>
 					)}
 				</Col>
