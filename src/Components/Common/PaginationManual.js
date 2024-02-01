@@ -8,6 +8,8 @@ const PaginationManual = ({
 	setQueryFilter,
 	totalPages,
 	isLoading = false,
+	totalCount,
+	showTotal = false,
 }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.paginationManual',
@@ -39,6 +41,15 @@ const PaginationManual = ({
 			{isLoading && (
 				<Col className="col-md-auto">
 					<Spinner color="primary"> Loading... </Spinner>
+				</Col>
+			)}
+			{showTotal && (
+				<Col className="col-md-auto">
+					<strong>
+						{totalCount > 1
+							? `${totalCount} ${t('items')}`
+							: `${totalCount} ${t('item')}`}{' '}
+					</strong>
 				</Col>
 			)}
 			<Col className="col-md-auto">

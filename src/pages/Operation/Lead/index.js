@@ -351,7 +351,7 @@ const Lead = () => {
 				onClick={showAssignDialog}
 			>
 				<i className={`${assignIconClass} me-1 align-bottom`} />
-				Asignación de cliente
+				{t('clientAssignment')}
 			</Button>
 		</div>
 	);
@@ -365,9 +365,16 @@ const Lead = () => {
 							<Card className="shadow">
 								<CardHeaderGlobal
 									title={t('client')}
-									extraActions={[
-										{ id: 1, children: assignAction },
-									]}
+									extraActions={
+										isSupervisor
+											? [
+													{
+														id: 1,
+														children: assignAction,
+													},
+											  ]
+											: []
+									}
 									// add={{
 									// 	action: toggleDialog,
 									// 	title: t('createClient'),

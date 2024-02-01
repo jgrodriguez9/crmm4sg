@@ -25,7 +25,8 @@
                 "status": "Status",
                 "saleDate": "Sale Date",
                 "createClient": "Create client",
-                "client": "Client"
+                "client": "Client",
+                "clientAssignment": "Client assign"
             },
             "detail": {
                 "header": "Client Detail | CRM - M4S",
@@ -215,7 +216,9 @@
         },
         "paginationManual": {
             "page": "Page",
-            "from": "from"
+            "from": "from",
+            "item": "Item",
+            "items": "Items"
         },
         "profileDropdown": {
             "welcome": "Welcome",

@@ -25,7 +25,8 @@
                 "status": "Estado",
                 "saleDate": "F.Venta",
                 "createClient": "Crear cliente",
-                "client": "Cliente"
+                "client": "Cliente",
+                "clientAssignment": "Asignar clientes"
             },
             "detail": {
                 "header": "Detalle del Cliente | CRM - M4S",
@@ -215,7 +216,9 @@
         },
         "paginationManual": {
             "page": "Página",
-            "from": "de"
+            "from": "de",
+            "item": "Elemento",
+            "items": "Elementos"
         },
         "profileDropdown": {
             "welcome": "Bienvenido",
