@@ -20,6 +20,7 @@ import { SELECT_OPTION } from '../constants/messages';
 import { Country } from 'country-state-city';
 import StateInput from '../Controller/StateInput';
 import useRole from '../../hooks/useRole';
+import { getAgentsBySupervisor } from '../../helpers/customer';
 
 const CrmFilter = ({
 	show,
@@ -38,7 +39,7 @@ const CrmFilter = ({
 		keyPrefix: 'messages',
 	});
 	const user = useUser();
-	const { isSupervisor, isManager } = useRole();
+	const { isSupervisor, isManager, isAgent } = useRole();
 	//getCallCenter
 	const { data: callCenterOpt } = useQuery(
 		['getCallCenterByUser'],
@@ -49,6 +50,19 @@ const CrmFilter = ({
 				data.data?.list.map((item) => ({
 					value: item.id,
 					label: item.name,
+				})) ?? [],
+		}
+	);
+	//agents by super/manager
+	const { data: agentsOpt } = useQuery(
+		['getAgentsBySupervisor', user.usuario],
+		() => getAgentsBySupervisor(user.usuario),
+		{
+			enabled: user !== null && !isAgent,
+			select: (result) =>
+				result.data.list.map((it) => ({
+					value: it.id,
+					label: it.id,
 				})) ?? [],
 		}
 	);
@@ -368,7 +382,7 @@ const CrmFilter = ({
 												agentModel: value,
 											}));
 										}}
-										options={[]}
+										options={agentsOpt}
 										isClearable
 										classNamePrefix="select2-selection"
 										placeholder={tMessage(SELECT_OPTION)}

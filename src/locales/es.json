@@ -675,7 +675,9 @@
         "ERR_BAD_RESPONSE": "Incorrecta respuesta del servidor",
         "EMPTY_LIST": "No hay información a mostrar",
         "ONE_OPTION_REQUIRED": "Al menos debes seleccionar una opción",
-        "unauthorized": "Sin autorización"
+        "unauthorized": "Sin autorización",
+        "MISSING_CLIENTS": "No existen clientes para asignar",
+        "ASSIGN_CLIENTS_SUCCESS": "Asignación de clientes exitosa"
     },
     "constants": {
         "language": {

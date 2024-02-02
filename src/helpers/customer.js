@@ -12,6 +12,8 @@ const updateAgentToClient = (data) =>
 	put(`${url.customer}/chaneSalesOwner/${data.id}`, data.body);
 const getAgentsBySupervisor = (user) =>
 	get(`${url.customer}/listSalesAgents/${user}`);
+const assignClientsRandom = (data) =>
+	post(`${url.customer}/assignCustomersToAgents`, data);
 
 export {
 	getCustomerPaginate,
@@ -21,4 +23,5 @@ export {
 	updateCustomer,
 	updateAgentToClient,
 	getAgentsBySupervisor,
+	assignClientsRandom,
 };

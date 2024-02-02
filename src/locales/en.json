@@ -675,7 +675,9 @@
         "ERR_BAD_RESPONSE": "Error bad response",
         "EMPTY_LIST": "There is no information to display",
         "ONE_OPTION_REQUIRED": "You need to select at least one option",
-        "unauthorized": "Unauthorized"
+        "unauthorized": "Unauthorized",
+        "MISSING_CLIENTS": "There are not clients to assign",
+        "ASSIGN_CLIENTS_SUCCESS": "Successfully clients assignment"
     },
     "constants": {
         "language": {

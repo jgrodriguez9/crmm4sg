@@ -1,4 +1,4 @@
-import { Button, Col, Form, Label, Row } from 'reactstrap';
+import { Button, Col, Form, FormFeedback, Label, Row } from 'reactstrap';
 import Select from 'react-select';
 import { Country } from 'country-state-city';
 import { useMemo, useState } from 'react';
@@ -9,6 +9,9 @@ import { useTranslation } from 'react-i18next';
 import StateInput from '../../../Controller/StateInput';
 import useUser from '../../../../hooks/useUser';
 import {
+	ASSIGN_CLIENTS_SUCCESS,
+	ERROR_SERVER,
+	MISSING_CLIENTS,
 	ONE_OPTION_REQUIRED,
 	SELECT_OPTION,
 } from '../../../constants/messages';
@@ -16,11 +19,16 @@ import ButtonsLoader from '../../../Loader/ButtonsLoader';
 import TableContainer from '../../../Common/TableContainer';
 import PaginationManual from '../../../Common/PaginationManual';
 import parseObjectToQueryUrl from '../../../../util/parseObjectToQueryUrl';
-import { useQuery } from 'react-query';
-import { getAgentsBySupervisor } from '../../../../helpers/customer';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import {
+	assignClientsRandom,
+	getAgentsBySupervisor,
+} from '../../../../helpers/customer';
 import useRole from '../../../../hooks/useRole';
 import { fecthItems } from '../../../../pages/Operation/Lead/Util/services';
 import Loader from '../../../Common/Loader';
+import { addMessage } from '../../../../slices/messages/reducer';
+import extractMeaningfulMessage from '../../../../util/extractMeaningfulMessage';
 
 const FormClientAssignment = ({ toggleDialog }) => {
 	const { t } = useTranslation('translation', {
@@ -30,10 +38,13 @@ const FormClientAssignment = ({ toggleDialog }) => {
 		keyPrefix: 'messages',
 	});
 	const user = useUser();
+	const queryClient = useQueryClient();
 	const dispatch = useDispatch();
 	const { isAgent } = useRole();
 	const [countryDefault, setCountryDefault] = useState(null);
 	const [statesDefault, setStatesDefault] = useState(null);
+	const [owner, setOwner] = useState(null);
+	const [agents, setAgents] = useState(null);
 	const [query, setQuery] = useState({
 		max: 5,
 		page: 1,
@@ -106,6 +117,34 @@ const FormClientAssignment = ({ toggleDialog }) => {
 		}
 	);
 
+	const { mutate: assignClient, isLoading: isAssigning } = useMutation(
+		assignClientsRandom,
+		{
+			onSuccess: (result) => {
+				queryClient.refetchQueries({
+					queryKey: ['getCustomerPaginate'],
+				});
+				toggleDialog();
+				dispatch(
+					addMessage({
+						type: 'success',
+						message: tMessage(ASSIGN_CLIENTS_SUCCESS),
+					})
+				);
+			},
+			onError: (error) => {
+				let message = tMessage(ERROR_SERVER);
+				message = extractMeaningfulMessage(error, message);
+				dispatch(
+					addMessage({
+						type: 'error',
+						message: message,
+					})
+				);
+			},
+		}
+	);
+
 	const formik = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
 		enableReinitialize: true,
@@ -114,13 +153,26 @@ const FormClientAssignment = ({ toggleDialog }) => {
 			country: '',
 			state: '',
 			vendor: '',
+			customers: '',
 		},
 		validationSchema: Yup.object({
 			agents: Yup.array().min(1, tMessage(ONE_OPTION_REQUIRED)),
+			customers: Yup.string().when(['country', 'state', 'vendor'], {
+				is: (country, state, vendor) => !country && !state && !vendor,
+				then: Yup.string().required(tMessage(MISSING_CLIENTS)),
+				otherwise: Yup.string(),
+			}),
 		}),
 		onSubmit: async (values) => {
 			//submit request
 			console.log(values);
+			const body = {
+				country: values.country,
+				state: values.state,
+				vendor: values.vendor,
+				agents: values.agents,
+			};
+			assignClient(body);
 		},
 	});
 
@@ -139,11 +191,12 @@ const FormClientAssignment = ({ toggleDialog }) => {
 				formik.values.state !== '' ||
 				formik.values.vendor !== '',
 			select: (result) => {
-				console.log(result);
+				//console.log(result);
 				return result;
 			},
 		}
 	);
+	console.log(formik.errors);
 	const itemsFiltered = useMemo(() => {
 		if (
 			isSuccess &&
@@ -186,13 +239,24 @@ const FormClientAssignment = ({ toggleDialog }) => {
 							Asignar a
 						</Label>
 						<Select
-							value={null}
+							value={agents}
 							isMulti
-							onChange={(value) => console.log(value)}
+							onChange={(value) => {
+								setAgents(value);
+								formik.setFieldValue(
+									'agents',
+									value.map((it) => it.value)
+								);
+							}}
 							options={agentsOpt}
 							classNamePrefix="select2-selection"
 							placeholder={tMessage(SELECT_OPTION)}
 						/>
+						{formik.errors.agents && (
+							<FormFeedback type="invalid" className="d-block">
+								{formik.errors.agents}
+							</FormFeedback>
+						)}
 					</div>
 				</Col>
 			</Row>
@@ -218,11 +282,26 @@ const FormClientAssignment = ({ toggleDialog }) => {
 							Agente
 						</Label>
 						<Select
-							value={null}
-							onChange={(value) => console.log(value)}
+							value={owner}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'vendor',
+									value?.value ?? ''
+								);
+								setOwner(value);
+								const copyQuery = {
+									...query,
+									userName: value?.value ?? '',
+								};
+								setQuery(copyQuery);
+								setQueryFilter(
+									parseObjectToQueryUrl(copyQuery)
+								);
+							}}
 							options={agentsOpt}
 							classNamePrefix="select2-selection"
 							placeholder={tMessage(SELECT_OPTION)}
+							isClearable
 						/>
 					</div>
 				</Col>
@@ -239,6 +318,14 @@ const FormClientAssignment = ({ toggleDialog }) => {
 									value?.value ?? ''
 								);
 								setCountryDefault(value);
+								const copyQuery = {
+									...query,
+									country: value?.value ?? '',
+								};
+								setQuery(copyQuery);
+								setQueryFilter(
+									parseObjectToQueryUrl(copyQuery)
+								);
 							}}
 							options={Country.getAllCountries().map((it) => ({
 								label: it.name,
@@ -257,8 +344,23 @@ const FormClientAssignment = ({ toggleDialog }) => {
 						</Label>
 						<StateInput
 							value={statesDefault}
-							handleChange={(value) => console.log(value)}
+							handleChange={(value) => {
+								formik.setFieldValue(
+									'state',
+									value?.value ?? ''
+								);
+								setStatesDefault(value);
+								const copyQuery = {
+									...query,
+									state: value?.value ?? '',
+								};
+								setQuery(copyQuery);
+								setQueryFilter(
+									parseObjectToQueryUrl(copyQuery)
+								);
+							}}
 							country={countryDefault}
+							isClearable
 						/>
 					</div>
 				</Col>
@@ -287,9 +389,16 @@ const FormClientAssignment = ({ toggleDialog }) => {
 						<Loader />
 					)}
 				</Col>
+				<Col xs={12} md={12}>
+					{formik.errors.customers && (
+						<FormFeedback type="invalid" className="d-block">
+							{formik.errors.customers}
+						</FormFeedback>
+					)}
+				</Col>
 			</Row>
 
-			{1 === 2 ? (
+			{isAssigning ? (
 				<div className="d-flex my-3">
 					<ButtonsLoader
 						buttons={[
