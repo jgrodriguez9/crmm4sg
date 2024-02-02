@@ -32,7 +32,7 @@ import extractMeaningfulMessage from '../../../../util/extractMeaningfulMessage'
 
 const FormClientAssignment = ({ toggleDialog }) => {
 	const { t } = useTranslation('translation', {
-		keyPrefix: 'components.operation.formClient',
+		keyPrefix: 'components.operation.FormClientAssignment',
 	});
 	const { t: tMessage } = useTranslation('translation', {
 		keyPrefix: 'messages',
@@ -92,7 +92,7 @@ const FormClientAssignment = ({ toggleDialog }) => {
 				},
 			},
 			{
-				Header: 'Agente asignado',
+				Header: t('assignedAgent'),
 				accessor: 'userName',
 				filterable: false,
 				style: {
@@ -164,8 +164,6 @@ const FormClientAssignment = ({ toggleDialog }) => {
 			}),
 		}),
 		onSubmit: async (values) => {
-			//submit request
-			console.log(values);
 			const body = {
 				country: values.country,
 				state: values.state,
@@ -196,7 +194,6 @@ const FormClientAssignment = ({ toggleDialog }) => {
 			},
 		}
 	);
-	console.log(formik.errors);
 	const itemsFiltered = useMemo(() => {
 		if (
 			isSuccess &&
@@ -236,7 +233,7 @@ const FormClientAssignment = ({ toggleDialog }) => {
 				<Col xs="12" md="12">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="agent">
-							Asignar a
+							{t('assignTo')}
 						</Label>
 						<Select
 							value={agents}
@@ -279,7 +276,7 @@ const FormClientAssignment = ({ toggleDialog }) => {
 				<Col xs="12" md="3">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="callCenter">
-							Agente
+							{t('agent')}
 						</Label>
 						<Select
 							value={owner}
@@ -403,7 +400,7 @@ const FormClientAssignment = ({ toggleDialog }) => {
 					<ButtonsLoader
 						buttons={[
 							{
-								text: 'Asignar',
+								text: t('ok'),
 								color: 'primary',
 								className: 'me-2',
 								loader: true,
@@ -420,7 +417,7 @@ const FormClientAssignment = ({ toggleDialog }) => {
 			) : (
 				<div className="d-flex my-3">
 					<Button type="submit" color="primary" className="me-2">
-						Asignar
+						{t('ok')}
 					</Button>
 					<Button
 						type="button"

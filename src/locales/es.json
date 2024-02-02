@@ -633,6 +633,16 @@
             },
             "tableSMS": {
                 "noInformationAvailable": "No hay información disponible"
+            },
+            "FormClientAssignment": {
+                "name": "Nombre",
+                "country": "País",
+                "assignedAgent": "Agente asignado",
+                "assignTo": "Asignar a",
+                "agent": "Agente",
+                "state": "Estado",
+                "ok": "Aceptar",
+                "cancel": "Cancelar"
             }
         }
     },

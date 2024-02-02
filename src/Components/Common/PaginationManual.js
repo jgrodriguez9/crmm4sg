@@ -46,7 +46,7 @@ const PaginationManual = ({
 			{showTotal && (
 				<Col className="col-md-auto">
 					<strong>
-						{totalCount > 1
+						{totalCount !== 1
 							? `${totalCount} ${t('items')}`
 							: `${totalCount} ${t('item')}`}{' '}
 					</strong>
