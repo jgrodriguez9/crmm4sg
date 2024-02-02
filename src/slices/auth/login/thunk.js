@@ -33,7 +33,7 @@ export const authentication = (user, history) => async (dispatch) => {
 			window.location.href = '/dashboard';
 			//history('/dashboard');
 		} else {
-			dispatch(apiError(showFriendlyMessafe(result.message)));
+			dispatch(apiError(showFriendlyMessafe(404)));
 		}
 	} catch (error) {
 		dispatch(apiError(error));
