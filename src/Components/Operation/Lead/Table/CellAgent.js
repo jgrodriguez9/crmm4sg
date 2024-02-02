@@ -114,16 +114,19 @@ const CellAgent = ({ row, value, column, table }) => {
 					{isUpdating && <Loader />}
 					{!isUpdating && (
 						<div className="input-group">
-							<Select
-								id="hotel"
-								className="mb-0 p-0 form-control-sm"
-								value={newAgent}
-								onChange={(value) => {
-									setNewAgent(value);
-								}}
-								options={agentsOpt}
-								placeholder={tMessage(SELECT_OPTION)}
-							/>
+							<div style={{ minWidth: '180px' }}>
+								<Select
+									id="hotel"
+									className="mb-0 p-0 form-control-sm w-70"
+									value={newAgent}
+									onChange={(value) => {
+										setNewAgent(value);
+									}}
+									options={agentsOpt}
+									placeholder={tMessage(SELECT_OPTION)}
+								/>
+							</div>
+
 							<Button
 								size="sm"
 								color="success"
