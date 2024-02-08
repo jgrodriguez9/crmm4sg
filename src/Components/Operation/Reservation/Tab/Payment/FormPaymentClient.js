@@ -28,6 +28,9 @@ import { createPayment } from '../../../../../helpers/payments';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
+import { getBankAll } from '../../../../../helpers/catalogues/bank';
+import { getAgentsBySupervisor } from '../../../../../helpers/customer';
+import useRole from '../../../../../hooks/useRole';
 
 const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 	const { t } = useTranslation('translation', {
@@ -38,6 +41,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 	});
 	const dispatch = useDispatch();
 	const user = useUser();
+	const { isAgent } = useRole();
 	const queryClient = useQueryClient();
 	const [service, setService] = useState(null);
 	const { data: cardTypesOpt } = useQuery(
@@ -108,6 +112,21 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 				})),
 		}
 	);
+	//banco o terminal
+	const { data: bankOpt } = useQuery(
+		['getBankAll'],
+		async () => await getBankAll(),
+		{
+			select: (response) =>
+				response.data.list
+					.filter((it) => it.active)
+					.map((it) => ({
+						value: it.id,
+						label: it.name,
+						exchangeRate: it.exchangeRate,
+					})),
+		}
+	);
 
 	//create payment
 	const { mutate: create, isLoading: isCreating } = useMutation(
@@ -126,7 +145,6 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 			},
 		}
 	);
-
 	const formik = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
 		enableReinitialize: true,
@@ -141,9 +159,11 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 			creditCard: '',
 			cardType: payment?.cardType ?? '',
 			expiration: payment?.expiration ?? '',
-			autorization: payment?.autorization ?? '',
+			authorization: payment?.authorization ?? '',
 			user: payment?.user ?? user?.usuario,
-			department: payment?.department ?? { id: user?.deptoid },
+			department: payment?.department ?? {
+				id: user?.deptoid,
+			},
 			multi: payment?.multi ?? '',
 			exchangeRateTC: payment?.exchangeRateTC ?? '',
 			amountMXN: payment?.amountMXN ?? '',
@@ -154,6 +174,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 			affiliation: payment?.affiliation ?? { id: '' },
 			//temp
 			cvv: '',
+			userComission: '',
 		},
 		validationSchema: Yup.object({
 			cardHolderName: Yup.string().required(tMessage(FIELD_REQUIRED)),
@@ -161,7 +182,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 			creditCard: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			expiration: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			cardType: Yup.string().required(tMessage(FIELD_REQUIRED)),
-			autorization: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			authorization: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			paymentDate: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			currency: Yup.object().shape({
 				id: Yup.number().required(tMessage(FIELD_REQUIRED)),
@@ -183,13 +204,15 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 		}),
 		onSubmit: async (values) => {
 			//submit request
-			const parsedServices = [];
 			console.log(values);
 			const data = {};
 			Object.entries(removetEmptyObject(values)).forEach((entry) => {
 				const [key, value] = entry;
 				if (key === 'paymentDate') {
 					data[key] = moment(values.paymentDate).format('YYYY-MM-DD');
+				}
+				if (key === 'bank') {
+					data[key] = values.bank.toString();
 				} else {
 					data[key] = value;
 				}
@@ -209,7 +232,6 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 			// }
 		},
 	});
-	console.log(formik.values);
 
 	const addService = () => {
 		const copyServices = [...formik.values.contractedServices];
@@ -233,6 +255,18 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 		copyServices.splice(index, 1);
 		formik.setFieldValue('contractedServices', copyServices);
 	};
+	const { data: agentsOpt } = useQuery(
+		['getAgentsBySupervisor', user.usuario],
+		() => getAgentsBySupervisor(user.usuario),
+		{
+			enabled: user !== null && !isAgent,
+			select: (result) =>
+				result.data.list.map((it) => ({
+					value: it.id,
+					label: it.id,
+				})) ?? [],
+		}
+	);
 	return (
 		<Form
 			className="needs-validation fs-7"
@@ -469,25 +503,39 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 					<div className="mb-2">
 						<Label
 							className="form-label mb-1"
-							htmlFor="cleave-ccard"
+							htmlFor="terminalType"
 						>
 							{t('terminalType')}
 						</Label>
 						<Select
-							value={null}
-							onChange={() => {}}
-							options={[]}
+							value={
+								formik.values.bank
+									? {
+											value: formik.values.bank,
+											label:
+												bankOpt.find(
+													(it) =>
+														it.value ===
+														formik.values.bank
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'bank',
+									value?.value ?? ''
+								);
+							}}
+							options={bankOpt}
 							name="choices-single-default"
-							id="idStatus"
+							id="terminalType"
 						></Select>
 					</div>
 				</Col>
 				<Col xs={12} md={4}>
 					<div className="mb-2">
-						<Label
-							className="form-label mb-1"
-							htmlFor="cleave-ccard"
-						>
+						<Label className="form-label mb-1" htmlFor="membership">
 							{t('membership')}
 						</Label>
 						<Select
@@ -513,7 +561,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 							}}
 							options={affiliationOpt}
 							name="choices-single-default"
-							id="idStatus"
+							id="membership"
 						></Select>
 					</div>
 				</Col>
@@ -521,24 +569,24 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 					<div className="mb-2">
 						<Label
 							className="form-label mb-1"
-							htmlFor="autorization"
+							htmlFor="authorization"
 						>
 							{t('noAuthorization')}
 						</Label>
 						<Input
 							type="text"
 							className={`form-control ${
-								formik.errors.autorization ? 'is-invalid' : ''
+								formik.errors.authorization ? 'is-invalid' : ''
 							}`}
-							id="autorization"
-							name="autorization"
+							id="authorization"
+							name="authorization"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
-							value={formik.values.autorization}
+							value={formik.values.authorization}
 						/>
-						{formik.errors.autorization && (
+						{formik.errors.authorization && (
 							<FormFeedback type="invalid" className="d-block">
-								{formik.errors.autorization}
+								{formik.errors.authorization}
 							</FormFeedback>
 						)}
 					</div>
@@ -717,6 +765,70 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 					</div>
 				</Col>
 			</Row>
+			{!isAgent && (
+				<Row>
+					<Col lg={4}>
+						<div className="mb-2">
+							<Label
+								className="form-label mb-0 d-flex align-items-center"
+								htmlFor="agent"
+							>
+								Usuario comisión
+							</Label>
+							<Select
+								value={
+									formik.values.userComission
+										? {
+												value: formik.values
+													.userComission,
+												label: formik.values
+													.userComission,
+										  }
+										: null
+								}
+								onChange={(value) => {
+									formik.setFieldValue(
+										'userComission',
+										value.map((it) => it.value)
+									);
+								}}
+								options={agentsOpt}
+								classNamePrefix="select2-selection"
+								placeholder={tMessage(SELECT_OPTION)}
+							/>
+						</div>
+					</Col>
+					<Col lg={4}>
+						<div className="mb-2">
+							<Label
+								className="form-label mb-0 d-flex align-items-center"
+								htmlFor="agent"
+							>
+								Usuario pago
+							</Label>
+							<Select
+								value={
+									formik.values.user
+										? {
+												value: formik.values.user,
+												label: formik.values.user,
+										  }
+										: null
+								}
+								onChange={(value) => {
+									formik.setFieldValue(
+										'user',
+										value.map((it) => it.value)
+									);
+								}}
+								options={agentsOpt}
+								classNamePrefix="select2-selection"
+								placeholder={tMessage(SELECT_OPTION)}
+							/>
+						</div>
+					</Col>
+				</Row>
+			)}
 
 			{isCreating && (
 				<div className="d-flex my-3">

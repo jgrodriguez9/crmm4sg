@@ -243,6 +243,10 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 									totalPages={
 										data?.data?.pagination?.totalPages ?? 1
 									}
+									showTotal={true}
+									totalCount={
+										data?.data?.pagination?.totalCount ?? 0
+									}
 									isLoading={isFetching}
 								/>
 							</>

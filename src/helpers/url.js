@@ -79,3 +79,6 @@ export const affiliation = '/affiliation';
 
 //template sms
 export const templateSms = '/smsTemplate';
+
+//banco
+export const bank = '/bank';

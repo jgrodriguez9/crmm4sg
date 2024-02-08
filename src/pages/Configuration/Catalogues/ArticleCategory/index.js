@@ -259,6 +259,12 @@ const ArticleCategory = () => {
 															?.pagination
 															?.totalPages ?? 1
 													}
+													showTotal={true}
+													totalCount={
+														itemsData?.data
+															?.pagination
+															?.totalCount ?? 0
+													}
 												/>
 											</>
 										) : (

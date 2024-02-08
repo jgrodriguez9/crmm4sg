@@ -29,6 +29,8 @@ import { fecthItems } from '../../../../pages/Operation/Lead/Util/services';
 import Loader from '../../../Common/Loader';
 import { addMessage } from '../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../util/extractMeaningfulMessage';
+import { infoIconClass } from '../../../constants/icons';
+import TooltipDescription from '../../../Common/TooltipDescription';
 
 const FormClientAssignment = ({ toggleDialog }) => {
 	const { t } = useTranslation('translation', {
@@ -232,8 +234,19 @@ const FormClientAssignment = ({ toggleDialog }) => {
 			<Row>
 				<Col xs="12" md="12">
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="agent">
+						<Label
+							className="form-label mb-0 d-flex align-items-center"
+							htmlFor="agent"
+						>
 							{t('assignTo')}
+							<i
+								className={`${infoIconClass} text-primary fs-6 ms-1`}
+								id="assign-description"
+							/>
+							<TooltipDescription
+								text={t('infoAssignation')}
+								id="assign-description"
+							/>
 						</Label>
 						<Select
 							value={agents}
@@ -380,6 +393,10 @@ const FormClientAssignment = ({ toggleDialog }) => {
 								totalCount={itemsFiltered.totalCount}
 								showTotal={true}
 								isLoading={isFetching}
+								labelForItem={{
+									plural: t('clients'),
+									singular: t('client'),
+								}}
 							/>
 						</>
 					) : (

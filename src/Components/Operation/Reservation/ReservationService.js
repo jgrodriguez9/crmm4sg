@@ -103,7 +103,13 @@ const ReservationService = ({ ReservationId, reservation }) => {
 				Header: t('note'),
 				accessor: 'description',
 				filterable: false,
-				width: '24%',
+				width: '18%',
+			},
+			{
+				Header: t('days'),
+				accessor: 'quantity',
+				filterable: false,
+				width: '6%',
 			},
 			{
 				Header: t('adults'),

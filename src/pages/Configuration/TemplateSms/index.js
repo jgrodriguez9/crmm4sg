@@ -350,6 +350,12 @@ const TemplateSms = () => {
 															?.pagination
 															?.totalPages ?? 1
 													}
+													showTotal={true}
+													totalCount={
+														itemsData?.data
+															?.pagination
+															?.totalCount ?? 0
+													}
 												/>
 											</>
 										) : (

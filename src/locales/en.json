@@ -26,7 +26,8 @@
                 "saleDate": "Sale Date",
                 "createClient": "Create client",
                 "client": "Client",
-                "clientAssignment": "Client assign"
+                "clientAssignment": "Client assign",
+                "clients": "Clients"
             },
             "detail": {
                 "header": "Client Detail | CRM - M4S",
@@ -88,7 +89,9 @@
                 "shortCheckInLabel": "Check-in",
                 "shortCheckOutLabel": "Check-out",
                 "status": "Status",
-                "createReservation": "Create reservation"
+                "createReservation": "Create reservation",
+                "reservation": "Reservation",
+                "reservations": "Reservations"
             },
             "detail": {
                 "header": "Reservation details | CRM - M4S",
@@ -524,7 +527,8 @@
                 "user": "User",
                 "creationDate":"Creation date",
                 "newService": "New servicio",
-                "addService": "Add service"
+                "addService": "Add service",
+                "days": "Days"
             },
             "reservationTransportation": {
                 "edit": "Edit",
@@ -642,7 +646,10 @@
                 "agent": "Agent",
                 "state": "State",
                 "ok": "Ok",
-                "cancel": "Cancel"
+                "cancel": "Cancel",
+                "infoAssignation": "The assignment will be made equally if you select more than one agent",
+                "client": "Client",
+                "clients": "Clients"
             }
         }
     },

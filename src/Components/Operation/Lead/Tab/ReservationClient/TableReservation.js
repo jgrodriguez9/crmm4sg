@@ -313,6 +313,10 @@ const TableReservation = ({
 						totalPages={
 							reservationData?.data?.pagination?.totalPages ?? 1
 						}
+						showTotal={true}
+						totalCount={
+							reservationData?.data?.pagination?.totalCount ?? 0
+						}
 						isLoading={isFetching}
 					/>
 				</>

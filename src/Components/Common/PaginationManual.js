@@ -10,6 +10,7 @@ const PaginationManual = ({
 	isLoading = false,
 	totalCount,
 	showTotal = false,
+	labelForItem = null,
 }) => {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'components.paginationManual',
@@ -47,8 +48,16 @@ const PaginationManual = ({
 				<Col className="col-md-auto">
 					<strong>
 						{totalCount !== 1
-							? `${totalCount} ${t('items')}`
-							: `${totalCount} ${t('item')}`}{' '}
+							? `${totalCount} ${
+									labelForItem
+										? labelForItem.plural
+										: t('items')
+							  }`
+							: `${totalCount} ${
+									labelForItem
+										? labelForItem.singular
+										: t('item')
+							  }`}{' '}
 					</strong>
 				</Col>
 			)}

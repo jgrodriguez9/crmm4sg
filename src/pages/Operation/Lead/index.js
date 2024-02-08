@@ -412,7 +412,17 @@ const Lead = () => {
 															?.pagination
 															?.totalPages ?? 1
 													}
+													showTotal={true}
+													totalCount={
+														itemsData?.data
+															?.pagination
+															?.totalCount ?? 0
+													}
 													isLoading={isFetching}
+													labelForItem={{
+														plural: t('clients'),
+														singular: t('client'),
+													}}
 												/>
 											</>
 										) : (

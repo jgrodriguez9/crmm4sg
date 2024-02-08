@@ -135,7 +135,7 @@ const FormService = ({
 							.integer(tMessage(FIELD_INTEGER))
 							.typeError(tMessage(FIELD_NUMERIC))
 							.required(tMessage(FIELD_REQUIRED)),
-						nights: Yup.number()
+						quantity: Yup.number()
 							.min(1, tMessage(FIELD_GREATER_THAN_CERO))
 							.integer(tMessage(FIELD_INTEGER))
 							.typeError(tMessage(FIELD_NUMERIC))
@@ -221,6 +221,7 @@ const FormService = ({
 
 	const populateValues = (value, index) => {
 		const selectedValue = data.find((it) => it.id === value.value);
+		console.log(selectedValue);
 		formik.setFieldValue(
 			`services.${index}.pax`,
 			selectedValue?.adults ?? 0
@@ -232,6 +233,10 @@ const FormService = ({
 		formik.setFieldValue(
 			`services.${index}.amount`,
 			selectedValue?.price ?? 0
+		);
+		formik.setFieldValue(
+			`services.${index}.quantity`,
+			selectedValue?.nights ?? 0
 		);
 	};
 	const addService = () => {
@@ -494,18 +499,18 @@ const FormService = ({
 																		.errors
 																		.services[
 																		idx
-																	]?.nights
+																	]?.quantity
 																		? 'is-invalid'
 																		: ''
 																}`}
-																name={`services.${idx}.nights`}
+																name={`services.${idx}.quantity`}
 															/>
 															{formik.errors
 																.services &&
 																formik.errors
 																	.services[
 																	idx
-																]?.nights && (
+																]?.quantity && (
 																	<FormFeedback
 																		type="invalid"
 																		className="d-block"
@@ -516,7 +521,7 @@ const FormService = ({
 																				.services[
 																				idx
 																			]
-																				.nights
+																				.quantity
 																		}
 																	</FormFeedback>
 																)}

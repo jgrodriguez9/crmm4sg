@@ -450,7 +450,20 @@ const Reservation = () => {
 															?.pagination
 															?.totalPages ?? 1
 													}
+													showTotal={true}
+													totalCount={
+														reservationData?.data
+															?.pagination
+															?.totalCount ?? 0
+													}
 													isLoading={isFetching}
+													labelForItem={{
+														plural: t(
+															'reservations'
+														),
+														singular:
+															t('reservation'),
+													}}
 												/>
 											</>
 										) : (
