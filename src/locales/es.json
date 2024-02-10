@@ -514,7 +514,11 @@
                 "newPayment":"Nuevo pago",
                 "addPayment": "Agregar pago",
                 "edit": "Editar",
-                "delete": "Eliminar"
+                "delete": "Eliminar",
+                "userComission": "User comisión",
+                "affiliation": "Afiliación",
+                "services": "Servicios",
+                "paymentDate": "Fecha pago" 
             },
             "reservationService": {
                 "edit": "Editar",
@@ -694,7 +698,8 @@
         "ONE_OPTION_REQUIRED": "Al menos debes seleccionar una opción",
         "unauthorized": "Sin autorización",
         "MISSING_CLIENTS": "No existen clientes para asignar",
-        "ASSIGN_CLIENTS_SUCCESS": "Asignación de clientes exitosa"
+        "ASSIGN_CLIENTS_SUCCESS": "Asignación de clientes exitosa",
+        "ERROR_NETWORK": "No podemos establecer conexión con el servidor"
     },
     "constants": {
         "language": {

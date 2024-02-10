@@ -514,7 +514,11 @@
                 "newPayment":"New payment",
                 "addPayment": "Add payment",
                 "edit": "Edit",
-                "delete": "Delete"
+                "delete": "Delete",
+                "userComission": "User comission",
+                "affiliation": "Affiliation",
+                "services": "Services",
+                "paymentDate": "Payment date" 
             },
             "reservationService": {
                 "edit": "Edit",
@@ -694,7 +698,8 @@
         "ONE_OPTION_REQUIRED": "You need to select at least one option",
         "unauthorized": "Unauthorized",
         "MISSING_CLIENTS": "There are not clients to assign",
-        "ASSIGN_CLIENTS_SUCCESS": "Successfully clients assignment"
+        "ASSIGN_CLIENTS_SUCCESS": "Successfully clients assignment",
+        "ERROR_NETWORK": "We cannot establish connection with the server"
     },
     "constants": {
         "language": {

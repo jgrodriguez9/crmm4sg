@@ -8,5 +8,15 @@ const deletePayment = (dataToDelete) =>
 		`${url.payment}/reservation/${dataToDelete.idReservation}/${dataToDelete.idPayment}`
 	);
 const createPayment = (data) => post(`${url.payment}/reservation`, data);
+const updatePayment = (data) =>
+	put(
+		`${url.payment}/reservation/${data.idReservation}/${data.idPayment}`,
+		data.body
+	);
 
-export { getPaymentsByReservation, deletePayment, createPayment };
+export {
+	getPaymentsByReservation,
+	deletePayment,
+	createPayment,
+	updatePayment,
+};

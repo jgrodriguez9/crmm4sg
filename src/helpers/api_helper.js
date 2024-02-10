@@ -4,6 +4,7 @@ import { decrypData } from '../util/crypto';
 import { addMessage } from '../slices/messages/reducer';
 import { store } from '../slices';
 import { ERR_NETWORK } from '../common/messages';
+import i18n from '../i18n';
 const { dispatch } = store;
 
 const axiosApi = axios.create({
@@ -25,6 +26,7 @@ const token = cuurentToken;
 if (token)
 	axiosApi.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
+//localization
 // intercepting to capture errors
 axiosApi.interceptors.response.use(
 	(response) => response,
@@ -35,7 +37,7 @@ axiosApi.interceptors.response.use(
 			dispatch(
 				addMessage({
 					type: 'error',
-					message: ERR_NETWORK,
+					message: i18n.t(ERR_NETWORK),
 				})
 			);
 			return;

@@ -97,23 +97,23 @@ const FormService = ({
 			? {
 					services: [
 						{
-							idService: service?.idService ?? '',
+							// idService: service?.idService ?? '',
 							subService: service?.subService?.id ?? '',
 							idBooking: reservation?.booking ?? '',
-							quantity: service?.quantity ?? '',
-							pax: service?.pax ?? 2,
+							// quantity: service?.quantity ?? '',
+							pax: service?.pax ?? 0,
 							amount: service?.amount ?? 0,
 							description: service?.description ?? '',
 							childs: service?.childs ?? 0,
 							user: service?.user ?? user?.usuario,
-							activation: service?.activation ?? null,
-							nights: service?.nights ?? '',
+							// activation: service?.activation ?? null,
+							nights: service?.quantity ?? '',
 							// certificateNumber: reservation?.confirm ?? '',
 							// commission: 0,
 							// "userComission": "",
 							confirmation: reservation.confirm,
 							// "location": "Isla Mujeres",
-							folioDolphin: service?.folioDolphin,
+							// folioDolphin: service?.folioDolphin,
 							// "idPromotion": 123,
 							reservation: reservation.id,
 							services: [],
@@ -135,11 +135,11 @@ const FormService = ({
 							.integer(tMessage(FIELD_INTEGER))
 							.typeError(tMessage(FIELD_NUMERIC))
 							.required(tMessage(FIELD_REQUIRED)),
-						quantity: Yup.number()
-							.min(1, tMessage(FIELD_GREATER_THAN_CERO))
-							.integer(tMessage(FIELD_INTEGER))
-							.typeError(tMessage(FIELD_NUMERIC))
-							.required(tMessage(FIELD_REQUIRED)),
+						// quantity: Yup.number()
+						// 	.min(1, tMessage(FIELD_GREATER_THAN_CERO))
+						// 	.integer(tMessage(FIELD_INTEGER))
+						// 	.typeError(tMessage(FIELD_NUMERIC))
+						// 	.required(tMessage(FIELD_REQUIRED)),
 						childs: Yup.number()
 							.min(0, tMessage(FIELD_POSITIVE))
 							.integer(tMessage(FIELD_INTEGER))
@@ -235,7 +235,7 @@ const FormService = ({
 			selectedValue?.price ?? 0
 		);
 		formik.setFieldValue(
-			`services.${index}.quantity`,
+			`services.${index}.nights`,
 			selectedValue?.nights ?? 0
 		);
 	};
@@ -499,18 +499,18 @@ const FormService = ({
 																		.errors
 																		.services[
 																		idx
-																	]?.quantity
+																	]?.nights
 																		? 'is-invalid'
 																		: ''
 																}`}
-																name={`services.${idx}.quantity`}
+																name={`services.${idx}.nights`}
 															/>
 															{formik.errors
 																.services &&
 																formik.errors
 																	.services[
 																	idx
-																]?.quantity && (
+																]?.nights && (
 																	<FormFeedback
 																		type="invalid"
 																		className="d-block"
@@ -521,7 +521,7 @@ const FormService = ({
 																				.services[
 																				idx
 																			]
-																				.quantity
+																				.nights
 																		}
 																	</FormFeedback>
 																)}

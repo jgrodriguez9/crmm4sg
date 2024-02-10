@@ -23,6 +23,25 @@ import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../slices/messages/reducer';
 import { DELETE_SUCCESS, ERROR_SERVER } from '../../constants/messages';
 import extractMeaningfulMessage from '../../../util/extractMeaningfulMessage';
+import useRole from '../../../hooks/useRole';
+
+const getUserComission = ({ row }) => {
+	const { original } = row;
+	if (original.paymentServices.length > 0) {
+		return original.paymentServices[0].serviceContract?.userComission ?? '';
+	}
+	return '';
+};
+
+const getParseServices = (value) => {
+	return (
+		<ul className="m-0 ps-3">
+			{value?.map((it) => (
+				<li key={it.id}>{it.serviceContract?.subService?.name}</li>
+			))}
+		</ul>
+	);
+};
 
 const ReservationPayment = ({ ReservationId, reservation }) => {
 	const { t } = useTranslation('translation', {
@@ -32,6 +51,7 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 		keyPrefix: 'messages',
 	});
 	const dispatch = useDispatch();
+	const { isSupervisor, isManager } = useRole();
 	const [itemSelected, setItemSelected] = useState(null);
 	const [query, setQuery] = useState({
 		max: 10,
@@ -50,56 +70,60 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 			keepPreviousData: true,
 		}
 	);
-	console.log(data);
-
 	const editRow = useCallback((row) => {
 		console.log(row);
+		const { original } = row;
+		setItemSelected(original);
+		setShowModal(true);
 	}, []);
 	const showDialogDelete = useCallback((row) => {
 		const { original } = row;
-		console.log(original);
 		setItemSelected(original);
 		setShowDeleteDialog(true);
 	}, []);
 
-	const actions = [
-		{
-			iconClass: `${editIconClass} fs-5 text-primary`,
-			click: editRow,
-			labelTooltip: t('edit'),
-		},
-		{
-			iconClass: `${deleteIconClass} fs-5 text-danger`,
-			click: showDialogDelete,
-			labelTooltip: t('delete'),
-		},
-	];
+	const actions = useMemo(
+		() => [
+			{
+				iconClass: `${editIconClass} fs-5 text-primary`,
+				click: editRow,
+				labelTooltip: t('edit'),
+			},
+			{
+				iconClass: `${deleteIconClass} fs-5 text-danger`,
+				click: showDialogDelete,
+				labelTooltip: t('delete'),
+			},
+		],
+		[editRow, showDialogDelete, t]
+	);
 
-	const columns = useMemo(
+	const defaultColumns = useMemo(
 		() => [
 			{
 				Header: t('id'),
 				accessor: 'idPayment',
 				filterable: false,
-				width: '7%',
-			},
-			{
-				Header: t('authorization'),
-				accessor: 'authorization',
-				filterable: false,
-				width: '10%',
+				width: '6%',
 			},
 			{
 				Header: t('bank'),
 				accessor: 'bank.name',
 				filterable: false,
-				width: '10%',
+				width: '18%',
 			},
 			{
-				Header: t('paymentType'),
-				accessor: 'type',
+				Header: t('affiliation'),
+				accessor: 'affiliation.name',
 				filterable: false,
-				width: '8%',
+				width: '15%',
+			},
+			{
+				Header: t('services'),
+				accessor: 'paymentServices',
+				filterable: false,
+				width: '20%',
+				Cell: ({ value }) => getParseServices(value),
 			},
 			{
 				Header: t('amount'),
@@ -113,41 +137,24 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 				accessor: 'currency.currency',
 				filterable: false,
 				width: '8%',
+				Cell: ({ row, value }) =>
+					`(${row.original.currency.isoCode}) ${value}`,
 			},
 			{
-				Header: t('exchange'),
-				accessor: 'exchangeRate',
-				filterable: false,
-				width: '6%',
-			},
-			{
-				Header: `${t('amount')} (MXN)`,
-				accessor: 'amountMXN',
+				Header: t('paymentDate'),
+				accessor: 'paymentDate',
 				filterable: false,
 				width: '8%',
-				Cell: ({ value }) => jsFormatNumber(value),
+				Cell: ({ value }) =>
+					value
+						? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY')
+						: '',
 			},
 			{
 				Header: t('user'),
 				accessor: 'user',
 				filterable: false,
 				width: '10%',
-			},
-			{
-				Header: t('department'),
-				accessor: 'department.name',
-				filterable: false,
-				width: '10%',
-			},
-			{
-				Header: t('creationDate'),
-				accessor: 'paymentDate',
-				filterable: false,
-				width: '10%',
-				Cell: ({ value }) =>
-					value
-						? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY')
-						: '',
 			},
 			{
 				id: 'action',
@@ -159,6 +166,23 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 		],
 		[t]
 	);
+
+	const columns = useMemo(() => {
+		if (isSupervisor || isManager) {
+			defaultColumns.splice(7, 0, {
+				Header: t('userComission'),
+				id: 'userComission',
+				filterable: false,
+				style: {
+					width: '15%',
+				},
+				Cell: getUserComission,
+			});
+			return defaultColumns;
+		} else {
+			return defaultColumns;
+		}
+	}, [isSupervisor, defaultColumns, t, isManager]);
 
 	const toggleDialog = () => setShowModal(!showModal);
 

@@ -24,13 +24,31 @@ import { getCurrencyAll } from '../../../../../helpers/catalogues/currencyType';
 import { getAffiliationAll } from '../../../../../helpers/catalogues/affiliation';
 import removetEmptyObject from '../../../../../util/removetEmptyObject';
 import moment from 'moment';
-import { createPayment } from '../../../../../helpers/payments';
+import { createPayment, updatePayment } from '../../../../../helpers/payments';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import { getBankAll } from '../../../../../helpers/catalogues/bank';
 import { getAgentsBySupervisor } from '../../../../../helpers/customer';
 import useRole from '../../../../../hooks/useRole';
+
+const getContractedServiceParsed = (paymentServices) => {
+	console.log(paymentServices);
+	return paymentServices?.map((it) => ({
+		idBooking: it.serviceContract.idBooking,
+		idService: it.serviceContract.idService,
+		label: it.serviceContract.subService.name,
+		amount: it.serviceContract.amount,
+	}));
+};
+
+const getUserComission = (paymentServices) => {
+	if (paymentServices.length > 0) {
+		return paymentServices[0]?.serviceContract?.userComission ?? '';
+	} else {
+		return '';
+	}
+};
 
 const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 	const { t } = useTranslation('translation', {
@@ -80,7 +98,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 					})),
 		}
 	);
-	//curencies
+	//currencies
 	const { data: currencyOpt } = useQuery(
 		['getCurrencyAll'],
 		async () => {
@@ -142,6 +160,25 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 				queryClient.refetchQueries({
 					queryKey: ['getPaymentsByReservation'],
 				});
+				toggleDialog();
+			},
+		}
+	);
+	//update payment
+	const { mutate: update, isLoading: isUpdating } = useMutation(
+		updatePayment,
+		{
+			onSuccess: () => {
+				dispatch(
+					addMessage({
+						type: 'success',
+						message: tMessage(SAVE_SUCCESS),
+					})
+				);
+				queryClient.refetchQueries({
+					queryKey: ['getPaymentsByReservation'],
+				});
+				toggleDialog();
 			},
 		}
 	);
@@ -149,6 +186,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 		// enableReinitialize : use this flag when initial values needs to be changed
 		enableReinitialize: true,
 		initialValues: {
+			idPayment: payment?.idPayment ?? '',
 			idReservation: payment?.idReservation ?? reservation.id,
 			cardHolderName: payment?.cardHolderName ?? '',
 			cardHolderLastName: payment?.cardHolderLastName ?? '',
@@ -156,32 +194,34 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 			type: payment?.type ?? '',
 			amount: payment?.amount ?? '',
 			currency: payment?.currency ?? { id: '' },
-			creditCard: '',
-			cardType: payment?.cardType ?? '',
+			creditCard: payment?.creditCard ?? '',
+			idCardType: payment?.cardType?.id ?? '',
 			expiration: payment?.expiration ?? '',
 			authorization: payment?.authorization ?? '',
 			user: payment?.user ?? user?.usuario,
 			department: payment?.department ?? {
-				id: user?.deptoid,
+				id: parseInt(user?.deptoid),
 			},
 			multi: payment?.multi ?? '',
 			exchangeRateTC: payment?.exchangeRateTC ?? '',
 			amountMXN: payment?.amountMXN ?? '',
 			exchangeRate: payment?.exchangeRate ?? '',
 			paymentDate: payment?.paymentDate ?? '',
-			contractedServices: payment?.contractedServices ?? [],
+			contractedServices: getContractedServiceParsed(
+				payment?.paymentServices ?? []
+			),
 			idInvoice: payment?.idInvoice ?? '',
 			affiliation: payment?.affiliation ?? { id: '' },
 			//temp
 			cvv: '',
-			userComission: '',
+			userComission: getUserComission(payment?.paymentServices ?? []),
 		},
 		validationSchema: Yup.object({
 			cardHolderName: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			cardHolderLastName: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			creditCard: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			expiration: Yup.string().required(tMessage(FIELD_REQUIRED)),
-			cardType: Yup.string().required(tMessage(FIELD_REQUIRED)),
+			idCardType: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			authorization: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			paymentDate: Yup.string().required(tMessage(FIELD_REQUIRED)),
 			currency: Yup.object().shape({
@@ -204,32 +244,36 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 		}),
 		onSubmit: async (values) => {
 			//submit request
-			console.log(values);
+			//console.log(values);
 			const data = {};
 			Object.entries(removetEmptyObject(values)).forEach((entry) => {
 				const [key, value] = entry;
 				if (key === 'paymentDate') {
 					data[key] = moment(values.paymentDate).format('YYYY-MM-DD');
 				}
-				if (key === 'bank') {
-					data[key] = values.bank.toString();
+				if (key === 'contractedServices') {
+					data[key] = values.contractedServices.map((it) => ({
+						...it,
+						userComission: values.userComission
+							? values.userComission
+							: user.usuario,
+					}));
 				} else {
 					data[key] = value;
 				}
 			});
 			console.log(data);
-			create(data);
-			// if (values.idService) {
-			// 	//updating existing one
-			// 	updateItem({
-			// 		idBooking: reservation.booking,
-			// 		isService: values.idService,
-			// 		body: data,
-			// 	});
-			// } else {
-			// 	//creating one
-			// 	createService(data);
-			// }
+			if (values.idReservation && values.idPayment) {
+				// updating existing one
+				update({
+					idReservation: values.idReservation,
+					idPayment: values.idPayment,
+					body: data,
+				});
+			} else {
+				//creating one
+				create(data);
+			}
 		},
 	});
 
@@ -253,6 +297,12 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 	const removeService = (index) => {
 		const copyServices = [...formik.values.contractedServices];
 		copyServices.splice(index, 1);
+		const totalAmount = copyServices.reduce(
+			(acc, curr) => acc + curr.amount,
+			0
+		);
+		formik.setFieldValue('amountMXN', totalAmount);
+		formik.setFieldValue('amount', totalAmount);
 		formik.setFieldValue('contractedServices', copyServices);
 	};
 	const { data: agentsOpt } = useQuery(
@@ -267,6 +317,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 				})) ?? [],
 		}
 	);
+	console.log(formik.values);
 	return (
 		<Form
 			className="needs-validation fs-7"
@@ -278,7 +329,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 		>
 			<Row className="align-items-end">
 				<Col xs="10">
-					<Label className="form-label mb-1" htmlFor="cardType">
+					<Label className="form-label mb-1" htmlFor="services">
 						Servicios
 					</Label>
 					<Select
@@ -287,7 +338,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 						options={servicesOpt}
 						name="choices-single-default"
 						placeholder={tMessage(SELECT_OPTION)}
-						id="cardType"
+						id="services"
 					/>
 				</Col>
 				<Col xs="2">
@@ -471,29 +522,29 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 						</Label>
 						<Select
 							value={
-								formik.values.cardType
+								formik.values.idCardType
 									? {
-											value: formik.values.cardType,
+											value: formik.values.idCardType,
 											label:
-												cardTypesOpt.find(
+												cardTypesOpt?.find(
 													(it) =>
 														it.value ===
-														formik.values.cardType
+														formik.values.idCardType
 												)?.label ?? '',
 									  }
 									: null
 							}
 							onChange={(value) => {
-								formik.setFieldValue('cardType', value.value);
+								formik.setFieldValue('idCardType', value.value);
 							}}
 							options={cardTypesOpt}
 							name="choices-single-default"
 							placeholder={tMessage(SELECT_OPTION)}
 							id="cardType"
 						/>
-						{formik.errors.cardType && (
+						{formik.errors.idCardType && (
 							<FormFeedback type="invalid" className="d-block">
-								{formik.errors.cardType}
+								{formik.errors.idCardType}
 							</FormFeedback>
 						)}
 					</div>
@@ -513,7 +564,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 									? {
 											value: formik.values.bank,
 											label:
-												bankOpt.find(
+												bankOpt?.find(
 													(it) =>
 														it.value ===
 														formik.values.bank
@@ -544,7 +595,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 									? {
 											value: formik.values.affiliation.id,
 											label:
-												affiliationOpt.find(
+												affiliationOpt?.find(
 													(it) =>
 														it.value ===
 														formik.values
@@ -631,7 +682,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 									? {
 											value: formik.values.currency.id,
 											label:
-												currencyOpt.find(
+												currencyOpt?.find(
 													(it) =>
 														it.value ===
 														formik.values.currency
@@ -766,7 +817,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 				</Col>
 			</Row>
 			{!isAgent && (
-				<Row>
+				<Row className="mb-5">
 					<Col lg={4}>
 						<div className="mb-2">
 							<Label
@@ -789,7 +840,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 								onChange={(value) => {
 									formik.setFieldValue(
 										'userComission',
-										value.map((it) => it.value)
+										value.value
 									);
 								}}
 								options={agentsOpt}
@@ -816,10 +867,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 										: null
 								}
 								onChange={(value) => {
-									formik.setFieldValue(
-										'user',
-										value.map((it) => it.value)
-									);
+									formik.setFieldValue('user', value.value);
 								}}
 								options={agentsOpt}
 								classNamePrefix="select2-selection"
@@ -830,7 +878,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 				</Row>
 			)}
 
-			{isCreating && (
+			{(isCreating || isUpdating) && (
 				<div className="d-flex my-3">
 					<ButtonsLoader
 						buttons={[
@@ -851,7 +899,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 				</div>
 			)}
 
-			{!isCreating && (
+			{!isCreating && !isUpdating && (
 				<div className="d-flex my-3">
 					<Button type="submit" color="primary" className="me-2">
 						{t('accept')}
