@@ -116,7 +116,7 @@ const TableNotas = ({ isLoading, isSuccess, data, error, actions }) => {
 					isAddUserList={false}
 					customPageSize={8}
 					className="custom-header-css"
-					divClass="mb-3"
+					divClass="mb-3 table-responsive"
 					tableClass="align-middle table-wrap"
 					hover={false}
 					glFilter={true}

@@ -317,7 +317,6 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 				})) ?? [],
 		}
 	);
-	console.log(formik.values);
 	return (
 		<Form
 			className="needs-validation fs-7"

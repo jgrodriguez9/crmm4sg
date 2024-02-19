@@ -71,20 +71,6 @@ const TabsReservation = ({ itemData, refetchReservation }) => {
 						<NavLink
 							to="#"
 							className={classNames({
-								active: activeTab === '2',
-							})}
-							onClick={() => {
-								tabChange('2');
-							}}
-							type="button"
-						>
-							<h6 className="text-primary">{t('payments')}</h6>
-						</NavLink>
-					</NavItem>
-					<NavItem>
-						<NavLink
-							to="#"
-							className={classNames({
 								active: activeTab === '5',
 							})}
 							onClick={() => {
@@ -93,6 +79,20 @@ const TabsReservation = ({ itemData, refetchReservation }) => {
 							type="button"
 						>
 							<h6 className="text-primary">{t('services')}</h6>
+						</NavLink>
+					</NavItem>
+					<NavItem>
+						<NavLink
+							to="#"
+							className={classNames({
+								active: activeTab === '2',
+							})}
+							onClick={() => {
+								tabChange('2');
+							}}
+							type="button"
+						>
+							<h6 className="text-primary">{t('payments')}</h6>
 						</NavLink>
 					</NavItem>
 					<NavItem>

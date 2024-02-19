@@ -182,3 +182,8 @@ div.form-check-input.checked {
 .w-250px{
   width: 250px;
 }
+@media (max-width: 1024.1px) {
+  [data-layout="horizontal"] .page-content {
+    padding: calc(45px + 2.7rem) 0.75rem 60px;
+}
+}

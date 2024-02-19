@@ -173,7 +173,7 @@ const ReservationTransportation = ({ reservationId }) => {
 							columns={columns}
 							data={[]}
 							className="custom-header-css"
-							divClass="mb-3"
+							divClass="mb-3 table-responsive"
 							tableClass="align-middle table-wrap"
 						/>
 						{/* {!isLoading ? (

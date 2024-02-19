@@ -12,6 +12,7 @@ import { getCallCenterByUser } from '../../../../helpers/catalogues/call_center'
 import { getHotelUnitByHotelPaginate } from '../../../../helpers/catalogues/hotel_unit';
 import { useTranslation } from 'react-i18next';
 import useUser from '../../../../hooks/useUser';
+import { hookedOpt } from '../../../constants/hooked';
 
 const FormReservationCero = ({ formik }) => {
 	const { t: tMessage } = useTranslation('translation', {
@@ -306,7 +307,7 @@ const FormReservationCero = ({ formik }) => {
 						</Label>
 					</div>
 				</Col>
-				<Col xs="12" md="4">
+				<Col xs="12" md="2">
 					<div className="mb-3">
 						<Label className="form-label mb-0" htmlFor="adult">
 							{t('adults')}
@@ -329,7 +330,7 @@ const FormReservationCero = ({ formik }) => {
 						)}
 					</div>
 				</Col>
-				<Col xs="12" md="4">
+				<Col xs="12" md="2">
 					<div className="mb-3">
 						<Label className="form-label mb-0" htmlFor="child">
 							{t('children')}
@@ -351,7 +352,7 @@ const FormReservationCero = ({ formik }) => {
 						)}
 					</div>
 				</Col>
-				<Col xs="12" md="4">
+				<Col xs="12" md="2">
 					<div className="mb-3">
 						<Label className="form-label mb-0" htmlFor="infant">
 							{t('infants')}
@@ -369,6 +370,43 @@ const FormReservationCero = ({ formik }) => {
 						{formik.errors.infant && (
 							<FormFeedback type="invalid" className="d-block">
 								{formik.errors.infant}
+							</FormFeedback>
+						)}
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-3">
+						<Label className="form-label mb-0" htmlFor="hooked">
+							Hooked
+						</Label>
+						<Select
+							id="hooked"
+							className="mb-0"
+							value={
+								formik.values.hooked !== ''
+									? {
+											value: formik.values.hooked,
+											label:
+												hookedOpt?.find(
+													(it) =>
+														it.value ===
+														formik.values.hooked
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'hooked',
+									value?.value ?? ''
+								);
+							}}
+							options={hookedOpt}
+							placeholder={tMessage(SELECT_OPTION)}
+						/>
+						{formik.errors.hooked && (
+							<FormFeedback type="invalid" className="d-block">
+								{formik.errors.hooked}
 							</FormFeedback>
 						)}
 					</div>

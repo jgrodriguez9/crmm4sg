@@ -192,6 +192,16 @@ const LeadProfile = () => {
 					header: { title: t('mainInfo') },
 					body: [
 						{
+							title: 'Call center',
+							items: [
+								{
+									title: itemData?.data?.callcenter?.name,
+									iconClass: null,
+									action: () => {},
+								},
+							],
+						},
+						{
 							title: t('contract'),
 							items: [
 								{
@@ -310,16 +320,6 @@ const LeadProfile = () => {
 								},
 							],
 						},
-						{
-							title: 'Call center',
-							items: [
-								{
-									title: itemData?.data?.callcenter?.name,
-									iconClass: null,
-									action: () => {},
-								},
-							],
-						},
 					],
 				},
 			];
@@ -360,7 +360,7 @@ const LeadProfile = () => {
 
 					{itemData && !isFetchingItem && !errorItem && (
 						<Row>
-							<Col xxl={3}>
+							<Col xs="12" lg={3}>
 								<Card className="shadow">
 									<CardBody className="p-0">
 										<div className="d-flex align-items-center mb-2 p-3">
@@ -481,7 +481,7 @@ const LeadProfile = () => {
 								</Card>
 							</Col>
 
-							<Col xxl={9}>
+							<Col xs="12" lg={9}>
 								<Card className="shadow">
 									<CardHeader>
 										<Nav

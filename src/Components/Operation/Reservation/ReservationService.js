@@ -242,7 +242,7 @@ const ReservationService = ({ ReservationId, reservation }) => {
 									columns={columns}
 									data={isSuccess ? data : []}
 									className="custom-header-css"
-									divClass="mb-3"
+									divClass="mb-3 table-responsive"
 									tableClass="align-middle table-wrap"
 								/>
 							</>

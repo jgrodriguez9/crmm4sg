@@ -28,6 +28,7 @@ import { getHotelUnitByHotelPaginate } from '../../../../../helpers/catalogues/h
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 import { useTranslation } from 'react-i18next';
+import { hookedOpt } from '../../../../constants/hooked';
 
 const FormReservationEdit = ({
 	reservation = null,
@@ -176,7 +177,7 @@ const FormReservationEdit = ({
 			});
 		},
 	});
-	console.log(formik.values);
+	// console.log(formik.values);
 	//getHotelUNitAndUnit
 	const { data: hotelUnitOpt } = useQuery(
 		['getHotelUnitByHotelPaginate', formik.values.hotel.id],
@@ -420,6 +421,44 @@ const FormReservationEdit = ({
 			<Row className="mb-md-3 mb-2">
 				<Col xs="12" md="4">
 					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="hooked">
+							Hooked
+						</Label>
+						<Select
+							id="hooked"
+							className="mb-0"
+							value={
+								formik.values.hooked !== '' &&
+								formik.values.hooked !== null
+									? {
+											value: formik.values.hooked,
+											label:
+												hookedOpt?.find(
+													(it) =>
+														it.value ===
+														formik.values.hooked
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'hooked',
+									value?.value ?? ''
+								);
+							}}
+							options={hookedOpt}
+							placeholder={tMessage(SELECT_OPTION)}
+						/>
+						{formik.errors.hooked && (
+							<FormFeedback type="invalid" className="d-block">
+								{formik.errors.hooked}
+							</FormFeedback>
+						)}
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-2">
 						<Row className="mt-3">
 							<Col xs="6">
 								<div className="form-check">
@@ -528,7 +567,7 @@ const FormReservationEdit = ({
 						</Row>
 					</div>
 				</Col>
-				<Col xs="12" md="3">
+				<Col xs="12" md="2">
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="comentario">
 							{t('cards')}

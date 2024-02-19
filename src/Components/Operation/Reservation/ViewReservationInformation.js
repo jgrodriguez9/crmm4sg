@@ -9,6 +9,7 @@ import { fetchMaritalStatus } from '../../../services/maritalStatus';
 import HotelAvailability from '../../Common/HotelAvailability';
 import { editIconClass } from '../../constants/icons';
 import { useTranslation } from 'react-i18next';
+import { hookedOpt } from '../../constants/hooked';
 
 const ViewReservationInformation = ({
 	editMode = false,
@@ -36,7 +37,7 @@ const ViewReservationInformation = ({
 				})),
 		}
 	);
-
+	console.log(data);
 	return (
 		<>
 			<Row>
@@ -397,21 +398,15 @@ const ViewReservationInformation = ({
 						</div>
 					</div>
 				</Col>
-				<Col lg={1}>
-					<div className="form-check">
-						<Label className="form-label text-muted text-uppercase fw-semibold opacity-0 d-block mb-0">
-							S
-						</Label>
-						<div
-							className={`form-check-input ${
-								data?.hooked > 0 ? 'checked' : ''
-							}`}
-							type="checkbox"
-							id="otras"
-						/>
-						<Label className="form-check-label" htmlFor="otras">
+				<Col lg={3}>
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="hooked">
 							Hooked
 						</Label>
+						<div className="form-control" id="hooked">
+							{hookedOpt.find((it) => it.value === data?.hooked)
+								?.label ?? '-'}
+						</div>
 					</div>
 				</Col>
 			</Row>

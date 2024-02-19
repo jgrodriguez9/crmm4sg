@@ -88,6 +88,7 @@ const FormReservationInformation = ({ toggleDialog, refetch }) => {
 			visa: 0,
 			//paxes
 			paxes: [],
+			hooked: '',
 		},
 		validationSchema: Yup.object({
 			customer: Yup.object().shape({

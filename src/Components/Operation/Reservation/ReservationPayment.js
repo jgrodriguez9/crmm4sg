@@ -257,7 +257,7 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 										isSuccess ? data?.data?.list ?? [] : []
 									}
 									className="custom-header-css"
-									divClass="mb-3"
+									divClass="mb-3 table-responsive"
 									tableClass="align-middle table-wrap"
 								/>
 								<PaginationManual

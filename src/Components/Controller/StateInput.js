@@ -29,8 +29,8 @@ export default function StateInput({
 					className={`form-control`}
 					style={{ minHeight: '34px', backgroundColor: '#eff2f7' }}
 				>
-					{statesOpt.find((it) => it.isoCode === value.value)?.name ??
-						value?.label}
+					{statesOpt?.find((it) => it.isoCode === value?.value)
+						?.name ?? value?.label}
 				</div>
 			</div>
 		);
