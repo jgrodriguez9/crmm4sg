@@ -49,7 +49,6 @@ function HotelAvailability({ initialDate, finalDate, hotel }) {
 			document.getElementById('availability').src = url;
 		}
 	}, [url]);
-
 	return (
 		<Row>
 			<Col xs="12" md="12">
@@ -73,6 +72,11 @@ function HotelAvailability({ initialDate, finalDate, hotel }) {
 							date={eDate}
 							onChangeDate={(value) => {
 								setEDate(value[0]);
+							}}
+							options={{
+								minDate: iDate
+									? moment(iDate).format('DD-MM-YYYY')
+									: '',
 							}}
 						/>
 					</div>
