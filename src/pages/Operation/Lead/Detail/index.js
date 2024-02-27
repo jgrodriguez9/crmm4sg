@@ -158,6 +158,31 @@ const LeadProfile = () => {
 				};
 				telefonos.push(movil);
 			}
+			const emails = [];
+			if (itemData?.data?.email) {
+				const phone1 = {
+					title: itemData?.data?.email,
+					iconClass: 'fs-15 ri-mail-line text-danger cursor-pointer',
+					action: onHandleShowSendEmail,
+					tooltip: {
+						id: 'tooltip-correo-1',
+						title: t('sendMail'),
+					},
+				};
+				emails.push(phone1);
+			}
+			if (itemData?.data?.email2) {
+				const phone1 = {
+					title: itemData?.data?.email2,
+					iconClass: 'fs-15 ri-mail-line text-danger cursor-pointer',
+					action: onHandleShowSendEmail,
+					tooltip: {
+						id: 'tooltip-correo-2',
+						title: t('sendMail'),
+					},
+				};
+				emails.push(phone1);
+			}
 
 			const parseInfoLeft = [
 				{
@@ -167,18 +192,7 @@ const LeadProfile = () => {
 					body: [
 						{
 							title: t('mail'),
-							items: [
-								{
-									title: itemData?.data?.email,
-									iconClass:
-										'fs-15 ri-mail-line text-danger cursor-pointer',
-									action: onHandleShowSendEmail,
-									tooltip: {
-										id: 'tooltip-correo-1',
-										title: t('sendMail'),
-									},
-								},
-							],
+							items: [...emails],
 						},
 						{
 							title: t('phones'),

@@ -246,6 +246,7 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 			//submit request
 			//console.log(values);
 			const data = {};
+			data['sendPaymentEmail'] = true;
 			Object.entries(removetEmptyObject(values)).forEach((entry) => {
 				const [key, value] = entry;
 				if (key === 'paymentDate') {

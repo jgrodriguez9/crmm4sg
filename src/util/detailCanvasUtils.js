@@ -42,6 +42,21 @@ const builtDetailCanvasClient = (data, clickToCall) => {
 			action: () => clickToCall('movil'),
 		});
 	}
+	const arrayEmails = [];
+	if (data?.email) {
+		arrayEmails.push({
+			text: data?.email,
+			iconClasses: 'ri-mail-line text-danger',
+			action: null,
+		});
+	}
+	if (data?.email2) {
+		arrayEmails.push({
+			text: data?.email2,
+			iconClasses: 'ri-mail-line text-danger',
+			action: null,
+		});
+	}
 
 	const header = {
 		title: {
@@ -66,13 +81,7 @@ const builtDetailCanvasClient = (data, clickToCall) => {
 		body: [
 			{
 				label: 'Correo',
-				value: [
-					{
-						text: data?.email ?? 'No disponible',
-						iconClasses: 'ri-mail-line text-danger',
-						action: null,
-					},
-				],
+				value: arrayEmails,
 			},
 			{
 				label: 'Teléfonos',

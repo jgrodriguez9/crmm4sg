@@ -13,10 +13,13 @@ const updatePayment = (data) =>
 		`${url.payment}/reservation/${data.idReservation}/${data.idPayment}`,
 		data.body
 	);
+const sendPaymentReceipt = (data) =>
+	post(`${url.payment}/reservation/paymentConfirmation`, data);
 
 export {
 	getPaymentsByReservation,
 	deletePayment,
 	createPayment,
 	updatePayment,
+	sendPaymentReceipt,
 };

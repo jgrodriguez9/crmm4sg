@@ -66,7 +66,6 @@ const Lead = () => {
 	const user = useUser();
 	const dispatch = useDispatch();
 	const [idItem, setIdItem] = useState(null);
-	const [showModal, setShowModal] = useState(false);
 	const [showModalAssignment, setShowModalAssignment] = useState(false);
 	const [query, setQuery] = useState({
 		max: 10,
@@ -333,10 +332,6 @@ const Lead = () => {
 			setInfo(data);
 		}
 	}, [itemData, isFetchingItem]);
-
-	const toggleDialog = () => {
-		setShowModal(!showModal);
-	};
 
 	const toggleDialogAssignment = () =>
 		setShowModalAssignment(!showAssignDialog);

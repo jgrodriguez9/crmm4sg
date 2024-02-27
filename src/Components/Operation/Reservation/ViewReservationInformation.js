@@ -37,7 +37,6 @@ const ViewReservationInformation = ({
 				})),
 		}
 	);
-	console.log(data);
 	return (
 		<>
 			<Row>

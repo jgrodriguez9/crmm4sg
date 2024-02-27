@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from 'react-query';
-import { fecthPaymentByReservation } from '../../../pages/Operation/Reservation/Util/services';
 import { useCallback, useMemo, useState } from 'react';
 import jsFormatNumber from '../../../util/jsFormatNumber';
 import moment from 'moment';
@@ -15,9 +14,14 @@ import PaginationManual from '../../Common/PaginationManual';
 import {
 	deletePayment,
 	getPaymentsByReservation,
+	sendPaymentReceipt,
 } from '../../../helpers/payments';
 import CellActions from '../../Common/CellActions';
-import { deleteIconClass, editIconClass } from '../../constants/icons';
+import {
+	deleteIconClass,
+	editIconClass,
+	sendPaymentClass,
+} from '../../constants/icons';
 import DeleteModal from '../../Common/DeleteModal';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../slices/messages/reducer';
@@ -71,7 +75,6 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 		}
 	);
 	const editRow = useCallback((row) => {
-		console.log(row);
 		const { original } = row;
 		setItemSelected(original);
 		setShowModal(true);
@@ -82,8 +85,51 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 		setShowDeleteDialog(true);
 	}, []);
 
+	//send payment receipt
+	const { mutate: sendPaymentApi, isLoading: isSendingPaymentReceipt } =
+		useMutation(sendPaymentReceipt, {
+			onSuccess: () => {
+				dispatch(
+					addMessage({
+						message: tMessage('ok'),
+						type: 'success',
+					})
+				);
+				setItemSelected(null);
+			},
+			onError: (error) => {
+				let message = tMessage(ERROR_SERVER);
+				message = extractMeaningfulMessage(error, message);
+				dispatch(
+					addMessage({
+						message: message,
+						type: 'error',
+					})
+				);
+				setItemSelected(null);
+			},
+		});
+	const sendPayment = useCallback(
+		(row) => {
+			const { original } = row;
+			console.log(original);
+			setItemSelected(original);
+			const data = {
+				idReservation: original.idReservation,
+				idPayment: original.idPayment,
+			};
+			sendPaymentApi(data);
+		},
+		[sendPaymentApi]
+	);
+
 	const actions = useMemo(
 		() => [
+			{
+				iconClass: `${sendPaymentClass} fs-5 text-success`,
+				click: sendPayment,
+				labelTooltip: t('sendPaymentConfirmation'),
+			},
 			{
 				iconClass: `${editIconClass} fs-5 text-primary`,
 				click: editRow,
@@ -95,7 +141,7 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 				labelTooltip: t('delete'),
 			},
 		],
-		[editRow, showDialogDelete, t]
+		[editRow, showDialogDelete, t, sendPayment]
 	);
 
 	const defaultColumns = useMemo(
@@ -163,8 +209,22 @@ const ReservationPayment = ({ ReservationId, reservation }) => {
 					return <CellActions actions={actions} row={row} />;
 				},
 			},
+			{
+				id: 'loader',
+				width: '2%',
+				Cell: ({ row }) => {
+					if (
+						row.original.idPayment === itemSelected?.idPayment &&
+						isSendingPaymentReceipt
+					) {
+						return <Loader size="sm" />;
+					} else {
+						return <></>;
+					}
+				},
+			},
 		],
-		[t]
+		[t, actions, isSendingPaymentReceipt, itemSelected?.idPayment]
 	);
 
 	const columns = useMemo(() => {

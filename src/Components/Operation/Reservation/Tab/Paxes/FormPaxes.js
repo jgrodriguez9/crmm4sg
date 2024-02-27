@@ -15,7 +15,7 @@ import moment from 'moment';
 import { addMessage } from '../../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../../util/extractMeaningfulMessage';
 import { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import {
 	createPaxService,
 	updatePaxService,
@@ -25,6 +25,8 @@ import calcAge from '../../../../../util/calcAge';
 import DisabledInput from '../../../../Controller/DisabledInput';
 import Select from 'react-select';
 import { useTranslation } from 'react-i18next';
+import { fetchMaritalStatus } from '../../../../../services/maritalStatus';
+import InputTags from '../../../../../Controllers/InputTags';
 
 const FormPaxes = ({
 	toggleDialog,
@@ -44,6 +46,18 @@ const FormPaxes = ({
 		pax?.fechadnacimiento
 			? moment(pax?.fechadnacimiento, 'YYYY-MM-DD').toDate()
 			: null
+	);
+	//get Marital Status
+	const { data: maritalStatusOpt } = useQuery(
+		['getMaritalStatus'],
+		() => fetchMaritalStatus(),
+		{
+			select: (data) =>
+				data.data.maritaStatusList.map((item) => ({
+					value: item.key,
+					label: item.value,
+				})),
+		}
 	);
 
 	//create pax
@@ -123,6 +137,10 @@ const FormPaxes = ({
 			relation: pax?.relation,
 			occupation: pax?.occupation ?? '',
 			reservation: reservationId,
+			maritalStatus:
+				maritalStatusOpt?.find((it) => it.label === pax?.maritalStatus)
+					?.value ?? '',
+			cardsType: pax?.cardsType ?? '',
 		},
 		validationSchema: Yup.object({
 			firstName: Yup.string().required(tMessage(FIELD_REQUIRED)),
@@ -164,7 +182,7 @@ const FormPaxes = ({
 			}}
 		>
 			<Row>
-				<Col lg={12}>
+				<Col lg={6}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="firstName">
 							{t('name')}
@@ -186,7 +204,7 @@ const FormPaxes = ({
 						)}
 					</div>
 				</Col>
-				<Col lg={12}>
+				<Col lg={6}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="nombre">
 							{t('lastName')}
@@ -208,13 +226,16 @@ const FormPaxes = ({
 						)}
 					</div>
 				</Col>
-				<Col lg={8}>
+				<Col lg={4}>
 					<div className="mb-2">
-						<Label className="form-label mb-0" htmlFor="nombre">
+						<Label
+							className="form-label mb-0"
+							htmlFor="fechaNacimiento"
+						>
 							{t('birthDay')}
 						</Label>
 						<DatePicker
-							id="fechaLlegada"
+							id="fechaNacimiento"
 							date={fechaNacimiento}
 							onChangeDate={(value) => {
 								setFechaNacimiento(value[0]);
@@ -235,10 +256,17 @@ const FormPaxes = ({
 									formik.setFieldValue('age', '');
 								}
 							}}
+							onClose={(selectedDates) => {
+								if (selectedDates.length > 0)
+									formik.setFieldValue(
+										'age',
+										calcAge(selectedDates[0])
+									);
+							}}
 						/>
 					</div>
 				</Col>
-				<Col lg={4}>
+				<Col lg={2}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="age">
 							{t('age')}
@@ -246,7 +274,43 @@ const FormPaxes = ({
 						<DisabledInput value={formik.values.age} />
 					</div>
 				</Col>
-				<Col lg={12}>
+				<Col xs="12" md={6}>
+					<div className="mb-2">
+						<Label
+							className="form-label mb-0"
+							htmlFor="estadoCivil"
+						>
+							{t('maritalStatus')}
+						</Label>
+						<Select
+							id="estadoCivil"
+							className="mb-0"
+							value={
+								formik.values.maritalStatus
+									? {
+											value: formik.values.maritalStatus,
+											label:
+												maritalStatusOpt?.find(
+													(it) =>
+														it.value ===
+														formik.values
+															.maritalStatus
+												)?.label ?? '',
+									  }
+									: null
+							}
+							onChange={(value) => {
+								formik.setFieldValue(
+									'maritalStatus',
+									value?.value ?? ''
+								);
+							}}
+							options={maritalStatusOpt}
+							placeholder="Seleccionar opción"
+						/>
+					</div>
+				</Col>
+				<Col xs={12} lg={6}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="occupation">
 							{t('occupation')}
@@ -263,7 +327,7 @@ const FormPaxes = ({
 						/>
 					</div>
 				</Col>
-				<Col lg={12}>
+				<Col xs={12} lg={6}>
 					<div className="mb-2">
 						<Label className="form-label mb-0" htmlFor="relation">
 							{t('relationship')}
@@ -288,6 +352,61 @@ const FormPaxes = ({
 							options={dataRelationships}
 							classNamePrefix="select2-selection"
 							placeholder={tMessage(SELECT_OPTION)}
+						/>
+					</div>
+				</Col>
+				<Col xs="6" md="2">
+					<div className="form-check mb-2 mt-3">
+						<Input
+							className="form-check-input"
+							type="checkbox"
+							id="active"
+							checked={formik.values.active}
+							onChange={(evt) =>
+								formik.setFieldValue(
+									'active',
+									evt.target.checked
+								)
+							}
+						/>
+						<Label className="form-check-label" htmlFor="active">
+							Titular T.Crédito
+						</Label>
+					</div>
+				</Col>
+				<Col xs="6" md="2">
+					<div className="form-check mb-2 mt-3">
+						<Input
+							className="form-check-input"
+							type="checkbox"
+							id="active"
+							checked={formik.values.active}
+							onChange={(evt) =>
+								formik.setFieldValue(
+									'active',
+									evt.target.checked
+								)
+							}
+						/>
+						<Label className="form-check-label" htmlFor="active">
+							Titular T.Débito
+						</Label>
+					</div>
+					{console.log(formik.values)}
+				</Col>
+				<Col xs="6" md="8">
+					<div className="form-check mb-2">
+						<Label className="form-label mb-0" htmlFor="relation">
+							Tipo de tarjetas
+						</Label>
+						<InputTags
+							values={formik.values.cardsType}
+							onChange={(values) => {
+								formik.setFieldValue(
+									'cardsType',
+									values.join(',')
+								);
+							}}
 						/>
 					</div>
 				</Col>

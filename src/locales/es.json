@@ -518,7 +518,8 @@
                 "userComission": "User comisión",
                 "affiliation": "Afiliación",
                 "services": "Servicios",
-                "paymentDate": "Fecha pago" 
+                "paymentDate": "Fecha pago",
+                "sendPaymentConfirmation": "Enviar comprobante de pago"
             },
             "reservationService": {
                 "edit": "Editar",
@@ -586,7 +587,8 @@
                 "occupation":"Ocupación",
                 "relationship":"Relación",
                 "accept":"Aceptar",
-                "cancel":"Cancelar"
+                "cancel":"Cancelar",
+                "maritalStatus": "Estado civil"
             },
             "formPaymentClient": {
                 "name":"Nombre",
@@ -705,6 +707,11 @@
         "language": {
             "es": "Español",
             "en": "Inglés"
+        }
+    },
+    "controllers": {
+        "InputTags": {
+            "typeAndEnter": "Escriba y presione enter"
         }
     }
 }

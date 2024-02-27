@@ -67,6 +67,7 @@ const FormClient = ({
 	const [phone2, setPhone2] = useState('');
 	const [mobile, setMobile] = useState('');
 	const [email, setEmail] = useState('');
+	const [email2, setEmail2] = useState('');
 
 	//getStatus
 	const { data: maritalStatusOpt } = useQuery(
@@ -129,6 +130,7 @@ const FormClient = ({
 			phone2: customer?.phone2 ?? '',
 			movil: customer?.movil ?? '',
 			email: customer?.email ?? '',
+			email2: customer?.email2 ?? '',
 			userName: customer?.userName ?? user.usuario,
 			maritalStatusKey:
 				maritalStatusOpt?.find(
@@ -152,7 +154,8 @@ const FormClient = ({
 					key !== 'phone1' &&
 					key !== 'phone2' &&
 					key !== 'movil' &&
-					key !== 'email'
+					key !== 'email' &&
+					key !== 'email2'
 				) {
 					data[key] = value;
 				}
@@ -161,6 +164,7 @@ const FormClient = ({
 			if (phone2) data['phone2'] = values.phone2;
 			if (mobile) data['movil'] = values.movil;
 			if (email) data['email'] = email;
+			if (email2) data['email2'] = email2;
 
 			updateCient({
 				id: values.id,
@@ -180,6 +184,11 @@ const FormClient = ({
 	const toggleCorreo = () => {
 		setEditCorreo(!editCorreo);
 		formik.setFieldValue('email', '');
+	};
+	const [editCorreo2, setEditCorreo2] = useState(false);
+	const toggleCorreo2 = () => {
+		setEditCorreo2(!editCorreo2);
+		formik.setFieldValue('email2', '');
 	};
 	return (
 		<Form
@@ -521,6 +530,32 @@ const FormClient = ({
 								id="email"
 								onChange={(e) => setEmail(e.target.value)}
 								value={email}
+							/>
+						)}
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="email2">
+							{t('email')} 2
+						</Label>
+						{!editCorreo2 ? (
+							<DisabledInput
+								endIcon={
+									<i
+										className="bx bxs-pencil text-primary"
+										onClick={toggleCorreo2}
+									/>
+								}
+								value={formik.values.email2}
+							/>
+						) : (
+							<Input
+								type="text"
+								className={`form-control`}
+								id="email2"
+								onChange={(e) => setEmail2(e.target.value)}
+								value={email2}
 							/>
 						)}
 					</div>

@@ -224,7 +224,7 @@ const ReservationPaxes = ({ reservationId }) => {
 				open={showModal}
 				setOpen={setShowModal}
 				title={`${pax ? t('editPax') : t('addPax')}`}
-				size="md"
+				size="lg"
 				children={
 					<FormPaxes
 						toggleDialog={toggleDialog}

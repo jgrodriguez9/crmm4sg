@@ -47,6 +47,7 @@ const FormReservationClient = ({
 		data: customer,
 		error: errrorItem,
 		isFetching: isFetchingItem,
+		refetch,
 	} = useQuery(
 		['getCustomer', reservation.customer.id],
 		() => fecthItem(reservation.customer.id),
@@ -98,6 +99,7 @@ const FormReservationClient = ({
 	const [phone2, setPhone2] = useState('');
 	const [mobile, setMobile] = useState('');
 	const [email, setEmail] = useState('');
+	const [email2, setEmail2] = useState('');
 
 	//getMaritalStatus
 	const { data: maritalStatusOpt } = useQuery(
@@ -131,6 +133,12 @@ const FormReservationClient = ({
 			);
 			setEditClient(false);
 			setOpenClient(false);
+			setEditCorreo(false);
+			setEditCorreo2(false);
+			setEditPhone1(false);
+			setEditPhone2(false);
+			setEditMobile(false);
+			refetch();
 		}
 		if (isError) {
 			let message = tMessage(ERROR_SERVER);
@@ -160,6 +168,7 @@ const FormReservationClient = ({
 			phone2: customer?.phone2 ?? '',
 			movil: customer?.movil ?? '',
 			email: customer?.email ?? '',
+			email2: customer?.email2 ?? '',
 			maritalStatusKey:
 				maritalStatusOpt?.find(
 					(it) => it.label === customer?.maritalStatus
@@ -179,7 +188,8 @@ const FormReservationClient = ({
 					key !== 'phone1' &&
 					key !== 'phone2' &&
 					key !== 'movil' &&
-					key !== 'email'
+					key !== 'email' &&
+					key !== 'email2'
 				) {
 					data[key] = value;
 				}
@@ -188,6 +198,7 @@ const FormReservationClient = ({
 			if (phone2) data['phone2'] = values.phone2;
 			if (mobile) data['movil'] = values.mobile;
 			if (email) data['email'] = email;
+			if (email2) data['email2'] = email2;
 			updateCient({
 				id: values.id,
 				body: data,
@@ -205,6 +216,11 @@ const FormReservationClient = ({
 	const toggleCorreo = () => {
 		setEditCorreo(!editCorreo);
 		formik.setFieldValue('email', '');
+	};
+	const [editCorreo2, setEditCorreo2] = useState(false);
+	const toggleCorreo2 = () => {
+		setEditCorreo2(!editCorreo2);
+		formik.setFieldValue('email2', '');
 	};
 
 	return (
@@ -300,6 +316,32 @@ const FormReservationClient = ({
 								id="email"
 								onChange={(e) => setEmail(e.target.value)}
 								value={email}
+							/>
+						)}
+					</div>
+				</Col>
+				<Col xs="12" md="4">
+					<div className="mb-2">
+						<Label className="form-label mb-0" htmlFor="email2">
+							{t('email')} 2
+						</Label>
+						{!editCorreo2 ? (
+							<DisabledInput
+								endIcon={
+									<i
+										className="bx bxs-pencil text-primary"
+										onClick={toggleCorreo2}
+									/>
+								}
+								value={formik.values.email2}
+							/>
+						) : (
+							<Input
+								type="text"
+								className={`form-control`}
+								id="email2"
+								onChange={(e) => setEmail2(e.target.value)}
+								value={email2}
 							/>
 						)}
 					</div>
