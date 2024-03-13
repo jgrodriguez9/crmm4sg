@@ -121,7 +121,6 @@ const FormPaxes = ({
 			);
 		}
 	}, [isSuccessUpdating, isErrorUpdating, dispatch, errorUpdating]);
-
 	const formik = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
 		enableReinitialize: true,
@@ -137,10 +136,12 @@ const FormPaxes = ({
 			relation: pax?.relation,
 			occupation: pax?.occupation ?? '',
 			reservation: reservationId,
-			maritalStatus:
+			maritalStatusKey:
 				maritalStatusOpt?.find((it) => it.label === pax?.maritalStatus)
 					?.value ?? '',
 			cardsType: pax?.cardsType ?? '',
+			creditCardHolder: pax?.creditCardHolder ?? false,
+			debitCardHolder: pax?.debitCardHolder ?? false,
 		},
 		validationSchema: Yup.object({
 			firstName: Yup.string().required(tMessage(FIELD_REQUIRED)),
@@ -286,22 +287,23 @@ const FormPaxes = ({
 							id="estadoCivil"
 							className="mb-0"
 							value={
-								formik.values.maritalStatus
+								formik.values.maritalStatusKey
 									? {
-											value: formik.values.maritalStatus,
+											value: formik.values
+												.maritalStatusKey,
 											label:
 												maritalStatusOpt?.find(
 													(it) =>
 														it.value ===
 														formik.values
-															.maritalStatus
+															.maritalStatusKey
 												)?.label ?? '',
 									  }
 									: null
 							}
 							onChange={(value) => {
 								formik.setFieldValue(
-									'maritalStatus',
+									'maritalStatusKey',
 									value?.value ?? ''
 								);
 							}}
@@ -360,17 +362,20 @@ const FormPaxes = ({
 						<Input
 							className="form-check-input"
 							type="checkbox"
-							id="active"
-							checked={formik.values.active}
+							id="creditCardHolder"
+							checked={formik.values.creditCardHolder}
 							onChange={(evt) =>
 								formik.setFieldValue(
-									'active',
+									'creditCardHolder',
 									evt.target.checked
 								)
 							}
 						/>
-						<Label className="form-check-label" htmlFor="active">
-							Titular T.Crédito
+						<Label
+							className="form-check-label"
+							htmlFor="creditCardHolder"
+						>
+							{t('cardCreditHolder')}
 						</Label>
 					</div>
 				</Col>
@@ -379,25 +384,27 @@ const FormPaxes = ({
 						<Input
 							className="form-check-input"
 							type="checkbox"
-							id="active"
-							checked={formik.values.active}
+							id="debitCardHolder"
+							checked={formik.values.debitCardHolder}
 							onChange={(evt) =>
 								formik.setFieldValue(
-									'active',
+									'debitCardHolder',
 									evt.target.checked
 								)
 							}
 						/>
-						<Label className="form-check-label" htmlFor="active">
-							Titular T.Débito
+						<Label
+							className="form-check-label"
+							htmlFor="debitCardHolder"
+						>
+							{t('cardDebitHolder')}
 						</Label>
 					</div>
-					{console.log(formik.values)}
 				</Col>
 				<Col xs="6" md="8">
 					<div className="form-check mb-2">
 						<Label className="form-label mb-0" htmlFor="relation">
-							Tipo de tarjetas
+							{t('cardTypes')}
 						</Label>
 						<InputTags
 							values={formik.values.cardsType}

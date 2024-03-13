@@ -65,6 +65,7 @@ const CellAgent = ({ row, value, column, table }) => {
 			id: row.original.id,
 			body: {
 				newOwner: newAgent.value,
+				userName: user?.usuario,
 			},
 		};
 		mutateUpdateAgent(data);

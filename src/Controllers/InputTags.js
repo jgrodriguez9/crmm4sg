@@ -3,21 +3,23 @@ import { closeIconClass } from '../Components/constants/icons';
 import { Badge } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 
-function InputTags({ values = [], onChange }) {
+function InputTags({ values = '', onChange }) {
 	const { t } = useTranslation('translation', {
 		keyPrefix: 'controllers.InputTags',
 	});
-	const [tags, setTags] = useState(values.split(','));
-
+	const [tags, setTags] = useState(
+		values === null || values === '' ? [] : values.split(',')
+	);
 	function handleKeyDown(e) {
-		e.preventDefault();
-		if (e.key !== 'Enter') return;
-		const value = e.target.value;
-		if (!value.trim()) return;
-		const newTags = [...tags, value];
-		setTags(newTags);
-		onChange(newTags);
-		e.target.value = '';
+		if (e.key === 'Enter') {
+			e.preventDefault();
+			const value = e.target.value;
+			if (!value.trim()) return;
+			const newTags = [...tags, value];
+			setTags(newTags);
+			onChange(newTags);
+			e.target.value = '';
+		}
 	}
 
 	function removeTag(index) {

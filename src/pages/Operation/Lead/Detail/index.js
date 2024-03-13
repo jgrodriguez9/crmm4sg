@@ -42,6 +42,7 @@ import { editIconClass } from '../../../../Components/constants/icons';
 import TooltipDescription from '../../../../Components/Common/TooltipDescription';
 import FormMaketingMailClient from '../../../../Components/Operation/Lead/Tab/MarketingMailClient/FormMaketingMailClient';
 import { useTranslation } from 'react-i18next';
+import LogsClient from '../../../../Components/Operation/Lead/Tab/LogsClient';
 
 const LeadProfile = () => {
 	const { t } = useTranslation('translation', {
@@ -592,6 +593,21 @@ const LeadProfile = () => {
 													Whatsapp
 												</NavLink>
 											</NavItem>
+											<NavItem>
+												<NavLink
+													to="#"
+													className={classNames({
+														active:
+															activeTab === '7',
+													})}
+													onClick={() => {
+														tabChange('7');
+													}}
+													type="button"
+												>
+													Logs
+												</NavLink>
+											</NavItem>
 										</Nav>
 									</CardHeader>
 									<CardBody className="px-4 py-2">
@@ -635,6 +651,15 @@ const LeadProfile = () => {
 											<TabPane tabId="6">
 												{activeTab === '6' && (
 													<OriginClient
+														customerId={
+															itemData.data?.id
+														}
+													/>
+												)}
+											</TabPane>
+											<TabPane tabId="7">
+												{activeTab === '7' && (
+													<LogsClient
 														customerId={
 															itemData.data?.id
 														}

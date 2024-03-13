@@ -588,7 +588,10 @@
                 "relationship":"Relación",
                 "accept":"Aceptar",
                 "cancel":"Cancelar",
-                "maritalStatus": "Estado civil"
+                "maritalStatus": "Estado civil",
+                "cardCreditHolder": "Titular T.Crédito",
+                "cardDebitHolder": "Titular T.Débito",
+                "cardTypes": "Tipo de tarjetas"
             },
             "formPaymentClient": {
                 "name":"Nombre",
@@ -656,6 +659,22 @@
                 "infoAssignation": "La asignación se hará de manera equitativa si seleccionas más de un agente",
                 "client": "Cliente",
                 "clients": "Clientes"
+            },
+            "LogsClient": {
+                "description": "Descripción" ,
+                "action": "Acción",
+                "date": "Fecha",
+                "user": "Usuario",
+                "dateStart": "Fecha inicio",
+                "dateEnd": "Fecha fin",
+                "selectAction": "Seleccionar acción",
+                "selectUser": "Seleccionar usuario",
+                "search": "Buscar",
+                "assignCustomersToAgentsRandom": "Asignación aleatoria de clientes",
+                "clickToCall": "Llamada telefónica",
+                "Email": "Envío de correo",
+                "sms": "Envío de SMS",
+                "changeCustomerAgent": "Asignación de cliente a agente"
             }
         }
     },

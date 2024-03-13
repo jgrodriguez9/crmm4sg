@@ -12,6 +12,7 @@
     "bootstrap": "5.2.3",
     "classnames": "^2.3.2",
     "country-state-city": "^3.2.0",
+    "credit-card-type": "^10.0.0",
     "crypto-js": "^4.1.1",
     "feather-icons-react": "^0.6.2",
     "formik": "^2.2.9",

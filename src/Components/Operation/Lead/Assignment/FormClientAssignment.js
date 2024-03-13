@@ -31,6 +31,7 @@ import { addMessage } from '../../../../slices/messages/reducer';
 import extractMeaningfulMessage from '../../../../util/extractMeaningfulMessage';
 import { infoIconClass } from '../../../constants/icons';
 import TooltipDescription from '../../../Common/TooltipDescription';
+import { getCallCenterByUser } from '../../../../helpers/catalogues/call_center';
 
 const FormClientAssignment = ({ toggleDialog }) => {
 	const { t } = useTranslation('translation', {
@@ -105,6 +106,20 @@ const FormClientAssignment = ({ toggleDialog }) => {
 		[t]
 	);
 
+	//getCallCenter
+	const { data: callCenterOpt } = useQuery(
+		['getCallCenterByUser'],
+		() => getCallCenterByUser(user?.usuario),
+		{
+			enabled: user?.usuario !== undefined,
+			select: (data) =>
+				data.data?.list.map((item) => ({
+					value: item.id,
+					label: item.name,
+				})) ?? [],
+		}
+	);
+
 	//agents by super/manager
 	const { data: agentsOpt } = useQuery(
 		['getAgentsBySupervisor', user.usuario],
@@ -171,6 +186,7 @@ const FormClientAssignment = ({ toggleDialog }) => {
 				state: values.state,
 				vendor: values.vendor,
 				agents: values.agents,
+				userName: user?.usuario,
 			};
 			assignClient(body);
 		},
@@ -280,7 +296,7 @@ const FormClientAssignment = ({ toggleDialog }) => {
 						<Select
 							value={null}
 							onChange={(value) => console.log(value)}
-							options={[]}
+							options={callCenterOpt}
 							classNamePrefix="select2-selection"
 							placeholder={tMessage(SELECT_OPTION)}
 						/>

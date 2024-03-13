@@ -82,3 +82,6 @@ export const templateSms = '/smsTemplate';
 
 //banco
 export const bank = '/bank';
+
+//logs client
+export const logs = '/historyLog';

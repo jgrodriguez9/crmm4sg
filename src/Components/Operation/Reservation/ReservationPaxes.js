@@ -76,6 +76,10 @@ const ReservationPaxes = ({ reservationId }) => {
 			age: original.age ?? '',
 			relation: original.relation ?? null,
 			occupation: original.occupation ?? '',
+			cardsType: original?.cardsType ?? '',
+			creditCardHolder: original?.creditCardHolder ?? false,
+			debitCardHolder: original?.debitCardHolder ?? false,
+			maritalStatus: original?.maritalStatus ?? null,
 		});
 		setShowModal(true);
 	};

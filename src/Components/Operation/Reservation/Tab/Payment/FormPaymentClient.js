@@ -31,9 +31,10 @@ import ButtonsLoader from '../../../../Loader/ButtonsLoader';
 import { getBankAll } from '../../../../../helpers/catalogues/bank';
 import { getAgentsBySupervisor } from '../../../../../helpers/customer';
 import useRole from '../../../../../hooks/useRole';
+import { getCardFlag } from '../../../../../util/getCardFlag';
+import creditCardType from 'credit-card-type';
 
 const getContractedServiceParsed = (paymentServices) => {
-	console.log(paymentServices);
 	return paymentServices?.map((it) => ({
 		idBooking: it.serviceContract.idBooking,
 		idService: it.serviceContract.idService,
@@ -263,7 +264,6 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 					data[key] = value;
 				}
 			});
-			console.log(data);
 			if (values.idReservation && values.idPayment) {
 				// updating existing one
 				update({
@@ -441,20 +441,51 @@ const FormPaymentClient = ({ toggleDialog, reservation, payment }) => {
 						<Label className="form-label mb-1" htmlFor="creditCard">
 							{t('card')}
 						</Label>
-						<InputMask
-							id="creditCard"
-							className={`form-control ${
-								formik.errors.creditCard ? 'is-invalid' : ''
-							}`}
-							mask="9999 9999 9999 9999"
-							maskChar=" "
-							placeholder="xxxx xxxx xxxx xxxx"
-							value={formik.values.creditCard}
-							onChange={(e) => {
-								let val = e.target.value.replace(/[^0-9]/g, '');
-								formik.setFieldValue('creditCard', val);
-							}}
-						/>
+						<div className="input-group">
+							<InputMask
+								id="creditCard"
+								className={`form-control ${
+									formik.errors.creditCard ? 'is-invalid' : ''
+								}`}
+								mask="9999 9999 9999 9999"
+								maskChar=" "
+								placeholder="xxxx xxxx xxxx xxxx"
+								value={formik.values.creditCard}
+								onChange={(e) => {
+									let val = e.target.value.replace(
+										/[^0-9]/g,
+										''
+									);
+									formik.setFieldValue('creditCard', val);
+									//checamos q tarjeta es
+									const types = creditCardType(val);
+									if (val === '') {
+										formik.setFieldValue('idCardType', '');
+									} else if (types.length === 1) {
+										const type = types[0].niceType;
+										const cardType =
+											cardTypesOpt.find((it) =>
+												it.label
+													.replace(/\s+/g, '')
+													.toLowerCase()
+													.includes(
+														type
+															.replace(/\s+/g, '')
+															.toLowerCase()
+													)
+											)?.value ?? '';
+										formik.setFieldValue(
+											'idCardType',
+											cardType
+										);
+									}
+								}}
+							/>
+							<div className="input-group-text bg-light text-dark">
+								{getCardFlag(formik.values.creditCard)}
+							</div>
+						</div>
+
 						{formik.errors.creditCard && (
 							<FormFeedback type="invalid" className="d-block">
 								{formik.errors.creditCard}

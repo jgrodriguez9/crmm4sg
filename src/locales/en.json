@@ -588,7 +588,10 @@
                 "relationship":"Relationship",
                 "accept":"Ok",
                 "cancel":"Cancel",
-                "maritalStatus": "Marital status"
+                "maritalStatus": "Marital status",
+                "cardCreditHolder": "Credit C. Holder",
+                "cardDebitHolder": "Debit C. Holder",
+                "cardTypes": "Card types"
             },
             "formPaymentClient": {
                 "name":"Name",
@@ -656,6 +659,22 @@
                 "infoAssignation": "The assignment will be made equally if you select more than one agent",
                 "client": "Client",
                 "clients": "Clients"
+            },
+            "LogsClient": {
+                "description": "Description",
+                "action": "Action",
+                "date": "Date",
+                "user": "User",
+                "dateStart": "Start date",
+                "dateEnd": "End date",
+                "selectAction": "Select action",
+                "selectUser": "Select user",
+                "search": "Search",
+                "assignCustomersToAgentsRandom": "Random clients assignment",
+                "clickToCall": "Call phone",
+                "email": "Email",
+                "sms": "SMS",
+                "changeCustomerAgent": "Client assignment"    
             }
         }
     },

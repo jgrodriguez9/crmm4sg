@@ -1,6 +1,5 @@
 import Select from 'react-select';
 import { Button, Col, Form, FormFeedback, Input, Label, Row } from 'reactstrap';
-import template from '../../../../../common/data/template';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -9,7 +8,7 @@ import {
 	FIELD_REQUIRED,
 	SELECT_OPTION,
 } from '../../../../constants/messages';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import {
 	getPreviewEmailTemplate,
 	getTemplateEmailByUser,
@@ -121,6 +120,7 @@ const FormMaketingMailClient = ({
 			customer: customerId,
 			subject: '',
 			message: '',
+			userName: user?.usuario,
 		},
 		validationSchema: Yup.object({
 			to: Yup.string().required(tMessage(FIELD_REQUIRED)),
@@ -279,7 +279,7 @@ const FormMaketingMailClient = ({
 						type="button"
 						color="danger"
 						className="btn-soft-danger"
-						onClick={() => {}}
+						onClick={closeModal}
 					>
 						{t('cancel')}
 					</Button>
